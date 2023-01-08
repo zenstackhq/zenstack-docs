@@ -1,75 +1,81 @@
-import React from 'react';
+import React, { FC } from 'react';
+import {
+    FaRegSmileBeam,
+    FaSpellCheck,
+    FaBatteryFull,
+    FaPuzzlePiece,
+    FaCode,
+    FaRegHandPeace,
+} from 'react-icons/fa';
 
-type FeatureItem = {
-    title: string;
-    Svg: React.ComponentType<React.ComponentProps<'svg'>>;
-    description: JSX.Element;
-};
-
-const FeatureList: FeatureItem[] = [
+const features = [
     {
-        title: 'Skip backend boilerplate',
-        Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-        description: (
-            <>
-                Most web apps are just UI talking to a database. It's time to
-                trim the unnecessary complexities in between, and let your
-                frontend talk to the database directly and securely.
-            </>
-        ),
+        title: 'Intuitive API',
+        description:
+            'Prisma provides an elegant set of APIs for talking to the database. ZenStack pushes it further to the frontend.',
+        icon: <FaRegSmileBeam size={20} />,
+        color: 'dark:bg-emerald-900/50 bg-emerald-200 dark:text-emerald-300 text-emerald-600',
     },
     {
-        title: 'Single source of truth',
-        Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-        description: (
-            <>
-                Data schema and access policies are the core of you app. Define
-                them succinctly, keep them together, and generate everything
-                else out of this single source of truth.
-            </>
-        ),
+        title: 'E2E type safety',
+        description:
+            'Type sharing between the frontend and the backend is effortless thanks to code generation from a central schema.',
+        icon: <FaSpellCheck size={20} />,
+        color: 'dark:bg-indigo-900/50 bg-indigo-200 dark:text-indigo-300 text-indigo-600',
     },
     {
-        title: 'Powered by Prisma',
-        Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-        description: (
-            <>
-                Encapsulating database is a difficult task and there's no reason
-                to reinvent the wheel. Instead, we built ZenStack as a powerful
-                extension to the battle-tested ORM -{' '}
-                <a href="https://prisma.io" target="_blank">
-                    Prisma
-                </a>
-                .
-            </>
-        ),
+        title: 'Extensible schema',
+        description:
+            "Custom attributes and a plugin system give you the power to extend ZenStack's schema language to your needs.",
+        icon: <FaPuzzlePiece size={20} />,
+        color: 'dark:bg-amber-900/50 bg-amber-200 dark:text-amber-300 text-amber-600',
+    },
+    {
+        title: 'Fullstack or backend',
+        description:
+            'Although ZenStack shines in full-stack development, it can also help you build just the backend more efficiently.',
+        icon: <FaCode size={20} />,
+        color: 'dark:bg-purple-900/50 bg-purple-200 dark:text-purple-300 text-purple-600',
+    },
+    {
+        title: 'Framework agnostic',
+        description:
+            "ZenStack works with any Javascript framework. It's also easy to migrate your existing Prisma projects.",
+        icon: <FaRegHandPeace size={20} />,
+        color: 'dark:bg-lime-900/50 bg-lime-200 dark:lime-orange-300 text-lime-600',
+    },
+    {
+        title: 'Batteries included',
+        description:
+            'Out-of-the box integrations with Next.js, Remix, Nuxt.js, SvelteKit, and tRPC. More are being made.',
+        icon: <FaBatteryFull size={20} />,
+        color: 'dark:bg-sky-900/50 bg-sky-200 dark:lime-sky-300 text-sky-600',
     },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+export const Features: FC = () => {
     return (
-        <div className="lg:max-w-1/3 w-full">
-            <div className="text--center">
-                <Svg className="w-48 h-48" role="img" />
-            </div>
-            <div className="text--center padding-horiz--md">
-                <h3>{title}</h3>
-                <p className="text-center">{description}</p>
+        <div className="flex flex-col items-center">
+            <h2 className="text-3xl pb-8">What's in the whole package</h2>
+            <div className="grid grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
+                {features.map((feature) => {
+                    return (
+                        <div key={feature.title}>
+                            <h2
+                                className={`${feature.color} mb-3 rounded-xl w-12 h-12 grid place-items-center`}
+                            >
+                                {feature.icon}
+                            </h2>
+                            <h3 className="text-lg font-bold md:text-xl">
+                                {feature.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 md:text-base">
+                                {feature.description}
+                            </p>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
-}
-
-export default function HomepageFeatures(): JSX.Element {
-    return (
-        <section className="flex align-center py-8 w-full">
-            <div className="container mx-auto px-8 lg:px-16">
-                <div className="row">
-                    {FeatureList.map((props, idx) => (
-                        <Feature key={idx} {...props} />
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-}
+};

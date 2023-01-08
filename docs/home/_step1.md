@@ -2,12 +2,14 @@
 model User {
     id String @id
     email String
+    // field is hashed on save and omitted when the entity is returned by query
+    password String @password @omit
     posts Post[]
 
-    // everybody can signup
+    // policy: everybody can signup
     @@allow('create', true)
 
-    // allow full CRUD by self
+    // policy: allow full CRUD by self
     @@allow('all', auth() == this)
 }
 
@@ -18,10 +20,10 @@ model Post {
     author User @relation(fields: [authorId], references: [id])
     authorId String
 
-    // allow logged-in users to read published posts
+    // policy: allow logged-in users to read published posts
     @@allow('read', auth() != null && published)
 
-    // allow full CRUD by author
+    // policy: allow full CRUD by author
     @@allow('all', author == auth())
 }
 ```

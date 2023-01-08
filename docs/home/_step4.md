@@ -2,6 +2,8 @@
 ```tsx twoslash
 import React, { FC } from 'react';
 
+interface PostFindManyArgs {}
+
 interface User {
     id: string;
     email: string;
@@ -16,7 +18,7 @@ interface Post {
 }
 
 function usePost(): {
-    findMany: (args: any) => (Post & { author: User })[];
+    findMany: (args: PostFindManyArgs) => (Post & { author: User })[];
 } {
     throw new Error('not implemented');
 }
@@ -25,6 +27,7 @@ function usePost(): {
 
 // pages/posts.tsx
 
+// @noErrors
 const Posts: FC = () => {
     const { findMany } = usePost();
 
@@ -35,11 +38,13 @@ const Posts: FC = () => {
         orderBy: { updatedAt: 'desc' },
     });
 
+    // "posts" is accurately typed based on the query structure
     return (
         <ul>
             {posts.map((post) => (
-       //    ^?
-                <li key={post.id}>{post.title} by {post.author.email}</li>
+                     // ^?
+                <li key={post.id}>{post.title} by { post.author.e }</li>
+                                                              // ^|
             ))}
         </ul>
     );
