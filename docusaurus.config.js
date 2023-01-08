@@ -7,8 +7,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'ZenStack',
-    tagline: 'A shortcut from the database to your frontend',
-    url: 'https://your-docusaurus-test-site.com',
+    tagline: '⚡️ Fast Lane From Frontend To Database',
+    url: 'https://zenstack.dev',
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
@@ -42,6 +42,12 @@ const config = {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
             }),
+        ],
+        [
+            'docusaurus-preset-shiki-twoslash',
+            {
+                themes: ['min-light', 'nord'],
+            },
         ],
     ],
 
@@ -126,6 +132,20 @@ const config = {
                 darkTheme: darkCodeTheme,
             },
         }),
+
+    plugins: [
+        async function myPlugin(context, options) {
+            return {
+                name: 'docusaurus-tailwindcss',
+                configurePostCss(postcssOptions) {
+                    // Appends TailwindCSS and AutoPrefixer.
+                    postcssOptions.plugins.push(require('tailwindcss'));
+                    postcssOptions.plugins.push(require('autoprefixer'));
+                    return postcssOptions;
+                },
+            };
+        },
+    ],
 };
 
 module.exports = config;
