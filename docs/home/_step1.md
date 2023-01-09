@@ -24,6 +24,7 @@ model Post {
     @@allow('read', auth() != null && published)
 
     // policy: allow full CRUD by author
+    // auth() is a built-in function that returns current user
     @@allow('all', author == auth())
 }
 ```

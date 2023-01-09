@@ -12,14 +12,14 @@ const features = [
     {
         title: 'Intuitive API',
         description:
-            'Prisma provides an elegant set of APIs for talking to the database. ZenStack pushes it further to the frontend.',
+            'Prisma provides an elegant set of APIs for talking to the database. ZenStack pushes its power further to the frontend.',
         icon: <FaRegSmileBeam size={20} />,
         color: 'dark:bg-emerald-900/50 bg-emerald-200 dark:text-emerald-300 text-emerald-600',
     },
     {
         title: 'E2E type safety',
         description:
-            'Type sharing between the frontend and the backend is effortless thanks to code generation from a central schema.',
+            'Type sharing between the frontend and the backend is effortless thanks to the code generation from a central schema.',
         icon: <FaSpellCheck size={20} />,
         color: 'dark:bg-indigo-900/50 bg-indigo-200 dark:text-indigo-300 text-indigo-600',
     },
@@ -56,7 +56,9 @@ const features = [
 export const Features: FC = () => {
     return (
         <div className="flex flex-col items-center">
-            <h2 className="text-3xl pb-8">What's in the whole package</h2>
+            <h2 className="text-2xl md:text-3xl pb-8 text-center">
+                What's in the whole package
+            </h2>
             <div className="grid grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
                 {features.map((feature) => {
                     return (

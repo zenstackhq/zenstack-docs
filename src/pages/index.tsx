@@ -9,17 +9,17 @@ import Steps from '../components/Steps';
 function Header() {
     const { siteConfig } = useDocusaurusContext();
     return (
-        <header className="bg-primary py-16 lg:py-20 text-center overflow-hidden">
+        <header className="bg-primary py-16 lg:py-32 text-center overflow-hidden">
             <div className="container">
-                <h1 className="text-white dark:text-gray-800 font-bold text-4xl">
+                <h1 className="text-white dark:text-gray-800 font-bold text-3xl md:text-4xl">
                     {siteConfig.tagline}
                 </h1>
-                <p className="text-gray-200 dark:text-gray-800 font-semi-bold text-xl max-w-[800px] mx-auto">
+                <p className="text-gray-200 dark:text-gray-800 font-semi-bold text-lg md:text-xl max-w-[800px] mx-auto">
                     An extensible toolkit for generating services, hooks and
                     other artifacts from your database schema, with built-in
                     support for access policy and data validation.
                 </p>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center mt-10">
                     <Link
                         className="button button--secondary button--lg"
                         to="/docs/intro"
@@ -40,17 +40,19 @@ export default function Home(): JSX.Element {
             description="Description will go into a meta tag in <head />"
         >
             <Header />
-            <main className="flex flex-col container mx-auto gap-8 lg:gap-16 px-8 lg:px-16 py-8 lg:py-16">
+            <main className="flex flex-col container mx-auto gap-12 lg:gap-20 px-8 lg:px-16 py-12 lg:py-20">
                 <ValueProposition />
                 <Steps />
                 <Features />
 
-                <Link
-                    className="button button--primary button--lg text-2xl w-fit py-4 mx-auto"
-                    to="/docs/intro"
-                >
-                    Get started with a tutorial
-                </Link>
+                <div className="flex justify-center w-full">
+                    <Link
+                        className="button button--primary button--lg text-2xl w-fit py-4"
+                        to="/docs/intro"
+                    >
+                        Get started with a tutorial
+                    </Link>
+                </div>
             </main>
         </Layout>
     );
