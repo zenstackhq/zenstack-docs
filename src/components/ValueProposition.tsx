@@ -13,8 +13,8 @@ const FeatureList: FeatureItem[] = [
         description: (
             <>
                 Most web apps are just UI talking to a database. It's time to
-                trim the unnecessary plumbing in between, and let your frontend
-                talk to the database directly and securely.
+                trim the unnecessary plumbing in between and let your frontend
+                speak to the database directly and securely.
             </>
         ),
     },

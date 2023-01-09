@@ -19,7 +19,7 @@ const features = [
     {
         title: 'E2E type safety',
         description:
-            'Type sharing between the frontend and the backend is effortless thanks to the code generation from a central schema.',
+            'Type sharing between frontend and backend is effortless thanks to the code generation from a central schema.',
         icon: <FaSpellCheck size={20} />,
         color: 'dark:bg-indigo-900/50 bg-indigo-200 dark:text-indigo-300 text-indigo-600',
     },
@@ -47,7 +47,7 @@ const features = [
     {
         title: 'Batteries included',
         description:
-            'Out-of-the box integrations with Next.js, Remix, Nuxt.js, SvelteKit, and tRPC. More are being made.',
+            'Out-of-the-box integrations with Next.js, Remix, Nuxt.js, SvelteKit, and tRPC. More are being made.',
         icon: <FaBatteryFull size={20} />,
         color: 'dark:bg-sky-900/50 bg-sky-200 dark:lime-sky-300 text-sky-600',
     },

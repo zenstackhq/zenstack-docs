@@ -19,9 +19,9 @@ const StepItems: Omit<StepItem, 'index'>[] = [
             <>
                 <p>
                     ZenStack provides a data modeling language that's a superset
-                    of Primsa schema. It adds <strong>custom attributes</strong>
-                    , <strong>custom functions</strong> and a set of standard
-                    attributes for declaring{' '}
+                    of Prisma schema. It adds <strong>custom attributes</strong>
+                    , <strong>functions</strong>, and standard attributes for
+                    declaring{' '}
                     <span className="text-primary">
                         <strong>access policies</strong>
                     </span>{' '}
@@ -53,8 +53,7 @@ const StepItems: Omit<StepItem, 'index'>[] = [
                 <p>
                     A CLI is provided to generate code from the schema,
                     typically including Prisma schema, access policy rules,
-                    strongly typed frontend data query libraries (hooks), as
-                    well as{' '}
+                    strongly typed frontend data query libraries (hooks), and{' '}
                     <a href="https://trpc.io" target="_blank">
                         tRPC
                     </a>{' '}
@@ -63,7 +62,7 @@ const StepItems: Omit<StepItem, 'index'>[] = [
                 <p>
                     The toolkit is <strong>extensible</strong>, so you can write
                     your own plugins to run custom code generation. Plugins have
-                    access to the AST parsed from the schema, and can declare
+                    access to the AST parsed from the schema and can declare
                     custom attributes and functions.
                 </p>
             </>
@@ -81,21 +80,21 @@ const StepItems: Omit<StepItem, 'index'>[] = [
                     To add a set of APIs that wrap around the database, use a
                     framework-specific helper to create a request handler and
                     install it as an API route. The example here demonstrates
-                    the integration with Next.js. Check out documentation for
-                    guides about other frameworks.
+                    the integration with Next.js. Check out the documentation
+                    for guides about other frameworks.
                 </p>
                 <p>
-                    The services are a thin wrapper around Prisma and exposes
-                    all essential query and mutation operations, like{' '}
+                    The services are a thin wrapper around Prisma and expose all
+                    essential query and mutation operations, like{' '}
                     <code>findMany</code>, <code>create</code>,{' '}
-                    <code>update</code>, and <code>aggregate</code>, etc.
+                    <code>update</code>, <code>aggregate</code>, etc.
                 </p>
                 <p>
                     If you're a fan of{' '}
                     <a href="https://trpc.io" target="_blank">
                         tRPC
                     </a>
-                    , you can also use the tRPC plugin to generate routers, and
+                    , you can also use the tRPC plugin to generate routers and
                     include them in your tRPC setup.
                 </p>
             </>
@@ -109,14 +108,14 @@ const StepItems: Omit<StepItem, 'index'>[] = [
                 <p>
                     You can now use the generated front-end library (hooks) to
                     talk to the API. The library is fully typed and offers
-                    exactly the same programming experiences like using a Prisma
+                    exactly the same programming experiences as using a Prisma
                     client on the server side. This example shows how to query
                     in a React component.
                 </p>
                 <p>
                     All client requests are governed by the access policies
                     defined in the schema, so even if you don't add any filter,
-                    the client can't accidently read or write data that's not
+                    the client can't accidentally read or write data that's not
                     supposed to be allowed.
                 </p>
             </>

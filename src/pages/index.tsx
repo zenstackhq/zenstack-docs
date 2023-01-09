@@ -15,9 +15,9 @@ function Header() {
                     {siteConfig.tagline}
                 </h1>
                 <p className="text-gray-200 dark:text-gray-800 font-semi-bold text-lg md:text-xl max-w-[800px] mx-auto">
-                    An extensible toolkit for generating services, hooks and
+                    An extensible toolkit for generating services, hooks, and
                     other artifacts from your database schema, with built-in
-                    support for access policy and data validation.
+                    access policy and data validation support.
                 </p>
                 <div className="flex items-center justify-center mt-10">
                     <Link
