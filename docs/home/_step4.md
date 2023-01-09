@@ -25,20 +25,24 @@ function usePost(): {
 
 // ---cut---
 
-// pages/posts.tsx
+// Next.js example for a blog post list component
+// components/posts.tsx
 
 // @noErrors
 const Posts: FC = () => {
+    // "usePost" is a generated hooks method
     const { findMany } = usePost();
 
-    // lists unpublished posts with their author's data
+    // list unpublished posts together with their author's data,
+    // the result "posts" only include entities that are readable 
+    // to the current user
     const posts = findMany({
         where: { published: false },
         include: { author: true },
         orderBy: { updatedAt: 'desc' },
     });
 
-    // "posts" is accurately typed based on the query structure
+    // entities are accurately typed based on the query structure
     return (
         <ul>
             {posts.map((post) => (

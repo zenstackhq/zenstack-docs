@@ -9,21 +9,21 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
     {
         title: 'Stop wrapping APIs around database',
-        Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+        Svg: require('@site/static/img/db-api.svg').default,
         description: (
             <>
                 Most web apps are just UI talking to a database. It's time to
-                trim the unnecessary plumbing in between, and let your frontend
-                talk to the database directly and securely.
+                trim the unnecessary plumbing in between and let your frontend
+                speak to the database directly and securely.
             </>
         ),
     },
     {
         title: 'Keep a single source of truth',
-        Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+        Svg: require('@site/static/img/ssot.svg').default,
         description: (
             <>
-                Data schema and access policies are the core of you app. Define
+                Data schema and access policies are the core of your app. Define
                 them succinctly, keep them together, and generate everything
                 else out of this single source of truth.
             </>
@@ -31,12 +31,12 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Enjoy end-to-end type safety',
-        Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+        Svg: require('@site/static/img/type-safety.svg').default,
         description: (
             <>
-                Stop duplicating type definitions and manually syncing changes.
-                Use one single CLI to generate types for your entire stack, and
-                enjoy flawless auto-completion.
+                No more duplicating type definitions and manually syncing
+                changes. Use one single toolkit to generate types for your
+                entire stack, and enjoy flawless auto-completion.
             </>
         ),
     },
@@ -49,8 +49,8 @@ function Proposition({ title, Svg, description }: FeatureItem) {
                 <Svg className="w-48 h-48" role="img" />
             </div>
             <div className="text--center padding-horiz--md">
-                <h3>{title}</h3>
-                <p className="text-center">{description}</p>
+                <h3 className="text-xl text-bold">{title}</h3>
+                <p className="text-center text-base">{description}</p>
             </div>
         </div>
     );
@@ -59,7 +59,7 @@ function Proposition({ title, Svg, description }: FeatureItem) {
 export default function ValueProposition(): JSX.Element {
     return (
         <section className="flex flex-col items-center w-full">
-            <h2 className="text-3xl">
+            <h2 className="text-2xl md:text-3xl">
                 A Power Pack for{' '}
                 <a
                     href="https://prisma.io"
@@ -69,12 +69,12 @@ export default function ValueProposition(): JSX.Element {
                     Prisma
                 </a>
             </h2>
-            <p className="max-w-[600px] text-center">
+            <p className="max-w-[720px] text-center text-base md:text-lg mb-8">
                 Prisma is a fantastic battle-tested ORM that abstracts away
                 database complexities. ZenStack extends its power and lets you
                 build web apps even faster.
             </p>{' '}
-            <div className="flex flex-wrap align-center">
+            <div className="flex flex-wrap gap-4 md:gap-0">
                 {FeatureList.map((props, idx) => (
                     <Proposition key={idx} {...props} />
                 ))}

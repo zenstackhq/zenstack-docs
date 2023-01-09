@@ -1,5 +1,6 @@
 ```ts
-// pages/api/[...path].ts
+// Next.js integration example
+// pages/api/model/[...path].ts
 
 // the standard Prisma client
 const prisma = new PrismaClient();
@@ -11,7 +12,7 @@ export default requestHandler({
         // get current user in the session
         const user = await getSessionUser(req, res);
 
-        // create a wrapper around Prisma client
+        // return an enhanced Prisma client that enforces access policies
         return withPolicy(prisma, { user });
     },
 });
