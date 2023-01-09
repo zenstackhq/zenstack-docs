@@ -5,6 +5,7 @@ import Layout from '@theme/Layout';
 import React from 'react';
 import { Features } from '../components/Features';
 import Steps from '../components/Steps';
+import { description } from '../lib/content';
 
 function Header() {
     const { siteConfig } = useDocusaurusContext();
@@ -15,9 +16,7 @@ function Header() {
                     {siteConfig.tagline}
                 </h1>
                 <p className="text-gray-200 dark:text-gray-800 font-semi-bold text-lg md:text-xl max-w-[800px] mx-auto">
-                    An extensible toolkit for generating services, hooks, and
-                    other artifacts from your database schema, with built-in
-                    access policy and data validation support.
+                    {description}
                 </p>
                 <div className="flex items-center justify-center mt-10">
                     <Link
@@ -36,8 +35,8 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout
-            title={`${siteConfig.tagline}`}
-            description="Description will go into a meta tag in <head />"
+            title={`${siteConfig.title}: ${siteConfig.tagline}`}
+            description={description}
         >
             <Header />
             <main className="flex flex-col container mx-auto gap-12 lg:gap-20 px-8 lg:px-16 py-12 lg:py-20">
