@@ -1,8 +1,10 @@
 ```prisma
 model User {
     id String @id
-    email String
-    // field is hashed on save and omitted when the entity is returned by query
+    // @email is a field validation rule
+    email String @email
+    // @password marks field to be hashed (using bcrypt) on save
+    // @omit indicates the field should be filtered when the entity is returned
     password String @password @omit
     posts Post[]
 

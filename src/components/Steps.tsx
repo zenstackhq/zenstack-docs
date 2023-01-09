@@ -32,10 +32,11 @@ const StepItems: Omit<StepItem, 'index'>[] = [
                     .
                 </p>
                 <p>
-                    In this example, <code>@allow</code> attribute is used for
-                    attaching CRUD permissions to the models. These will be
-                    enforced automatically in the back-end services by using an
-                    enhanced Prisma client.
+                    In this example, you can see the usage of{' '}
+                    <code>@allow</code> and <code>@email</code> attributes for
+                    attaching access policies and validation rules. These will
+                    be enforced automatically in the back-end services by using
+                    an enhanced Prisma client.
                 </p>
                 <p>
                     Most people with Prisma experiences find it easy to pick up

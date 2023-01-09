@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import {
-    FaRegSmileBeam,
-    FaSpellCheck,
-    FaBatteryFull,
-    FaPuzzlePiece,
     FaCode,
+    FaPuzzlePiece,
     FaRegHandPeace,
+    FaRegSmileBeam,
+    FaRocket,
+    FaSpellCheck,
 } from 'react-icons/fa';
 
 const features = [
@@ -45,10 +45,10 @@ const features = [
         color: 'dark:bg-lime-900/50 bg-lime-200 dark:lime-orange-300 text-lime-600',
     },
     {
-        title: 'Batteries included',
+        title: 'Uncompromised performance',
         description:
-            'Out-of-the-box integrations with Next.js, Remix, Nuxt.js, SvelteKit, and tRPC. More are being made.',
-        icon: <FaBatteryFull size={20} />,
+            'Access policies and validation rules are precompiled and pushed down to the database engine whenever possible.',
+        icon: <FaRocket size={20} />,
         color: 'dark:bg-sky-900/50 bg-sky-200 dark:lime-sky-300 text-sky-600',
     },
 ];
