@@ -48,7 +48,7 @@ export default function Home(): JSX.Element {
 
                 <div className="flex justify-center w-full">
                     <Link
-                        className="button button--primary button--lg text-2xl lg:text-3xl w-fit py-4"
+                        className="button button--primary button--lg text-2xl w-fit py-4"
                         to="/docs/tutorial"
                     >
                         Let's get started!
