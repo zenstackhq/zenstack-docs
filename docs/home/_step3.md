@@ -13,7 +13,7 @@ export default requestHandler({
         const user = await getSessionUser(req, res);
 
         // return an enhanced Prisma client that enforces access policies
-        return withPolicy(prisma, { user });
+        return withPresets(prisma, { user });
     },
 });
 ```

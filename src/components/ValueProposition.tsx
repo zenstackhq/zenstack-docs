@@ -1,15 +1,16 @@
 import React from 'react';
+import PrismaLogo from '../../static/img/prisma.svg';
 
 type FeatureItem = {
     title: string;
-    Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+    svg: React.ComponentType<React.ComponentProps<'svg'>>;
     description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
     {
-        title: 'Stop wrapping APIs around database',
-        Svg: require('@site/static/img/db-api.svg').default,
+        title: 'Stop wrapping APIs around DB',
+        svg: require('@site/static/img/db-api.svg').default,
         description: (
             <>
                 Most web apps are just UI talking to a database. It's time to
@@ -20,7 +21,7 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Keep a single source of truth',
-        Svg: require('@site/static/img/ssot.svg').default,
+        svg: require('@site/static/img/ssot.svg').default,
         description: (
             <>
                 Data schema and access policies are the core of your app. Define
@@ -31,7 +32,7 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Enjoy end-to-end type safety',
-        Svg: require('@site/static/img/type-safety.svg').default,
+        svg: require('@site/static/img/type-safety.svg').default,
         description: (
             <>
                 No more duplicating type definitions and manually syncing
@@ -42,15 +43,19 @@ const FeatureList: FeatureItem[] = [
     },
 ];
 
-function Proposition({ title, Svg, description }: FeatureItem) {
+function Proposition({ title, svg: Svg, description }: FeatureItem) {
     return (
         <div className="lg:max-w-1/3 w-full">
-            <div className="text--center">
+            <div className="text-center">
                 <Svg className="w-48 h-48" role="img" />
             </div>
             <div className="text--center padding-horiz--md">
-                <h3 className="text-xl text-bold">{title}</h3>
-                <p className="text-center text-base">{description}</p>
+                <h3 className="text-xl text-bold text-left lg:text-center">
+                    {title}
+                </h3>
+                <p className="text-left lg:text-center text-base">
+                    {description}
+                </p>
             </div>
         </div>
     );
@@ -58,18 +63,23 @@ function Proposition({ title, Svg, description }: FeatureItem) {
 
 export default function ValueProposition(): JSX.Element {
     return (
-        <section className="flex flex-col items-center w-full">
-            <h2 className="text-2xl md:text-3xl">
-                A Power Pack for{' '}
-                <a
-                    href="https://prisma.io"
-                    target="_blank"
-                    className="underline"
-                >
-                    Prisma
-                </a>
-            </h2>
-            <p className="max-w-[720px] text-center text-base md:text-lg mb-8">
+        <section className="flex flex-col items-start lg:items-center w-full">
+            <div>
+                <h2 className="text-2xl lg:text-4xl flex items-center pb-4">
+                    <span>
+                        A Power Pack for{' '}
+                        <a
+                            href="https://prisma.io"
+                            target="_blank"
+                            className="underline"
+                        >
+                            Prisma
+                        </a>
+                    </span>
+                    <PrismaLogo className="w-8 h-8 ml-1 hidden lg:block" />
+                </h2>
+            </div>
+            <p className="max-w-[720px] text-left lg:text-center text-base md:text-lg mb-8">
                 Prisma is a fantastic battle-tested ORM that abstracts away
                 database complexities. ZenStack extends its power and lets you
                 build web apps even faster.

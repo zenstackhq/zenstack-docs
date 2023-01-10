@@ -132,6 +132,7 @@ function Video({ videoUrl, coverUrl }: { videoUrl: string; coverUrl: string }) {
             loop
             muted
             playsInline
+            poster={coverUrl}
             className="w-full shadow-xl rounded-lg p-4 bg-black"
         >
             <source src={videoUrl} type="video/mp4" />
@@ -144,13 +145,13 @@ function Step({ index, title, description, code, video }: StepItem) {
     return (
         <div>
             <div className="flex mb-2">
-                <div className="flex flex-none text-white dark:text-gray-800 bg-primary items-center justify-center w-7 h-7 rounded-full mr-2">
+                <div className="flex flex-none text-base lg:text-xl text-white dark:text-gray-800 bg-primary items-center justify-center w-7 h-7 lg:w-8 lg:h-8 rounded-full mr-2 lg:mr-3">
                     {index}
                 </div>{' '}
-                <h3>{title}</h3>
+                <h3 className="text-xl lg:text-2xl">{title}</h3>
             </div>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-16">
-                <div className="lg:w-1/3">{description}</div>
+                <div className="lg:w-1/3 text-base">{description}</div>
                 {code && (
                     <div className="lg:flex-grow overflow-hidden">{code}</div>
                 )}
@@ -166,11 +167,11 @@ function Step({ index, title, description, code, video }: StepItem) {
 
 export default function Steps(): JSX.Element {
     return (
-        <section className="flex flex-col items-center align-center lg:p-8">
-            <h2 className="text-2xl md:text-3xl pb-8 text-center">
+        <section className="flex flex-col items-center lg:p-8">
+            <h2 className="text-2xl lg:text-4xl pb-8 lg:pb-12 text-left lg:text-center">
                 From Database to UI in 4 Steps
             </h2>
-            <div className="flex flex-col w-full gap-8">
+            <div className="flex flex-col w-full gap-8 lg:gap-16">
                 {StepItems.map((props, idx) => (
                     <Step key={idx} {...props} index={idx + 1} />
                 ))}
