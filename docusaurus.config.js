@@ -64,13 +64,13 @@ const config = {
                 items: [
                     {
                         type: 'doc',
-                        docId: 'intro',
+                        docId: 'tutorial',
                         position: 'left',
                         label: 'Tutorial',
                     },
                     {
                         type: 'doc',
-                        docId: 'intro',
+                        docId: 'reference',
                         position: 'left',
                         label: 'Reference',
                     },
@@ -90,11 +90,11 @@ const config = {
                         items: [
                             {
                                 label: 'Tutorial',
-                                to: '/docs/intro',
+                                to: '/docs/tutorial',
                             },
                             {
                                 label: 'Reference',
-                                to: '/docs/intro',
+                                to: '/docs/reference',
                             },
                         ],
                     },

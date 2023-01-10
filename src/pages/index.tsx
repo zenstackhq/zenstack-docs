@@ -2,26 +2,28 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import ValueProposition from '@site/src/components/ValueProposition';
 import Layout from '@theme/Layout';
+import clsx from 'clsx';
 import React from 'react';
 import { Features } from '../components/Features';
 import Steps from '../components/Steps';
 import { description } from '../lib/content';
+import styles from './index.module.css';
 
 function Header() {
     const { siteConfig } = useDocusaurusContext();
     return (
-        <header className="bg-primary py-16 lg:py-32 text-center overflow-hidden">
+        <header className={clsx('hero hero--primary', styles.heroBanner)}>
             <div className="container">
-                <h1 className="text-white dark:text-gray-800 font-bold text-3xl md:text-4xl">
+                <h1 className="hero__title font-bold text-3xl lg:text-5xl mb-8 lg:mb-16">
                     {siteConfig.tagline}
                 </h1>
-                <p className="text-gray-200 dark:text-gray-800 font-semi-bold text-lg md:text-xl max-w-[800px] mx-auto">
+                <p className="hero__subtitle font-semi-bold text-lg lg:text-xl max-w-[800px] mx-auto mb-8 lg:mb-16">
                     {description}
                 </p>
-                <div className="flex items-center justify-center mt-10">
+                <div className={styles.buttons}>
                     <Link
-                        className="button button--secondary button--lg"
-                        to="/docs/intro"
+                        className="button button--secondary button--lg lg:text-2xl"
+                        to="/docs/tutorial"
                     >
                         Tutorial - 10min ⏱️
                     </Link>
@@ -46,10 +48,10 @@ export default function Home(): JSX.Element {
 
                 <div className="flex justify-center w-full">
                     <Link
-                        className="button button--primary button--lg text-2xl w-fit py-4"
-                        to="/docs/intro"
+                        className="button button--primary button--lg text-2xl lg:text-3xl w-fit py-4"
+                        to="/docs/tutorial"
                     >
-                        Get started with a tutorial
+                        Let's get started!
                     </Link>
                 </div>
             </main>
