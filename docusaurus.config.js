@@ -89,11 +89,11 @@ const config = {
                         items: [
                             {
                                 label: 'Tutorial',
-                                to: '/docs/tutorial',
+                                to: '/docs/category/tutorial',
                             },
                             {
                                 label: 'Reference',
-                                to: '/docs/reference',
+                                to: '/docs/category/reference',
                             },
                         ],
                     },
