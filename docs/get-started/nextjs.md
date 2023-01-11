@@ -37,7 +37,7 @@ npm run dev
 
 If everything worked, you should have a running Next.js app at [http://localhost:3000](http://localhost:3000).
 
-![T3 App](/img/t3app.png)
+<div align="center" ><img src="/img/t3app.png" width="640" /></div>
 
 ### 2. Initialize the project for ZenStack
 
@@ -300,7 +300,6 @@ export default Signup;
 ```
 
 In the code above, we used the auto-generated `useUser` hooks create new `User` entities.
-Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and create a new user.
 
 :::tip
 
@@ -311,6 +310,11 @@ Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and cr
    to browse the `prisma/db.sqlite` database file.
 
 :::
+
+Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and create a new user.
+It should looke like:
+
+<div align="center" ><img src="/img/tutorial-signup-form.png" width="640" /></div>
 
 Similarly, create the signin page `/src/pages/signin.tsx`:
 
