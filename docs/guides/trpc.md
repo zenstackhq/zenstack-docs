@@ -1,6 +1,6 @@
 ---
 description: Steps for using ZenStack with tRPC.
-sidebar_position: 5
+sidebar_position: 6
 ---
 
-# For tRPC
+# Using With tRPC

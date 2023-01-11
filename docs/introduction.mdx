@@ -1,0 +1,38 @@
+---
+description: Zenstack is nn extensible toolkit for generating services, hooks, and other artifacts from your database schema, with built-in access policy and data validation support. It's built above the awesome Prisma ORM.
+
+slug: /
+sidebar_position: 1
+---
+
+# Introduction
+
+ZenStack is built as an extension to the fantastic ORM toolkit - [Prisma](https://prisma.io). The goal is to unleash its full potential for full-stack web app development. ZenStack enhances Prisma by adding the following goodies:
+
+🛠️ A superset of Prisma's schema language that supports custom attributes and functions.
+
+⛽️ Built-in support for access policies and data validation rules.
+
+🚀 Auto-generated APIs for accessing database from the frontend without building an intermediary backend.
+
+🧩 An extensible plugin system for code generation with greater flexibility.
+
+ZenStack is not opinionated toward any stack or framework. It's a toolkit, not another framework. It's meant to work well with most Javascript full-stack frameworks, like Next.js, Nuxt.js, Remix.run, SvelteKit, etc.
+
+The following diagram gives a high-level overview of how it works.
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+<a href={useBaseUrl('/img/architecture-light.png')} target="_blank">
+    <ThemedImage
+        alt="ZenStack Architecture"
+        sources={{
+            light: useBaseUrl('/img/architecture-light.png'),
+            dark: useBaseUrl('/img/architecture-dark.png'),
+        }}
+    />
+</a>
+
+Don't worry if you don't fully get it right away. In the following few sections, we'll guide you through
+creating a simple web app - with the framework you love.
