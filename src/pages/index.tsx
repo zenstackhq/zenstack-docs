@@ -22,10 +22,10 @@ function Header() {
                 </p>
                 <div className={styles.buttons}>
                     <Link
-                        className="button button--secondary button--lg lg:text-2xl"
-                        to="/docs/tutorial"
+                        className="button button--secondary button--lg lg:text-xl"
+                        to="/docs"
                     >
-                        Tutorial - 10min ⏱️
+                        Get Started →
                     </Link>
                 </div>
             </div>
@@ -48,10 +48,10 @@ export default function Home(): JSX.Element {
 
                 <div className="flex justify-center w-full">
                     <Link
-                        className="button button--primary button--lg text-2xl lg:text-3xl w-fit py-4"
-                        to="/docs/tutorial"
+                        className="button button--primary button--lg text-xl w-fit py-4"
+                        to="/docs"
                     >
-                        Let's get started!
+                        Let's get started →
                     </Link>
                 </div>
             </main>

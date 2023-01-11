@@ -34,6 +34,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
+                    path: 'docs',
                 },
                 // blog: {
                 //     showReadingTime: true,
@@ -63,14 +64,12 @@ const config = {
                 },
                 items: [
                     {
-                        type: 'doc',
-                        docId: 'tutorial',
+                        to: 'docs/',
                         position: 'left',
-                        label: 'Tutorial',
+                        label: 'Get Started',
                     },
                     {
-                        type: 'doc',
-                        docId: 'reference',
+                        to: 'docs/category/reference',
                         position: 'left',
                         label: 'Reference',
                     },
@@ -89,12 +88,12 @@ const config = {
                         title: 'Docs',
                         items: [
                             {
-                                label: 'Tutorial',
-                                to: '/docs/tutorial',
+                                label: 'Get Started',
+                                to: '/docs',
                             },
                             {
                                 label: 'Reference',
-                                to: '/docs/reference',
+                                to: '/docs/category/reference',
                             },
                         ],
                     },
