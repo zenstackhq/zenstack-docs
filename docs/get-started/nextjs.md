@@ -57,7 +57,7 @@ The command installs a few NPM dependencies and also copies Prisma schema from `
 
 First, in `schema.zmodel`, make a few changes to the `User` model:
 
-```prisma {6,11-15} title='/schema.zmodel'
+```prisma {5,11-15} title='/schema.zmodel'
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -140,7 +140,7 @@ export const authOptions: NextAuthOptions = {
 
 Also add the `authorize` function for credentials verification:
 
-```ts title=/src/pages/api/auth/[...nextauth].ts
+```ts title='/src/pages/api/auth/[...nextauth].ts'
 function authorize(prisma: PrismaClient) {
     return async (
         credentials: Record<'email' | 'password', string> | undefined
@@ -406,7 +406,7 @@ model Post {
 `User` and `Post` model has a one-to-many relation. We can establish it by adding
 a `posts` relation field to the `User` model.
 
-```prisma {7} title='/schema.zmodel'
+```prisma {6} title='/schema.zmodel'
 model User {
   id            String    @id @default(cuid())
   name          String?
