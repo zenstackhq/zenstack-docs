@@ -624,7 +624,11 @@ Try creating a few posts, and you should see something like the following:
 
 The code looks a bit long because we tucked all UI components directly into the page. As you can see, querying and mutating `Post` entities are fairly straightforward thanks to the generated hooks. When mutation happens, e.g. a new post is created, data refetching is also triggered automatically.
 
-Try opening an incognito browser window and sign up a separate account. You should find that the published posts are visible, as we specified with access policies. Since we haven't hide "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them, but will end up with a 403 error:
+Try opening an incognito browser window and sign up a separate account. You should find that the published posts are visible, as we specified with access policies.
+
+<div align="center" ><img src="/img/tutorial-blog-posts-readable.png" width="640" /></div>
+
+Since we haven't hide "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them, but will end up with a 403 error:
 
 ![network error](/img/tutorial-post-update-denied.png)
 
@@ -636,5 +640,7 @@ Try opening an incognito browser window and sign up a separate account. You shou
     "message": "denied by policy: post entities failed 'update' check, 1 entities failed policy check"
 }
 ```
+
+You can catch the error and render a nice message to the user.
 
 ## Wrap up
