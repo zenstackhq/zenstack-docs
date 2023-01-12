@@ -94,22 +94,26 @@ Now run `zenstack generate` and `prisma db push` to flush the changes to the Pri
 npx zenstack generate & npx prisma db push
 ```
 
-4. Configure NextAuth to use credential-based auth
+### 4. Configure NextAuth to use credential-based auth
 
-Now let's update `/src/pages/api/auth/[...nextauth].ts` to use credentials auth:
+Now let's update `/src/pages/api/auth/[...nextauth].ts` to use credentials auth and JWT-based session:
 
-```ts {1-4,19-35} title='/src/pages/api/auth/[...nextauth].ts'
+```ts {0-3,6-18,22-34} title='/src/pages/api/auth/[...nextauth].ts'
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '../../../server/db/client';
 import type { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
 
 export const authOptions: NextAuthOptions = {
+    session: {
+        strategy: 'jwt',
+    },
+
     // Include user.id on session
     callbacks: {
-        session({ session, user }) {
+        session({ session, token }) {
             if (session.user) {
-                session.user.id = user.id;
+                session.user.id = token.sub!;
             }
             return session;
         },
@@ -125,12 +129,8 @@ export const authOptions: NextAuthOptions = {
 
         CredentialsProvider({
             credentials: {
-                email: {
-                    type: 'email',
-                },
-                password: {
-                    type: 'password',
-                },
+                email: { type: 'email' },
+                password: { type: 'password' },
             },
             authorize: authorize(prisma),
         }),
@@ -169,7 +169,7 @@ function authorize(prisma: PrismaClient) {
 }
 ```
 
-### 4. Mount CRUD service & generate hooks
+### 5. Mount CRUD service & generate hooks
 
 ZenStack has built-in support for Next.js and can provide database CRUD services
 automagically so you don't need to write it yourself.
@@ -220,7 +220,7 @@ npx zenstack generate
 
 Now we're ready to implement the signup/signin flow.
 
-### 5. Implement Signup/Signin
+### 6. Implement Signup/Signin
 
 Now let's implement the signup/signin pages. First, create a new page `/src/pages/signup.tsx`:
 
@@ -241,7 +241,7 @@ const Signup: NextPage = () => {
         e.preventDefault();
         try {
             await signup({ data: { email, password } });
-            alert('Signup successful!');
+            alert('User signed up successfully!');
         } catch (err: any) {
             console.error(err);
             if (err.info?.prisma && err.info?.code === 'P2002') {
@@ -259,11 +259,14 @@ const Signup: NextPage = () => {
     }
 
     return (
-        <div className="mx-auto flex flex-col items-center py-8">
-            <h1 className="my-10 text-2xl">Create an account</h1>
-            <form className="flex flex-col gap-4" onSubmit={onSignup}>
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
+            <form
+                className="mt-16 flex flex-col gap-8 text-2xl text-white"
+                onSubmit={onSignup}
+            >
                 <div>
-                    <label htmlFor="email" className="inline-block w-20">
+                    <label htmlFor="email" className="inline-block w-32">
                         Email
                     </label>
                     <input
@@ -271,11 +274,11 @@ const Signup: NextPage = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.currentTarget.value)}
-                        className="ml-4 rounded border"
+                        className="ml-4 w-72 rounded border p-2"
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="inline-block w-20">
+                    <label htmlFor="password" className="inline-block w-32">
                         Password
                     </label>
                     <input
@@ -283,13 +286,13 @@ const Signup: NextPage = () => {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.currentTarget.value)}
-                        className="ml-4 rounded border"
+                        className="ml-4 w-72 rounded border p-2"
                     />
                 </div>
                 <input
                     type="submit"
-                    value="Signup"
-                    className="cursor-pointer rounded border border-gray-600 p-2"
+                    value="Create account"
+                    className="cursor-pointer rounded border border-gray-500 py-4"
                 />
             </form>
         </div>
@@ -339,7 +342,6 @@ const Signin: NextPage = () => {
         });
 
         if (result?.ok) {
-            alert('User signed in successfully!');
             router.push('/');
         } else {
             alert('Signin failed');
@@ -347,11 +349,14 @@ const Signin: NextPage = () => {
     }
 
     return (
-        <div className="mx-auto flex flex-col items-center py-8">
-            <h1 className="my-10 text-2xl">Signin to system</h1>
-            <form className="flex flex-col gap-4" onSubmit={onSignin}>
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <h1 className="text-5xl font-extrabold text-white">Login</h1>
+            <form
+                className="mt-16 flex flex-col gap-8 text-2xl text-white"
+                onSubmit={onSignin}
+            >
                 <div>
-                    <label htmlFor="email" className="inline-block w-20">
+                    <label htmlFor="email" className="inline-block w-32">
                         Email
                     </label>
                     <input
@@ -359,11 +364,11 @@ const Signin: NextPage = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.currentTarget.value)}
-                        className="ml-4 rounded border"
+                        className="ml-4 w-72 rounded border p-2"
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="inline-block w-20">
+                    <label htmlFor="password" className="inline-block w-32">
                         Password
                     </label>
                     <input
@@ -371,13 +376,13 @@ const Signin: NextPage = () => {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.currentTarget.value)}
-                        className="ml-4 rounded border"
+                        className="ml-4 w-72 rounded border p-2"
                     />
                 </div>
                 <input
                     type="submit"
-                    value="Signin"
-                    className="cursor-pointer rounded border border-gray-600 p-2"
+                    value="Sign me in"
+                    className="cursor-pointer rounded border border-gray-500 py-4"
                 />
             </form>
         </div>
@@ -387,7 +392,7 @@ const Signin: NextPage = () => {
 export default Signin;
 ```
 
-### 6. Prepare the Blog model
+### 7. Prepare the Blog model
 
 Now let's create a `Blog` model. We'll use it to store blog posts.
 
@@ -400,8 +405,22 @@ model Post {
   published Boolean @default(false)
   author    User @relation(fields: [authorId], references: [id])
   authorId  String
+
+
+  // author has full access
+  @@allow('all', auth() == author)
+
+  // logged-in users can view published posts
+  @@allow('read', auth() != null && published)
 }
 ```
+
+:::tip
+
+When defining access policies, you can use `all` to abbreviate full access, which is
+equivalent to `create,read,update,delete`.
+
+:::
 
 `User` and `Post` model has a one-to-many relation. We can establish it by adding
 a `posts` relation field to the `User` model.
@@ -424,7 +443,7 @@ Don't forget to regenerate and push to db:
 npx zenstack generate && npx prisma db push
 ```
 
-### 7. Build up the home page
+### 8. Build up the home page
 
 Now let's change the main page and use it for viewing and managing posts.
 
