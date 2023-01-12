@@ -169,6 +169,12 @@ function authorize(prisma: PrismaClient) {
 }
 ```
 
+Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary value (use a complex secret in production and don't check it in to git):
+
+```plain title='/.env'
+  NEXTAUTH_SECRET=abc123
+```
+
 ### 5. Mount CRUD service & generate hooks
 
 ZenStack has built-in support for Next.js and can provide database CRUD services
@@ -227,7 +233,7 @@ Now let's implement the signup/signin pages. First, create a new page `/src/page
 ```tsx title='/src/pages/signup.tsx'
 import type { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { useState, type FormEvent } from 'react';
 import { useUser } from '../lib/hooks';
 
@@ -241,7 +247,6 @@ const Signup: NextPage = () => {
         e.preventDefault();
         try {
             await signup({ data: { email, password } });
-            alert('User signed up successfully!');
         } catch (err: any) {
             console.error(err);
             if (err.info?.prisma && err.info?.code === 'P2002') {
@@ -255,18 +260,21 @@ const Signup: NextPage = () => {
 
         // signin to create a session
         await signIn('credentials', { redirect: false, email, password });
-        router.push('/');
+        Router.push('/');
     }
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
             <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
             <form
-                className="mt-16 flex flex-col gap-8 text-2xl text-white"
+                className="mt-16 flex flex-col gap-8 text-2xl"
                 onSubmit={onSignup}
             >
                 <div>
-                    <label htmlFor="email" className="inline-block w-32">
+                    <label
+                        htmlFor="email"
+                        className="inline-block w-32 text-white"
+                    >
                         Email
                     </label>
                     <input
@@ -278,7 +286,10 @@ const Signup: NextPage = () => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="inline-block w-32">
+                    <label
+                        htmlFor="password"
+                        className="inline-block w-32 text-white "
+                    >
                         Password
                     </label>
                     <input
@@ -292,7 +303,7 @@ const Signup: NextPage = () => {
                 <input
                     type="submit"
                     value="Create account"
-                    className="cursor-pointer rounded border border-gray-500 py-4"
+                    className="cursor-pointer rounded border border-gray-500 py-4 text-white"
                 />
             </form>
         </div>
@@ -324,7 +335,7 @@ Similarly, create the signin page `/src/pages/signin.tsx`:
 ```tsx title='/src/pages/signin.tsx'
 import type { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { useState, type FormEvent } from 'react';
 
 const Signin: NextPage = () => {
@@ -342,7 +353,7 @@ const Signin: NextPage = () => {
         });
 
         if (result?.ok) {
-            router.push('/');
+            Router.push('/');
         } else {
             alert('Signin failed');
         }
@@ -352,11 +363,14 @@ const Signin: NextPage = () => {
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
             <h1 className="text-5xl font-extrabold text-white">Login</h1>
             <form
-                className="mt-16 flex flex-col gap-8 text-2xl text-white"
+                className="mt-16 flex flex-col gap-8 text-2xl"
                 onSubmit={onSignin}
             >
                 <div>
-                    <label htmlFor="email" className="inline-block w-32">
+                    <label
+                        htmlFor="email"
+                        className="inline-block w-32  text-white"
+                    >
                         Email
                     </label>
                     <input
@@ -368,7 +382,10 @@ const Signin: NextPage = () => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="inline-block w-32">
+                    <label
+                        htmlFor="password"
+                        className="inline-block w-32  text-white"
+                    >
                         Password
                     </label>
                     <input
@@ -382,7 +399,7 @@ const Signin: NextPage = () => {
                 <input
                     type="submit"
                     value="Sign me in"
-                    className="cursor-pointer rounded border border-gray-500 py-4"
+                    className="cursor-pointer rounded border border-gray-500 py-4 text-white"
                 />
             </form>
         </div>
@@ -448,7 +465,176 @@ npx zenstack generate && npx prisma db push
 Now let's change the main page and use it for viewing and managing posts.
 
 ```tsx title='/src/pages/index.tsx'
+import type { Post } from '@prisma/client';
+import { type NextPage } from 'next';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import Router from 'next/router';
+import { usePost } from '../lib/hooks';
 
+type AuthUser = { id: string; email?: string | null };
+
+const Welcome = ({ user }: { user: AuthUser }) => {
+    async function onSignout() {
+        await signOut({ redirect: false });
+        Router.push('/signin');
+    }
+    return (
+        <div className="flex gap-4">
+            <h3 className="text-lg">Welcome back, {user?.email}</h3>
+            <button className="text-gray-300 underline" onClick={onSignout}>
+                Signout
+            </button>
+        </div>
+    );
+};
+
+const SigninSignup = () => {
+    return (
+        <div className="flex gap-4 text-2xl">
+            <Link href="/signin" className="rounded-lg border px-4 py-2">
+                Signin
+            </Link>
+            <Link href="/signup" className="rounded-lg border px-4 py-2">
+                Signup
+            </Link>
+        </div>
+    );
+};
+
+const Posts = ({ user }: { user: AuthUser }) => {
+    // check login
+    const { data: session } = useSession();
+
+    // Post crud hooks
+    const { findMany, create, update, del } = usePost();
+
+    // list all posts that're visible to the current user
+    const { data: posts } = findMany(
+        {
+            include: { author: true },
+            orderBy: { createdAt: 'desc' },
+        },
+        // fetch only when user's logged in
+        { disabled: !session?.user }
+    );
+
+    if (!session?.user) {
+        return null;
+    }
+
+    async function onCreatePost() {
+        const title = prompt('Enter post title');
+        if (title) {
+            await create({ data: { title, authorId: user.id } });
+        }
+    }
+
+    async function onTogglePublished(post: Post) {
+        await update({
+            where: { id: post.id },
+            data: { published: !post.published },
+        });
+    }
+
+    async function onDelete(post: Post) {
+        await del({ where: { id: post.id } });
+    }
+
+    return (
+        <div className="container flex flex-col text-white">
+            <button
+                className="rounded border border-white p-2 text-lg"
+                onClick={onCreatePost}
+            >
+                + Create Post
+            </button>
+
+            <ul className="container mt-8 flex flex-col gap-2">
+                {posts?.map((post) => (
+                    <li
+                        key={post.id}
+                        className="flex items-end justify-between gap-4"
+                    >
+                        <p
+                            className={`text-2xl ${
+                                !post.published ? 'text-gray-400' : ''
+                            }`}
+                        >
+                            {post.title}
+                            <span className="text-lg">
+                                {' '}
+                                by {post.author.email}
+                            </span>
+                        </p>
+                        <div className="flex w-32 justify-end gap-1 text-left">
+                            <button
+                                className="underline"
+                                onClick={() => onTogglePublished(post)}
+                            >
+                                {post.published ? 'Unpublish' : 'Publish'}
+                            </button>
+                            <button
+                                className="underline"
+                                onClick={() => onDelete(post)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+const Home: NextPage = () => {
+    const { data: session, status } = useSession();
+
+    if (status === 'loading') return <p>Loading ...</p>;
+
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 text-white">
+                <h1 className="text-5xl font-extrabold">My Awesome Blog</h1>
+
+                {session?.user ? (
+                    // welcome & blog posts
+                    <div className="flex flex-col">
+                        <Welcome user={session.user} />
+                        <section className="mt-10">
+                            <Posts user={session.user} />
+                        </section>
+                    </div>
+                ) : (
+                    // if not logged in
+                    <SigninSignup />
+                )}
+            </div>
+        </main>
+    );
+};
+
+export default Home;
+```
+
+Try creating a few posts, and you should see something like the following:
+
+<div align="center" ><img src="/img/tutorial-blog-posts.png" width="640" /></div>
+
+The code looks a bit long because we tucked all UI components directly into the page. As you can see, querying and mutating `Post` entities are fairly straightforward thanks to the generated hooks. When mutation happens, e.g. a new post is created, data refetching is also triggered automatically.
+
+Try opening an incognito browser window and sign up a separate account. You should find that the published posts are visible, as we specified with access policies. Since we haven't hide "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them, but will end up with a 403 error:
+
+![network error](/img/tutorial-post-update-denied.png)
+
+```json
+{
+    "prisma": true,
+    "rejectedByPolicy": true,
+    "code": "P2004",
+    "message": "denied by policy: post entities failed 'update' check, 1 entities failed policy check"
+}
 ```
 
 ## Wrap up
