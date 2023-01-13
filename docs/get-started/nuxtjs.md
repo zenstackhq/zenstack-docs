@@ -1,6 +1,8 @@
 ---
-description: Step-by-step guide for using ZenStack with a Nuxt.js project.
+description: Step-by-step guide for building a blogging app with Nuxt.js.
 sidebar_position: 3
 ---
 
-# For Nuxt.js
+# 🚧 For Nuxt.js
+
+Coming soon.

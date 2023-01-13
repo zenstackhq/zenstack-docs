@@ -1,6 +1,8 @@
 ---
-description: Step-by-step guide for using ZenStack with a Remix.run project.
+description: Step-by-step guide for building a blogging app with Remix.run.
 sidebar_position: 2
 ---
 
-# For Remix.run
+# 🚧 For Remix.run
+
+Coming soon.
