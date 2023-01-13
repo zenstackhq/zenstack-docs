@@ -1,6 +1,6 @@
 ---
-description: Step-by-step guide for using ZenStack with a SvelteKit project.
+description: Step-by-step guide for building a blogging app with SvelteKit.
 sidebar_position: 4
 ---
 
-# For SvelteKit
+# 🚧 For SvelteKit

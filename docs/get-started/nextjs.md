@@ -1,11 +1,11 @@
 ---
-description: Step-by-step guide for using ZenStack with a Next.js project.
+description: Step-by-step guide for building a blogging app with Next.js.
 sidebar_position: 1
 ---
 
 # For Next.js
 
-Let's have some fun by creating a simple blogging app. You'll see how effortless it is to have a secure backend service without coding it.
+Let's have some fun by creating a simple blogging app. You'll see how effortless it is to have a secure backend service without actually coding it.
 
 ## Requirements
 
@@ -37,7 +37,7 @@ npm run dev
 
 If everything worked, you should have a running Next.js app at [http://localhost:3000](http://localhost:3000).
 
-<div align="center" ><img src="/img/t3app.png" width="640" /></div>
+<div align="center" ><img src="/img/t3app.png" width="800" /></div>
 
 ### 2. Initialize the project for ZenStack
 
@@ -328,7 +328,7 @@ In the code above, we used the auto-generated `useUser` hooks create new `User` 
 Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and create a new user.
 It should looke like:
 
-<div align="center" ><img src="/img/tutorial-signup-form.png" width="640" /></div>
+<div align="center" ><img src="/img/tutorial-signup-form.png" width="800" /></div>
 
 Similarly, create the signin page `/src/pages/signin.tsx`:
 
@@ -515,7 +515,7 @@ const Posts = ({ user }: { user: AuthUser }) => {
             include: { author: true },
             orderBy: { createdAt: 'desc' },
         },
-        // fetch only when user's logged in
+        // fetch only when session data is ready
         { disabled: !session?.user }
     );
 
@@ -620,15 +620,15 @@ export default Home;
 
 Try creating a few posts, and you should see something like the following:
 
-<div align="center" ><img src="/img/tutorial-blog-posts.png" width="640" /></div>
+<div align="center" ><img src="/img/tutorial-blog-posts.png" width="800" /></div>
 
 The code looks a bit long because we tucked all UI components directly into the page. As you can see, querying and mutating `Post` entities are fairly straightforward thanks to the generated hooks. When mutation happens, e.g. a new post is created, data refetching is also triggered automatically.
 
 Try opening an incognito browser window and sign up a separate account. You should find that the published posts are visible, as we specified with access policies.
 
-<div align="center" ><img src="/img/tutorial-blog-posts-readable.png" width="640" /></div>
+<div align="center" ><img src="/img/tutorial-blog-posts-readable.png" width="800" /></div>
 
-Since we haven't hide "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them, but will end up with a 403 error:
+Since we haven't hidden "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them even for posts not owned to you, but it will end up with a 403 error:
 
 ![network error](/img/tutorial-post-update-denied.png)
 
@@ -644,3 +644,7 @@ Since we haven't hide "Unpublish" and "Delete" buttons for posts not owned by th
 You can catch the error and render a nice message to the user.
 
 ## Wrap up
+
+🎉 Congratulations! You've made a simple blogging app without writing a single line of backend code. Pretty cool, isn't it?
+
+For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation. Have fun building cool stuff 🚀!
