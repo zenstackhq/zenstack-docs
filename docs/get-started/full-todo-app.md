@@ -1,5 +1,5 @@
 ---
-description: Example of a fully functional Todo app implemented in multiple frameworks.
+description: Example of a fully functional Todo app.
 sidebar_position: 8
 sidebar_label: Full Todo App Example
 ---
