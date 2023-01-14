@@ -90,7 +90,7 @@ export default withIronSessionApiRoute(userRoute, sessionOptions);
 
 ### Create an enhanced Prisma client
 
-You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [Writing Access Policies](/docs/guides/access-policy) and [Writing Field Validation Rules](/docs/guides/field-validation).
+You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
 
 To create such an enhanced client with standard setup, call the `withPresets` API with a standard Prisma client and the current user (fetched from iron-session). Here's an example:
 
