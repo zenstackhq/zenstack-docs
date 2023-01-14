@@ -3,18 +3,24 @@ description: Step-by-step guide for building a blogging app with Next.js.
 sidebar_position: 1
 ---
 
+import InitTips from './_zenstack-init-tips.md';
+import AccessPolicy from './_access-policy.md';
+
 # For Next.js
 
 Let's have some fun by creating a simple blogging app. You'll see how effortless it is to have a secure backend service without actually coding it.
+
+You can find the final build result [here](https://github.com/zenstackhq/docs-tutorial-nextjs).
 
 ## Requirements
 
 Our target app should meet the following requirements:
 
-1. Username/password based signin/signup
-1. Logged-in users can create/update/publish/unpublish/delete their posts
-1. Users cannot make changes to posts not belonging to them
-1. Published post can be be viewed by all logged-in users
+1. Username/password based signin/signup.
+1. Users can create posts for themselves.
+1. Post owner can update/publish/unpublish/delete their own posts.
+1. Users cannot make changes to posts not belonging to them.
+1. Published post can be be viewed by all logged-in users.
 
 Let's get started 🚀.
 
@@ -37,7 +43,9 @@ npm run dev
 
 If everything worked, you should have a running Next.js app at [http://localhost:3000](http://localhost:3000).
 
-<div align="center" ><img src="/img/t3app.png" width="800" /></div>
+<div align="center">
+    <img src="/img/t3app.png" width="800" />
+</div>
 
 ### 2. Initialize the project for ZenStack
 
@@ -47,11 +55,7 @@ Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 npx zenstack init
 ```
 
-:::tip
-
-The command installs a few NPM dependencies and also copies Prisma schema from `prisma/schema.prisma` to `schema.zmodel`, which is the schema file will keep updating moving forward. The `prisma/schema.prisma` will be automatically generated from `schema.zmodel`.
-
-:::
+<InitTips />
 
 ### 3. Preparing the User model for authentication
 
@@ -84,14 +88,15 @@ to control permissions of this model.
 
 1. `@password` is a ZenStack attribute that marks a field to be hashed (using [bcryptjs](https://www.npmjs.com/package/bcryptjs)) before saving.
 1. `@omit` indicates the field should be dropped when returned from query.
-1. `@@allow` is a model level attribute for declaring access policies.
 
 :::
 
-Now run `zenstack generate` and `prisma db push` to flush the changes to the Prisma schema and database.
+<AccessPolicy />
+
+Now run `zenstack generate` and `prisma db push` to flush the changes to the Prisma schema and database:
 
 ```bash
-npx zenstack generate & npx prisma db push
+npx zenstack generate && npx prisma db push
 ```
 
 ### 4. Configure NextAuth to use credential-based auth
@@ -328,7 +333,9 @@ In the code above, we used the auto-generated `useUser` hooks create new `User` 
 Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and create a new user.
 It should looke like:
 
-<div align="center" ><img src="/img/tutorial-signup-form.png" width="800" /></div>
+<div align="center">
+    <img src="/img/tutorial-signup-form.png" width="800" />
+</div>
 
 Similarly, create the signin page `/src/pages/signin.tsx`:
 
@@ -620,13 +627,17 @@ export default Home;
 
 Try creating a few posts, and you should see something like the following:
 
-<div align="center" ><img src="/img/tutorial-blog-posts.png" width="800" /></div>
+<div align="center">
+    <img src="/img/tutorial-blog-posts.png" width="800" />
+</div>
 
 The code looks a bit long because we tucked all UI components directly into the page. As you can see, querying and mutating `Post` entities are fairly straightforward thanks to the generated hooks. When mutation happens, e.g. a new post is created, data refetching is also triggered automatically.
 
 Try opening an incognito browser window and sign up a separate account. You should find that the published posts are visible, as we specified with access policies.
 
-<div align="center" ><img src="/img/tutorial-blog-posts-readable.png" width="800" /></div>
+<div align="center">
+    <img src="/img/tutorial-blog-posts-readable.png" width="800" />
+</div>
 
 Since we haven't hidden "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them even for posts not owned to you, but it will end up with a 403 error:
 
@@ -647,4 +658,4 @@ You can catch the error and render a nice message to the user.
 
 🎉 Congratulations! You've made a simple blogging app without writing a single line of backend code. Pretty cool, isn't it?
 
-For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation. Have fun building cool stuff 🚀!
+In case you met any trouble following the building process, you can find the final result [here](https://github.com/zenstackhq/docs-tutorial-nextjs). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation. Have fun building cool stuff 🚀!
