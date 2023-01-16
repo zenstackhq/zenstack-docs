@@ -1,7 +1,7 @@
 position: 4
-label: Plugins
-collapsible: true # make the category collapsible
-collapsed: false # keep the category open by default
+label: Plugins & Packages
+collapsible: true
+collapsed: true
 link:
     type: generated-index
-    title: Plugins
+    title: Plugins & Packages

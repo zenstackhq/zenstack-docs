@@ -1,0 +1,21 @@
+---
+description: Development Workflow
+sidebar_position: 1
+---
+
+# Development Workflow
+
+The development workflow using ZenStack is very close to Prisma. The main difference is, instead of modifying `schema.prisma` file, you edit `schema.zmodel` to make changes to data models and policies, and then use `zenstack generate` command to generate Prisma schema. After that, everything is just standard Prisma workflow, including generating and deploying migrations.
+
+The following diagram illustrates a typical workflow for prototyping data model changes during feature development:
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+<ThemedImage
+    alt="Feature Prototyping Workflow"
+    sources={{
+        light: useBaseUrl('/img/dev-workflow-light.png'),
+        dark: useBaseUrl('/img/dev-workflow-dark.png'),
+    }}
+/>

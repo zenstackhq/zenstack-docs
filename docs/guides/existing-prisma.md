@@ -1,6 +1,6 @@
 ---
 description: Steps for migrating from existing Prisma projects.
-sidebar_position: 7
+sidebar_position: 5
 ---
 
 # Migrating Existing Prisma Projects
@@ -29,4 +29,4 @@ The commands does the following things:
     npx zenstack init --package-manager pnpm
     ```
 
-If the `init` command doesn't suit your needs, doing these steps manually is just fine.
+If the `init` command doesn't suit your needs, doing these steps manually is just fine. See [ZenStack CLI](/docs/reference/cli) for more details about using the CLI.

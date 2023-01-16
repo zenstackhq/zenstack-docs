@@ -217,8 +217,8 @@ automatically generate React hooks for you.
 Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
 
 ```prisma
-plugin nestjs {
-  provider = '@zenstack/react-hooks'
+plugin reactHooks {
+  provider = '@zenstackhq/react'
   output = "./src/lib/hooks"
 }
 ```
@@ -510,21 +510,14 @@ const SigninSignup = () => {
 };
 
 const Posts = ({ user }: { user: AuthUser }) => {
-    // check login
-    const { data: session } = useSession();
-
     // Post crud hooks
     const { findMany, create, update, del } = usePost();
 
-    // list all posts that're visible to the current user
-    const { data: posts } = findMany(
-        {
-            include: { author: true },
-            orderBy: { createdAt: 'desc' },
-        },
-        // fetch only when session data is ready
-        { disabled: !session?.user }
-    );
+    // list all posts that're visible to the current user, together with their authors
+    const { data: posts } = findMany({
+        include: { author: true },
+        orderBy: { createdAt: 'desc' },
+    });
 
     if (!session?.user) {
         return null;
