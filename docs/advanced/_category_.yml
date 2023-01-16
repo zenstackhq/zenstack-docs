@@ -1,7 +1,7 @@
 position: 5
 label: 'Advanced'
 collapsible: true
-collapsed: false
+collapsed: true
 link:
     type: generated-index
     title: Advanced
