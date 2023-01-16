@@ -54,7 +54,7 @@ const config = {
 
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-        ({
+        {
             navbar: {
                 title: 'ZenStack',
                 logo: {
@@ -130,9 +130,19 @@ const config = {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme,
             },
-        }),
+            zoom: {
+                config: {
+                    // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+                    background: {
+                        light: 'rgb(255, 255, 255)',
+                        dark: 'rgb(50, 50, 50)',
+                    },
+                },
+            },
+        },
 
     plugins: [
+        require.resolve('docusaurus-plugin-image-zoom'),
         async function myPlugin(context, options) {
             return {
                 name: 'docusaurus-tailwindcss',

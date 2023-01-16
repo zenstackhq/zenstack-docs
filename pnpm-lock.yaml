@@ -11,6 +11,7 @@ specifiers:
   '@types/react': ^18.0.26
   autoprefixer: ^10.4.13
   clsx: ^1.2.1
+  docusaurus-plugin-image-zoom: ^0.1.1
   docusaurus-preset-shiki-twoslash: ^1.1.38
   postcss: ^8.4.21
   prism-react-renderer: ^1.3.5
@@ -27,6 +28,7 @@ dependencies:
   '@mdx-js/react': 1.6.22_react@17.0.2
   autoprefixer: 10.4.13_postcss@8.4.21
   clsx: 1.2.1
+  docusaurus-plugin-image-zoom: 0.1.1
   docusaurus-preset-shiki-twoslash: 1.1.38
   postcss: 8.4.21
   prism-react-renderer: 1.3.5_react@17.0.2
@@ -4137,6 +4139,12 @@ packages:
       '@leichtgewicht/ip-codec': 2.0.4
     dev: false
 
+  /docusaurus-plugin-image-zoom/0.1.1:
+    resolution: {integrity: sha512-cJXo5TKh9OR1gE4B5iS5ovLWYYDFwatqRm00iXFPOaShZG99l5tgkDKgbQPAwSL9wg4I+wz3aMwkOtDhMIpKDQ==}
+    dependencies:
+      medium-zoom: 1.0.8
+    dev: false
+
   /docusaurus-preset-shiki-twoslash/1.1.38:
     resolution: {integrity: sha512-v8bp6Q6gUNLuWmf4x19Tk2VvjEc8Luuy6o7fpTg7fTFUwo7ZBVWPTrxJe/aN4OmjkVBmuDfBc/muUGEAJTVm2g==}
     dependencies:
@@ -5688,6 +5696,10 @@ packages:
   /media-typer/0.3.0:
     resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /medium-zoom/1.0.8:
+    resolution: {integrity: sha512-CjFVuFq/IfrdqesAXfg+hzlDKu6A2n80ZIq0Kl9kWjoHh9j1N9Uvk5X0/MmN0hOfm5F9YBswlClhcwnmtwz7gA==}
     dev: false
 
   /memfs/3.4.12:
