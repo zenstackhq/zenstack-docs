@@ -19,7 +19,7 @@ The tutorials provided in this section are intentionally simple to keep them as 
 ### Deployment environment
 
 -   [Vercel](https://vercel.com)
--   [Supabase](https://supabase.com) (for Postgres database only)
+-   [Supabase](https://supabase.com) (for a Postgres database only)
 
 ### Features
 
