@@ -56,8 +56,8 @@ const features = [
 export const Features: FC = () => {
     return (
         <div className="flex flex-col items-center">
-            <h2 className="text-2xl md:text-3xl pb-8 text-left lg:text-center">
-                What's in the whole package
+            <h2 className="text-2xl md:text-3xl pb-8 text-left lg:text-center lg:text-4xl lg:pb-12">
+                What's in the Whole Package
             </h2>
             <div className="grid grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
                 {features.map((feature) => {

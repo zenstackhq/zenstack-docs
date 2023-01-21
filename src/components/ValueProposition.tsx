@@ -3,57 +3,57 @@ import PrismaLogo from '../../static/img/prisma.svg';
 
 type FeatureItem = {
     title: string;
-    svg: React.ComponentType<React.ComponentProps<'svg'>>;
+    img: string;
     description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
     {
-        title: 'Stop wrapping APIs around DB',
-        svg: require('@site/static/img/db-api.svg').default,
+        title: 'Easy Access Control',
+        img: '/img/access-control.png',
         description: (
             <>
-                Most web apps are just UI talking to a database. It's time to
-                trim the unnecessary plumbing in between and let your frontend
-                speak to the database directly and securely.
+                Imperative authorization code is brittle and hard to maintain.
+                ZenStack allows you to define access policies declaratively
+                right inside your data model.
             </>
         ),
     },
     {
-        title: 'Keep a single source of truth',
-        svg: require('@site/static/img/ssot.svg').default,
+        title: 'Auto-generated API',
+        img: '/img/auto-api.png',
         description: (
             <>
-                Data schema and access policies are the core of your app. Define
-                them succinctly, keep them together, and generate everything
-                else out of this single source of truth.
+                Data access APIs are automatically generated. Thanks to the
+                built-in access control support, these APIs are safe to be
+                called directly from the frontend.
             </>
         ),
     },
     {
-        title: 'Enjoy end-to-end type safety',
-        svg: require('@site/static/img/type-safety.svg').default,
+        title: 'E2E Type Safety',
+        img: '/img/type-safety.png',
         description: (
             <>
-                No more duplicating type definitions and manually syncing
-                changes. Use one single toolkit to generate types for your
-                entire stack, and enjoy flawless auto-completion.
+                No more duplicating type definitions and syncing changes. Use
+                one single toolkit to generate types for your entire stack, and
+                enjoy flawless auto-completion.
             </>
         ),
     },
 ];
 
-function Proposition({ title, svg: Svg, description }: FeatureItem) {
+function Proposition({ title, img, description }: FeatureItem) {
     return (
         <div className="lg:max-w-1/3 w-full">
             <div className="text-center">
-                <Svg className="w-48 h-48" role="img" />
+                <img className="w-48 p-10" src={img} />
             </div>
             <div className="text--center padding-horiz--md">
-                <h3 className="text-xl text-bold text-left lg:text-center">
+                <h3 className="text-xl text-bold text-left lg:text-center lg:text-2xl">
                     {title}
                 </h3>
-                <p className="text-left lg:text-center text-base">
+                <p className="text-left lg:text-center text-base lg:text-lg">
                     {description}
                 </p>
             </div>
