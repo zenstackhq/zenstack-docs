@@ -35,7 +35,7 @@ const StepItems: Omit<StepItem, 'index'>[] = [
                     In this example, you can see the usage of{' '}
                     <code>@allow</code> and <code>@email</code> attributes for
                     attaching access policies and validation rules. These will
-                    be enforced automatically in the back-end services by using
+                    be enforced automatically in the backend services by using
                     an enhanced Prisma client.
                 </p>
                 <p>
@@ -52,9 +52,10 @@ const StepItems: Omit<StepItem, 'index'>[] = [
         description: (
             <>
                 <p>
-                    A CLI is provided to generate code from the schema,
-                    typically including Prisma schema, access policy rules,
-                    strongly typed frontend data query libraries (hooks), and{' '}
+                    Run the <code>zenstack</code> CLI to generate code from the
+                    schema, typically including Prisma schema, access policy
+                    rules, strongly typed frontend data query libraries (hooks),
+                    and{' '}
                     <a href="https://trpc.io" target="_blank">
                         tRPC
                     </a>{' '}
@@ -107,7 +108,7 @@ const StepItems: Omit<StepItem, 'index'>[] = [
         description: (
             <>
                 <p>
-                    You can now use the generated front-end library (hooks) to
+                    You can now use the generated frontend library (hooks) to
                     talk to the API. The library is fully typed and offers
                     exactly the same programming experiences as using a Prisma
                     client on the server side. This example shows how to query
@@ -151,7 +152,9 @@ function Step({ index, title, description, code, video }: StepItem) {
                 <h3 className="text-xl lg:text-2xl">{title}</h3>
             </div>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-16">
-                <div className="lg:w-1/3 text-base">{description}</div>
+                <div className="lg:w-1/3 text-base lg:text-lg">
+                    {description}
+                </div>
                 {code && (
                     <div className="lg:flex-grow overflow-hidden">{code}</div>
                 )}

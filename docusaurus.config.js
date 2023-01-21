@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'ZenStack',
-    tagline: '⚡️ Fast Lane From Frontend To Database',
+    tagline: '✨ Prisma Catalyst For Full-stack Development',
     url: 'https://zenstack.dev',
     baseUrl: '/',
     onBrokenLinks: 'throw',
