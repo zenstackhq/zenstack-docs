@@ -8,7 +8,7 @@ sidebar_position: 5
 ZenStack CLI provides an `init` command for easily converting an existing Prisma project.
 
 ```bash
-npx zenstack init
+npx zenstack@canary init
 ```
 
 The commands does the following things:
@@ -18,7 +18,7 @@ The commands does the following things:
     If your Prisma schema is in a non-standard location, you can pass it in with the `--prisma` option.
 
     ```bash
-    npx zenstack init --prisma prisma/my.schema
+    npx zenstack@canary init --prisma prisma/my.schema
     ```
 
 1. It installs NPM packages.
@@ -26,7 +26,7 @@ The commands does the following things:
     `zenstack` package as a dev dependency and `@zenstackhq/runtime` as regular dependency. The CLI tries to guess the package manager you use, but you can also explicitly specify one with the `--package-manager` option (supported values are `npm | pnpm | yarn`).
 
     ```bash
-    npx zenstack init --package-manager pnpm
+    npx zenstack@canary init --package-manager pnpm
     ```
 
 If the `init` command doesn't suit your needs, doing these steps manually is just fine. See [ZenStack CLI](/docs/reference/cli) for more details about using the CLI.

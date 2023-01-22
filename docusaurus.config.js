@@ -139,6 +139,10 @@ const config = {
                     },
                 },
             },
+            announcementBar: {
+                id: 'prerelease-1',
+                content: `🛠️ You're viewing the docs for the v1 preview version of ZenStack. Click <a target="https://legacy.zenstack.dev" style="cursor: pointer">here</a> for the older v0.5 version.`,
+            },
         },
 
     plugins: [

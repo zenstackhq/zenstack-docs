@@ -53,13 +53,13 @@ zenstack init [options] [path]
 Initialize current folder with default settings.
 
 ```bash
-npx zenstack init
+npx zenstack@canary init
 ```
 
 Initialize "myapp" folder with custom package manager and schema location.
 
 ```bash
-npx zenstack init -p pnpm --prisma prisma/my.schema myapp
+npx zenstack@canary init -p pnpm --prisma prisma/my.schema myapp
 ```
 
 ### generate
