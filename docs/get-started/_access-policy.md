@@ -10,6 +10,6 @@ Whether an operation is permitted is determined as the follows:
 
 1. If any `@@deny` rule evaluates to true, it's denied.
 1. If any `@@allow` rule evaluates to true, it's allowed.
-1. Otherwise it's denied.
+1. Otherwise, it's denied.
 
 :::

@@ -8,9 +8,11 @@ import AccessPolicy from './_access-policy.md';
 
 # Backend-only Usage
 
-ZenStack gives you a pleasant type-safe approach for calling to your database "directly" from the frontend without coding a backend.
-However, even if you're only building the backend side of an app, it can still help by defining access policies right inside your data model.
-This results in a security model that's both easier to maintain and more reliable than a manually implemented one.
+ZenStack gives you a pleasant type-safe approach for calling your database "directly"
+from the frontend without coding a backend. Moreover, even if you're only building the
+backend side of an app, it can still help by defining access policies right inside your
+data model. This results in a security model that's both easier to maintain and more
+reliable than a manually implemented one.
 
 Let's have some fun by creating a simple blogging service with Express.js. You can find the final build result [here](https://github.com/zenstackhq/docs-tutorial-express).
 
@@ -20,8 +22,8 @@ Our target app should meet the following requirements:
 
 1. Users can create posts for themselves.
 1. Post owner can update/publish/unpublish/delete their own posts.
-1. Users cannot make changes to posts not belonging to them.
-1. Published post can be be viewed by all users.
+1. Users cannot make changes to posts that do not belong to them.
+1. Published posts can be viewed by all users.
 
 Let's get started 🚀.
 
@@ -54,7 +56,7 @@ npm run dev
 ```
 
 Now your server should be listening on port 3000 for RESTful requests.
-Let's add a simple API to list all posts:
+First, let's add a simple API to list all posts:
 
 ```ts title='/src/index.ts'
 app.get(`/post`, async (req, res) => {
@@ -71,7 +73,7 @@ app.get(`/post`, async (req, res) => {
 curl localhost:3000/post
 ```
 
-You should see a list of posts like:
+You should see a list of posts like this:
 
 ```json
 [
@@ -103,8 +105,9 @@ npx zenstack@canary init
 ### 3. Add access policies
 
 Our bootstrapped `schema.zmodel` file already has a `User` and a `Post` model defined.
-However they don't carry any access policies with them, meaning that the service is wide
-open: anyone can do anything to any data.
+However, they don't carry any access policies. So if you use a plain Prisma client in the
+backend code, anyone can do anything to any data unless you write some custom
+authorization logic.
 
 You need two things to secure it up:
 
@@ -150,15 +153,15 @@ model Post {
 
 <AccessPolicy />
 
-Now run `zenstack generate` and `prisma db push` to flush the changes to the Prisma schema and database:
+Now flush the changes to the Prisma schema and database schema:
 
 ```bash
 npx zenstack generate && npx prisma db push
 ```
 
-### 4. Secure up the APIs
+### 4. Secure the APIs
 
-Now let's secure up our APIs leverating the access policies.
+Now let's secure up our APIs, leveraging the access policies.
 
 First, add a simple middleware to require `X-USER-ID` header (to simulate authentication):
 
@@ -195,7 +198,8 @@ function getPrisma(req: Request) {
 
 :::
 
-Then, change our `POST /post` API to use extracted user id instead of passing in user email in body when creating a new post:
+Then, change our `POST /post` API to use extracted user id instead of passing in user email in the body
+when creating a new post:
 
 ```ts {6} title='/src/index.ts'
 app.post(`/post`, async (req, res) => {
@@ -295,6 +299,10 @@ Feel free to play more with updating and deleting posts with different user ids 
 
 ## Wrap up
 
-🎉 Congratulations! You've made a simple but secure blogging service without writing any authorization code. Pretty cool, isn't it?
+🎉 Congratulations! You've made a simple but secure blogging service without writing any
+authorization code. Pretty cool, isn't it?
 
-In case you met any trouble following the building process, you can find the final result [here](https://github.com/zenstackhq/docs-tutorial-express). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation. Have fun building cool stuff 🚀!
+If you have trouble following the building process, you can find the final result
+[here](https://github.com/zenstackhq/docs-tutorial-express). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation.
+
+Have fun building cool stuff 🚀!
