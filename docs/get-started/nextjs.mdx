@@ -16,11 +16,11 @@ You can find the final build result [here](https://github.com/zenstackhq/docs-tu
 
 Our target app should meet the following requirements:
 
-1. Username/password based signin/signup.
+1. Username/password-based signin/signup.
 1. Users can create posts for themselves.
-1. Post owner can update/publish/unpublish/delete their own posts.
-1. Users cannot make changes to posts not belonging to them.
-1. Published post can be be viewed by all logged-in users.
+1. Post owners can update/publish/unpublish/delete their own posts.
+1. Users cannot make changes to posts that do not belong to them.
+1. Published posts can be viewed by all logged-in users.
 
 Let's get started 🚀.
 
@@ -33,7 +33,7 @@ Let's get started 🚀.
 
 ### 1. Create a new project
 
-The easiest way to create a Next.js projects with boilerplates is with `create-t3-app`. Run the following command to create a new project with Prisma, NextAuth and TailwindCSS.
+The easiest way to create a Next.js project with boilerplates is with `create-t3-app`. Run the following command to create a new project with Prisma, NextAuth and TailwindCSS.
 
 ```bash
 npx create-t3-app --prisma --nextAuth --tailwind --CI my-blog-app
@@ -41,7 +41,7 @@ cd my-blog-app
 npm run dev
 ```
 
-If everything worked, you should have a running Next.js app at [http://localhost:3000](http://localhost:3000).
+If everything works, you should have a running Next.js app at [http://localhost:3000](http://localhost:3000).
 
 <div align="center">
     <img src="/img/t3app.png" width="800" />
@@ -80,14 +80,14 @@ model User {
 }
 ```
 
-For simplification, in this project we'll use username/password based authentication.
-Above we added a `password` field to support it. We also added two access policy rules
-to control permissions of this model.
+For simplicity, we'll use username/password-based authentication in this project. In the code above,
+we added a `password` field to support it, together with two access policy rules to control the
+permissions of this model.
 
 :::tip
 
 1. `@password` is a ZenStack attribute that marks a field to be hashed (using [bcryptjs](https://www.npmjs.com/package/bcryptjs)) before saving.
-1. `@omit` indicates the field should be dropped when returned from query.
+1. `@omit` indicates the field should be dropped when returned from a query.
 
 :::
 
@@ -143,7 +143,7 @@ export const authOptions: NextAuthOptions = {
 };
 ```
 
-Also add the `authorize` function for credentials verification:
+Also, add the `authorize` function for credentials verification:
 
 ```ts title='/src/pages/api/auth/[...nextauth].ts'
 function authorize(prisma: PrismaClient) {
@@ -174,7 +174,8 @@ function authorize(prisma: PrismaClient) {
 }
 ```
 
-Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary value (use a complex secret in production and don't check it in to git):
+Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary
+value (use a complex secret in production and don't check it into git):
 
 ```plain title='/.env'
   NEXTAUTH_SECRET=abc123
@@ -183,7 +184,7 @@ Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to
 ### 5. Mount CRUD service & generate hooks
 
 ZenStack has built-in support for Next.js and can provide database CRUD services
-automagically so you don't need to write it yourself.
+automagically, so you don't need to write it yourself.
 
 First install the `@zenstackhq/next` package:
 
@@ -211,7 +212,7 @@ export default requestHandler({ getPrisma });
 ```
 
 The `/api/model` route is now ready to access database query and mutation requests.
-However, calling the service manually will be tedious. Fortunately, ZenStack can
+However, manually calling the service will be tedious. Fortunately, ZenStack can
 automatically generate React hooks for you.
 
 Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
@@ -223,7 +224,7 @@ plugin reactHooks {
 }
 ```
 
-Now run `zenstack generate` again, you'll find the hooks generated under `/src/lib/hooks` folder:
+Now run `zenstack generate` again; you'll find the hooks generated under `/src/lib/hooks` folder:
 
 ```bash
 npx zenstack generate
@@ -318,20 +319,20 @@ const Signup: NextPage = () => {
 export default Signup;
 ```
 
-In the code above, we used the auto-generated `useUser` hooks create new `User` entities.
+In the code above, we used the auto-generated `useUser` hooks to create new `User` entities.
 
 :::tip
 
-1. The services backing the hooks are governed by access policies we defined. Here the `create`
+1. The services backing the hooks are governed by the access policies we defined. Here the `create`
    call can succeed because we explicitly allowed it in the `User` model. By default, all operations
    are forbidden.
-1. `password` field is automatically hashed. You can confirm it by using a sqlite inspection tool
+1. The `password` field is automatically hashed. You can confirm it using a sqlite inspection tool
    to browse the `prisma/db.sqlite` database file.
 
 :::
 
-Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and create a new user.
-It should looke like:
+Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and creating a new user.
+It should look like this:
 
 <div align="center">
     <img src="/img/tutorial-signup-form.png" width="800" />
@@ -439,13 +440,6 @@ model Post {
 }
 ```
 
-:::tip
-
-When defining access policies, you can use `all` to abbreviate full access, which is
-equivalent to `create,read,update,delete`.
-
-:::
-
 `User` and `Post` model has a one-to-many relation. We can establish it by adding
 a `posts` relation field to the `User` model.
 
@@ -461,7 +455,7 @@ model User {
 }
 ```
 
-Don't forget to regenerate and push to db:
+Don't forget to regenerate and push schema changes to the database:
 
 ```bash
 npx zenstack generate && npx prisma db push
@@ -624,15 +618,21 @@ Try creating a few posts, and you should see something like the following:
     <img src="/img/tutorial-blog-posts.png" width="800" />
 </div>
 
-The code looks a bit long because we tucked all UI components directly into the page. As you can see, querying and mutating `Post` entities are fairly straightforward thanks to the generated hooks. When mutation happens, e.g. a new post is created, data refetching is also triggered automatically.
+The code looks a bit long because we tucked all UI components directly into the page.
+As you can see, querying and mutating `Post` entities are fairly straightforward,
+the generated hooks. When mutation happens, e.g. a new post is created, data refetching
+is also triggered automatically.
 
-Try opening an incognito browser window and sign up a separate account. You should find that the published posts are visible, as we specified with access policies.
+Try opening an incognito browser window and signing up for a separate account. You should
+find that the published posts are visible, as we specified with access policies.
 
 <div align="center">
     <img src="/img/tutorial-blog-posts-readable.png" width="800" />
 </div>
 
-Since we haven't hidden "Unpublish" and "Delete" buttons for posts not owned by the current user, you can still click them even for posts not owned to you, but it will end up with a 403 error:
+Since we haven't hidden "Unpublish" and "Delete" buttons for posts not owned by the current
+user, you can still click them even for posts not owned to you, but it will end up with a
+403 error:
 
 ![network error](/img/tutorial-post-update-denied.png)
 
@@ -649,6 +649,12 @@ You can catch the error and render a nice message to the user.
 
 ## Wrap up
 
-🎉 Congratulations! You've made a simple blogging app without writing a single line of backend code. Pretty cool, isn't it?
+🎉 Congratulations! You've made a simple blogging app without writing a single line of
+backend code. Pretty cool, isn't it?
 
-In case you met any trouble following the building process, you can find the final result [here](https://github.com/zenstackhq/docs-tutorial-nextjs). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation. Have fun building cool stuff 🚀!
+If you have trouble following the building process, you can find the final result
+[here](https://github.com/zenstackhq/docs-tutorial-nextjs). For more details about ZenStack,
+please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides)
+parts of the documentation.
+
+Have fun building cool stuff 🚀!
