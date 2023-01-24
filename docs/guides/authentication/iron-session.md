@@ -10,9 +10,9 @@ sidebar_label: iron-session
 
 ### Implement auth endpoints
 
-Unlike NextAuth, iron-session requires you to implement auth related API endpoints by yourself. Usually you need to at least have these three endpoints: `api/auth/login`, `/api/auth/logout`, and `/api/auth/user`.
+Unlike NextAuth, iron-session requires you to implement auth-related API endpoints by yourself. Usually, you need to have at least these three endpoints: `api/auth/login`, `/api/auth/logout`, and `/api/auth/user`.
 
-Implementing these endpoints can be done with standard Prisma client. Here we show simple code snippets for how to do it in Next.js projects.
+Implementing these endpoints can be done with a standard Prisma client. Here we show simple code snippets for how to do it in Next.js projects.
 
 -   `/api/auth/login`
 
@@ -92,7 +92,7 @@ export default withIronSessionApiRoute(userRoute, sessionOptions);
 
 You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
 
-To create such an enhanced client with standard setup, call the `withPresets` API with a standard Prisma client and the current user (fetched from iron-session). Here's an example:
+To create such a client with a standard setup, call the `withPresets` API with a regular Prisma client and the current user (fetched from iron-session). Here's an example:
 
 ```ts
 import type { NextApiRequest, NextApiResponse } from 'next';
