@@ -8,21 +8,21 @@ sidebar_label: ZModel Language
 
 ## Overview
 
-**ZModel**, the modeling DSL of ZenStack, is the main concept that you'll deal with when using this toolkit. The ZModel syntax is a superset of [Prisma Schema](https://www.prisma.io/docs/concepts/components/prisma-schema). Every valid Prisma schema is a valid ZModel.
+**ZModel**, the modeling DSL of ZenStack, is the main concept you'll deal with when using this toolkit. The ZModel syntax is a superset of [Prisma Schema](https://www.prisma.io/docs/concepts/components/prisma-schema). Therefore, every valid Prisma schema is a valid ZModel.
 
 :::tip
 
-We made that choice to extend Prisma schema for several reasons:
+We made that choice to extend the Prisma schema for several reasons:
 
--   Creating a new ORM doesn't add much value to the community. Instead, extending Prisma - the overall best ORM toolkit for Typescript - sounds like a more sensible approach.
+-   Creating a new ORM adds little value to the community. Instead, extending Prisma - the overall best ORM toolkit for Typescript - sounds more sensible.
 
 -   Prisma's schema language is simple and intuitive.
 
--   Extending a popular existing language lowers the learning curve, compared to inventing a new one.
+-   Extending an existing popular language lowers the learning curve compared to inventing a new one.
 
 :::
 
-However, the standard capability of Prisma schema doesn't allow us to build the functionalities we want in a natural way; so we made a few extensions to the language by adding:
+However, the standard capability of Prisma schema doesn't allow us to build the functionalities we want in a natural way, so we made a few extensions to the language by adding the following:
 
 1. Custom attributes
 1. Custom attribute functions
@@ -30,17 +30,15 @@ However, the standard capability of Prisma schema doesn't allow us to build the 
 1. Built-in attributes for defining field validation rules
 1. Utility attributes like `@password` and `@omit`
 
-Some of these extensions have been asked by the community for some time, so we hope that ZenStack can be useful even just as an extensible version of Prisma.
+Some of these extensions have been asked for by the Prisma community for some time, so we hope that ZenStack can be helpful even just as an extensible version of Prisma.
 
-This section provides detailed descriptions about all aspects of the ZModel language, so you don't have to jump over to Prisma's documentation for extra learnings.
+This section provides detailed descriptions of all aspects of the ZModel language, so you don't have to jump over to Prisma's documentation for extra learning.
 
 ## Data source
 
 Every model needs to include exactly one `datasource` declaration, providing information on how to connect to the underlying database.
 
 ### Syntax
-
-A data source declaration takes the following form:
 
 ```prisma
 datasource [NAME] {
@@ -76,7 +74,7 @@ datasource db {
 }
 ```
 
-It's highly recommended that you don't commit sensitive database connection string into source control. Alternatively, you can load it from an environment variable:
+It's highly recommended that you not commit sensitive database connection strings into source control. Alternatively, you can load it from an environment variable:
 
 ```prisma
 datasource db {
@@ -87,7 +85,7 @@ datasource db {
 
 ### Supported databases
 
-ZenStack uses [Prisma](https://prisma.io ':target=_blank') to talk to databases, so all relational databases supported by Prisma is supported by ZenStack as well.
+ZenStack uses [Prisma](https://prisma.io ':target=_blank') to talk to databases, so all relational databases supported by Prisma are also supported by ZenStack.
 
 Here's a list for your reference:
 
@@ -117,19 +115,70 @@ You can find the orignal list [here](https://www.prisma.io/docs/reference/databa
 
 ## Generator
 
-TBD
+Generators are used for creating assets (usually code) from a Prisma schema. Check [here](https://www.prisma.io/docs/concepts/components/prisma-schema/generators) for a list of official and community generators.
+
+### Syntax
+
+```prisma
+generator [GENERATOR_NAME] {
+    [OPTION]*
+}
+```
+
+-   **[GENERATOR_NAME]**
+
+    Name of the generator. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+
+-   **[OPTION]**
+
+    A generator configuration option, in form of "[NAME] = [VALUE]". A generator needs to have at least a "provider" option that specify its provider.
+
+### Example
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma-client-js"
+```
 
 ## Plugin
 
-TBD
+Plugins are ZenStack's extensibility mechanism. It's usage is similar to [Generator](#generator). Users can define their own plugins to generate artifacts from the ZModel schema. Plugins differ from generators mainly in the following ways:
+
+-   They have a cleaner interface without the complexity of JSON-RPC.
+-   They use an easier-to-program AST representation than generators.
+-   They have access to language features that ZenStack adds to Prisma, like custom attributes and functions.
+
+### Syntax
+
+```prisma
+plugin [PLUGIN_NAME] {
+    [OPTION]*
+}
+```
+
+-   **[PLUGIN_NAME]**
+
+    Name of the plugin. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+
+-   **[OPTION]**
+
+    A plugin configuration option, in form of "[NAME] = [VALUE]". A plugin needs to have at least a "provider" option that specify its provider.
+
+### Example
+
+```prisma
+plugin reactHooks {
+    provider = '@zenstackhq/react'
+    output = 'lib/hooks'
+}
+```
 
 ## Enum
 
 Enums are container declarations for grouping constant identifiers. You can use them to express concepts like user roles, product categories, etc.
 
 ### Syntax
-
-Enum declarations take the following form:
 
 ```prsima
 enum [ENUM_NAME] {
@@ -143,7 +192,7 @@ enum [ENUM_NAME] {
 
 -   **[FIELD]**
 
-    Field identifier. Needs to be unique in the data model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+    Field identifier. Needs to be unique in the model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
 
 ### Example
 
@@ -154,13 +203,11 @@ enum UserRole {
 }
 ```
 
-## Data model
+## Model
 
-Data models represent business entities of your application.
+Models represent the business entities of your application.
 
 ### Syntax
-
-A data model declaration takes the following form:
 
 ```prisma
 model [NAME] {
@@ -170,7 +217,7 @@ model [NAME] {
 
 -   **[NAME]**:
 
-    Name of the data model. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+    Name of the model. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
 
 -   **[FIELD]**:
 
@@ -178,7 +225,7 @@ model [NAME] {
 
 ### Note
 
-A data model must include a field marked with `@id` attribute. The `id` field serves as a unique identifier for a model entity, and is mapped to the database table's primary key.
+A model must include a field marked with `@id` attribute. The `id` field serves as a unique identifier for a model entity and is mapped to the database table's primary key.
 
 See [here](/docs/reference/zmodel-language#attribute) for more details about attributes.
 
@@ -192,13 +239,13 @@ model User {
 
 ## Attribute
 
-Attributes decorate fields and data models and attach extra behaviors or constraints to them.
+Attributes decorate fields and models and attach extra behaviors or constraints to them.
 
 ### Syntax
 
 #### Field attribute
 
-Field attribute name is prefixed by a single `@`. Its application takes the following form:
+Field attribute name is prefixed by a single `@`.
 
 ```prisma
 id String @[ATTR_NAME](ARGS)?
@@ -212,9 +259,9 @@ Attribute name. See [below](#built-in-attributes) for a full list of attributes.
 
 See [attribute arguments](#attribute-arguments).
 
-#### Data model attribute
+#### Model attribute
 
-Field attribute name is prefixed double `@@`. Its application takes the following form:
+Field attribute name is prefixed double `@@`.
 
 ```prisma
 model Model {
@@ -232,7 +279,7 @@ See [attribute arguments](#attribute-arguments).
 
 ### Arguments
 
-Attribute can be declared with a list of parameters, and applied with an optional comma-separated list of arguments.
+Attribute can be declared with a list of parameters and applied with a comma-separated list of arguments.
 
 Arguments are mapped to parameters by position or by name. For example, for the `@default` attribute declared as:
 
@@ -374,7 +421,7 @@ Attribute parameters are typed. The following types are supported:
     }
     ```
 
-An attribute parameter can be typed as any of the above type, a list of the above type, or an optional of the above type.
+An attribute parameter can be typed as any of the types above, a list of the above type, or an optional of the types above.
 
 ```prisma
     model Model {
@@ -388,7 +435,7 @@ An attribute parameter can be typed as any of the above type, a list of the abov
 
 ### Attribute functions
 
-Attribute functions are used for providing values for attribute arguments, e.g., current `DateTime`, an autoincrement `Int`, etc. They can be used in place of attribute argument, like:
+Attribute functions are used for providing values for attribute arguments, e.g., current `DateTime`, an autoincrement `Int`, etc. They can be used in place of attribute arguments, like:
 
 ```prisma
 model Model {
@@ -494,7 +541,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Indicates that the field is a password field and needs to be hashed before persistence.
 
-    _NOTE_: ZenStack uses `bcryptjs` library to hash password. You can use the `saltLength` parameter to configure the cost of hashing, or use `salt` parameter to provide an explicit salt. By default, salt length of 12 is used. See [bcryptjs](https://www.npmjs.com/package/bcryptjs ':target=blank') for more details.
+    _NOTE_: ZenStack uses the "bcryptjs" library to hash passwords. You can use the `saltLength` parameter to configure the cost of hashing or use `salt` parameter to provide an explicit salt. By default, a salt length of 12 is used. See [here](https://www.npmjs.com/package/bcryptjs ':target=blank') for more details.
 
     _Params_:
 
@@ -564,7 +611,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
         attribute @@allow(_ operation: String, _ condition: Boolean)
     ```
 
-    Defines an access policy that allows a set of operations when the given condition is true.
+    Defines an access policy that allows a set of operations when the given condition is true. Read more about access policies [here](#access-policy).
 
     _Params_:
 
@@ -579,7 +626,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
         attribute @@deny(_ operation: String, _ condition: Boolean)
     ```
 
-    Defines an access policy that denies a set of operations when the given condition is true.
+    Defines an access policy that denies a set of operations when the given condition is true. Read more about access policies [here](#access-policy).
 
     _Params_:
 
@@ -637,7 +684,15 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
         function auth(): User {}
     ```
 
-    Gets the current login user. The return type of the function is the `User` data model defined in the current ZModel.
+    Gets the current login user. The return type of the function is the `User` model defined in the current ZModel.
+
+-   `future`
+
+    ```prisma
+        function future(): Any {}
+    ```
+
+    Gets the "post-update" state of an entity. Only valid when used in a "update" access policy. Read more about access policies [here](#access-policy).
 
 ### Examples
 
@@ -668,16 +723,25 @@ model User {
 
     // use @@index to specify fields to create database index for
     @@index([email])
+
+    // use @@allow to specify access policies
+    @@allow("create,read", true)
+
+    // use auth() to reference the current user
+    // use future() to access the "post-update" state
+    @@allow("update", auth() == this && future().email == email)
 }
 ```
 
+### Custom attributes and functions
+
+You can find examples of custom attributes and functions in [ZModel Standard Library](https://github.com/zenstackhq/zenstack/blob/canary/packages/schema/src/res/stdlib.zmodel).
+
 ## Field
 
-Fields are typed members of data models.
+Fields are typed members of models.
 
 ### Syntax
-
-A field declaration takes the following form:
 
 ```prisma
 model Model {
@@ -687,11 +751,11 @@ model Model {
 
 -   **[FIELD_NAME]**
 
-    Name of the field. Needs to be unique in the containing data model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+    Name of the field. Needs to be unique in the containing model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
 
 -   **[FIELD_TYPE]**
 
-    Type of the field. Can be a scalar type or a reference to another data model.
+    Type of the field. Can be a scalar type or a reference to another model.
 
     The following scalar types are supported:
 
@@ -733,14 +797,14 @@ model Post {
     // and a list too
     tags String[]
 
-    // and can reference another data model too
+    // and can reference another model too
     comments Comment[]
 }
 ```
 
 ## Relation
 
-Relations are connections among data models. There're three types of relations:
+Relations are connections among models. There're three types of relations:
 
 -   One-to-one
 -   One-to-many
@@ -750,9 +814,9 @@ Relations are expressed with a pair of fields and together with the special `@re
 
 ### One-to-one relation
 
-The _owner_ side of the relation declares an optional field typed as the data model of the _owned_ side of the relation.
+The _owner_ side of the relation declares an optional field typed as the model of the _owned_ side of the relation.
 
-On the _owned_ side, a reference field is declared with `@relation` attribute, together with an **foreign key** field storing the id of the owner entity.
+On the _owned_ side, a reference field is declared with `@relation` attribute, together with a **foreign key** field storing the id of the owner entity.
 
 ```prisma
 model User {
@@ -769,9 +833,9 @@ model Profile {
 
 ### One-to-many relation
 
-The _owner_ side of the relation declares a list field typed as the data model of the _owned_ side of the relation.
+The _owner_ side of the relation declares a list field typed as the model of the _owned_ side of the relation.
 
-On the _owned_ side, a reference field is declared with `@relation` attribute, together with an **foreign key** field storing the id of the owner entity.
+On the _owned_ side, a reference field is declared with `@relation` attribute, together with a **foreign key** field storing the id of the owner entity.
 
 ```prisma
 model User {
@@ -788,7 +852,7 @@ model Post {
 
 ### Many-to-one relation
 
-A _join model_ is declared to connect the two sides of the relation, using two one-to-one relations.
+A _join model_ is declared to connect the two sides of the relation using two one-to-one relations.
 
 Each side of the relation then establishes a one-to-many relation with the _join model_.
 
@@ -886,13 +950,13 @@ CollectionPredicate ::= Expression ("?" | "!" | "^") "[" Expression "]"
 
 ```
 
-Binary operator precedence follow [Javascript's rules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/).
+Binary operator precedence follows [Javascript's rules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/).
 
 Collection predicate expressions are used for reaching into relation fields. You can find more details [here](#collection-predicate-expressions).
 
 ### Using authentication in policy rules
 
-It's very common to use the current login user to verdict if an operation should be permitted. Therefore, ZenStack provides a built-in `auth()` attribute function that evaluates to the `User` entity corresponding to the current user. To use the function, your ZModel file must define a `User` data model.
+It's very common to use the current login user to verdict if an operation should be permitted. Therefore, ZenStack provides a built-in `auth()` attribute function that evaluates to the `User` entity corresponding to the current user. To use the function, your ZModel file must define a `User` model.
 
 You can use `auth()` to:
 
@@ -971,7 +1035,7 @@ In this example, `user` refers to `user` field of `Membership` model because `sp
 
 ### Combining multiple rules
 
-A data model can contain arbitrary number of policy rules. The logic of combining them is as follows:
+A model can contain an arbitrary number of policy rules. The logic of combining them is as follows:
 
 -   The operation is rejected if any of the conditions in `@@deny` rules evaluate to `true`
 -   Otherwise, the operation is permitted if any of the conditions in `@@allow` rules evaluate to `true`
@@ -979,9 +1043,9 @@ A data model can contain arbitrary number of policy rules. The logic of combinin
 
 ### Pre-update vs. post-update
 
-When an access policy rule is applied to a mutate operation, the entities under operation have a "pre" and "post" state. For "create" rule, its "pre" state is empty, so the rule implicitly refers to the "post" state. For "delete" rule, its "post" state is empty, so the rule implicitly refers to the "pre" state.
+When an access policy rule is applied to a mutate operation, the entities under operation have a "pre" and "post" state. For a "create" rule, its "pre" state is empty, so the rule implicitly refers to the "post" state. For a "delete" rule, its "post" state is empty, so the rule implicitly refers to the "pre" state.
 
-However, for "update" rule it is ambiguous, both the "pre" and the "post" states exist. By default, for "update" rules, fields referenced in the expressions refer to the "pre" state, and you can use the special `future()` function to explicitly refer to the "post" state.
+However, for "update" rules it is ambiguous; both the "pre" and the "post" states exist. By default, for "update" rules, fields referenced in the expressions refer to the "pre" state, and you can use the `future()` function to refer to the "post" state explicitly.
 
 In the following example, the "update" rule uses `future()` to ensure an update cannot alter the post's owner.
 
@@ -1088,7 +1152,7 @@ model User {
 
 ### Overview
 
-Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules are only applied on individual fields, and only checked for 'create' and 'update' operations.
+Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules are only applied on individual fields and are only checked for 'create' and 'update' operations.
 
 Internally ZenStack uses [zod](https://github.com/colinhacks/zod ':target=blank') for validation.
 
@@ -1160,7 +1224,7 @@ model User {
 
 ### Overview
 
-When defining a relation, you can use referential action to control what happens when one side of a relation is updated or deleted, by setting the `onDelete` and `onUpdate` parameters in the `@relation` attribute.
+When defining a relation, you can use referential action to control what happens when one side of a relation is updated or deleted by setting the `onDelete` and `onUpdate` parameters in the `@relation` attribute.
 
 ```prisma
 attribute @relation(

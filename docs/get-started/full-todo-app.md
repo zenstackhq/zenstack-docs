@@ -6,7 +6,7 @@ sidebar_label: Full Todo App Example
 
 # Fully Functional Todo App Example
 
-The tutorials provided in this section are intentionally simple to keep them as short as possible. For a more comprehensive more real-world like sample project, check out the [Collaborative Todo App](https://github.com/zenstackhq/zenstack/tree/main/samples/todo).
+The tutorials provided in this section are intentionally simple to keep them as short as possible. Check out the [Collaborative Todo App](https://github.com/zenstackhq/sample-todo-nextjs) for a more comprehensive real-world-like sample project.
 
 ### Stack
 
@@ -23,7 +23,7 @@ The tutorials provided in this section are intentionally simple to keep them as 
 
 ### Features
 
--   Username/password or Github authentication
+-   Username/password or GitHub authentication
 -   SaaS model: multi-workspace with data segregation
 -   Inviting users to a workspace and controlling their permissions
 -   Public and private todo lists

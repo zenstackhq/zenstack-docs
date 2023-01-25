@@ -10,7 +10,7 @@ This document provides references for runtime APIs exported from the `@zenstackh
 
 ## Prisma Enhancement API
 
-Enhancement APIs create wrappers around Prisma client to add additional behavior. These wrappers can be freely combined to fine tune what behavior to include.
+Enhancement APIs create wrappers around a Prisma client to add additional behavior. These wrappers can be freely combined to fine-tune what behavior to include.
 
 ### withPresets
 
@@ -51,9 +51,9 @@ const enhancedClient = withPresets(prisma, { user: session.user });
 
 Use `withPolicy` to include enhancements of access policy (`@@allow` and `@@deny`) and field validation (`@length`, `@email`, etc.).
 
-Access policies and validation rules are processed by the `@zenstackhq/access-policy`, which transforms the attributes into objects that can be loaded at runtime, by default into `node_modules/.zenstack` folder. `withPolicy` function also loades from there by default.
+Access policies and validation rules are processed by the `@zenstackhq/access-policy`, which transforms the attributes into objects that can be loaded at runtime by default into `node_modules/.zenstack` folder. `withPolicy` function also loads from there by default.
 
-If your access policy rules use the `auth()` function, evaluating it requires access to current user's identity. You need to pass in a context object containing the user id.
+If your access policy rules use the `auth()` function, evaluating it requires access to the current user's identity. You need to pass in a context object containing the user id.
 
 #### Signature
 
@@ -131,7 +131,7 @@ const user = enhanced.user.findMany();
 
 ### withPassword
 
-Use `withPassword` function to include support for the `@password` attribute. Fields marked with the attribute will be automatically hashed (using [bcryptjs](https://www.npmjs.com/package/bcryptjs)) before stored.
+Use `withPassword` function to include support for the `@password` attribute. Fields marked with the attribute will be automatically hashed (using [bcryptjs](https://www.npmjs.com/package/bcryptjs)) before being stored.
 
 #### Signature
 

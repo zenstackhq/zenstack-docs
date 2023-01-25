@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # @zenstackhq/next
 
-The `@zenstackhq/next` provides a quick way to installing API endpoints onto a Next.js project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+The `@zenstackhq/next` provides a quick way to install API endpoints onto a Next.js project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
 
 ### Exports
 
@@ -42,7 +42,7 @@ export function requestHandler(
 ): (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 ```
 
-The `getPrisma` callback is for getting a Prisma client instance for the context of a request. You can use a plain Prisma client or one with ZenStack enhancements, but most likely you'l use one enhanced by `withPolicy` or `withPresets` to make sure access policies are enforced.
+The `getPrisma` callback is for getting a Prisma client instance for the context of a request. You can use a plain Prisma client or one with ZenStack enhancements, but most likely, you'll use one enhanced by `withPolicy` or `withPresets` to ensure access policies are enforced.
 
 ### Examples
 
@@ -65,7 +65,7 @@ The APIs can be easily consumed using the [`@zenstackhq/react`](./react) plugin.
 
 ### Error Handling
 
-The request handler catches [Prisma errors](https://www.prisma.io/docs/reference/api-reference/error-reference) and turn them into reponses with proper HTTP status and body.
+The request handler catches [Prisma errors](https://www.prisma.io/docs/reference/api-reference/error-reference) and turns them into responses with proper HTTP status and body.
 
 -   `PrismaClientKnownRequestError` with code `P2004` is mapped to HTTP 403 to indicate the request is denied due to lack of permission.
 -   Other `PrismaClientKnownRequestError`, `PrismaClientUnknownRequestError` and `PrismaClientValidationError` are mapped to HTTP 400.

@@ -64,7 +64,7 @@ npx zenstack init -p pnpm --prisma prisma/my.schema myapp
 
 ### generate
 
-Generates RESTful CRUD API and React hooks from your model.
+Generates Prisma schema and other artifacts as specified by "plugin"s in ZModel.
 
 ```bash
 zenstack generate [options]

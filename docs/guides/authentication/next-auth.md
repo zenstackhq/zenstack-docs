@@ -6,13 +6,13 @@ sidebar_label: NextAuth
 
 # Integrating With NextAuth
 
-[NextAuth](https://next-auth.js.org/) is a comprehensive framework for implementating authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
+[NextAuth](https://next-auth.js.org/) is a comprehensive framework for implementing authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
 
-To get access polocies to work, ZenStack needs to be connected to the authentication system for getting user's identity. This guides introduces tasks required for integrating ZenStack with NextAuth. You can find a full example [here](https://github.com/zenstackhq/zenstack/tree/main/samples/todo ':target=blank').
+To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. This guide introduces tasks required for integrating ZenStack with NextAuth. You can find a complete example [here](https://github.com/zenstackhq/sample-todo-nextjs ':target=blank').
 
 ### Data model requirement
 
-NextAuth is agnostic about the type of underlying database, but it requires certain table structures, depending on how you configure it. Your ZModel definitions should reflect these requirements. A sample `User` model is shown here (to be used with `CredentialsProvider`):
+NextAuth is agnostic about the underlying database type, but it requires specific table structures, depending on how you configure it. Therefore, your ZModel definitions should reflect these requirements. A sample `User` model is shown here (to be used with `CredentialsProvider`):
 
 ```prisma title='/schema.zmodel'
 model User {
@@ -35,7 +35,7 @@ You can find the detailed database model requirements [here](https://next-auth.j
 
 ### Adapter
 
-Adapter is a NextAuth mechanism for hooking in custom persistence of auth related entities, like User, Account, etc. Since ZenStack is based on Prisma, you can simply use PrismaAdapter for the job:
+Adapter is a NextAuth mechanism for hooking in custom persistence of auth-related entities, like User, Account, etc. Since ZenStack is based on Prisma, you can use PrismaAdapter for the job:
 
 ```ts {6} title='/src/pages/api/auth/[...nextauth].ts'
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -53,9 +53,9 @@ export default NextAuth(authOptions);
 
 ### Authorize users for credentials-based auth
 
-If you use [`CredentialsProvider`](https://next-auth.js.org/providers/credentials ':target=blank'), i.e. email/password based auth, you need to implement a `authorize` function for verifying credentials against the database.
+If you use [`CredentialsProvider`](https://next-auth.js.org/providers/credentials ':target=blank'), i.e. email/password based auth, you need to implement an `authorize` function for verifying credentials against the database.
 
-This is standard Prisma stuff, and the following is just a quick example on how to do it;
+This is standard Prisma stuff, and the following is just a quick example of how to do it:
 
 ```ts title='/src/pages/api/auth/[...nextauth].ts'
 import { prisma } from "../../../server/db/client";
@@ -107,7 +107,7 @@ function authorize(prisma: PrismaClient) {
 
 You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
 
-To create such an enhanced client with standard setup, call the `withPresets` API with a standard Prisma client and the current user (fetched with NextAuth API). Here's an example:
+To create such a client with a standard setup, call the `withPresets` API with a regular Prisma client and the current user (fetched with NextAuth API). Here's an example:
 
 ```ts
 import type { NextApiRequest, NextApiResponse } from 'next';
