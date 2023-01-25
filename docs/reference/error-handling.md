@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Error Handling
 
-ZenStack's enhancements to Prisma client are transparent proxies, so normal errors thrown from Prisma client simply pass through, and you can handle them the same way as you do in a regular Prisma project. It's good to read these references from Prisma:
+ZenStack's enhancements to Prisma clients are transparent proxies, so normal errors thrown from a Prisma client simply pass through, and you can handle them the same way as you do in a regular Prisma project. It's good to read these references from Prisma:
 
 -   [Handling exceptions and errors](https://www.prisma.io/docs/concepts/components/prisma-client/handling-exceptions-and-errors)
 -   [Error message reference](https://www.prisma.io/docs/reference/api-reference/error-reference)

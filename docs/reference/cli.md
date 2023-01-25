@@ -53,18 +53,18 @@ zenstack init [options] [path]
 Initialize current folder with default settings.
 
 ```bash
-npx zenstack@canary init
+npx zenstack init
 ```
 
 Initialize "myapp" folder with custom package manager and schema location.
 
 ```bash
-npx zenstack@canary init -p pnpm --prisma prisma/my.schema myapp
+npx zenstack init -p pnpm --prisma prisma/my.schema myapp
 ```
 
 ### generate
 
-Generates RESTful CRUD API and React hooks from your model.
+Generates Prisma schema and other artifacts as specified by "plugin"s in ZModel.
 
 ```bash
 zenstack generate [options]
