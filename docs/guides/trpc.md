@@ -5,7 +5,7 @@ sidebar_position: 7
 
 # Using With tRPC
 
-[tRPC](https://trpc.io) is a fantastic library that magically turns server-side procedures into client-callable functions, without requiring you to provide any official contract. The popular [T3 stack](https://create.t3.gg/) promotes the combo of Prisma + tRPC for achieving type-safety from your frontend all the way down to the database.
+[tRPC](https://trpc.io) is a fantastic library that magically turns server-side procedures into client-callable functions without requiring you to provide any official contract. The popular [T3 stack](https://create.t3.gg/) promotes the combo of Prisma + tRPC for achieving type safety from your frontend all the way down to the database.
 
 ZenStack makes things even easier by automatically generating tRPC routers from the ZModel schema. You can use the generated routers together with an enhanced Prisma client; since the Prisma client has the ability to enforce access policies, there is no need to implement authorization code anymore.
 
@@ -39,3 +39,5 @@ export type AppRouter = typeof appRouter;
 If your data model uses field types that're not JSON-serializable, you should set up tRPC to use [superjson data transformer](https://trpc.io/docs/data-transformers#using-superjson).
 
 :::
+
+_NOTE_: The ZenStack trpc plugin is based on the awesome work by [Omar Dulaimi](https://github.com/omar-dulaimi/prisma-trpc-generator).
