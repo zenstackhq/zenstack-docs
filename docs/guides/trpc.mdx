@@ -1,7 +1,9 @@
 ---
-description: Steps for using ZenStack with tRPC.
+description: Guide for using ZenStack with tRPC.
 sidebar_position: 7
 ---
+
+import InitTips from '../get-started/_zenstack-init-tips.md';
 
 # Using With tRPC
 
@@ -11,13 +13,27 @@ ZenStack makes things even easier by automatically generating tRPC routers from 
 
 ## Details
 
+If you haven't initialized your tRPC project with ZenStack, run the following command to do it:
+
+```bash
+npx zenstack@latest init
+```
+
+<InitTips />
+
 You can enable tRPC router generation with the `@zenstackhq/trpc` plugin.
+
+First install the trpc package:
+
+```bash
+npm install @zenstackhq/trpc
+```
 
 ```prisma title='/schema.zmodel'
 
 plugin trpc {
     provider = '@zenstackhq/trpc'
-    output = 'server/routers/generated'
+    output = 'src/server/routers/generated'
 }
 
 ```
