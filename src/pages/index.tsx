@@ -10,23 +10,34 @@ import { description } from '../lib/content';
 import styles from './index.module.css';
 
 function Header() {
-    const { siteConfig } = useDocusaurusContext();
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
-            <div className="container">
-                <h1 className="hero__title font-bold text-3xl lg:text-5xl mb-8 lg:mb-16">
-                    {siteConfig.tagline}
-                </h1>
-                <p className="hero__subtitle font-semi-bold text-lg lg:text-xl max-w-[800px] mx-auto mb-8 lg:mb-16">
-                    {description}
-                </p>
-                <div className={styles.buttons}>
-                    <Link
-                        className="button button--secondary button--lg lg:text-xl"
-                        to="/docs"
-                    >
-                        Get Started →
-                    </Link>
+            <div className="container flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div className="text-left flex flex-col items-start lg:w-1/2">
+                    <h1 className="hero__title font-bold text-3xl lg:text-6xl mb-8 lg:mb-8 lg:leading-[70px]">
+                        Prisma Catalyst For{' '}
+                        <span
+                            className="whitespace-nowrap
+                        "
+                        >
+                            Full-stack
+                        </span>{' '}
+                        Development
+                    </h1>
+                    <p className="hero__subtitle font-semi-bold text-lg lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed">
+                        {description}
+                    </p>
+                    <div className={styles.buttons}>
+                        <Link
+                            className="button button--secondary button--lg lg:text-2xl px-8 py-4"
+                            to="/docs"
+                        >
+                            Get Started →
+                        </Link>
+                    </div>
+                </div>
+                <div className="hidden md:block lg:w-1/2">
+                    <img src="/img/banner-code.png" />
                 </div>
             </div>
         </header>
@@ -37,7 +48,7 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout
-            title={`${siteConfig.title}: ${siteConfig.tagline}`}
+            title={`${siteConfig.title}: Prisma Catalyst For Full-stack Development`}
             description={description}
         >
             <Header />

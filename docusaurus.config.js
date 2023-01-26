@@ -7,7 +7,6 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'ZenStack',
-    tagline: '✨ Prisma Catalyst For Full-stack Development',
     url: 'https://zenstack.dev',
     baseUrl: '/',
     onBrokenLinks: 'throw',
@@ -141,7 +140,7 @@ const config = {
             },
             announcementBar: {
                 id: 'prerelease-1',
-                content: `🛠️ You're viewing the docs for the v1 preview version of ZenStack. Click <a target="https://legacy.zenstack.dev" style="cursor: pointer">here</a> for the older v0.5 version.`,
+                content: `🛠️ You're viewing the docs for the v1 preview version of ZenStack. Click <a href="https://legacy.zenstack.dev" style="cursor: pointer">here</a> for the older v0.5 version.`,
             },
         },
 
