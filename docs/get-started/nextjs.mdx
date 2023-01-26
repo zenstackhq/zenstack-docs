@@ -36,7 +36,7 @@ Let's get started 🚀.
 The easiest way to create a Next.js project with boilerplates is with `create-t3-app`. Run the following command to create a new project with Prisma, NextAuth and TailwindCSS.
 
 ```bash
-npx create-t3-app --prisma --nextAuth --tailwind --CI my-blog-app
+npx create-t3-app@latest --prisma --nextAuth --tailwind --CI my-blog-app
 cd my-blog-app
 npm run dev
 ```
@@ -52,7 +52,7 @@ If everything works, you should have a running Next.js app at [http://localhost:
 Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 
 ```bash
-npx zenstack init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -101,18 +101,21 @@ npx zenstack generate && npx prisma db push
 
 ### 4. Configure NextAuth to use credential-based auth
 
-Now let's update `/src/pages/api/auth/[...nextauth].ts` to use credentials auth and JWT-based session:
+Now let's update `/src/pages/api/auth/[...nextauth].ts` to the content below to
+use credentials auth and JWT-based session:
 
-```ts {0-2,5-17,21-33} title='/src/pages/api/auth/[...nextauth].ts'
-import CredentialsProvider from 'next-auth/providers/credentials';
+```ts {8-19,22-30,33-58} title='/src/pages/api/auth/[...nextauth].ts'
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
+import NextAuth, { type NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { prisma } from '../../../server/db';
 
 export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt',
     },
-
     // Include user.id on session
     callbacks: {
         session({ session, token }) {
@@ -125,12 +128,6 @@ export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     adapter: PrismaAdapter(prisma),
     providers: [
-        // Remove DiscordProvider below:
-        // DiscordProvider({
-        //   clientId: env.DISCORD_CLIENT_ID,
-        //   clientSecret: env.DISCORD_CLIENT_SECRET,
-        // }),
-
         CredentialsProvider({
             credentials: {
                 email: { type: 'email' },
@@ -140,11 +137,7 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
 };
-```
 
-Also, add the `authorize` function for credentials verification:
-
-```ts title='/src/pages/api/auth/[...nextauth].ts'
 function authorize(prisma: PrismaClient) {
     return async (
         credentials: Record<'email' | 'password', string> | undefined
@@ -171,6 +164,8 @@ function authorize(prisma: PrismaClient) {
         return { id: maybeUser.id, email: maybeUser.email };
     };
 }
+
+export default NextAuth(authOptions);
 ```
 
 Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary
@@ -198,8 +193,8 @@ file and fill in the content below:
 import { requestHandler } from '@zenstackhq/next';
 import { withPresets } from '@zenstackhq/runtime';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerAuthSession } from '../../../server/common/get-server-auth-session';
-import { prisma } from '../../../server/db/client';
+import { getServerAuthSession } from '../../../server/auth';
+import { prisma } from '../../../server/db';
 
 async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
     const session = await getServerAuthSession({ req, res });
@@ -237,6 +232,8 @@ Now we're ready to implement the signup/signin flow.
 Now let's implement the signup/signin pages. First, create a new page `/src/pages/signup.tsx`:
 
 ```tsx title='/src/pages/signup.tsx'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
 import Router from 'next/router';
@@ -265,7 +262,7 @@ const Signup: NextPage = () => {
 
         // signin to create a session
         await signIn('credentials', { redirect: false, email, password });
-        Router.push('/');
+        await Router.push('/');
     }
 
     return (
@@ -273,7 +270,7 @@ const Signup: NextPage = () => {
             <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
             <form
                 className="mt-16 flex flex-col gap-8 text-2xl"
-                onSubmit={onSignup}
+                onSubmit={(e) => void onSignup(e)}
             >
                 <div>
                     <label
@@ -359,7 +356,7 @@ const Signin: NextPage = () => {
         });
 
         if (result?.ok) {
-            Router.push('/');
+            await Router.push('/');
         } else {
             alert('Signin failed');
         }
@@ -370,7 +367,7 @@ const Signin: NextPage = () => {
             <h1 className="text-5xl font-extrabold text-white">Login</h1>
             <form
                 className="mt-16 flex flex-col gap-8 text-2xl"
-                onSubmit={onSignin}
+                onSubmit={(e) => void onSignin(e)}
             >
                 <div>
                     <label
@@ -443,13 +440,21 @@ a `posts` relation field to the `User` model.
 
 ```prisma {6} title='/schema.zmodel'
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String @password @omit
-  posts         Post[]
-  ...
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    password      String @password @omit
+    posts         Post[]
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+
+    // everyone can signup, and user profile is also publicly readable
+    @@allow('create,read', true)
+
+    // only the user can update or delete their own profile
+    @@allow('update,delete', auth() == this)
 }
 ```
 
@@ -461,7 +466,7 @@ npx zenstack generate && npx prisma db push
 
 ### 8. Build up the home page
 
-Now let's change the main page and use it for viewing and managing posts.
+Now let's replace `/src/pages/index.tsx` with the content below and use it for viewing and managing posts.
 
 ```tsx title='/src/pages/index.tsx'
 import type { Post } from '@prisma/client';
@@ -476,12 +481,15 @@ type AuthUser = { id: string; email?: string | null };
 const Welcome = ({ user }: { user: AuthUser }) => {
     async function onSignout() {
         await signOut({ redirect: false });
-        Router.push('/signin');
+        await Router.push('/signin');
     }
     return (
         <div className="flex gap-4">
             <h3 className="text-lg">Welcome back, {user?.email}</h3>
-            <button className="text-gray-300 underline" onClick={onSignout}>
+            <button
+                className="text-gray-300 underline"
+                onClick={() => void onSignout()}
+            >
                 Signout
             </button>
         </div>
@@ -533,7 +541,7 @@ const Posts = ({ user }: { user: AuthUser }) => {
         <div className="container flex flex-col text-white">
             <button
                 className="rounded border border-white p-2 text-lg"
-                onClick={onCreatePost}
+                onClick={() => void onCreatePost()}
             >
                 + Create Post
             </button>
@@ -558,13 +566,13 @@ const Posts = ({ user }: { user: AuthUser }) => {
                         <div className="flex w-32 justify-end gap-1 text-left">
                             <button
                                 className="underline"
-                                onClick={() => onTogglePublished(post)}
+                                onClick={() => void onTogglePublished(post)}
                             >
                                 {post.published ? 'Unpublish' : 'Publish'}
                             </button>
                             <button
                                 className="underline"
-                                onClick={() => onDelete(post)}
+                                onClick={() => void onDelete(post)}
                             >
                                 Delete
                             </button>
