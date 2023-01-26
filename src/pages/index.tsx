@@ -24,19 +24,19 @@ function Header() {
                         </span>{' '}
                         Development
                     </h1>
-                    <p className="hero__subtitle font-semi-bold text-lg lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed">
+                    <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed">
                         {description}
                     </p>
                     <div className={styles.buttons}>
                         <Link
-                            className="button button--secondary button--lg lg:text-2xl px-8 py-4"
+                            className="button button--secondary button--lg lg:text-2xl lg:px-8 lg:py-4"
                             to="/docs"
                         >
                             Get Started →
                         </Link>
                     </div>
                 </div>
-                <div className="hidden md:block lg:w-1/2">
+                <div className="lg:w-1/2 mx-[-40px] lg:mx-auto">
                     <img src="/img/banner-code.png" />
                 </div>
             </div>
@@ -48,7 +48,7 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout
-            title={`${siteConfig.title}: Prisma Catalyst For Full-stack Development`}
+            title={`${siteConfig.title} - Prisma Catalyst For Full-stack Development`}
             description={description}
         >
             <Header />

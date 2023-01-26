@@ -30,7 +30,7 @@ const config = {
         [
             'classic',
             /** @type {import('@docusaurus/preset-classic').Options} */
-            ({
+            {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                     path: 'docs',
@@ -41,7 +41,10 @@ const config = {
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
-            }),
+                sitemap: {
+                    changefreq: 'weekly',
+                },
+            },
         ],
         [
             'docusaurus-preset-shiki-twoslash',
@@ -54,6 +57,53 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
+            metadata: [
+                {
+                    name: 'keywords',
+                    content: 'prisma,orm,web development,webdev,full-stack',
+                },
+                {
+                    name: 'description',
+                    content:
+                        'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
+                },
+                {
+                    property: 'og:image',
+                    content: '/img/social-cover.png',
+                },
+                {
+                    property: 'og:title',
+                    content:
+                        'ZenStack - Prisma Catalyst For Full-stack Development',
+                },
+                {
+                    property: 'og:description',
+                    content:
+                        'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
+                },
+                {
+                    property: 'og:url',
+                    content: 'https://zenstack.dev',
+                },
+                {
+                    property: 'twitter:card',
+                    content: 'summary_large_image',
+                },
+                {
+                    property: 'twitter:image:src',
+                    content: '/img/social-cover.png',
+                },
+                {
+                    property: 'twitter:title',
+                    content:
+                        'ZenStack - Prisma Catalyst For Full-stack Development',
+                },
+                {
+                    property: 'twitter:description',
+                    content:
+                        'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
+                },
+            ],
             navbar: {
                 title: 'ZenStack',
                 logo: {
