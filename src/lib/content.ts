@@ -1,2 +1,2 @@
 export const description =
-    'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.';
+    'A toolkit that supercharges Prisma ORM with a powerful access control layer, unlocking its full potential for web development.';
