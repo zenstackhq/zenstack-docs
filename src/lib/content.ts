@@ -1,2 +1,2 @@
 export const description =
-    'An extensible toolkit for generating services, hooks, and other artifacts from your Prisma schema, with built-in access policy and data validation support.';
+    'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.';
