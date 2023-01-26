@@ -40,7 +40,7 @@ Prisma has a nice sample project for Express.js. Let's use it as a starting poin
 
 ```bash
 # clone the sample project
-npx degit prisma/prisma-examples/blob/latest/typescript/rest-express my-blog-app
+npx degit prisma/prisma-examples/typescript/rest-express my-blog-app
 cd my-blog-app
 
 npm install
@@ -67,7 +67,7 @@ app.get(`/post`, async (req, res) => {
 });
 ```
 
-, and verify it works by:
+Restart the server and verify it works by:
 
 ```bash
 curl localhost:3000/post
@@ -165,7 +165,7 @@ Now let's secure up our APIs, leveraging the access policies.
 
 First, add a simple middleware to require `X-USER-ID` header (to simulate authentication):
 
-````ts title='/src/index.ts'
+```ts title='/src/index.ts'
 app.use((req, res, next) => {
     const userId = req.header('X-USER-ID');
     if (!userId || Number.isNaN(parseInt(userId))) {
@@ -173,11 +173,13 @@ app.use((req, res, next) => {
     } else {
         next();
     }
-});```
+});
+```
 
 Next, add two helper methods to get a Prisma client that's bound to the current user identity:
 
 ```ts title='/src/index.ts'
+import { Request } from 'express';
 import { withPolicy } from '@zenstackhq/runtime';
 
 function getUserId(req: Request) {
@@ -190,7 +192,7 @@ function getPrisma(req: Request) {
         user: { id: parseInt(req.header('X-USER-ID')!) },
     });
 }
-````
+```
 
 :::tip
 
@@ -230,7 +232,7 @@ Note that you don't need to change your Prisma query because the wrapped Prisma 
 
 ### 5. Test the secured backend
 
-Now, if you hit the `/post` endpoint again directly, you should get a 403 error:
+Now, restart the server and hit the `/post` endpoint again directly. You should get a 403 error:
 
 ```bash
 curl -I localhost:3000/post
