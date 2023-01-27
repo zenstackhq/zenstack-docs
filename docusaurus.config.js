@@ -44,6 +44,9 @@ const config = {
                 sitemap: {
                     changefreq: 'weekly',
                 },
+                gtag: {
+                    trackingID: 'G-1J36QMDBV2',
+                },
             },
         ],
         [
