@@ -39,24 +39,22 @@ Let's get started 🚀.
 Prisma has a nice sample project for Express.js. Let's use it as a starting point:
 
 ```bash
-# clone the sample project
 npx degit prisma/prisma-examples/typescript/rest-express my-blog-app
 cd my-blog-app
-
 npm install
+```
 
-# push current Prisma schema to db
+Next, let's initialize the database with seed data and start the dev server:
+
+```bash
 npx prisma db push
-
-# seed the database
 npx prisma db seed
-
-# start the server
 npm run dev
 ```
 
-Now your server should be listening on port 3000 for RESTful requests.
-First, let's add a simple API to list all posts:
+Your server should be listening on port 3000 for RESTful requests.
+
+Let's add a simple API to list all posts:
 
 ```ts title='/src/index.ts'
 app.get(`/post`, async (req, res) => {
@@ -97,7 +95,7 @@ You should see a list of posts like this:
 Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 
 ```bash
-npx zenstack init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -236,7 +234,7 @@ Note that you don't need to change your Prisma query because the wrapped Prisma 
 
 ### 5. Test the secured backend
 
-Now, restart the server and hit the `/post` endpoint again directly. You should get a 403 error:
+Now, restart the server and hit the `/post` endpoint again directly. You should get a 403 error because the middleware rejected it:
 
 ```bash
 curl -I localhost:3000/post
@@ -312,7 +310,3 @@ If you have trouble following the building process, you can find the final resul
 [here](https://github.com/zenstackhq/docs-tutorial-express). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation.
 
 Have fun building cool stuff 🚀!
-
-```
-
-```
