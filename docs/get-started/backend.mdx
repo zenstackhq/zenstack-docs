@@ -234,7 +234,7 @@ Note that you don't need to change your Prisma query because the wrapped Prisma 
 
 ### 5. Test the secured backend
 
-Now, restart the server and hit the `/post` endpoint again directly. You should get a 403 error:
+Now, restart the server and hit the `/post` endpoint again directly. You should get a 403 error because the middleware rejected it:
 
 ```bash
 curl -I localhost:3000/post
@@ -310,7 +310,3 @@ If you have trouble following the building process, you can find the final resul
 [here](https://github.com/zenstackhq/docs-tutorial-express). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation.
 
 Have fun building cool stuff 🚀!
-
-```
-
-```
