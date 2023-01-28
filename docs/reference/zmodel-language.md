@@ -735,7 +735,7 @@ model User {
 
 ### Custom attributes and functions
 
-You can find examples of custom attributes and functions in [ZModel Standard Library](https://github.com/zenstackhq/zenstack/blob/canary/packages/schema/src/res/stdlib.zmodel).
+You can find examples of custom attributes and functions in [ZModel Standard Library](https://github.com/zenstackhq/zenstack/blob/main/packages/schema/src/res/stdlib.zmodel).
 
 ## Field
 

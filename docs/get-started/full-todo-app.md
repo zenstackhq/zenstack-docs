@@ -1,12 +1,12 @@
 ---
-description: Example of a fully functional Todo app.
+description: Example of a fully functional Todo SaaS.
 sidebar_position: 8
-sidebar_label: Full Todo App Example
+sidebar_label: Todo SaaS Example
 ---
 
-# Fully Functional Todo App Example
+# Fully Functional Todo SaaS Example
 
-The tutorials provided in this section are intentionally simple to keep them as short as possible. Check out the [Collaborative Todo App](https://github.com/zenstackhq/sample-todo-nextjs) for a more comprehensive real-world-like sample project.
+The tutorials provided in this section are intentionally simple to keep them as short as possible. Check out the [Todo SaaS](https://github.com/zenstackhq/sample-todo-nextjs) for a more comprehensive real-world-like sample project.
 
 ### Stack
 
@@ -32,4 +32,4 @@ The tutorials provided in this section are intentionally simple to keep them as 
 
 You can play with a running environment [here](https://zenstack-todo.vercel.app/).
 
-[![Collaborative Todo App](/img/collaborative-todo.png)](https://zenstack-todo.vercel.app/)
+[![Todo SaaS](/img/collaborative-todo.png)](https://zenstack-todo.vercel.app/)
