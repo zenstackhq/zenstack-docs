@@ -161,7 +161,9 @@ npx zenstack generate && npx prisma db push
 
 Now let's secure up our APIs, leveraging the access policies.
 
-First, add a simple middleware to require `X-USER-ID` header (to simulate authentication):
+First, add a simple middleware to require `X-USER-ID` header (to simulate authentication).
+Make sure the following code is inserted above all express routes so it can be applied to
+all endpoints.
 
 ```ts title='/src/index.ts'
 app.use((req, res, next) => {
@@ -186,8 +188,10 @@ function getUserId(req: Request) {
 
 // Gets a Prisma client bound to the current user identity
 function getPrisma(req: Request) {
+    const userId = getUserId(req);
+    const user = Number.isNaN(userId) ? undefined : { id: userId };
     return withPolicy(prisma, {
-        user: { id: parseInt(req.header('X-USER-ID')!) },
+        user,
     });
 }
 ```
@@ -306,3 +310,7 @@ If you have trouble following the building process, you can find the final resul
 [here](https://github.com/zenstackhq/docs-tutorial-express). For more details about ZenStack, please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides) parts of the documentation.
 
 Have fun building cool stuff 🚀!
+
+```
+
+```
