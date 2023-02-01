@@ -1,0 +1,4 @@
+{
+    "trailingSlash": false,
+    "redirects": [{ "source": "/docs", "destination": "/docs/intro" }]
+}
