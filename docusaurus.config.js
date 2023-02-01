@@ -116,7 +116,7 @@ const config = {
                 },
                 items: [
                     {
-                        to: 'docs/category/get-started',
+                        to: 'docs/intro',
                         position: 'left',
                         label: 'Get Started',
                     },
@@ -131,6 +131,11 @@ const config = {
                         label: 'GitHub',
                         position: 'right',
                     },
+                    {
+                        href: 'https://go.zenstack.dev/chat',
+                        label: 'Discord',
+                        position: 'right',
+                    },
                 ],
             },
             footer: {
@@ -141,7 +146,7 @@ const config = {
                         items: [
                             {
                                 label: 'Get Started',
-                                to: '/docs',
+                                to: '/docs/intro',
                             },
                             {
                                 label: 'Reference',
