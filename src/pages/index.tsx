@@ -30,7 +30,7 @@ function Header() {
                     <div className={styles.buttons}>
                         <Link
                             className="button button--secondary button--lg lg:text-2xl lg:px-8 lg:py-4"
-                            to="/docs"
+                            to="/docs/intro"
                         >
                             Get Started →
                         </Link>
@@ -60,7 +60,7 @@ export default function Home(): JSX.Element {
                 <div className="flex justify-center w-full">
                     <Link
                         className="button button--primary button--lg text-xl w-fit py-4"
-                        to="/docs"
+                        to="/docs/intro"
                     >
                         Let's get started →
                     </Link>
