@@ -170,7 +170,7 @@ const config = {
                         items: [
                             {
                                 label: 'Blog',
-                                href: 'https://dev.to/zenstack',
+                                to: '/blog',
                             },
                             {
                                 label: 'GitHub',
