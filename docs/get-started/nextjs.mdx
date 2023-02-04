@@ -101,17 +101,39 @@ npx zenstack generate && npx prisma db push
 
 ### 4. Configure NextAuth to use credential-based auth
 
-Now let's update `/src/pages/api/auth/[...nextauth].ts` to the content below to
+Now let's update `/src/server/auth.ts` to the content below to
 use credentials auth and JWT-based session:
 
-```ts {8-19,22-30,33-58} title='/src/pages/api/auth/[...nextauth].ts'
+```ts title='/src/pages/api/auth/[...nextauth].ts'
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
-import NextAuth, { type NextAuthOptions } from 'next-auth';
+import type { GetServerSidePropsContext } from 'next';
+import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from '../../../server/db';
+import { prisma } from './db';
 
+/**
+ * Module augmentation for `next-auth` types.
+ * Allows us to add custom properties to the `session` object and keep type
+ * safety.
+ *
+ * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
+ **/
+declare module 'next-auth' {
+    interface Session extends DefaultSession {
+        user: {
+            id: string;
+        } & DefaultSession['user'];
+    }
+}
+
+/**
+ * Options for NextAuth.js used to configure adapters, providers, callbacks,
+ * etc.
+ *
+ * @see https://next-auth.js.org/configuration/options
+ **/
 export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt',
@@ -139,33 +161,34 @@ export const authOptions: NextAuthOptions = {
 };
 
 function authorize(prisma: PrismaClient) {
-    return async (
-        credentials: Record<'email' | 'password', string> | undefined
-    ) => {
+    return async (credentials: Record<'email' | 'password', string> | undefined) => {
         if (!credentials) throw new Error('Missing credentials');
-
-        if (!credentials.email)
-            throw new Error('"email" is required in credentials');
-
-        if (!credentials.password)
-            throw new Error('"password" is required in credentials');
-
+        if (!credentials.email) throw new Error('"email" is required in credentials');
+        if (!credentials.password) throw new Error('"password" is required in credentials');
         const maybeUser = await prisma.user.findFirst({
             where: { email: credentials.email },
             select: { id: true, email: true, password: true },
         });
-
         if (!maybeUser || !maybeUser.password) return null;
-
         // verify the input password with stored hash
         const isValid = await compare(credentials.password, maybeUser.password);
         if (!isValid) return null;
-
         return { id: maybeUser.id, email: maybeUser.email };
     };
 }
 
-export default NextAuth(authOptions);
+/**
+ * Wrapper for `getServerSession` so that you don't need to import the
+ * `authOptions` in every file.
+ *
+ * @see https://next-auth.js.org/configuration/nextjs
+ **/
+export const getServerAuthSession = (ctx: {
+    req: GetServerSidePropsContext['req'];
+    res: GetServerSidePropsContext['res'];
+}) => {
+    return getServerSession(ctx.req, ctx.res, authOptions);
+};
 ```
 
 Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary
@@ -268,15 +291,9 @@ const Signup: NextPage = () => {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
             <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
-            <form
-                className="mt-16 flex flex-col gap-8 text-2xl"
-                onSubmit={(e) => void onSignup(e)}
-            >
+            <form className="mt-16 flex flex-col gap-8 text-2xl" onSubmit={(e) => void onSignup(e)}>
                 <div>
-                    <label
-                        htmlFor="email"
-                        className="inline-block w-32 text-white"
-                    >
+                    <label htmlFor="email" className="inline-block w-32 text-white">
                         Email
                     </label>
                     <input
@@ -288,10 +305,7 @@ const Signup: NextPage = () => {
                     />
                 </div>
                 <div>
-                    <label
-                        htmlFor="password"
-                        className="inline-block w-32 text-white "
-                    >
+                    <label htmlFor="password" className="inline-block w-32 text-white ">
                         Password
                     </label>
                     <input
@@ -365,15 +379,9 @@ const Signin: NextPage = () => {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
             <h1 className="text-5xl font-extrabold text-white">Login</h1>
-            <form
-                className="mt-16 flex flex-col gap-8 text-2xl"
-                onSubmit={(e) => void onSignin(e)}
-            >
+            <form className="mt-16 flex flex-col gap-8 text-2xl" onSubmit={(e) => void onSignin(e)}>
                 <div>
-                    <label
-                        htmlFor="email"
-                        className="inline-block w-32  text-white"
-                    >
+                    <label htmlFor="email" className="inline-block w-32  text-white">
                         Email
                     </label>
                     <input
@@ -385,10 +393,7 @@ const Signin: NextPage = () => {
                     />
                 </div>
                 <div>
-                    <label
-                        htmlFor="password"
-                        className="inline-block w-32  text-white"
-                    >
+                    <label htmlFor="password" className="inline-block w-32  text-white">
                         Password
                     </label>
                     <input
@@ -486,10 +491,7 @@ const Welcome = ({ user }: { user: AuthUser }) => {
     return (
         <div className="flex gap-4">
             <h3 className="text-lg">Welcome back, {user?.email}</h3>
-            <button
-                className="text-gray-300 underline"
-                onClick={() => void onSignout()}
-            >
+            <button className="text-gray-300 underline" onClick={() => void onSignout()}>
                 Signout
             </button>
         </div>
@@ -539,41 +541,22 @@ const Posts = ({ user }: { user: AuthUser }) => {
 
     return (
         <div className="container flex flex-col text-white">
-            <button
-                className="rounded border border-white p-2 text-lg"
-                onClick={() => void onCreatePost()}
-            >
+            <button className="rounded border border-white p-2 text-lg" onClick={() => void onCreatePost()}>
                 + Create Post
             </button>
 
             <ul className="container mt-8 flex flex-col gap-2">
                 {posts?.map((post) => (
-                    <li
-                        key={post.id}
-                        className="flex items-end justify-between gap-4"
-                    >
-                        <p
-                            className={`text-2xl ${
-                                !post.published ? 'text-gray-400' : ''
-                            }`}
-                        >
+                    <li key={post.id} className="flex items-end justify-between gap-4">
+                        <p className={`text-2xl ${!post.published ? 'text-gray-400' : ''}`}>
                             {post.title}
-                            <span className="text-lg">
-                                {' '}
-                                by {post.author.email}
-                            </span>
+                            <span className="text-lg"> by {post.author.email}</span>
                         </p>
                         <div className="flex w-32 justify-end gap-1 text-left">
-                            <button
-                                className="underline"
-                                onClick={() => void onTogglePublished(post)}
-                            >
+                            <button className="underline" onClick={() => void onTogglePublished(post)}>
                                 {post.published ? 'Unpublish' : 'Publish'}
                             </button>
-                            <button
-                                className="underline"
-                                onClick={() => void onDelete(post)}
-                            >
+                            <button className="underline" onClick={() => void onDelete(post)}>
                                 Delete
                             </button>
                         </div>
