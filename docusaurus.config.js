@@ -35,9 +35,9 @@ const config = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     path: 'docs',
                 },
-                // blog: {
-                //     showReadingTime: true,
-                // },
+                blog: {
+                    showReadingTime: true,
+                },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
@@ -76,8 +76,7 @@ const config = {
                 },
                 {
                     property: 'og:title',
-                    content:
-                        'ZenStack - Prisma Catalyst For Full-stack Development',
+                    content: 'ZenStack - Prisma Catalyst For Full-stack Development',
                 },
                 {
                     property: 'og:description',
@@ -98,8 +97,7 @@ const config = {
                 },
                 {
                     property: 'twitter:title',
-                    content:
-                        'ZenStack - Prisma Catalyst For Full-stack Development',
+                    content: 'ZenStack - Prisma Catalyst For Full-stack Development',
                 },
                 {
                     property: 'twitter:description',
@@ -125,7 +123,7 @@ const config = {
                         position: 'left',
                         label: 'Reference',
                     },
-                    // { to: '/blog', label: 'Blog', position: 'left' },
+                    { to: '/blog', label: 'Blog', position: 'left' },
                     {
                         href: 'https://github.com/zenstackhq/zenstack',
                         label: 'GitHub',
@@ -203,7 +201,7 @@ const config = {
         },
 
     plugins: [
-        require.resolve('docusaurus-plugin-image-zoom'),
+        // require.resolve('docusaurus-plugin-image-zoom'),
         async function myPlugin(context, options) {
             return {
                 name: 'docusaurus-tailwindcss',
