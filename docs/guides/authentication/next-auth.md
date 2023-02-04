@@ -111,23 +111,17 @@ To create such a client with a standard setup, call the `withPresets` API with a
 
 ```ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { withPresets } from '@zenstackhq/runtime';
 import { authOptions } from '../../pages/api/auth/[...nextauth]';
 import { prisma } from '../../../server/db/client';
 
 async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
-    const session = await unstable_getServerSession(req, res, authOptions);
+    const session = await getServerSession(req, res, authOptions);
     // create a wrapper of Prisma client that enforces access policy,
     // data validation, and @password, @omit behaviors
     return withPresets(prisma, { user: session?.user });
 }
 ```
-
-:::tip
-
-Although the name `unstable_getServerSession` looks suspicious, it's officially recommended by NextAuth and is production-ready.
-
-:::
 
 You can then use this enhanced Prisma client for CRUD operations that you desire to be governed by the access policies you defined in your data models.
