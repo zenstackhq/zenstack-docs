@@ -1,0 +1,925 @@
+---
+description: How to build a collaborative SaaS product with Next.js and ZenStack's access control policy
+tags: [tutorial, nextjs, saas, zenstack]
+authors: jiasheng
+---
+
+# How to build a collaborative SaaS product using Next.js and ZenStack's access control policy
+
+Almost all the SaaS now is collaborative, from the originator Salesforce to the newly emerging one like Notion. To make it collaborative, technically, we need to build the foundation to support **tenant isolation** with an access control policy. A classic challenge here is striking a balance between app security and dev productivity.
+
+This tutorial demonstrates how to build a SaaS product using Next.js and ZenStack and the benefit of using a data model as the single source of truth to handle access control.
+
+<!--truncate-->
+
+# Preface
+
+Initially, I was planning to write it in two series, step by step:
+
+1. How to build a non-collaborative ToDo product
+2. How to add the collaborative part
+
+When one of my friends, who happened to be building a SaaS product, knew about it, she told me that she didn’t think anyone would be interested in the first of the series as no one would actually build a ToDo product. Instead, she is very interested in how to build the collaborative part of the SaaS product properly.
+
+It reminds me of a famous discussion about the MVP, which is usually illustrated as:
+
+![MVP](https://user-images.githubusercontent.com/16688722/216809414-f97171a0-8e99-4c0b-9cbe-db0e6629d115.png)
+
+However, there is a problem with it:
+
+![MVP-Problem](https://user-images.githubusercontent.com/16688722/216809397-f4e98afa-81bb-4fcd-9a17-4e0064dd2408.png)
+
+It looks just like the problem of mine my friend told me about.😂 So, I decided first to show you how to build a collaborative SaaS team space firstly in this article.
+
+# Background
+
+Technically one of the most important things to consider for SaaS products is **tenant isolation.** To put it in a single word:
+
+**users from tenant A should not be able to access data from tenant B, and vice-versa.**
+
+The idea behind tenant isolation is **access control.**
+
+> A classic challenge when laying foundations for B2B SaaS is striking a balance between app security and dev productivity.
+
+There is a typical way of dealing with it using physical isolation, which means each tenant will have its own database/schema. Definitely, it provides the best security, but it will also make your architecture more complicated and cost you more effort to deal with the database especially considering the cross-database resources.
+
+Another alternative way is to do virtual isolation, which means flagging all tenant-specific records in your DB with a `tenantId` key. Each incoming request that hits the DB must then be scoped against the current `tenantId`. To make it DRY(**Don't repeat yourself**), usually you would adopt some middleware to handle it like below:
+
+```tsx
+const databaseMiddleware = (req, res, next) => {
+    const incomingMessage = req as IncomingMessage;
+    const serverResponse = res as ServerResponse;
+
+    // Get the tenant ID from the request object
+    const tenantId = incomingMessage.tenantId;
+
+    // Add the tenant ID filter to all database queries
+    addTenantIdFilter(tenantId);
+
+    next();
+};
+
+const addTenantIdFilter = (tenantId: string) => {
+    // Implement the logic to add the tenant ID filter to all database queries
+    // ...
+};
+```
+
+It probably works well at the beginning. But as your product grows with more kinds of resources together with a specific **access control** policy, it might become error-prone because the access control logic is dispersed in the middleware and specific API logic.
+
+One of the most important things ZenStack is trying to solve is allowing you to define access policies directly inside your data model, so it's easier to keep the policies in sync when your data models evolve. So Let’s see how we could achieve that using the declarative way provided by ZenStack.
+
+# **Prerequisite**
+
+1. Make sure you have Node.js 16 or above installed.
+2. Install the [VSCode extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) for editing data models.
+
+    ![VSCode](https://user-images.githubusercontent.com/16688722/216809398-a041be2e-c3bc-49cb-bea0-8d67ed2843d0.png)
+
+3. You already have a basic idea about [Prisma](https://www.prisma.io/). If not, you can either check its website or read this [article](https://formidable.com/blog/2021/prisma-orm/).
+
+# Building the app
+
+If you don't want to follow the detailed steps, you can also find the deployed version and complete code below:
+
+-   [https://zenstack-nextjs-saas-app-sigma.vercel.app/](https://zenstack-nextjs-saas-app-sigma.vercel.app/)
+-   https://github.com/jiashengguo/zenstack-nextjs-saas-app
+
+## 1. Create a new project
+
+Create a Next.js project with `create-t3-app` with Prisma, NextAuth and TailwindCSS:
+
+```bash
+npx create-t3-app@latest --prisma --nextAuth --tailwind --CI my-saas-app
+cd my-saas-app
+npm run dev
+```
+
+## 2. **Initialize the project for ZenStack**
+
+Let's run the `zenstack` CLI to prepare your project for using ZenStack.
+
+```bash
+npx zenstack@latest init
+```
+
+The command installs a few NPM dependencies and copies the Prisma schema from `prisma/schema.prisma`to `schema.zmodel.`
+
+> The only models we still need are Account and User, you can remove other models.
+
+## 3. Define schema
+
+### Relations
+
+Tenant is more from the technical world, from the business world we usually call **Space.** So let’s create a model for it:
+
+```tsx
+model Space {
+    id String @id @default(uuid()
+    name String @length(4, 50)
+    slug String @unique @regex('^[0-9a-zA-Z]{4,16}$')
+}
+```
+
+In addition to the Prisma schema, it has two attributes `@length` and `@regex`, which is the standard validation attribute provided by ZenStack library. Actually, one enhancement to Prisma of ZenStack is to be able to define your own [custom attribute](https://zenstack.dev/docs/reference/zmodel-language#attribute).
+
+Then we need to model the relationship between `Space` and `User`. It’s a typical [many-to-many](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations) relation. So we need to add a relation model `SpaceUser`:
+
+```tsx
+/*
+ * Model representing membership of a user in a space
+ */
+model SpaceUser {
+    id String @id @default(uuid())
+    space Space @relation(fields:[spaceId], references: [id], onDelete: Cascade)
+    spaceId String
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+    role SpaceUserRole
+}
+
+enum SpaceUserRole {
+    USER
+    ADMIN
+}
+```
+
+Then we should also add this relation in both `Space` and `User`
+
+```tsx
+model User
+{
+  ...
+  spaces SpaceUser[]
+  ...
+}
+
+model Space
+{
+  ...
+  members SpaceUser[]
+  ...
+}
+```
+
+### Access Policy
+
+Access policies are expressed with the `@@allow`and `@@deny`model attributes. The attributes take two parameters. The first is the operation: create/read/update/delete. You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
+
+`@@allow` opens up permissions while `@@deny` turns them off. You can use them multiple times and combine them in a model. Whether an operation is permitted is determined as follows:
+
+1. If any `@@deny` rule evaluates to true, it's denied.
+2. If any `@@allow` rule evaluates to true, it's allowed.
+3. Otherwise, it's denied.
+
+-   `User`
+    the access rule for `User` should be defined as:
+
+    ```tsx
+    model User {
+        ...
+        spaces SpaceUser[]
+
+        // can be created by anyone, even not logged in
+        @@allow('create', true)
+
+        // can be read by users sharing any space
+        @@allow('read', spaces?[space.members?[user == auth()]])
+
+        // full access by oneself
+        @@allow('all', auth() == this)
+    }
+    ```
+
+    `auth()` is a special function provided by ZenStack to return the current authenticated `User` instance, which represents the user identity of the current data request, after wrapping Prisma client, which I will show you how to do it later.
+    The first and third rules should be straightforward. So let’s talk about the second rule, which actually implements **tenant isolation**.
+    It uses the Any condition syntax in [Collection Predicate Expression](https://zenstack.dev/docs/reference/zmodel-language#collection-predicate-expressions) :
+
+    ```
+    <collection>?[condition]
+    ```
+
+    It means any element in `collection` matches `condition`. And the `condition` expression has direct access to fields defined in the model of `collection`.
+    It might be a little hard to understand because there are actually two **“users”** here. One is the authenticated user currently initiating the data request, the other one is the target user data the request is trying to access. To make it easy to understand, let’s use **Auth** to refer to the current user and use **Bob** to refer to the data as below:
+    ![collection-sample](https://user-images.githubusercontent.com/16688722/216809399-e3923709-b32c-4657-96f1-10b30c5349bc.png)
+
+    -   the outer condition `spaces?[…]` means if the inner condition satisfies any space **Bob** belongs to, then **Bob** could be read.
+    -   The inner condition `space.members?[user == auth()]` means if **Auth** belongs to the space.
+        So combining the logic together, if **Auth** belongs to any of the `Space` of **Bob**, then **Bob** could be read.
+        It’s might be a little hard to follow the logic at the beginning, but once you get familiar with it, you will feel natural and intuitive to use it.
+
+-   `Space`
+
+    ```tsx
+    model Space {
+        ...
+        members SpaceUser[]
+
+        // require login
+        @@deny('all', auth() == null)
+
+        // everyone can create a space
+        @@allow('create', true)
+
+        // any user in the space can read the space
+        @@allow('read', members?[user == auth()])
+
+        // space admin can update and delete
+        @@allow('update,delete', members?[user == auth() && role == ADMIN])
+    }
+    ```
+
+-   `SpaceUser`
+
+    ```tsx
+    model SpaceUser {
+        ...
+        space Space @relation(fields:[spaceId], references: [id], onDelete: Cascade)
+        ...
+        // require login
+        @@deny('all', auth() == null)
+
+        // space admin can create/update/delete
+        @@allow('create,update,delete', space.members?[user == auth() && role == ADMIN])
+
+        // user can read entries for spaces which he's a member of
+        @@allow('read', space.members?[user == auth()])
+    }
+    ```
+
+I bet the rules for `Space` and `SpaceUser` already looks intuitive to you, right? 😄.
+
+> Notice the first `allow` rule in SpaceUser restrict that only the space admin could manage the space member. We will see how it takes effect later.
+
+That’s all we need to do to support tenant isolation. You could use the Prisma-style react hooks or the ZenStack-wrapped Prisma client as usual, the access control just works as you defined in the schema under the hood. How? ZenStack generates the safeguard for all the API calls based on your access policy. You will see it soon.
+
+### Last change
+
+For simplicity, we'll use username/password-based authentication in this project. So let’s add `password` field in `User` model:
+
+```tsx
+model User
+{
+  ...
+  password String? @password @omit
+  ...
+}
+```
+
+-   `@password` marks the field to be based before saving.
+-   `@omit` indicates the field should be dropped when returning from a query.
+
+Since we defined an Enum `SpaceUserRole`, which is not supported by the SQLite, we need to use a real database provider. I will use PostgreSQL in this project. So let’s change it in the schema:
+
+```tsx
+datasource db {
+    provider = 'postgresql'
+    url = env('DATABASE_URL')
+}
+```
+
+If you don't have a Postgres database, the simple way to get one is to get a docker instance or a free one from [Supabase.](https://supabase.com/)
+
+Now let’s run the below command to flush the change to the Prisma schema and database:
+
+```bash
+npx zenstack generate && npx prisma db push
+```
+
+After running successfully, you can open this file `node_modules/.zenstack/policy.ts` and see the function like this:
+
+```tsx
+function User_read(context: QueryContext): any {
+    const user = context.user ?? null;
+    return {
+        OR: [
+            {
+                spaces: {
+                    some: {
+                        space: {
+                            is: {
+                                members: {
+                                    some: !user
+                                        ? { zenstack_guard: false }
+                                        : {
+                                              user: {
+                                                  is: {
+                                                      id: {
+                                                          equals: user ? user.id : null,
+                                                      },
+                                                  },
+                                              },
+                                          },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            !user
+                ? { zenstack_guard: false }
+                : {
+                      id: {
+                          equals: user ? user.id : null,
+                      },
+                  },
+        ],
+    };
+}
+```
+
+That’s the safeguard I mentioned above, which translates the access policy defined in the schema to the actual code.
+
+## 4. Sign-up Sign-in
+
+### NextAuth
+
+Let's update `/src/pages/api/auth/[...nextauth].ts`to the content below to use credentials auth and JWT-based session:
+
+```tsx
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+import { compare } from 'bcryptjs';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { prisma } from 'server/db';
+
+export const authOptions: NextAuthOptions = {
+    adapter: PrismaAdapter(prisma),
+
+    session: {
+        strategy: 'jwt',
+    },
+
+    providers: [
+        CredentialsProvider({
+            credentials: {
+                email: {
+                    type: 'email',
+                },
+                password: {
+                    type: 'password',
+                },
+            },
+            authorize: authorize(prisma),
+        }),
+    ],
+
+    callbacks: {
+        async session({ session, token }) {
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: token.sub!,
+                },
+            };
+        },
+    },
+};
+
+function authorize(prisma: PrismaClient) {
+    return async (credentials: Record<'email' | 'password', string> | undefined) => {
+        if (!credentials) {
+            throw new Error('Missing credentials');
+        }
+
+        if (!credentials.email) {
+            throw new Error('"email" is required in credentials');
+        }
+
+        if (!credentials.password) {
+            throw new Error('"password" is required in credentials');
+        }
+
+        const maybeUser = await prisma.user.findFirst({
+            where: {
+                email: credentials.email,
+            },
+            select: {
+                id: true,
+                email: true,
+                password: true,
+            },
+        });
+
+        if (!maybeUser || !maybeUser.password) {
+            return null;
+        }
+
+        const isValid = await compare(credentials.password, maybeUser.password);
+
+        if (!isValid) {
+            return null;
+        }
+
+        return {
+            id: maybeUser.id,
+            email: maybeUser.email,
+        };
+    };
+}
+
+export default NextAuth(authOptions);
+```
+
+Then let’s add the add `NEXTAUTH_SECRET`environment variable in .env file and set it to an arbitrary value like the below:
+
+```tsx
+NEXTAUTH_SECRET = abc123;
+```
+
+### **Mount CRUD service & generate hooks**
+
+ZenStack has built-in support for Next.js and can provide database CRUD services automatically, so you don't need to write it yourself.
+
+First install the `@zenstackhq/next`and `@zenstackhq/react`packages:
+
+```bash
+npm install @zenstackhq/next @zenstackhq/react
+```
+
+Let’s create a new file `src/server/enhanced-db.ts`
+
+```tsx
+import { withPresets } from '@zenstackhq/runtime';
+import type { GetServerSidePropsContext } from 'next';
+import { getServerAuthSession } from './auth';
+import { prisma } from './db';
+
+export async function getEnhancedPrisma(ctx: {
+    req: GetServerSidePropsContext['req'];
+    res: GetServerSidePropsContext['res'];
+}) {
+    const session = await getServerAuthSession(ctx);
+    // create a wrapper of Prisma client that enforces access policy,
+    // data validation, and @password, @omit behaviors
+    return withPresets(prisma, { user: session?.user });
+}
+```
+
+Then whenever you want to use Prisma client, you can use `getEnhancedPrisma` instead which
+
+automatically validates access policies, field validation rules etc., during CRUD operations.
+
+Now let’s create our API endpoint in `/src/pages/api/model/[...path].`and fill in the content below:
+
+```tsx
+import { requestHandler } from '@zenstackhq/next';
+import { getEnhancedPrisma } from 'server/enhanced-db';
+
+export default requestHandler({
+    getPrisma: (req, res) => getEnhancedPrisma({ req, res }),
+});
+```
+
+The `/api/model` route is now ready to access database queries and mutation requests. However, manually calling the service will be tedious. Fortunately, ZenStack can automatically generate React hooks for you.
+
+Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
+
+```tsx
+plugin reactHooks {
+  provider = '@zenstackhq/react'
+  output = "./src/lib/hook
+}
+```
+
+Now run `npx zenstack generate` again; you'll find the hooks generated under `/src/lib/hooks` folder:
+
+```
+npx zenstack generate
+```
+
+Now we're ready to implement the signup/signin flow.
+
+### Sign-up
+
+First, let’s create a signup page under `/src/pages/singup.tsx`
+
+> To make the post not too long, I will only show the logic code snippets. For the complete part, you can take a look at the code repository
+
+```tsx
+
+import { useUser } from "../lib/hooks/user";
+import { signIn } from "next-auth/react";
+import { FormEvent, useState } from "react";
+
+export default function Signup() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { create: signup } = useUser();
+
+  async function onSignup(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      await signup({ data: { email, password } });
+    } catch (err: any) {
+      if (err.info?.prisma === true) {
+        if (err.info.code === "P2002") {
+          alert("User already exists");
+        } else {
+          alert(`Unexpected Prisma error: ${err.info.code as string}`);
+        }
+      } else {
+        alert(`Error occurred: ${JSON.stringify(err)}`);
+      }
+      return;
+    }
+
+    const signInResult = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+    if (signInResult?.ok) {
+      window.location.href = "/";
+    } else {
+      console.error("Signin failed:", signInResult?.error);
+    }
+  }
+
+   // html
+   return (...);
+}
+```
+
+Conceptually, signup is to create a user. So the same applies to the code, `singup` is the `create` hook of `User` ZenStack generated for you.
+
+### Sign-in
+
+let’s create a sign-in page under `/src/pages/singin.tsx`
+
+```tsx
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
+
+export default function Signin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  async function onSignin(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const signInResult = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+    if (signInResult?.ok) {
+      window.location.href = "/";
+    } else {
+      alert(`Signin failed. Please check your email and password.`);
+    }
+  }
+
+  // html
+  return (...);
+}
+```
+
+The sign-in part is still the same as you always do use NextAuth.
+
+Now, you can do the sign-up sign-in as below:
+
+![sign-up/in](https://user-images.githubusercontent.com/16688722/216809400-ca937823-42b3-4a96-955a-51da9c0f8764.png)
+
+Let’s create the first user *admin@zenstack.com*
+
+## 5. Home page
+
+### Show spaces
+
+The most important thing we need to show on the home page is the spaces this user belongs to. So let’s change the `/src/index.tsx` :
+
+```tsx
+import { Space } from '@prisma/client';
+import Spaces from '../components/Spaces';
+import WithNavBar from '../components/WithNavBar';
+import type { GetServerSideProps, NextPage } from 'next';
+import Link from 'next/link';
+import { getEnhancedPrisma } from '../server/enhanced-db';
+import { useCurrentUser } from '../lib/context';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+
+type Props = {
+    spaces: Space[];
+};
+
+const Home: NextPage<Props> = ({ spaces }) => {
+    const user = useCurrentUser();
+    const router = useRouter();
+    const { status } = useSession();
+
+    if (status === 'unauthenticated') {
+        void router.push('/signin');
+        return <></>;
+    }
+
+    return (
+        <WithNavBar>
+            {user && (
+                <div className="mt-8 flex w-full flex-col items-center text-center">
+                    <h1 className="text-2xl text-gray-800">Welcome {user.name || user.email}!</h1>
+
+                    <div className="w-full p-8">
+                        <h2 className="mb-8 text-left text-lg text-gray-700 md:text-xl">
+                            Choose a space to start, or{' '}
+                            <Link className="link-primary underline" href="/create-space">
+                                create a new one.
+                            </Link>
+                        </h2>
+                        <Spaces spaces={spaces} />
+                    </div>
+                </div>
+            )}
+        </WithNavBar>
+    );
+};
+
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+    const db = await getEnhancedPrisma(ctx);
+    const spaces = await db.space.findMany();
+    return {
+        props: { spaces },
+    };
+};
+
+export default Home;
+```
+
+Without ZenStack, normally to get the result you will need manually write the filter as below:
+
+```tsx
+const session = await getServerAuthSession(ctx);
+
+const spaces = await db.space.findMany({
+    where: {
+        members: {
+            some: {
+                userId: session?.user?.id,
+            },
+        },
+    },
+});
+```
+
+With ZenStack, you can simply query all the spaces as `await db.space.findMany().`
+
+**That’s the beauty of ZenStack when you write the query logic, you don’t need to worry about access control at all. You will write as if there is no such thing, and ZenStack will take care of it as it’s defined in the schema.**
+
+### Space Home Page
+
+Each space will have a unique URL, including its slug, so let’s create the page for it under `src/pages/space/[slug]/index.tsx`
+
+```tsx
+import { Space } from '@prisma/client';
+import BreadCrumb from '../../../components/BreadCrumb';
+import SpaceMembers from '../../../components/SpaceMembers';
+import WithNavBar from '../../../components/WithNavBar';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { getEnhancedPrisma } from '../../../server/enhanced-db';
+
+type Props = {
+    space: Space;
+};
+
+export default function SpaceHome(props: Props) {
+    const router = useRouter();
+
+    return (
+        <WithNavBar>
+            <div className="px-8 py-2">
+                <BreadCrumb space={props.space} />
+            </div>
+            <div className="p-8">
+                <div className="w-full flex flex-col md:flex-row mb-8 space-y-4 md:space-y-0 md:space-x-4">
+                    <SpaceMembers />
+                </div>
+            </div>
+        </WithNavBar>
+    );
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+    const db = await getEnhancedPrisma({ req, res });
+
+    const space = await db.space.findUnique({
+        where: { slug: params!.slug as string },
+    });
+    if (!space) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return {
+        props: { space },
+    };
+};
+```
+
+Like the home page, it simply queries the space using slug as the only filter regardless of the access policy. If the space can’t be found, it does not necessarily indicate that the space does not exist. It is possible that you are not authorized to access it.
+
+### Create Space
+
+Creating space is similar to creating a user. Let’s create `src/pages/create-space.tsx` for it:
+
+```tsx
+import { useSpace } from "../lib/hooks";
+import { SpaceUserRole } from "@prisma/client";
+import WithNavBar from "../components/WithNavBar";
+import { NextPage } from "next";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
+
+const CreateSpace: NextPage = () => {
+  const { data: session } = useSession();
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+
+  const { create } = useSpace();
+  const router = useRouter();
+
+  const onSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const space = await create({
+        data: {
+          name,
+          slug,
+          members: {
+            create: [
+              {
+                userId: session!.user.id,
+                role: SpaceUserRole.ADMIN,
+              },
+            ],
+          },
+        },
+      });
+      alert("Space created successfull! You'll be redirected.");
+      setTimeout(() => {
+        if (space) {
+          void router.push(`/space/${space.slug}`);
+        }
+      }, 2000);
+    } catch (err: any) {
+      console.error(err);
+      if (err.info?.prisma === true) {
+        if (err.info.code === "P2002") {
+          alert("Space slug already in use");
+        } else {
+          alert(`Unexpected Prisma error: ${err.info.code as string}`);
+        }
+      } else {
+        alert(JSON.stringify(err));
+      }
+    }
+  };
+  // html
+  return (...);
+};
+
+export default CreateSpace;
+```
+
+Now let’s create the new space “ZenStack Team”, after which it will redirect to the team space with the space URL [http://localhost:3000/space/zenstack](http://localhost:3000/space/zenstack). If you go back to the home page, you will see the ZenStack team.
+
+![ZenStack-Team-Space](https://user-images.githubusercontent.com/16688722/216809401-e20e1334-ef84-40de-90a2-768b9105e70e.png)
+
+## 6. Team management
+
+Let’s create the team management dialog under `src/components/ManageMembers.tsx`
+
+```tsx
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useCurrentUser } from '../lib/context';
+import { useSpaceUser } from '../lib/hooks';
+import { Space, SpaceUserRole } from '@prisma/client';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import Avatar from './Avatar';
+
+type Props = {
+    space: Space;
+};
+
+export default function ManageMembers({ space }: Props) {
+    const [email, setEmail] = useState('');
+    const [role, setRole] = useState<SpaceUserRole>(SpaceUserRole.USER);
+    const user = useCurrentUser();
+    const { findMany, create: addMember, del: delMember } = useSpaceUser();
+
+    const { data: members } = findMany({
+        where: {
+            spaceId: space.id,
+        },
+        include: {
+            user: true,
+        },
+        orderBy: {
+            role: 'desc',
+        },
+    });
+
+    const inviteUser = async () => {
+        try {
+            const r = await addMember({
+                data: {
+                    user: {
+                        connect: {
+                            email,
+                        },
+                    },
+                    space: {
+                        connect: {
+                            id: space.id,
+                        },
+                    },
+                    role,
+                },
+            });
+            console.log('SpaceUser created:', r);
+        } catch (err: any) {
+            console.error(err);
+            if (err.info?.prisma === true) {
+                if (err.info.code === 'P2002') {
+                    alert('User is already a member of the space');
+                } else if (err.info.code === 'P2025') {
+                    alert('User is not found for this email');
+                } else {
+                    alert(`Unexpected Prisma error: ${err.info.code as string}`);
+                }
+            } else {
+                alert(`Error occurred: ${JSON.stringify(err)}`);
+            }
+        }
+    };
+
+    const removeMember = async (id: string) => {
+        if (confirm(`Are you sure to remove this member from space?`)) {
+            await delMember({ where: { id } });
+        }
+    };
+
+	  //html
+		return (...);
+  }
+```
+
+The dialog would look like below:
+
+![Team-Management](https://user-images.githubusercontent.com/16688722/216809402-a07723aa-b073-4c8a-a64e-abe65941a78a.png)
+
+All done. You can see there is no actual code logic handling the access control, but let’s see whether it is there.
+
+## 7. Test
+
+Remember our friend Bob? let’s create an account for him with bob@gmail.com, and create a space as Bob’s Family.
+
+![Bob-Space](https://user-images.githubusercontent.com/16688722/216809403-ba16c2a5-01ed-4592-a7b7-e7f84314e7ca.png)
+
+Then let’s invite bob to ZenStack’s space as a USER:
+
+![Invite-Bob](https://user-images.githubusercontent.com/16688722/216809405-3f58a8b2-073f-470b-8dbf-c99d77827c4e.png)
+
+Then Bob will see ZenStack’s space on his home page:
+
+![Bob-Homepage](https://user-images.githubusercontent.com/16688722/216809406-f33db0a6-d7b8-4129-9302-ca23c6646377.png)
+
+Although Bob’s a `USER` who cannot manage the team member according to the access control defined in the schema, we don't make that restriction from UI. Let’s try to remove admin@zenstack.com to see what will happen:
+
+![Remove-Bob](https://user-images.githubusercontent.com/16688722/216809407-d70db825-8521-4a3d-9ac0-4f1971472eaf.png)
+
+After confirmation, nothing really happens, which means the removal operation doesn’t succeed.
+
+Open the developer tool of the browser, you can see a 403 message below:
+
+![403-Error](https://user-images.githubusercontent.com/16688722/216809411-4da4a6c0-9230-43e2-9c6c-9b253532065c.png)
+
+with the message body:
+
+```json
+{
+    "prisma": true,
+    "rejectedByPolicy": true,
+    "code": "P2004",
+    "message": "denied by policy: spaceUser entities failed 'delete' check, 1 entities failed policy check"
+}
+```
+
+You can try to add a new user, you will see a similar result. Therefore, the API is indeed secured by access control.
+
+Now Bob could access ZenStack’s team space home page by accessing its URL [http://localhost:3000/space/zenstack](http://localhost:3000/space/zenstack). Let’s remove Bob from ZenStack’s team space using admin@zenstack.com. Then let’s access that page again. you will see the 404 page now:
+
+![404](https://user-images.githubusercontent.com/16688722/216809413-fd011a42-5f97-419c-823f-d1f8bc4178a5.png)
+
+# Conclusion
+
+I hope this tutorial can show you the benefit of [ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=saas) in using the data model as the single source of truth to handle access control.
+
+Feel free to contact us on our [Discord](https://go.zenstack.dev/chat) or [GitHub](https://github.com/zenstackhq/zenstack) if you have any questions about it.
