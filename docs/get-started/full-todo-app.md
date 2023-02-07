@@ -6,7 +6,11 @@ sidebar_label: Todo SaaS Example
 
 # Fully Functional Todo SaaS Example
 
-The tutorials provided in this section are intentionally simple to keep them as short as possible. Check out the [Todo SaaS](https://github.com/zenstackhq/sample-todo-nextjs) for a more comprehensive real-world-like sample project.
+This is a more com comprehensive SaaS project with team space and the corresponding access control policy on it. Check out the [specialized tutorial](/blog/saas-demo) for it if you want to know how to build it step by step.
+
+### Project
+
+[https://github.com/zenstackhq/sample-todo-nextjs](https://github.com/zenstackhq/sample-todo-nextjs)
 
 ### Stack
 
