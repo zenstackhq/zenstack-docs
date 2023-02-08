@@ -1,0 +1,144 @@
+---
+description: Modern Web Architecture Without a Backend — Using Supabase
+tags: [webdev, fullstack, supabase, database]
+authors: yiming
+slug: supabase
+date: 2023-01-20
+---
+
+# Modern Web Architecture Without a Backend — Using Supabase
+
+![Cover Image](https://res.cloudinary.com/practicaldev/image/fetch/s--ZrcIHW26--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a8kwh78d3n6jixte3qc1.png)
+
+Backend development is difficult for people who come entirely from a frontend background. The languages, frameworks, and tools differ, but more importantly, the frontend and backend systems have very different principles. Fortunately, a new generation of libraries and services is trying to fill the gap and simplify coding a backend by …, not coding it at all.
+
+<!--truncate-->
+
+![To code a backend or not to code](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a0j7u8mbazfi1w4z7fpu.jpg)
+
+In this post, let’s talk about [Supabase](https://supabase.com/) - what it is, how it works, and what kind of scenarios it fits best.
+
+---
+
+This post is part of a series about libraries and services that simplifies the construction of the backend of web apps. You can find the full series here:
+
+-   [PostgREST](/blog/postgrest)
+-   [Supabase](/blog/supabase) (this post)
+-   [Prisma + ZenStack](/blog/prisma-zenstack)
+
+---
+
+## What’s Supabase?
+
+Supabase is an open-source cloud service, and you can understand it as one of the following two things:
+
+-   A PostgreSQL hoster
+
+    It allows you to create fresh Postgres instances with just a few clicks and use it in your application’s backend. It also provides a built-in SQL editor and a data browser for you to manage the database inside a browser.
+
+-   A BaaS (Backend-as-a-Service)
+
+    It offers a comprehensive set of services, including auth, database access control, blob storage, edge functions, etc. The capabilities allow you to use Supabase as your backend instead of implementing one by yourself.
+
+In this article, let's explore Supabase in the context of BaaS.
+
+## Feature Package
+
+Supabase provides five essential services:
+
+1. _**Auth**_ authenticates users
+1. **_Database_** serves a standard PostgreSQL
+1. **_Realtime_** supports broadcasting messages and states to clients
+1. **_Edge Functions_** allows execution of custom typescript code
+1. **_Storage_** stores and serves files.
+
+Each of these services can be used separately, but you'll likely use **_Auth_** together with everything else so that you can authorize users' requests.
+
+### Auth
+
+The **_Auth_** service deals with user signup and authentication. It supports email, magic links, and a wide range of social login methods. If you're familiar with NextAuth, you can think of Supabase's Auth module as a reimplementation of NextAuth without the hard dependency on Next.js. What's neat about the **_Auth_** service is that, since it has a buddy **_Database_** service, it has a natural place to store user data, so you don't need to configure storage for it.
+
+**_Auth_** service is at the centre of Superbase's architecture. It verifies a user's identity but doesn't control what she can or cannot do. The latter is called "authorization" and is handled by each of the other four services, respectively, but they rely on the verified identity to do that.
+
+### Database
+
+Supabase sets itself apart from other BaaS with its strong heritage from PostgreSQL, and the **_Database_** service is proof of that. **_Database_** service directly inherited all the bells and whistles of Postgres - tables, views, functions, row-level security (RLS), etc.
+
+The most significant addition Supabase added to Postgres is the "serverless APIs". Every table, view and function is automatically mapped to a RESTful and a GraphQL (still Beta) API. These APIs allow you to conduct CRUD operations directly from the frontend. But, of course, you must be immediately alarmed: what about security? Supabase delegates that entirely to PostgreSQL's RLS. You're supposed to use the "Auth" service to authenticate users and set up RLS to guard against unauthorized operations. A typical RLS looks like this:
+
+```sql
+
+# Simple RLS for blog posts
+
+# owner has full access to her own posts
+CREATE POLICY post_owner_policy ON post
+    USING (owner = current_user);
+
+# all users can read published posts
+CREATE POLICY post_read_policy ON post FOR SELECT
+    USING (published = true);
+
+```
+
+The entire flow for an authorized request looks like:
+
+![Database auth flow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ovxqxv9wlrmjy6bo1c7u.png)
+
+, and calling the database from the frontend looks like this:
+
+```ts
+// Initialize the JS client
+import { createClient } from '@supabase/supabase-js';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Make a request
+const { data: todos, error } = await supabase.from('todos').select('*');
+```
+
+The overall idea is very similar to how [PostgREST](https://postgrest.org/) works. In fact, Supabase's RESTful layer is built with PostgREST. Please check out the following post if you're interested.
+
+{% embed https://dev.to/zenstack/backend-less-web-development-with-postgrest-3ma8 %}
+
+###Realtime
+
+**_Realtime_** is a utility service for subscribing to 3 types of real-time events: "Broadcast" for pub-sub pattern, "Presence" for synchronizing user's online status, and "Postgres Changes" for listening to database changes.
+
+![Realtime scenarios](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ixe3mj08ni9ma5r7hx6l.png)
+
+It's worth noting that if you've configured RLS in database tables, the database changes notifications also respect RLS policies, and clients only get the messages they're supposed to see.
+
+### Storage
+
+Supabase's storage offering is similar to blob storage services from most other cloud providers: a simple bucket/folder/file structure. Although **_Storage_** is not part of the SQL database store, its access control is configured with Postgres RSL, but how?
+
+The idea is that, although blobs are stored elsewhere, their metadata resides in the SQL database as regular tables. So when you use RLS to specify **_Storage_** access policies, you're actually setting it up for its metadata. When the **_Storage_** service processes a request, it first checks with the Postgres side to see if it is permitted.
+
+### Edge Functions
+
+**_Edge Functions_** are custom Typescript codes that you can deploy to Supabase and let them run on edge nodes, responding to client requests. **_Edge Functions_** uses Deno at runtime, apparently for better security and faster cold start; so supposedly, the Typescript code needs to stay within the boundary of what's supported by Deno.
+
+**_Edge Functions_** has a simple way of supporting authorization. The client sends over the JWT token received during authentication. The edge function code gets the user's identity (extracted from the token) as its input, so it can use that to check permissions. If the function accesses the database, it can also create a Postgres client with the authenticated user's context, so the database's RLS policies can work their magic.
+
+## Is It a Good Choice For Me?
+
+As you've seen, Supabase's BaaS offering is comprehensive. The combination of its services should suffice for many web apps of low to medium complexity. However, you may want to weigh the following non-functional factors before making a decision:
+
+1. Are you OK with using a 3rd party service as your entire backend?
+
+    Supabase is open source, and you should be able to host it yourself. Still, right now, documentation for self-hosting is limited, and I've never heard or read anyone doing self-hosting for serious applications.
+
+1. Are you comfortable with working with PostgreSQL a lot?
+
+    Supabase has a strong lineage from Postgres. You'll find yourself at home if you know Postgres well and may suffer if not. Solid knowledge of Postgres is needed to use it well.
+
+1. Do you like the idea of writing business logic in SQL?
+
+    PostgreSQL's RLS is a powerful tool. It works as a very reliable gatekeeper to keep your data safe. However, as you use it more, you'll inevitably get into a situation where a big chunk of your business logic is expressed in SQL. IMHO, SQL language was not optimally designed for that.
+
+1. How about your application's data model not staying with the code anymore?
+
+    If you use Supabase as a BaaS, you don't use an ORM anymore. Instead, you use serverless APIs (RESTful or GraphQL). As a result, one of the major benefits of an ORM - a centralized data model of your entire application within the source code - is lost.
+
+## Wrap Up
+
+Supabase is an excellent product that covers many aspects of a web application's backend needs. It may significantly shorten your time-to-market. I hope this article can help you see the upsides and downsides of using it and finally make a sound decision.

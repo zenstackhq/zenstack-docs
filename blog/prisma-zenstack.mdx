@@ -1,0 +1,206 @@
+---
+description: Modern Web Architecture Without a Backend — Using Prisma + ZenStack
+tags: [webdev, fullstack, prisma, database]
+authors: yiming
+slug: prisma-zenstack
+date: 2023-02-08
+---
+
+# Modern Web Architecture Without a Backend — Using Prisma + ZenStack
+
+![Cover Image](https://user-images.githubusercontent.com/104139426/217505434-d13c6e01-7342-464b-aba4-66a10b844f9f.png)
+
+Web development's landscape is ever changing. We started from bare metal machines serving static HTML pages, to the rise of the LAMP stack, then the MEAN stack, and now the JAM stack.
+
+<!--truncate-->
+
+While at a separate level two trends are going on:
+
+-   **Consolidation of architecture**
+
+    Developers are getting really tired with combining so many different pieces in an application, and have started to favor less for more: unified programming language, mono-repos, meta frameworks (like Next.js), and even building web apps without expliclty coding a backend.
+
+-   **Renaissance of SQL databases**
+
+    In reality SQL databases probably never really lost any ground to NoSQL; it just became less cool to use for a while, from a fashion perspective. Now with more and more people aware that few web apps are indeed "web scale" and relational databases are still the best choice for most use cases, SQL databases are making a comeback.
+
+In this post, I'll share how the combination of [Prisma](https://www.prisma.io/) and [ZenStack](https://zenstack.dev) correspond to the above two trends, and how they can help you build a secure backend with less effort.
+
+---
+
+This post is part of a series about libraries and services that simplifies the construction of the backend of web apps. You can find the full series here:
+
+-   [PostgREST](/blog/postgrest)
+-   [Supabase](/blog/supabase)
+-   [Prisma + ZenStack](/blog/prisma-zenstack) (this post)
+
+---
+
+## What's Prisma
+
+[Prisma](https://www.prisma.io/) is an ORM toolkit for Javascript/TypeScript. ORM is a kind of library that lets you access databases without writing SQL. Instead, you write code in the same language for the rest part of your app to manipulate the database, and the ORM library will translate it into SQL queries.
+
+![ORM](https://user-images.githubusercontent.com/104139426/217270030-f5acbc6a-345f-4f19-9b8f-23f630f0c152.png)
+
+More specifically, Prisma a schema-first ORM, which means you first define your data model in a schema file, and then Prisma generates the database schema and the corresponding CRUD operations for you. On the contrary, another ORM category is code-first: you define your data model in programming code, and the ORM infers the database schema from it.
+
+Choosing schema-first or code-first is a matter of preference, although a schema-first ORM has the benefit of being more coherent, concise, and easier to read.
+
+![Schema-first vs code-first](https://user-images.githubusercontent.com/104139426/217393709-9d9899ca-cb9f-405b-9c65-75240cd1dacd.png)
+
+## What's ZenStack
+
+[ZenStack](https://zenstack.dev) is an extension to Prisma that adds a layer of security to it. It allows you to define access control rules inside your schema file, and inject them into Prisma queries at runtime.
+
+![ZModel](/img/banner-code.png)
+
+Furthermore, it provides a RESTful API to access the database, and also generates client libraries for your frontend code. By combining access control and API generation, ZenStack makes it possible to have a fully secure CRUD backend without manually implementing it.
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+<ThemedImage
+    alt="ZenStack Architecture"
+    sources={{
+        light: useBaseUrl('/img/architecture-light.png'),
+        dark: useBaseUrl('/img/architecture-dark.png'),
+    }}
+/>
+
+## How Do They Work Together
+
+Prisma and ZenStack make a perfect match for building up a secure backend with a relational database. Here're the general steps for achieving it:
+
+### 1. Define Your Data Model
+
+Use the **ZModel** language (a superset of Prisma schema) to define your models, relations, and access policies. Optionally, if you use Next.js as your full-stack framework, enable the `@zenstackhq/react` plugin to generate data access client hooks.
+
+```prisma title="schema.zmodel"
+
+model Post {
+  id        String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  published Boolean @default(false)
+  author    User @relation(fields: [authorId], references: [id])
+  authorId  String
+
+  // author has full access
+  @@allow('all', auth() == author)
+
+  // logged-in users can view published posts
+  @@allow('read', auth() != null && published)
+}
+
+// generate react hooks under ./src/lib/hook
+plugin reactHooks {
+  provider = '@zenstackhq/react'
+  output = "./src/lib/hook
+}
+
+```
+
+### 2. Run Code Generation
+
+Use the `zenstack` CLI to generate several pieces of code:
+
+-   Prisma schema (schema.prisma)
+-   Prisma client
+-   Access policies for injecting Prisma queries at runtime
+-   React hooks for data access
+
+<div className="flex">
+    <video autoPlay loop muted playsInline className="w-full shadow-xl rounded-lg p-4 bg-black">
+        <source src="/video/zenstack-generate.mp4" type="video/mp4" />
+        You need a browser that supports HTML5 video to view this video.
+    </video>
+</div>
+
+You can use the generated `schema.prisma` to migrate your database's schema, and the Prisma client to access the database without any access control. You'll see how the access policies and React hooks help next.
+
+### 3. Mounting the Data Access APIs
+
+Use a framework-specific package to install a data access API request handler. You'll usually use an "enhanced" Prisma client to initialize the request handler to secure the endpoints. The "enhancement" works by loading the access policies generated in the previous step, intercepting Prisma client's operations, and injecting extra query/mutation conditions.
+
+Here's an example for Next.js:
+
+```ts title='pages/api/model/[...path].ts'
+// the standard Prisma client
+const prisma = new PrismaClient();
+
+// create a Next.js API endpoint handler
+export default requestHandler({
+    // set up a callback to get a database instance for handling the request
+    getPrisma: async (req, res) => {
+        // get current user in the session
+        const user = await getSessionUser(req, res);
+
+        // return an enhanced Prisma client that enforces access policies
+        return withPresets(prisma, { user });
+    },
+});
+```
+
+### 4. Use the Generated Hooks to Access Data
+
+Use the generated hooks to build up UI parts with ease. The hooks talk to the data access API installed in the previous step. Since the API is already secured by the access policies, the hooks will only return entities that are readable to the current user, and will reject any unauthorized mutations.
+
+```tsx title='/src/components/posts.tsx'
+import { usePost } from '../lib/hooks';
+
+const Posts: FC = () => {
+    // "usePost" is a generated hooks method
+    const { findMany } = usePost();
+
+    // list unpublished posts together with their author's data,
+    // the result "posts" only include entities that are readable
+    // to the current user
+    const posts = findMany({
+        where: { published: false },
+        include: { author: true },
+        orderBy: { updatedAt: 'desc' },
+    });
+
+    // entities are accurately typed based on the query structure
+    // posts: Array<Post & { author: user }>
+    return (
+        <ul>
+            {posts.map((post) => (
+                <li key={post.id}>
+                    {post.title} by {post.author.e}
+                </li>
+            ))}
+        </ul>
+    );
+};
+```
+
+## Why Do They Improve Your Productivity?
+
+The combination of Prisma and ZenStack improves your development productivity in several ways:
+
+### 1. Clear picture of data model
+
+By using a DSL to model your entities, you always have an unambiguous description of your app's data model centralized in a single easy-to-read file.
+
+### 2. Safeguard close to the database
+
+Security is hard partly because the rules need to be consistently applied across all the related APIs. By modeling security declaratively, you make a safeguard close to the database and can avoid the risk of forgetting to add necessary checks when adding or updating an API. It's also much easier to adjust rules when requirements change because the schema is your single source of truth.
+
+### 3. Powerful and type-safe client library for free
+
+Prisma client's (backend) Typescript API offers excellent type-safety. Thanks to ZenStack's client library generation, you can now enjoy the same programming experience right in your frontend code.
+
+## Is It a Good Choice For Me?
+
+Prisma + ZenStack can be a good fit for your project if some of the following situations apply:
+
+-   You desire a simple architecture and want to build a full-stack web app entirely with a meta framework (like Next.js or Remix.run), without a separate backend.
+-   You application has non-trivial security requirements.
+-   You're not a SQL guru and would like to avoid complex SQL tasks whenever possible. Otherwise, [Supabase](/blog/supabase) or [PostgREST](/blog/postgrest) may be a better choice.
+-   You don't want to be locked in to a specific database kind or hoster.
+
+# Wrap Up
+
+Prisma and ZenStack make a great combination for building up a secure backend with a relational database. We hope you'll find it useful for your next project.
