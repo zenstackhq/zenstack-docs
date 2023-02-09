@@ -145,6 +145,7 @@ Let’s assume we would like to have some custom attributes:
 -   Attributes @password and @omit on the password field to encrypt and ignore it by normal read.
 
 ```prisma
+// everyone can signup, and user profile is also publicly readable
 /// @@allow('create,read', true)
 model User {
     id String @id()
@@ -201,7 +202,7 @@ model User {
     id        String @id
     email     String @email
     password  String @password @omit
-
+    // everyone can signup, and user profile is also publicly readable
     @@allow('create,read', true)
 }
 ```
