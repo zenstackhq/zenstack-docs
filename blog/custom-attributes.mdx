@@ -318,6 +318,6 @@ model User {
 }
 ```
 
-Based on the principle of “**never reinvent the wheel**”, we do put a value on the existing generators that contributed by the community, like the zod-prisma and [\*\*prisma-nestjs-graphql](https://github.com/unlight/prisma-nestjs-graphql).\*\* So to make it still work, for any non-Prisma attribute, we will generate it as the triple comments in the `schema.prisma` file.
+Based on the principle of “**never reinvent the wheel**”, we do put a value on the existing generators that contributed by the community, like the zod-prisma and prisma-nestjs-graphql. So to make it still work, for any non-Prisma attribute, we will generate it as the triple comments in the `schema.prisma` file.
 
 So the actual bonus is that you can use ZModel simply as **pure prisma + syntactic custom attribute.** Although ZenStack has more than that, we are still glad to see any help it could give you!
