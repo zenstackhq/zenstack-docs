@@ -47,7 +47,7 @@ const config = {
                     changefreq: 'weekly',
                 },
                 gtag: {
-                    trackingID: 'G-1J36QMDBV2',
+                    trackingID: 'GTM-M3DK97B',
                 },
             },
         ],
