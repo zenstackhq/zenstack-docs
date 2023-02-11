@@ -49,6 +49,9 @@ const config = {
                 // gtag: {
                 //     trackingID: 'G-1J36QMDBV2',
                 // },
+                googleTagManager: {
+                    containerId: 'GTM-M3DK97B',
+                },
             },
         ],
         [
@@ -56,11 +59,13 @@ const config = {
             {
                 themes: ['min-light', 'nord'],
             },
-            '@docusaurus/plugin-google-tag-manager',
-            {
-                containerId: 'GTM-M3DK97B',
-            },
         ],
+        // [
+        //     '@docusaurus/plugin-google-tag-manager',
+        //     {
+        //         containerId: 'GTM-M3DK97B',
+        //     },
+        // ],
     ],
 
     themeConfig:
