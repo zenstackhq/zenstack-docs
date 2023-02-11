@@ -70,40 +70,6 @@ const config = {
                     content:
                         'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
                 },
-                // {
-                //     property: 'og:image',
-                //     content: '/img/social-cover.png',
-                // },
-                // {
-                //     property: 'og:title',
-                //     content: 'ZenStack - Prisma Catalyst For Full-stack Development',
-                // },
-                // {
-                //     property: 'og:description',
-                //     content:
-                //         'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
-                // },
-                // {
-                //     property: 'og:url',
-                //     content: 'https://zenstack.dev',
-                // },
-                // {
-                //     property: 'twitter:card',
-                //     content: 'summary_large_image',
-                // },
-                // {
-                //     property: 'twitter:image:src',
-                //     content: '/img/social-cover.png',
-                // },
-                // {
-                //     property: 'twitter:title',
-                //     content: 'ZenStack - Prisma Catalyst For Full-stack Development',
-                // },
-                // {
-                //     property: 'twitter:description',
-                //     content:
-                //         'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
-                // },
             ],
             navbar: {
                 title: 'ZenStack',
