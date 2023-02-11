@@ -167,6 +167,24 @@ const config = {
                 id: 'prerelease-1',
                 content: `🛠️ You're viewing the docs for the v1 preview version of ZenStack. Click <a href="https://legacy.zenstack.dev" style="cursor: pointer">here</a> for the older v0.5 version.`,
             },
+            algolia: {
+                // The application ID provided by Algolia
+                appId: 'VS0AELD3AC',
+
+                // Public API key: it is safe to commit it
+                apiKey: 'f7aefaa5e0f6ff7d3816023e35d1503c',
+
+                indexName: 'zenstack',
+
+                // Optional: see doc section below
+                contextualSearch: true,
+
+                // Optional: Algolia search parameters
+                searchParameters: {},
+
+                // Optional: path for search page that enabled by default (`false` to disable it)
+                searchPagePath: 'search',
+            },
         },
 
     plugins: [
