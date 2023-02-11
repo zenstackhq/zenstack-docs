@@ -46,8 +46,8 @@ const config = {
                 sitemap: {
                     changefreq: 'weekly',
                 },
-                gtag: {
-                    trackingID: 'G-1J36QMDBV2',
+                googleTagManager: {
+                    containerId: 'GTM-M3DK97B',
                 },
             },
         ],
