@@ -46,15 +46,19 @@ const config = {
                 sitemap: {
                     changefreq: 'weekly',
                 },
-                gtag: {
-                    trackingID: 'GTM-M3DK97B',
-                },
+                // gtag: {
+                //     trackingID: 'G-1J36QMDBV2',
+                // },
             },
         ],
         [
             'docusaurus-preset-shiki-twoslash',
             {
                 themes: ['min-light', 'nord'],
+            },
+            '@docusaurus/plugin-google-tag-manager',
+            {
+                containerId: 'GTM-M3DK97B',
             },
         ],
     ],
