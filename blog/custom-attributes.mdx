@@ -66,7 +66,7 @@ In a nutshell, a generator’s code would be called when you run the `prisma gen
 
 ### Implement generator
 
-All you need to do is to implement the `generatorHandler` function to create a new generator of yourself like the below:
+Under the hood, a generator has to be an executable program that implements a JSON PRC interface via stdio. Luckily, Prisma has written a helper library `@prisma/generator-helper` taking care of the communication of RPC and giving us a simple callback function. All you need to do is to implement the `generatorHandler` function to create a new generator for yourself like the one below:
 
 ```tsx
 import { DMMF, generatorHandler, GeneratorOptions } from '@prisma/generator-helper';
