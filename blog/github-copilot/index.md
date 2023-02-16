@@ -3,18 +3,18 @@ description: Let's find out how GitHub Copilot actually helps in your daily codi
 tags: [programming, ai, productivity]
 authors: yiming
 date: 2023-02-17
-image: ./cover.jpg
+image: ./cover.png
 ---
 
 # What Made Me Pay That $10/Mon To GitHub Copilot
 
-![Cover image](cover.jpg)
+![Cover image](cover.png)
 
 I initially tried GitHub Copilot, just briefly, around the beginning of 2022. At that time, I found the idea intriguing, but the product usability was not so satisfactory: both in terms of speed and quality of generation. I started to reuse it about three months ago, and now it's become indispensable to me and worth every penny of that $10/mon that I pay.
 
-<!--truncate-->
-
 What makes me a happy customer? Let's figure it out.
+
+<!--truncate-->
 
 ## What To Expect From a Copilot?
 
