@@ -72,9 +72,11 @@ Powered by the same breed of a model like ChatGPT, Copilot is great at completin
 
 ![Comments generation](comment-gen.png)
 
-It's also an excellent marketer who warm-heartedly suggested a business idea, a domain name, and a slogan for me 😂.
+It's also an excellent marketer who warm-heartedly suggested a business idea, a new domain name, and a slogan for me 😂.
 
 ![Slogan generation](slogan-gen.png)
+
+> ZenStack (https://zenstack _**.io) - a platform that helps developers to focus on what matters most.**_
 
 ## AI-Assisted Programming - Bless or Curse?
 
