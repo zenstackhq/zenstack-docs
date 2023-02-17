@@ -85,3 +85,10 @@ However, there's a big difference, you can (often) trust a human assistant to fu
 ![Supervise](supervise.jpg)
 
 I think the debate of whether AI will replace programmers is unimportant. It's evident that, at this stage, it's nothing more than an incredible tool, and I'll embrace it for the sake of my productivity. However, when it's ready to replace programmers, nothing can ever possibly stop it.
+
+---
+
+Attribution:
+
+1. Photo by [Blake Guidry](https://unsplash.com/@blakeguidry) from [Unsplash](https://unsplash.com)
+1. Photo licensed from [ShutterStock](https://shutterstock.com)
