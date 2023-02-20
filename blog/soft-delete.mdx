@@ -174,7 +174,7 @@ TLDR, the biggest problem is that it would fall short when the relation field is
 
     If only any title of deleted posts of the user contains “Prisma”, that user would also be returned.
 
-You might think it doesn’t seem to be hard to fix it for both by adding the deleted filter. It might be for the above example, but how about this one:
+You might think it doesn’t seem to be hard to fix it for both by adding the deleted filter. It might be true for the above examples, but how about this one:
 
 ```tsx
 const user = await prisma.user.findMany({
@@ -212,7 +212,7 @@ As Prisma provides a quite flexible filter with several operators like `AND`, `O
 
 As an enhancement of Prisma, after supporting Custom attributes issues below:
 
-[How to add custom attributes in Prisma](https://dev.to/zenstack/how-to-add-custom-attributes-in-prisma-6i8)
+[How to add custom attributes in Prisma](https://zenstack.dev/blog/custom-attributes)
 
 This one looks like a good next for us. For the `delete` operation, I think you can still use the middleware approach above or the new client extension to implement it. That should not be a problem.
 
