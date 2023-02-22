@@ -19,7 +19,7 @@ One big piece of conventional wisdom for software operation is "never expose int
 | MariaDB  | Tokyo          | 2                              | 11                         | Massive Brute Force - multiple IPs                  |
 | Aurora   | North Virginia | 1                              | 15                         | Malware Deployment                                  |
 | Postgres | North Virginia | 4                              | 288                        | Malware Deployment                                  |
-| MySQL    | Sao Paulo      | 1/4                            | 16                         | Massive Brute Force - multiple IPs                  |
+| MySQL    | São Paulo      | 1/4                            | 16                         | Massive Brute Force - multiple IPs                  |
 | Postgres | Frankfurt      | 6                              | 240                        | Information Gathering: DB version and configuration |
 
 > _Data from [Imperva](https://www.imperva.com/blog/never-leave-your-cloud-database-publicly-accessible/)._
