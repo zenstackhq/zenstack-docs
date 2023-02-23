@@ -30,9 +30,7 @@ Let's explore why this is happening, the different ways how it happens, and the 
 
 ## What Drives the Desire for Publicly Accessible Databases?
 
-Is conventional wisdom dead? Or are people now so reckless to push their products to the market ASAP without worrying much about data security?
-
-The reality is that security is always a trade-off and never black or white. Sometimes the perceived gain outweighs the higher risks that come with it. Let's look at some of the driving forces.
+Is conventional wisdom dead? Or are people now so reckless to push their products to the market ASAP without worrying much about data security? The reality is that security is always a trade-off and never black or white. Sometimes the perceived gain outweighs the higher risks that come with it. Let's look at some of the driving forces.
 
 ### Architecture Choice
 
@@ -42,7 +40,7 @@ This is what people have been doing for decades. But with the rise of cloud comp
 
 ### Using Cloud-based Analytics Tools
 
-Another force comes from the need to do flexible analytics. Databases are not only the foundation of your application, but also the source of truth for your business analytics. Analysts love the power and autonomy offered by cloud-based BI tools like Tableau, PowerBI, etc. Apparently, read-only access to your database from the public internet is needed to make this work.
+Another force comes from the need to do flexible analytics. Databases are not only the foundation of your application but also the source of truth for your business analytics. Analysts love the power and autonomy offered by cloud-based BI tools like Tableau, PowerBI, etc., with which they can connect to the databases in seconds and start creating charts and dashboards right away. Apparently, read-only access to your database from the public internet is needed to make this work.
 
 ## Two Ways of Exposing Your Database
 
