@@ -5,7 +5,7 @@ authors: yiming
 date: 2023-02-23
 ---
 
-# The Controversy About Exposing Databases to the Internet
+# Exposing Databases to the Internet: Seriously?
 
 ![Cover image](cover.png)
 
@@ -62,10 +62,10 @@ In such a configuration, by default, the only protection your database has is th
 
 As running web workload becomes the prevailing use case of databases, some new-generation vendors have started to offer web-native solutions. To name a few:
 
--   [Supabase](https://supabase.io)
+-   [Supabase](/blog/supabase)
+-   [PostgREST](/blog/postgrest)
+-   [ZenStack](blog/prisma-zenstack)
 -   [Hasura](https://hasura.io)
--   [PostgREST](https://postgrest.org)
--   [ZenStack](https://zenstack.dev)
 -   [WunderGraph](https://wundergraph.com/)
 
 They differ from traditional databases in several ways:
