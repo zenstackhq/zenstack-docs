@@ -24,7 +24,11 @@ One big piece of conventional wisdom for software operation is "never expose int
 
 > _Data from [Imperva](https://www.imperva.com/blog/never-leave-your-cloud-database-publicly-accessible/)._
 
-But things have been changing gradually during the past decade. The rise of serverless computing made it easy to spin up remotely hosted database instances and consume them from over the internet. Maybe too easy that sometimes you forget to think through security before start using it.
+> _Time To First Connection: hours until the database was found and connected_
+
+> _Time To First Attack: hours until the database got its first attach_
+
+But things have been changing gradually during the past decade. The rise of serverless computing made it easy to spin up remote database instances and consume them from over the internet. An obvious bad practice? It's more complicated than a simple yes/no answer.
 
 Let's explore why this is happening, the different ways how it happens, and the risk implications.
 
