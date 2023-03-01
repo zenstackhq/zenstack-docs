@@ -1,6 +1,7 @@
 ---
 description: Conventional wisdom tells us to never expose database to the internet, but things have been changing gradually.
 tags: [database, programming, best-practice, security]
+image: ./cover.png
 authors: yiming
 date: 2023-02-23
 ---
