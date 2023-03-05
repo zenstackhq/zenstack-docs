@@ -23,7 +23,7 @@ After 4 months passed, and below are some basic metrics we have now:
 
 -   GitHub stars: 152
 -   Website DAU(peek): 190
--   Discord Users: 56
+-   Discord users: 56
 -   Known potential production usage: 2
 
 I don’t know how would you feel about the result, I personally feel content with the results. In terms of what I gained from this experience, my takeaway is:
@@ -78,7 +78,7 @@ The first meeting I attended is a GraphQL vs tRPC meeting below:
 
 Even though I did not have the opportunity to discuss ZenStack with anyone, the meeting provided several benefits:
 
--   Alex, the author of tRPC, was able to respond to several inquiries regarding the future of tPRC during the meeting.
+-   Alex, the author of tRPC, was able to respond to several of my inquiries regarding the future of tPRC which is helpful for ZenStack to determine our next steps.
 -   I spoke to an employee of Prisma about the feature plan and they suggested that I post it in the GitHub issue. (I will show you why and how good it is later 😉)
 -   After attending the meeting, I discovered that numerous younger individuals lacked knowledge about the history of APIs. As a result, I wrote a post on the subject:
     [A Brief History of API: RPC, REST, GraphQL, tRPC](https://dev.to/zenstack/a-brief-history-of-api-rpc-rest-graphql-trpc-fme).
@@ -86,7 +86,7 @@ Even though I did not have the opportunity to discuss ZenStack with anyone, the 
 
 I attended another Node.js event where I arrived early even though I knew people generally don't come on time for such events.
 
-Since there weren't many attendees present, one of the organizers named Toms had a conversation with me. When he heard that I’m working on ZenStack, instead of giving me any feedback, he directly asked “would you like to give a talk about ZenStack after the main speaker?” Despite being surprised, I agreed and gave my first public talk about ZenStack:
+Since there weren't many attendees present, Thomas, one of the organizers, had a conversation with me. When he heard that I’m working on ZenStack, instead of giving me any feedback, he directly asked “would you like to give a talk about ZenStack after the main speaker?” Despite being surprised, I agreed and gave my first public talk about ZenStack:
 
 ![lighting-talk](https://user-images.githubusercontent.com/16688722/222949794-faa37023-cbd4-48e8-96a4-b91d46d8c9ed.png)
 
