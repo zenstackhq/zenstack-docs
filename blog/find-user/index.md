@@ -1,6 +1,6 @@
 ---
 title: How to find users for open source project with no resources and connections
-description: The meaning of FullStack development has been changed, let's embrace and move to the ZenStack world.
+description: helpful tips on how to attract users based on our real experience.
 tags: [zenstack, opensource]
 authors: jiasheng
 date: 2023-03-05
