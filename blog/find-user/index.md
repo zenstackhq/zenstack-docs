@@ -15,7 +15,7 @@ If you are starting your first Open Source Project with no resources and connect
 
 <!--truncate-->
 
-# Background
+## Background
 
 My co-founder and I started to build our OSS full-stack toolkit ZenStack in Oct 2022, the first version was released to the public in Nov 2022. This is the first time for us to really get involved in the OSS world, and we are not planning to spend any money on the promotion. So basically, no resources, no connections.
 
@@ -32,9 +32,9 @@ I don’t know how would you feel about the result, I personally feel content wi
 
 Typically, engineers are accustomed to immediate feedback from their work - write code, run it, and see results. However, this is not the case when it comes to open-source projects. It could take a significant amount of time before the project garners attention from users. In order to increase the chances of your project being discovered by potential customers, consider it as a probability game - with every effort you make, you increase the likelihood of someone finding out about your project. Even if there is a high probability that someone could stumble upon it, they may still be unaware of it. Therefore, the key is to persistently increase the possibility of the project's discovery, so that one day, it may catch the attention of a potential user.
 
-# 3 most important right things to do
+## 3 most important right things to do
 
-## Write content for the potential audience
+### Write content for the potential audience
 
 Unless you can precisely identify and reach out to your target audience, I think the only way to find your users is to write content to attract and retain an audience.
 
@@ -68,7 +68,7 @@ Here are some basic metrics in dev.to we got so far:
 -   2k followers
 -   162K views
 
-## Attend conferences and meetups
+### Attend conferences and meetups
 
 Conducting offline events is a popular method of promoting new projects to audiences. It provides an excellent opportunity to connect with a highly engaged audience and establish deeper personal relationships. This approach is especially effective if the gathering's topic is related to your project, allowing you to become an active participant in the community. Not only can you receive feedback from a diverse audience, but you can also gain inspiration by learning about what other individuals are working on.
 
@@ -96,7 +96,7 @@ On that day, the number of visitors to the ZenStack website reached its peak. De
 
 So far, it is the content that attracts the most users to ZenStack website.
 
-## Solve the existing issues of other open-source projects
+### Solve the existing issues of other open-source projects
 
 Even though your project may not have gained sufficient recognition, there are other well-known projects that have. And Usually the more popular, the more open issues in GitHub. By offering a solution to one of these issues, you can post your project there and increase its visibility. Those who are keeping an eye on the issue may take notice of your project and take a look at what you're building.
 
@@ -120,7 +120,7 @@ After posting for another soft delete issue, I got invited to speak about ZenSta
 
 Once again, a peek time and is still going up. 😄
 
-# Bnous
+## Bnous
 
 ZenStack could also generate the tRPC route, which is based on the awesome work of [Omar Dulaimi](https://github.com/omar-dulaimi/prisma-trpc-generator). We showed our gratitude by buying some coffee for him. he gave us a star later. One of his followers noticed it and decided to check out ZenStack. The first thing he said in our Discord was:
 
@@ -128,6 +128,6 @@ ZenStack could also generate the tRPC route, which is based on the awesome work 
 
 After talking with him, we found out that he is the perfect match for our ideal user portrait. And he reported 3 bugs we might never be able to find by ourselves just on the first day. Isn't it incredible how a small action can create such a positive impact, much like the butterfly effect?😄
 
-# Final word
+## Final word
 
 **Keep doing the right things and wait for the good thing to happen. You will never guess what it is and how good it is.**
