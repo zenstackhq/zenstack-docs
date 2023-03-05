@@ -80,8 +80,8 @@ Even though I did not have the opportunity to discuss ZenStack with anyone, the 
 
 -   Alex, the author of tRPC, was able to respond to several inquiries regarding the future of tPRC during the meeting.
 -   I spoke to an employee of Prisma about the feature plan and they suggested that I post it in the GitHub issue. (I will show you why and how good it is later 😉)
--   After attending the meeting, I discovered that numerous younger individuals lacked knowledge about the history of APIs. As a result, I wrote a post on the subject, which can be found below:
-    [A Brief History of API: RPC, REST, GraphQL, tRPC](https://dev.to/zenstack/a-brief-history-of-api-rpc-rest-graphql-trpc-fme)
+-   After attending the meeting, I discovered that numerous younger individuals lacked knowledge about the history of APIs. As a result, I wrote a post on the subject:
+    [A Brief History of API: RPC, REST, GraphQL, tRPC](https://dev.to/zenstack/a-brief-history-of-api-rpc-rest-graphql-trpc-fme).
     The post received 28k views and by far the most reactions (376) out of all my posts
 
 I attended another Node.js event where I arrived early even though I knew people generally don't come on time for such events.
@@ -108,7 +108,7 @@ hoping to gauge user reactions and decide which issues to prioritize. However, t
 
 After posting for the custom attribute issue below:
 
-[https://github.com/prisma/prisma/issues/3102#issuecomment-1425690105](https://github.com/prisma/prisma/issues/3102#issuecomment-1425690105)
+[![Custom attribute issue](https://user-images.githubusercontent.com/16688722/222951181-e4f71caa-a669-46c6-ae63-101be0bc0aa6.png)](https://github.com/prisma/prisma/issues/3102#issuecomment-1425690105)
 
 We attracted a very special watcher for that issue, Nikolas, the developer advocate at Prisma. He then elaborated a great tweet for us, which once again brought another peak in website visitors for ZenStack.
 
