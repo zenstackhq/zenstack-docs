@@ -624,6 +624,20 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | name   | The name of the unique combination of fields                 |
     | map    | The name of the underlying unique constraint in the database |
 
+-   `@@schema`
+
+    ```prisma
+        attribute @@schema(_ name: String)
+    ```
+
+    Specifies the database schema to use in a [multi-schema setup](https://www.prisma.io/docs/guides/database/multi-schema).
+
+    _Params_:
+
+    | Name | Description                     |
+    | ---- | ------------------------------- |
+    | name | The name of the database schema |
+
 -   `@@index`
 
     ```prisma
