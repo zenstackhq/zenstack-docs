@@ -121,9 +121,9 @@ There is a famous so-called 1st rule of programming:
 
 > If it works, don’t touch it.
 
-When I first heard it, it didn’t feel good. Why should we have to stick to the outdated code?
+Initially, I had a negative reaction upon hearing this idea. Why should we be compelled to adhere to antiquated code?
 
-My mind changed when I heard one rule from one office team member at Microsoft:
+However, my perspective shifted upon hearing a particular guideline from a member of Microsoft's office team:
 
 > You should always add code without deleting any existing code
 
