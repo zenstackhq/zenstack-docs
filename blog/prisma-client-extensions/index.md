@@ -12,6 +12,8 @@ date: 2023-03-12
 
 Although still experimental, [Client Extensions](https://www.prisma.io/docs/concepts/components/prisma-client/client-extensions) are one of the most exciting features introduced in recent Prisma releases. Why? Because it opens a door for developers to inject custom behaviors into `PrismaClient` with great flexibility. This post shows a few interesting scenarios enabled by this feature, together with thoughts about where we should set the boundary to avoid overusing its power.
 
+<!--truncate-->
+
 ## Background
 
 Prior to the introduction of client extensions, [middleware](https://www.prisma.io/docs/concepts/components/prisma-client/middleware) was the only way to extend Prisma’s core runtime functionality - you can use it to make changes to the query arguments and alter the result. Client extensions are created as a future replacement to middleware with more flexibility and type safety. Here’s a quick list of things you can do with it:
