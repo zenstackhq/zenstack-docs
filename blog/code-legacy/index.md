@@ -29,9 +29,9 @@ Take a look at the non-flat node_modules directory. You will be more clear about
 
 The best thing I love is it ingeniously uses symbolic links tricks to make it completely compatible with Node’s module resolution algorithm. It means you can just drop in to replace npm with pnpm for your existing project.
 
-After understanding the motivation and logic by looking over all the contents of pnpm’s website, I think it’s the perfect enhancement to the npm without any side effects. Therefore, I was actually wondering why does npm also adopt it or if everyone would just switch to pnpm instead?
+After understanding the motivation and logic by looking over all the contents of pnpm’s website, I think it’s the perfect enhancement to the npm without any side effects. Therefore, I was actually wondering why doesn't npm also adopt it or everyone would just switch to pnpm instead.
 
-Taking look at the download trend, you know neither of them happened.
+Taking look at the download trend, you know neither of them happened at least for now.
 
 ![npm-trend](https://user-images.githubusercontent.com/16688722/224260117-9253b112-1413-42e8-aa68-9553b846305b.png)
 
