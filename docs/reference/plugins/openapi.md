@@ -28,23 +28,23 @@ The `@zenstackhq/openapi` generates an [OpenAPI 3.0](https://spec.openapis.org/o
     For example:
 
     ```prisma
-        model User {
-            id String @id
-            email String @unique
+    model User {
+        id String @id
+        email String @unique
 
-            @@openapi.meta({
-                findMany: {
-                    description: 'Find users matching the given conditions'
-                },
-                delete: {
-                    method: 'put',
-                    path: 'dodelete',
-                    description: 'Delete a unique user',
-                    summary: 'Delete a user yeah yeah',
-                    tags: ['delete', 'user']
-                },
-            })
-        }
+        @@openapi.meta({
+            findMany: {
+                description: 'Find users matching the given conditions'
+            },
+            delete: {
+                method: 'put',
+                path: 'dodelete',
+                description: 'Delete a unique user',
+                summary: 'Delete a user yeah yeah',
+                tags: ['delete', 'user']
+            },
+        })
+    }
     ```
 
 -   `@@openapi.ignore`
