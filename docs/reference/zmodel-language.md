@@ -533,6 +533,14 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Automatically stores the time when a record was last updated.
 
+-   `@ignore`
+
+    ```prisma
+        attribute @ignore()
+    ```
+
+    Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
+
 -   `@password`
 
     ```prisma
@@ -666,6 +674,14 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | Name | Description                                              |
     | ---- | -------------------------------------------------------- |
     | name | The name of the underlying table or enum in the database |
+
+-   `@@ignore`
+
+    ```prisma
+        attribute @@ignore()
+    ```
+
+    Exclude a model from the Prisma Client (for example, a model that you do not want Prisma users to update).
 
 -   `@@allow`
 

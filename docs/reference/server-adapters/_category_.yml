@@ -1,7 +1,7 @@
-position: 100
-label: 'Advanced'
+position: 5
+label: Server Adapters
 collapsible: true
 collapsed: true
 link:
     type: generated-index
-    title: Advanced
+    title: Server Adapters
