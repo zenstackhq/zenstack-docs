@@ -1,11 +1,19 @@
 ---
-description: Package for integrating with Next.js
-sidebar_position: 3
+description: Adapter for integrating with Next.js
+sidebar_position: 1
 ---
 
-# @zenstackhq/next
+import ErrorHandling from './_error-handling.md';
 
-The `@zenstackhq/next` provides a quick way to install API endpoints onto a Next.js project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+# Next.js
+
+The `@zenstackhq/next` package provides a quick way to install API endpoints onto a [Next.js](https://nextjs.org/) project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+:::caution
+
+Moving forward, server adapter implementations will be consolidated to `@zenstackhq/server` package. This package (`@zenstackhq/next`) will be deprecated in the future, but will continue being maintained for a few releases.
+
+:::
 
 ### Exports
 
@@ -20,10 +28,7 @@ export type RequestHandlerOptions = {
     /**
      * Callback method for getting a Prisma instance for the given request/response pair.
      */
-    getPrisma: (
-        req: NextApiRequest,
-        res: NextApiResponse
-    ) => Promise<unknown> | unknown;
+    getPrisma: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown> | unknown;
 
     /**
      * Whether to use superjson for serialization/deserialization. Defaults to true.
@@ -63,28 +68,4 @@ export default requestHandler({ getPrisma });
 
 The APIs can be easily consumed using the [`@zenstackhq/react`](./react) plugin.
 
-### Error Handling
-
-The request handler catches [Prisma errors](https://www.prisma.io/docs/reference/api-reference/error-reference) and turns them into responses with proper HTTP status and body.
-
--   `PrismaClientKnownRequestError` with code `P2004` is mapped to HTTP 403 to indicate the request is denied due to lack of permission.
--   Other `PrismaClientKnownRequestError`, `PrismaClientUnknownRequestError` and `PrismaClientValidationError` are mapped to HTTP 400.
--   None-prisma errors are mapped to HTTP 500.
-
-Error body:
-
-```ts
-{
-    // true for Prisma errors
-    prisma?: boolean;
-
-    // true for PrismaClientKnownRequestError with code 'P2004'
-    rejectedByPolicy?: boolean;
-
-    // original Prisma error code, available for PrismaClientKnownRequestError
-    code?: string;
-
-    // error message
-    message: string;
-}
-```
+<ErrorHandling />

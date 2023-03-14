@@ -1,7 +1,7 @@
-position: 4
-label: Plugins
+position: 5
+label: Server Adapters
 collapsible: true
 collapsed: true
 link:
     type: generated-index
-    title: Plugins
+    title: Server Adapters
