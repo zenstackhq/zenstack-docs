@@ -1,6 +1,6 @@
 ---
 description: Plugin for generating OpenAPI 3.0 specifications
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # @zenstackhq/openapi

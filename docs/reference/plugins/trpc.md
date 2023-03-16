@@ -1,6 +1,6 @@
 ---
 description: Plugin for generating tRPC data query routes
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 # @zenstackhq/trpc
