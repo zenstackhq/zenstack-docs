@@ -9,11 +9,14 @@ The `@zenstackhq/openapi` generates an [OpenAPI 3.0](https://spec.openapis.org/o
 
 ## Options
 
-| Name    | Type   | Description                                   | Required | Default                |
-| ------- | ------ | --------------------------------------------- | -------- | ---------------------- |
-| output  | String | Output file path (with suffix .yaml or .json) | Yes      |                        |
-| title   | String | API title                                     | No       | ZenStack Generated API |
-| version | String | API version                                   | No       | 1.0.0                  |
+| Name        | Type   | Description                                   | Required | Default                |
+| ----------- | ------ | --------------------------------------------- | -------- | ---------------------- |
+| output      | String | Output file path (with suffix .yaml or .json) | Yes      |                        |
+| title       | String | API title                                     | No       | ZenStack Generated API |
+| version     | String | API version                                   | No       | 1.0.0                  |
+| prefix      | String | API path prefix, e.g., '/api'                 | No       |                        |
+| description | String | API description                               | No       |                        |
+| summary     | String | API summary                                   | No       |                        |
 
 ## Attributes
 
@@ -68,6 +71,8 @@ plugin openapi {
     output = './openapi.yaml'
     title = 'My awesome API'
     version = '0.5.0'
+    summary = 'Created with ZenStack'
+    description = 'My awesome API created with ZenStack'
 }
 ```
 
