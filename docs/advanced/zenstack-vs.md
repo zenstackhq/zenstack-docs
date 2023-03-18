@@ -1,5 +1,5 @@
 ---
-description: How does ZenStack work
+description: ZenStack compared with other related tools and services
 sidebar_position: 1
 ---
 

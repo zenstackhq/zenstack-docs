@@ -533,6 +533,14 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Automatically stores the time when a record was last updated.
 
+-   `@ignore`
+
+    ```prisma
+        attribute @ignore()
+    ```
+
+    Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
+
 -   `@password`
 
     ```prisma
@@ -558,7 +566,55 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Indicates that the field should be omitted when read from the generated services. Commonly used together with `@password` attribute.
 
+-   `@prisma.passthrough`
+
+    ```prisma
+        attribute @prisma.passthrough(_ text: String)
+    ```
+
+    A utility attribute for passing arbitrary text to the generated Prisma schema. This is useful as a workaround for dealing with discrepancies between Prisma schema and ZModel.
+
+    _Params_:
+
+    | Name | Description                          |
+    | ---- | ------------------------------------ |
+    | text | Text to passthrough to Prisma schema |
+
+    E.g., the following ZModel content:
+
+    ```prisma
+        model User {
+            id Int @id @default(autoincrement())
+            name String @prisma.passthrough("@unique")
+        }
+    ```
+
+    wil be translated to the following Prisma schema:
+
+    ```prisma
+        model User {
+            id Int @id @default(autoincrement())
+            name String @unique
+        }
+    ```
+
 #### Model attributes
+
+-   `@@id`
+
+    ```prisma
+        attribute @@id(_ fields: FieldReference[], name: String?, map: String?)
+    ```
+
+    Defines a multi-field ID (composite ID) on the model.
+
+    _Params_:
+
+    | Name   | Description                                                                   |
+    | ------ | ----------------------------------------------------------------------------- |
+    | fields | A list of fields defined in the current model                                 |
+    | name   | The name that the Client API will expose for the argument covering all fields |
+    | map    | The name of the underlying primary key constraint in the database             |
 
 -   `@@unique`
 
@@ -575,6 +631,20 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | fields | A list of fields defined in the current model                |
     | name   | The name of the unique combination of fields                 |
     | map    | The name of the underlying unique constraint in the database |
+
+-   `@@schema`
+
+    ```prisma
+        attribute @@schema(_ name: String)
+    ```
+
+    Specifies the database schema to use in a [multi-schema setup](https://www.prisma.io/docs/guides/database/multi-schema).
+
+    _Params_:
+
+    | Name | Description                     |
+    | ---- | ------------------------------- |
+    | name | The name of the database schema |
 
 -   `@@index`
 
@@ -605,6 +675,14 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ---- | -------------------------------------------------------- |
     | name | The name of the underlying table or enum in the database |
 
+-   `@@ignore`
+
+    ```prisma
+        attribute @@ignore()
+    ```
+
+    Exclude a model from the Prisma Client (for example, a model that you do not want Prisma users to update).
+
 -   `@@allow`
 
     ```prisma
@@ -634,6 +712,40 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
     | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
+
+-   `@@prisma.passthrough`
+
+    ```prisma
+        attribute @@prisma.passthrough(_ text: String)
+    ```
+
+    A utility attribute for passing arbitrary text to the generated Prisma schema. This is useful as a workaround for dealing with discrepancies between Prisma schema and ZModel.
+
+    _Params_:
+
+    | Name | Description                          |
+    | ---- | ------------------------------------ |
+    | text | Text to passthrough to Prisma schema |
+
+    E.g., the following ZModel content:
+
+    ```prisma
+        model User {
+            id Int @id @default(autoincrement())
+            name String
+            @@prisma.passthrough("@@unique([name])")
+        }
+    ```
+
+    wil be translated to the following Prisma schema:
+
+    ```prisma
+        model User {
+            id Int @id @default(autoincrement())
+            name String
+            @@unique([name])
+        }
+    ```
 
 ### Predefined attribute functions
 
@@ -886,6 +998,10 @@ model User {
 }
 
 ```
+
+### Self-relations
+
+A relation field referencing its own model is called "self-relation". ZModel's represents self-relation in the same way as Prisma does. Please refer to the [Prisma documentation](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/self-relations) for more details.
 
 ### Referential action
 

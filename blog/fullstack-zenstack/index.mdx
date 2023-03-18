@@ -1,0 +1,185 @@
+---
+title: From FullStack to ZenStack
+description: The meaning of FullStack development has been changed, let's embrace and move to the ZenStack world.
+tags: [webdev, zenstack, fullstack, backend]
+authors: jiasheng
+date: 2023-02-24
+image: ./cover.png
+---
+
+# From FullStack to ZenStack
+
+![Cover Image](cover.png)
+
+## What changed for full-stack
+
+The concept of full-stack development has been around for many years, but its popularity has surged dramatically since 2022. As a consequence, its meaning has also changed.
+
+<!--truncate-->
+
+![fullstack-trend](https://user-images.githubusercontent.com/16688722/221121118-ca90e840-376f-40ad-b645-2ce7e5835301.png)
+
+Originally a full-stack developer was a guy who was proficient in both front-end and back-end technologies. It’s just two roles in one guy, as neither the technology nor the skill set is the same. Front-end developers mostly speak HTML/CSS/Javascript and build fancy UI, and back-end folks use PHP/Java/C# to implement server-side business logic.
+
+As in many other cases throughout human history, tools are often the main drivers of revolutionary change. Let's take a look at some representative tools in this field.
+
+### TypeScript
+
+Thanks to TypeScript, I think it’s for the first time in history that both front-end and back-end developers could and is **willing** to use the same programming language to work. You might argue that JavaScript has already achieved that during 2009 when Node.js was announced. But I heard lots of backend developers who switched from strongly typed languages like Java or C#, including myself; we are definitely not **willing** to use Javascript. The main reason, as specified by Hejlsberge, core developer of Typescript, in the recent interview, is that:
+
+> they simply could not scale for the large JavaScript apps
+
+<iframe
+    width="100%"
+    height="315"
+    src="https://www.youtube-nocookie.com/embed/2K_4T7M1DKk?start=2460"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+></iframe>
+
+And the reason for that is:
+
+1. There is no object-oriented programming in JavaScript.
+2. Without the type system, it’s not possible for you to specify your intent in code which makes the maintenance extremely hard.
+3. Without the type system, it’s hard to build tooling.
+
+### Next.js
+
+Thanks to Next.js, it allows you to write your front-end and back-end code in the same framework. Using a function like getServerSideProps, you actually write the front-end and backend-end code in the same file:
+
+![frontend-backend-code](https://user-images.githubusercontent.com/16688722/221121099-cfb75489-338b-477f-818f-d307803ff31c.png)
+
+Or, with the newly introduced Server Component, you actually write both front-end and back-end code in the same function:
+
+![Server-Component](https://user-images.githubusercontent.com/16688722/221121103-6fb16d1d-ca04-4244-b613-e50945a28ea8.png)
+
+As the convenience it brings to allow you to write the whole web app in one single framework, it does bring a little burden as sometimes you probably would think: wait a minute, is this code gonna run in the server or in the browser? 😅
+
+### tRPC
+
+Thanks to tRPC, it allows you to forget about the network boundary and call the remote function like the local function with end-to-end typesafe:
+
+![tRPC-gif](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/05jxbzj5xe769uza8h1z.gif)
+
+The “Go to Definition” and “Rename Symbol” also works across the network boundary. So sometimes you really forget you are actually calling the remote procedure.
+
+With the integration with Zod, the backend validation has been taken care of. With the wrapper around [React Query](https://tanstack.com/query/v4/), the caching has also been taken care of. So probably the only thing you need to do out of the front-end work is to define and implement the router function.
+
+Take a look at the google trend, and you will see the same leap time as full-stack around 2022.
+
+![all-trend](https://user-images.githubusercontent.com/16688722/221121109-2e3af08a-a7b0-4afd-9e3e-23f9019e82d4.png)
+
+I bet you are aware of other tools that emerged during that period that changed the mindset of full-stack development. So as the famous “Ship of Theseus” paradox:
+
+> if all of the parts of a ship have been replaced over time, is it still the same ship or a new one
+
+I would think of it as a new one because you can see more and more people who don’t have the traditional backend technology and skills and could also build a complete web app which was impossible before.
+
+So how about calling the new fullstack as **ZenStack**? Think of it as the Zen mode of the fullstack to let you focus on building what matters - the user experience, and less on usability like secure, reliable, scalable things.
+
+![ZenMode](https://user-images.githubusercontent.com/16688722/221142997-451bacb1-ac7a-46be-951e-c1bc78782800.png)
+
+## Where does the backend complexity go?
+
+Although it’s great to focus on the user experience now, things can’t simply disappear, so where does the backend complexity go?
+
+Let’s take a look at some typical tasks of the backend
+
+### Design and implementing database schema
+
+This is usually the first task for a backend developer. This used to involve creating database tables, defining relationships between tables, defining the corresponding entity class in code, etc. In addition, you also need to handle schema migration, which can be both risky and frequent.It requires a good understanding of the database and the SQL language.
+
+Thanks to Prisma, all of the above tasks have been simplified into an intuitive data model, as shown below:
+
+```prisma
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  posts     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String   @db.VarChar(255)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+```
+
+You can auto-generated Typescript type with type-safety, auto-completed query builder, and automated migrations.
+
+### Developing API
+
+whether using RESTful or GraphQL, it usually takes a lot of time to design and implement a set of endpoints that can be used to perform CRUD (Create, Read, Update, Delete) operations on data in the database.
+
+Thanks to tRPC, as you have already seen, you can almost forget about this part by only defining the tRPC router. Actually, by using the prisma-trpc-generator, you don’t even need to define the router. It could directly generate it from the Prisma data models.
+
+### Implementing user authentication and authorization
+
+Authentication used to be a very challenging part as Modern apps often favor OAuth-based authentication, which delegates the identity verification to a trusted 3rd-party. Explaining how OAuth works is one of my favorite interview questions, but very few interviewees could explain it well.
+
+Thanks to NextAuth, it gives an excellent solution to bring in the complexity of security without the hassle of having to build it yourself. it comes with an extensive list of providers to quickly add OAuth authentication and provides adapters for many databases and ORMs, including Prisma.
+
+Authorization is based on Authentication. it controls "who can take what action to which asset". So essentially, it is the same thing with Access Control. It is even more complex and can be challenging for even experienced developers to get right. Not only because you need to have a great understanding of different access control models, such as role-based access control (RBAC), attribute-based access control (ABAC), and discretionary access control (DAC), but also has the great architecture capability to make it clear and scalable as the logic is dispersed among the code base.
+
+Here comes the [ZenStack](https://zenstack.dev), but this time is the toolkit we are currently building. Following its vision to let you focus on building what matters, one of our primary goals is to relieve the pain points of access control for you. We are lucky to be able to stand on the shoulders of giants. ZenStack is built on top of Prisma and also has integration with tPRC and NextAuth. So by adopting it, you get all the benefits provided by these tools mentioned above, plus the declarative access policies defined in your model:
+
+![ZenStack-model](https://user-images.githubusercontent.com/16688722/221121117-aecc64b2-914f-4d3b-a3ba-102cdce712fa.png)
+
+### Business logic
+
+This is the majority of the work and is what really matters for each business. Even though, now it has been much easier because lots of the general works have been abstracted away. There are more and more SaaS companies that provide out-of-box solutions for vertical functionality like payment, email, customer service, CMS, CRM, e-commerce, etc. All you need to do is to integrate with them.
+
+However, there is no standard to integrate with these 3rd parties. You need to go through the documentation, API, and SDK of each and integrate it into your system. In my opinion, It’s not only time-consuming but also could make the whole system less stable if you don’t do it right. Do you also see this as a pain point for you? Do you want to have a standard and centralized way to see these 3rd party models as part of your own model, like:
+
+```prisma
+// nextauth
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? // @db.Text
+    access_token      String? // @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? // @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    @@unique([provider, providerAccountId])
+}
+
+// paypal
+model Payment {
+    id      Int    @id @default(autoincrement())
+    orderID String
+    status  String
+}
+
+// shopify
+model Order{
+    id                   Int    @id
+    billing_address      Address
+    cart_token           String
+    checkout_token       String
+    client_details       ClientDetail
+    current_total_price  Int
+}
+```
+
+If this is what you need or you have any other pain point hope could be solved, welcome to join our [discord](https://go.zenstack.dev/chat) or discuss it in [GitHub](https://github.com/zenstackhq/zenstack). Let’s make a better [ZenStack](https://zenstack.dev) together.

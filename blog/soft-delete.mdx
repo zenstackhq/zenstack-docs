@@ -6,7 +6,7 @@ authors: jiasheng
 date: 2023-02-18
 ---
 
-# Soft delete: Implementation issues in Prisma and solution in ZenStack
+# Soft Delete: Implementation Issues in Prisma and Solution in Zenstack
 
 ![Cover Image](https://user-images.githubusercontent.com/16688722/219857601-3bb070ab-2117-4334-896b-98039455b2bb.jpg)
 
@@ -14,15 +14,15 @@ Soft delete is a common requirement for SaaS products. But the current solution 
 
 <!--truncate-->
 
-# What is soft delete
+## What is soft delete
 
 Normally when you run a DELETE statement in a database, the data is gone. Instead of permanently deleting the record, Soft delete updates a column in the record, typically named "deleted_at" or "is_deleted," to indicate that the record has been marked for deletion.
 
-# Pros of soft delete
+## Pros of soft delete
 
 Soft delete has been almost the MUST for me when building commercial SaaS products for the last 6 years. I will show you why based on my own experience.
 
-## Recoverability
+### Recoverability
 
 I bet you have ever regret of deleting something and trying to recover it back because it’s common for humans to make a mistake. That’s why lots of applications, including operating systems, also adopt Soft delete by introducing Recycle/Trash bins.
 
@@ -45,7 +45,7 @@ According to Muphy’s law:
 
 Therefore, the most effective approach is to avoid granting the user the opportunity to delete data from the database entirely— **to do soft delete**.
 
-### Data Integrity
+#### Data Integrity
 
 You can see this one has been brought up a lot. I think it is from the database point of view to maintain referential integrity. From the practical point of view, the benefit is still for recovery.
 
@@ -55,7 +55,7 @@ For example, Let's say you have two tables User and Post in your database:
 
 If a user is accidentally deleted, all the posts belonging to this user are either deleted too for Cascade or become orphaned for SetNull. Even if you could find a way to restore the user, the posts are gone.
 
-## Analytics
+### Analytics
 
 Whether you are a product-led or marketing-led growth model, data analytics of your product is the basic thing for online business nowadays.
 
@@ -71,17 +71,17 @@ Wait a minute, does it include the page that the user created and then deleted l
 
 Some people suggest that this kind of requirement should be done by logging. The problem is like you never know what kind of analytics requirement you will meet. What if the next day, the product manager wants to see how many posts containing a table or video were created last month? You might end up logging everything that appears in the database to meet the requirements. And even you could do so, the analytics process becomes more complicated as you have to collect and merge data from both your database and the logging system.
 
-## Diagnosis
+### Diagnosis
 
 The non-consistent reproduced bug is always the hardest one to deal with. There are a couple of times users sent a video or screenshot saying something weird happened. When you want to investigate more, you see that weird data has been deleted by the user. It’s understandable as no one wants to leave some defect there.
 
 Luckily as we were using soft delete, we could still find the data to try to reconstruct the crime scene to find the bug in our code finally.
 
-# Cons
+## Cons of soft delete
 
 The most important reason why people don’t use Soft delete is the implementation challenge. Besides the query update, there are other issues that need to be considered, like index, unique constraint, etc., which is definitely not an easy task and will definitely increase the complexity of your system.
 
-# Soft Delete in Prisma
+## Soft Delete in Prisma
 
 The good thing is that fewer people are working directly on the SQL anymore, and most ORMs have the solution for it.
 
@@ -206,7 +206,7 @@ const user = await prisma.user.findMany({
 
 As Prisma provides a quite flexible filter with several operators like `AND`, `OR`, `NOT`, `some`, `every`, `none`, etc, it would also take quite an effort to consider each individually. I guess that’s probably why the issue has not been fixed yet. 😂
 
-# Soft delete in ZenStack
+## Soft delete in ZenStack
 
 [ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=custom_attribute) is the toolkit that supercharges Prisma with a powerful access control layer and unleashes its full potential for full-stack development.
 
