@@ -1,5 +1,5 @@
 ---
-title: Multi-tenant implementation approaches with Prisma and sZenStack
+title: Multi-tenant implementation approaches with Prisma and ZenStack
 description: Compare and discuss different approaches for implementing Multi-Tenant architecture
 tags: [zenstack, prisma, saas, architecture]
 authors: jiasheng
