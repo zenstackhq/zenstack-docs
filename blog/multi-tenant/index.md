@@ -39,8 +39,7 @@ There are two primary approaches to implementing multi-tenancy using relational 
 ### Multiple databases
 
 Each tenant will have its own database like the below:
-
-![Multiple-database](https://user-images.githubusercontent.com/16688722/226102815-9af6e8d4-9880-4ade-8f8f-3ec523e94c5d.png)
+![Multiple-database](https://user-images.githubusercontent.com/16688722/226102820-4ce4a825-a63f-467f-8496-4bf351a6ac76.png)
 
 #### How to implement
 
@@ -129,7 +128,7 @@ This is just a simplified version. In your specific production case, you might a
 
 One database holds the data for all tenants, and every table has a unique `tenantId` like below:
 
-![single-database](https://user-images.githubusercontent.com/16688722/226102820-4ce4a825-a63f-467f-8496-4bf351a6ac76.png)
+![single-database](https://user-images.githubusercontent.com/16688722/226102815-9af6e8d4-9880-4ade-8f8f-3ec523e94c5d.png)
 
 #### How to implement
 
@@ -182,11 +181,11 @@ One database holds the data for all tenants, and every table has a unique `tenan
 
 #### Pros
 
-Cons for multiple database approach
+Cons for multiple databases approach
 
 #### Cons
 
-Pros for multiple database approach
+Pros for multiple databases approach
 
 #### When to use it
 
