@@ -98,7 +98,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
 import type { GetServerSidePropsContext } from 'next';
-import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
+import NextAuth, { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './db';
 
@@ -178,6 +178,8 @@ export const getServerAuthSession = (ctx: {
 }) => {
     return getServerSession(ctx.req, ctx.res, authOptions);
 };
+
+export default NextAuth(authOptions);
 ```
 
 Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary
