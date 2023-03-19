@@ -1,6 +1,6 @@
 ---
 description: Plugin for generating React data query hooks
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # @zenstackhq/react

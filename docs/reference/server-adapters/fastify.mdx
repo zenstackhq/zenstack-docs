@@ -4,17 +4,48 @@ sidebar_position: 2
 ---
 
 import ErrorHandling from './_error-handling.md';
+import ApiRequest from './_api-request.md';
+import CommonOptions from './_common-options.md';
 
 # Fastify
 
 The `@zenstackhq/server/fastify` module provides a quick way to install OpenAPI endpoints onto a [Fastify](https://www.fastify.io/) project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+```ts
+/**
+ * Fastify plugin options
+ */
+export interface PluginOptions {
+    /**
+     * Url prefix, e.g.: /api
+     */
+    prefix: string;
+
+    /**
+     * Callback for getting a PrismaClient for the given request
+     */
+    getPrisma: (request: FastifyRequest, reply: FastifyReply) => unknown | Promise<unknown>;
+
+    /**
+     * Logger settings
+     */
+    logger?: LoggerConfig;
+
+    /**
+     * Zod schemas for validating request input. Pass `true` to load from standard location (need to enable `@core/zod` plugin in schema.zmodel).
+     */
+    zodSchemas?: ModelZodSchema | boolean;
+}
+
+const pluginHandler: FastifyPluginCallback<PluginOptions> = (fastify, options, done) => { ... }
+```
 
 ### Mounting the APIs
 
 You can integrate ZenStack into your project with the `ZenStackFastifyPlugin` [fastify plugin](https://www.fastify.io/docs/latest/Reference/Plugins/):
 
 ```ts
-import { withPreset } from '@zenstackhq/runtime';
+import { withPresets } from '@zenstackhq/runtime';
 import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
 import { prisma } from './db.ts';
 import { getSessionUser } from './auth.ts';
@@ -30,72 +61,18 @@ server.register(ZenStackFastifyPlugin, {
 });
 ```
 
-The fastify plugin takes two options to initialize:
+The Fastify adapter takes the following options to initialize:
 
--   prefix
+-   prefix: `string`
 
     The API path to install the OpenAPI CRUD endpoints.
 
--   getPrisma
-
-    ```ts
-    (request: FastifyRequest, reply: FastifyReply) => unknown | Promise<unknown>;
-    ```
-
-    A callback for getting a PrismaClient instance for talking to the database. Usually you'll use an enhanced instance created with ZenStack's [`withPresets`](/docs/reference/runtime-api#withpresets) or [`withPolicy`](/docs/reference/runtime-api#withpolicy) APIs to ensure access policies are enforced.
+<CommonOptions />
 
 ### Using the APIs
 
 The APIs mounted by `ZenStackFastifyPlugin` conforms to the OpenAPI V3 spec, and provides a path for each model and database operation combination, as listed [here](/docs/reference/plugins/openapi#generated-api-paths).
 
-You can use any HTTP client to consume the APIs. Here's some samples using [node-fetch](https://github.com/node-fetch/node-fetch):
-
-```ts
-const base = 'http://localhost:8080/api/openapi';
-
-// create a user with two posts
-const r = await fetch(`${base}/user/create`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        include: { posts: true },
-        data: {
-            email: 'user1@abc.com',
-            posts: {
-                create: [{ title: 'Post 1' }, { title: 'Post 2' }],
-            },
-        },
-    }),
-});
-
-console.log(await r.json());
-```
-
-Output:
-
-```json
-{
-    "id": "clf7y7k840000vhs3iej7skve",
-    "email": "user1@abc.com",
-    "zenstack_guard": true,
-    "zenstack_transaction": null,
-    "posts": [
-        {
-            "id": "clf7y7k840001vhs377njs07l",
-            "createdAt": "2023-03-14T07:45:04.036Z",
-            "updatedAt": "2023-03-14T07:45:04.036Z",
-            "title": "Post 1",
-            "authorId": "clf7y7k840000vhs3iej7skve"
-        },
-        {
-            "id": "clf7y7k840002vhs3w11iitmi",
-            "createdAt": "2023-03-14T07:45:04.036Z",
-            "updatedAt": "2023-03-14T07:45:04.036Z",
-            "title": "Post 2",
-            "authorId": "clf7y7k840000vhs3iej7skve"
-        }
-    ]
-}
-```
+<ApiRequest />
 
 <ErrorHandling />

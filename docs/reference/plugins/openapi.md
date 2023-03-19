@@ -1,6 +1,6 @@
 ---
 description: Plugin for generating OpenAPI 3.0 specifications
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # @zenstackhq/openapi
@@ -73,6 +73,7 @@ plugin openapi {
     version = '0.5.0'
     summary = 'Created with ZenStack'
     description = 'My awesome API created with ZenStack'
+    prefix = '/api'
 }
 ```
 
