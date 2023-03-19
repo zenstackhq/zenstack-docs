@@ -166,6 +166,7 @@ One database holds the data for all tenants, and every table has a unique `tenan
     TLDR, the biggest problem is that it would fall short when the relation field is involved in the filter.
 
 -   Advanced
+
     If you are using Postgres as your database or a service provider that is based on it, such as [Supabase](https://supabase.com/), you have the advantage of utilizing the advanced feature of RLS (Row Level Security) provided by the database. This way, defining role-based access policies in the database becomes the primary task to control which rows of data can be accessed.
 
     ```sql
@@ -253,7 +254,7 @@ model Post {
     // when create, owner must be set to current user, and user must be in the space
     @@allow('create', owner == auth() && space.members?[user == auth()])
 
-    // when create, owner must be set to current user, and user must be in the space
+    // when update, owner must be set to current user, and user must be in the space
     // update is not allowed to change owner
     @@allow('update', owner == auth() && space.members?[user == auth()] && future().owner == owner)
 
