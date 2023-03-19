@@ -1,25 +1,28 @@
 ---
-description: How to build a secure and documented database-centric OpenAPI service within 15 minutes using Express.js and ZenStack.
+description: How to build a secure and fully documented database-centric OpenAPI service within 15 minutes using Express.js and ZenStack.
 tags: [openapi, restful, prisma, zenstack, database]
 authors: yiming
+image: cover.jpg
 date: 2023-03-18
 ---
 
 # Building a Secure Database-Centric OpenAPI in 15 Minutes
 
-If you are a developer who is familiar with RESTful APIs, you might have heard of [OpenAPI](https://swagger.io/specification/). It is a specification for describing RESTful APIs in format readable for both human and machine. Building a public-facing OpenAPI includes three tasks:
+![Cover image](cover.jpg)
+
+If you are a developer familiar with RESTful APIs, you might have heard of [OpenAPI](https://swagger.io/specification/). It is a specification for describing RESTful APIs in a format readable for humans and machines. Building a public-facing OpenAPI includes three tasks:
 
 1. Authoring an OpenAPI specification which serves as the contract between the API provider and the API consumer.
 1. Implementing the API endpoints based on the specification.
 1. Optionally, implementing client SDKs for consuming the API.
 
-In this post, you'll see how to accomplish all these tasks and build a database-centric OpenAPI service, secure and and documented, within 15 minutes.
+In this post, you'll see how to accomplish all these tasks and build a database-centric OpenAPI service, secure and documented, within 15 minutes.
 
 <!--truncate-->
 
 ## Scenario
 
-To facilitate easier understanding, I'm going to use a simple Pet Store API as an example. The API will have the following resources:
+I will use a simple Pet Store API as an example to facilitate easier understanding. The API will have the following resources:
 
 -   User: who can signup, login, and order pets.
 -   Pet: which can be listed and ordered by users.
@@ -27,15 +30,15 @@ To facilitate easier understanding, I'm going to use a simple Pet Store API as a
 
 **Business rules:**
 
-1. Anonymous users can sign up and login.
+1. Anonymous users can sign up and log in.
 1. Anonymous users can list unsold pets.
 1. Authenticated users can list unsold pets and pets ordered by them.
-1. Authenticated users can create order for unsold pets.
+1. Authenticated users can create orders for unsold pets.
 1. Authenticated users can view their orders.
 
 ## Building it up
 
-We'll use Express.js as the framework for building the service. Other frameworks, like Fastify, can be used as well, and the general process is similar.
+We'll use Express.js as the framework for building the service. However, other frameworks, like Fastify, can be used as well, and the general process is similar.
 
 ### 1. Creating the project
 
@@ -93,7 +96,7 @@ npm install @prisma/client
 npx zenstack@latest init
 ```
 
-The `zenstack` CLI installs Prisma and other dependencies, and also creates a boilerplate `schema.zmodel` file. Update it with the following content to reflect our requirements:
+The `zenstack` CLI installs Prisma and other dependencies and creates a boilerplate `schema.zmodel` file. Update it with the following content to reflect our requirements:
 
 ```prisma title='schema.zmodel'
 datasource db {
@@ -139,7 +142,7 @@ npx zenstack generate
 npx prisma db push
 ```
 
-Also, create a `prisma/seed.ts` file which populates the database with some data. When you reset your local database, you can rerun to the script to fill in data.
+Also, create a `prisma/seed.ts` file that populates the database with some data. Then, when you reset your local database, you can rerun the script to fill in the data.
 
 ```ts title='prisma/seed.ts'
 import { PrismaClient, Prisma } from '@prisma/client';
@@ -186,7 +189,7 @@ main()
     });
 ```
 
-Generates database client, push the schema to the database, and seed it:
+Run the script to seed our database:
 
 ```bash
 npx tsx prisma/seed.ts
@@ -194,13 +197,13 @@ npx tsx prisma/seed.ts
 
 ### 3. Implementing the API
 
-ZenStack greatly simplifies the development of database-centric APIs by providing a built-in RESTful implementation. You can use a framework-specific adapter to install the RESTful services into your application. Let's see how to do it with Express.js.
+ZenStack dramatically simplifies the development of database-centric APIs by providing a built-in RESTful implementation. You can use a framework-specific adapter to install the RESTful services into your application. Let's see how to do it with Express.js.
 
 ```bash
 npm install @zenstackhq/server
 ```
 
-The integration with Express.js is achieved by the `ZenStackMiddleware` middleware factory. Use it to mount the RESTful APIs at the path of your choice. The `getPrisma` callback is used for getting a Prisma client instance for the current request. For now we'll just return the global Prisma client.
+The integration with Express.js is achieved by the `ZenStackMiddleware` middleware factory. Use it to mount the RESTful APIs at the path of your choice. The `getPrisma` callback is used to get a Prisma client instance for the current request. For now, we'll just return the global Prisma client.
 
 ```ts title='app.ts'
 import { PrismaClient } from '@prisma/client';
@@ -216,7 +219,7 @@ app.use('/api', ZenStackMiddleware({ getPrisma: () => prisma }));
 app.listen(3000, () => console.log('🚀 Server ready at: http://localhost:3000'));
 ```
 
-With these few lines of code, you've got CRUD APIs running for all resources - `User`, `Pet` and `Order`. Test it by fetching all pets:
+With these few lines of code, you've got CRUD APIs running for all resources - `User`, `Pet`, and `Order`. Test it by fetching all pets:
 
 ```bash
 curl localhost:3000/api/pet/findMany
@@ -248,7 +251,7 @@ curl localhost:3000/api/pet/findMany
 ]
 ```
 
-Easy, isn't it? The automatically generated APIs have 1:1 mapping to Prisma client methods - `findMany`, `findUnique`, `create`, `update`, `aggreate`, etc. They also have the same structure as Prisma client for input arguments and responses. For `POST` and `PUT` requests, the input args are sent directly as the request body (application/json). For `GET` and `DELETE` requests, the input args is JSON serialized and sent as the `q` query parameters (url-encoded). For example, you can get a filtered list of pets by:
+Easy, isn't it? The automatically generated APIs have 1:1 mapping to Prisma client methods - `findMany`, `findUnique`, `create`, `update`, `aggregate`, etc. They also have the same structure as PrismaClient for input arguments and responses. For `POST` and `PUT` requests, the input args are sent directly as the request body (application/json). For `GET` and `DELETE` requests, the input args is JSON serialized and sent as the `q` query parameters (url-encoded). For example, you can get a filtered list of pets by:
 
 ```bash
 curl 'http://localhost:3000/api/pet/findMany?q=%7B%22where%22%3A%7B%22category%22%3A%22doggie%22%7D%7D'
@@ -268,13 +271,13 @@ curl 'http://localhost:3000/api/pet/findMany?q=%7B%22where%22%3A%7B%22category%2
 ]
 ```
 
-Our API is up and running, but it has one big problem: it's not guarded by any security measures. Anybody can read and update any data. Let's fix that in the next sections in two steps: authentication and authorization.
+Our API is up and running, but it has one big problem: it's not guarded by any security measures. Anybody can read and update any data. Let's fix that in the following sections in two steps: authentication and authorization.
 
 ### 4. Adding authentication
 
-For this simple service we'll adopt an email/password based authentication, and issue a JWT token for each successful login.
+For this simple service, we'll adopt an email/password based authentication and issue a JWT token for each successful login.
 
-Let's first look at the signup part. Since the `User` resource already has a CRUD API, we don't need to implement a separate API for signup, since signup is just creating a `User`. The only thing that we need to take care of is to make sure we store hashed password instead of plain text. Achieving this is simple, just add a `@password` attribute to the `password` field. ZenStack will automatically hash the field before storing it in the database. Note that we also add the `@omit` attribute to mark `password` field to be dropped from the response since we don't want it ever be returned to the client.
+Let's first look at the signup part. Since the `User` resource already has a CRUD API, we don't need to implement a separate API for signup, since signup is just creating a `User`. The only thing that we need to take care of is to make sure we store hashed passwords instead of plain text. Achieving this is simple; just add a `@password` attribute to the `password` field. ZenStack will automatically hash the field before storing it in the database. Note that we also added the `@omit` attribute to mark `password` field to be dropped from the response since we don't want it ever to be returned to the client.
 
 ```ts title='schema.prisma'
 model User {
@@ -285,7 +288,7 @@ model User {
 }
 ```
 
-Login requires verification of credentials and we need to implement it manually. Install several new dependencies:
+Login requires verification of credentials, and we need to implement it manually. Install several new dependencies:
 
 ```bash
 npm install bcryptjs jsonwebtoken dotenv
@@ -323,14 +326,14 @@ app.post('/api/login', async (req, res) => {
 });
 ```
 
-Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `withPresets` call, so that the `@password` and `@omit` attributes can take effect.
+Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `withPresets` call so that the `@password` and `@omit` attributes can take effect.
 
 ```ts title='app.ts'
 import { withPresets } from '@zenstackhq/runtime';
 app.use('/api', ZenStackMiddleware({ getPrisma: () => withPresets(prisma) }));
 ```
 
-Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. For now let's open up the `create` and `read` operations for `User` to support the signup/login flow:
+Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. Let's open up the `create` and `read` operations for `User` to support the signup/login flow:
 
 ```prisma title='schema.prisma'
 model User {
@@ -353,7 +356,7 @@ Now regenerate Prisma schema and push the changes to the database:
 npx zenstack generate && npx prisma db push
 ```
 
-Restart the dev server and we can test out our signup/login flow.
+Restart the dev server, and we can test out our signup/login flow.
 
 **Sign up a user:**
 
@@ -388,7 +391,7 @@ curl -X POST localhost:3000/api/login \
 
 ### 5. Adding authorization
 
-Now that we have authentication in place, we can add access control rules to our schema to secure up our CRUD service. Make the following changes to the `Pet` and `Order` models:
+Now that we have authentication in place, we can add access control rules to our schema to secure our CRUD service. Make the following changes to the `Pet` and `Order` models:
 
 ```ts title='schema.prisma'
 model Pet {
@@ -401,7 +404,10 @@ model Pet {
     orderId String?
 
     // unsold pets are readable to all; sold ones are readable to buyers only
-    @@allow('read', order == null || order.user == auth())
+    @@allow('read', orderId == null || order.user == auth())
+
+    // only allow update to 'orderId' field if it's not set yet (unsold)
+    @@allow('update', name == future().name && category == future().category && orderId == null )
 }
 
 model Order {
@@ -414,24 +420,22 @@ model Order {
 
     // users can read their orders
     @@allow('read,create', auth() == user)
-
-    // disallow creating orders with pets already sold
-    @@deny('create', pets?[orderId != null])
 }
 ```
 
-The syntax for `@@allow` and `@@deny` are pretty self-explanatory. A few things to note:
+The syntax for `@@allow` and `@@deny` is pretty self-explanatory. A few things to note:
 
 -   The `auth()` function returns the currently authenticated user. You'll see how it's hooked up shortly.
--   The `pets?[order != null]` syntax allows to check a collection of related records. It reads like: "if there's any item in the `pets` collection that has a non-null `order` field".
+-   The `future()` function returns the entity value after an update is applied.
+-   The second `@@allow` rule on the `Pet` model looks a bit complex. It's needed because we want to disallow creating orders that include sold pets. On the database level, it means that the `orderId` field of `Pet` can only be updated if it's `null` (meaning it's not sold yet). We also used the `future()` function to disallow updates to other fields.
 
 You can learn more about access policies [here](https://zenstack.dev/docs/guides/understanding-access-policy).
 
-By defining access policies in the schema declaratively, you don't need to implement these rules in your API anymore. It's easier to ensure consistency and it makes the schema a single source of truth for your data's shape and security rules.
+By declaratively defining access policies in the schema, you don't need to implement these rules in your API anymore. It's easier to ensure consistency, making the schema a single source of truth for your data's shape and security rules.
 
-There's one piece still missing though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. On the server side, we extract it from the current request, and pass it to the `withPresets` call as the context.
+There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `withPresets` call as the context.
 
-Add a `getUser` helper to decode user from the token, and pass that to the `withPresets` call:
+Add a `getUser` helper to decode the user from the token, and pass that to the `withPresets` call:
 
 ```ts title='app.ts'
 import type { Request } from 'express';
@@ -461,7 +465,7 @@ app.use(
 );
 ```
 
-Now the policy engine has access to the authenticated user and can enforce the authorization rules. Rerun code generation and restart the dev server. Now we let's test out the authorization.
+Now the policy engine has access to the authenticated user and can enforce the authorization rules. Rerun code generation and restart the dev server. Now let's test out the authorization.
 
 ```bash
 npx zenstack generate && npx prisma db push
@@ -499,7 +503,7 @@ Place an order for the "Luna" cat. Note that we pass the token in the `Authoriza
 ```bash
 curl -X POST localhost:3000/api/order/create \
     -H 'Content-Type: application/json' -H "Authorization: Bearer $token"  \
-    -d '{ "data": { "userId": "$userId", "pets": { "connect": { "id": "luna" } } } }'
+    -d "{ \"data\": { \"userId\": \"$userId\", \"pets\": { \"connect\": { \"id\": \"luna\" } } } }"
 ```
 
 ```json
@@ -573,13 +577,30 @@ curl localhost:3000/api/pet/findMany -H "Authorization: Bearer $token"
 ]
 ```
 
+**Creating an order for "Luna" again will result in an error:**
+
+```bash
+curl -X POST localhost:3000/api/order/create \
+    -H 'Content-Type: application/json' -H "Authorization: Bearer $token"  \
+    -d "{ \"data\": { \"userId\": \"$userId\", \"pets\": { \"connect\": { \"id\": \"luna\" } } } }"
+```
+
+```json
+{
+    "prisma": true,
+    "rejectedByPolicy": true,
+    "code": "P2004",
+    "message": "denied by policy: Pet entities failed 'update' check, 1 entity failed policy check"
+}
+```
+
 You can continue testing with the `Order` model and see if its behavior conforms to the access policies.
 
 ## Generating OpenAPI specification
 
-So far we've implemented a secure REST-like API. It doesn't fully conform to RESTful API's resource-oriented API endpoint design, but it fully preserves Prisma's data query flexibility.
+So far, we've implemented a secure REST-like API. It doesn't fully conform to RESTful API's resource-oriented API endpoint design, but it fully preserves Prisma's data query flexibility.
 
-To call it an OpenAPI, we have to offer a formal specification for it. Fortunately, ZenStack can generate OpenAPI V3 specification for you. You only need to turn on the plugin in your schema:
+To call it an OpenAPI, we have to offer a formal specification. Fortunately, ZenStack can generate OpenAPI V3 specifications for you. You only need to turn on the plugin in your schema:
 
 ```bash
 npm install -D @zenstackhq/openapi
@@ -596,13 +617,13 @@ plugin openapi {
 }
 ```
 
-Now when you run `zenstack generate`, it will generate a `petstore-api.json` file for you. You can serve it to your API consumer with tools like [Swagger UI](https://swagger.io/tools/swagger-ui/).
+When you run `zenstack generate`, it will generate a `petstore-api.json` file for you. You can serve it to your API consumer with tools like [Swagger UI](https://swagger.io/tools/swagger-ui/).
 
 ```bash
 npx zenstack generate
 ```
 
-There is a caveat though: remember we manually implemented the `/api/login` endpoint? ZenStack doesn't know that and the generated JSON spec doesn't include it. However, we can use some extra tooling to fix that.
+There is a caveat, though: remember we manually implemented the `/api/login` endpoint? ZenStack doesn't know that, and the generated JSON spec doesn't include it. However, we can use some extra tooling to fix that.
 
 First, install some new dependencies:
 
@@ -631,6 +652,7 @@ Then add JSDoc for specifying its input and output to the `/api/login` route:
 
 /**
  * POST /api/login
+ * @tags user
  * @param {LoginInput} request.body.required - input
  * @return {LoginResponse} 200 - login response
  */
@@ -642,6 +664,8 @@ app.post('/api/login', async (req, res) => {
 The JSDoc attaches OpenAPI metadata to the `/api/login` route. We can then use `express-jsdoc-swagger` and `swagger-ui-express` to merge these two fragments of API specification and server a Swagger UI for it:
 
 ```ts title='app.ts'
+import expressJSDocSwagger from 'express-jsdoc-swagger';
+
 // load the CRUD API spec from the JSON file generated by `zenstack`
 const crudApiSpec = require('./petstore-api.json');
 
@@ -669,14 +693,11 @@ Now if you hit [http://localhost:3000/api-docs](http://localhost:3000/api-docs),
 
 Great! We've got a running service with a formal specification. Now the consumers can implement clients to talk to it using any HTTP client. With the OpenAPI specification, we can take one more step to generate a strong-typed client SDK for them.
 
-In this sample we'll achive it using [openapi-typescript](https://github.com/drwpow/openapi-typescript) and [openapi-typescript-fetch](https://github.com/drwpow/openapi-typescript-fetch).
+In this sample, we'll achive it using [openapi-typescript](https://github.com/drwpow/openapi-typescript) and [openapi-typescript-fetch](https://github.com/drwpow/openapi-typescript-fetch).
 
 ```bash
 npm install -D openapi-typescript @types/node-fetch
 npm install node-fetch openapi-typescript-fetch
-```
-
-```bash
 npx openapi-typescript http://localhost:3000/v3/api-docs --output ./client-types.ts
 ```
 
@@ -722,8 +743,14 @@ async function main() {
 main();
 ```
 
+You can run it with:
+
+```bash
+npx tsx client.ts
+```
+
 ## Wrap up
 
-Building a database-centric OpenAPI service involves many tasks: designing the data model, authoring the specification, implementing the service, and generating the client SDK. As you can see, it doesn't need to be hard and time-consuming.
+Building a database-centric OpenAPI service involves many tasks: designing the data model, authoring the specification, implementing the service, and generating the client SDK. But, as you can see, it doesn't need to be hard and time-consuming.
 
-The key take away is that if you can use a single source of truth to represent your data schema and access rules, many other artifacts can be generated out of it. It saves your precious time from writing boilerplate code and also makes it much easier to keep everything in sync along the way.
+The key takeaway is that if you can use a single source of truth to represent your data schema and access rules, many other artifacts can be generated from it. It saves your precious time from writing boilerplate code and also makes it much easier to keep everything in sync along the way.
