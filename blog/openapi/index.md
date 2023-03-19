@@ -2,7 +2,7 @@
 description: How to build a secure and fully documented database-centric OpenAPI service within 15 minutes using Express.js and ZenStack.
 tags: [openapi, restful, prisma, zenstack, database]
 authors: yiming
-image: cover.jpg
+image: ./cover.jpg
 date: 2023-03-20
 ---
 
