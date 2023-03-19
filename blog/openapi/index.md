@@ -20,6 +20,8 @@ In this post, you'll see how to accomplish all these tasks and build a database-
 
 <!--truncate-->
 
+> You can find the finished project [here](https://github.com/ymc9/petstore-openapi-zenstack).
+
 ## Scenario
 
 I will use a simple Pet Store API as an example to facilitate easier understanding. The API will have the following resources:
@@ -754,3 +756,5 @@ npx tsx client.ts
 Building a database-centric OpenAPI service involves many tasks: designing the data model, authoring the specification, implementing the service, and generating the client SDK. But, as you can see, it doesn't need to be hard and time-consuming.
 
 The key takeaway is that if you can use a single source of truth to represent your data schema and access rules, many other artifacts can be generated from it. It saves your precious time from writing boilerplate code and also makes it much easier to keep everything in sync along the way.
+
+The finished project can be found [here](https://github.com/ymc9/petstore-openapi-zenstack).
