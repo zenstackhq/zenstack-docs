@@ -3,7 +3,7 @@ description: How to build a secure and fully documented database-centric OpenAPI
 tags: [openapi, restful, prisma, zenstack, database]
 authors: yiming
 image: cover.jpg
-date: 2023-03-18
+date: 2023-03-20
 ---
 
 # Building a Secure Database-Centric OpenAPI in 15 Minutes
@@ -281,7 +281,7 @@ For this simple service, we'll adopt an email/password based authentication and 
 
 Let's first look at the signup part. Since the `User` resource already has a CRUD API, we don't need to implement a separate API for signup, since signup is just creating a `User`. The only thing that we need to take care of is to make sure we store hashed passwords instead of plain text. Achieving this is simple; just add a `@password` attribute to the `password` field. ZenStack will automatically hash the field before storing it in the database. Note that we also added the `@omit` attribute to mark `password` field to be dropped from the response since we don't want it ever to be returned to the client.
 
-```ts title='schema.prisma'
+```prisma title='schema.prisma'
 model User {
     id String @id @default(cuid())
     email String @unique
