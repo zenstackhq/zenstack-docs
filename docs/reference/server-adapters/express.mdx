@@ -3,6 +3,71 @@ description: Adapter for integrating with Express.js
 sidebar_position: 3
 ---
 
-# 🚧 Express.js
+import ErrorHandling from './_error-handling.md';
+import ApiRequest from './_api-request.md';
+import CommonOptions from './_common-options.md';
 
-Coming soon.
+# Express.js
+
+The `@zenstackhq/server/express` module provides a quick way to install OpenAPI endpoints onto a [Express.js](https://expressjs.com/) project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+```ts
+/**
+ * Express middleware options
+ */
+export interface MiddlewareOptions {
+    /**
+     * Callback for getting a PrismaClient for the given request
+     */
+    getPrisma: (req: Request, res: Response) => unknown | Promise<unknown>;
+
+    /**
+     * Logger settings
+     */
+    logger?: LoggerConfig;
+
+    /**
+     * Zod schemas for validating request input. Pass `true` to load from standard location (need to enable `@core/zod` plugin in schema.zmodel).
+     */
+    zodSchemas?: ModelZodSchema | boolean;
+}
+
+const factory = (options: MiddlewareOptions): express.Handler => { ... }
+```
+
+### Mounting the APIs
+
+You can integrate ZenStack into your project with the `ZenStackFastifyPlugin` [fastify plugin](https://www.fastify.io/docs/latest/Reference/Plugins/):
+
+```ts
+import { PrismaClient } from '@prisma/client';
+import { withPresets } from '@zenstackhq/runtime';
+import { ZenStackMiddleware } from '@zenstackhq/server/express';
+import express from 'express';
+
+const prisma = new PrismaClient();
+const app = express();
+
+app.use(express.json());
+
+app.use(
+    '/api/openapi',
+    ZenStackMiddleware({
+        // getSessionUser extracts the current session user from the request, its
+        // implementation depends on your auth solution
+        getPrisma: (request) => withPresets(prisma, { user: getSessionUser(request) }),
+    })
+);
+```
+
+The Express.js adapter takes the following options to initialize:
+
+<CommonOptions />
+
+### Using the APIs
+
+The APIs mounted by `ZenStackFastifyPlugin` conforms to the OpenAPI V3 spec, and provides a path for each model and database operation combination, as listed [here](/docs/reference/plugins/openapi#generated-api-paths).
+
+<ApiRequest />
+
+<ErrorHandling />

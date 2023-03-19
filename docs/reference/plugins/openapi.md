@@ -1,6 +1,6 @@
 ---
 description: Plugin for generating OpenAPI 3.0 specifications
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # @zenstackhq/openapi
@@ -9,11 +9,14 @@ The `@zenstackhq/openapi` generates an [OpenAPI 3.0](https://spec.openapis.org/o
 
 ## Options
 
-| Name    | Type   | Description                                   | Required | Default                |
-| ------- | ------ | --------------------------------------------- | -------- | ---------------------- |
-| output  | String | Output file path (with suffix .yaml or .json) | Yes      |                        |
-| title   | String | API title                                     | No       | ZenStack Generated API |
-| version | String | API version                                   | No       | 1.0.0                  |
+| Name        | Type   | Description                                   | Required | Default                |
+| ----------- | ------ | --------------------------------------------- | -------- | ---------------------- |
+| output      | String | Output file path (with suffix .yaml or .json) | Yes      |                        |
+| title       | String | API title                                     | No       | ZenStack Generated API |
+| version     | String | API version                                   | No       | 1.0.0                  |
+| description | String | API description                               | No       |                        |
+| summary     | String | API summary                                   | No       |                        |
+| prefix      | String | Prefix for the API paths                      | No       |                        |
 
 ## Attributes
 
@@ -68,6 +71,7 @@ plugin openapi {
     output = './openapi.yaml'
     title = 'My awesome API'
     version = '0.5.0'
+    prefix = '/api'
 }
 ```
 
