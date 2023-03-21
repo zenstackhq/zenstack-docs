@@ -281,7 +281,7 @@ For this simple service, we'll adopt an email/password based authentication and 
 
 Let's first look at the signup part. Since the `User` resource already has a CRUD API, we don't need to implement a separate API for signup, since signup is just creating a `User`. The only thing that we need to take care of is to make sure we store hashed passwords instead of plain text. Achieving this is simple; just add a `@password` attribute to the `password` field. ZenStack will automatically hash the field before storing it in the database. Note that we also added the `@omit` attribute to mark `password` field to be dropped from the response since we don't want it ever to be returned to the client.
 
-```prisma title='schema.prisma'
+```prisma title='schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -337,7 +337,7 @@ app.use('/api', ZenStackMiddleware({ getPrisma: () => withPresets(prisma) }));
 
 Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. Let's open up the `create` and `read` operations for `User` to support the signup/login flow:
 
-```prisma title='schema.prisma'
+```prisma title='schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -395,7 +395,7 @@ curl -X POST localhost:3000/api/login \
 
 Now that we have authentication in place, we can add access control rules to our schema to secure our CRUD service. Make the following changes to the `Pet` and `Order` models:
 
-```ts title='schema.prisma'
+```ts title='schema.zmodel'
 model Pet {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
@@ -528,14 +528,14 @@ curl localhost:3000/api/pet/findMany
 ```json
 [
     {
-        "id": "clfamyjp90002vhql2ng70ay8",
+        "id": "max",
         "createdAt": "2023-03-16T04:53:26.205Z",
         "updatedAt": "2023-03-16T04:53:26.205Z",
         "name": "Max",
         "category": "doggie"
     },
     {
-        "id": "clfamyjpa0004vhql4u0ys8lf",
+        "id": "cooper",
         "createdAt": "2023-03-16T04:53:26.206Z",
         "updatedAt": "2023-03-16T04:53:26.206Z",
         "name": "Cooper",
@@ -555,7 +555,7 @@ curl localhost:3000/api/pet/findMany -H "Authorization: Bearer $token"
 ```json
 [
     {
-        "id": "clfamyjp60000vhql266hko28",
+        "id": "luna",
         "createdAt": "2023-03-16T04:53:26.203Z",
         "updatedAt": "2023-03-16T05:59:04.586Z",
         "name": "Luna",
@@ -563,14 +563,14 @@ curl localhost:3000/api/pet/findMany -H "Authorization: Bearer $token"
         "orderId": "clfapaykz0002vhwr634sd9l7"
     },
     {
-        "id": "clfamyjp90002vhql2ng70ay8",
+        "id": "max",
         "createdAt": "2023-03-16T04:53:26.205Z",
         "updatedAt": "2023-03-16T04:53:26.205Z",
         "name": "Max",
         "category": "doggie"
     },
     {
-        "id": "clfamyjpa0004vhql4u0ys8lf",
+        "id": "cooper",
         "createdAt": "2023-03-16T04:53:26.206Z",
         "updatedAt": "2023-03-16T04:53:26.206Z",
         "name": "Cooper",
@@ -608,7 +608,9 @@ To call it an OpenAPI, we have to offer a formal specification. Fortunately, Zen
 npm install -D @zenstackhq/openapi
 ```
 
-```prisma title='schema.prisma'
+Enable the OpenAPI plugin in the `schema.zmodel` file:
+
+```prisma title='schema.zmodel'
 plugin openapi {
     provider = '@zenstackhq/openapi'
     prefix = '/api'
@@ -634,7 +636,7 @@ npm install swagger-ui-express express-jsdoc-swagger
 npm install -D @types/swagger-ui-express
 ```
 
-Then add JSDoc for specifying its input and output to the `/api/login` route:
+Then add JSDoc to specify its input and output to the `/api/login` route:
 
 ```ts title='app.ts'
 /**
