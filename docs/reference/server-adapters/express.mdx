@@ -37,7 +37,7 @@ const factory = (options: MiddlewareOptions): express.Handler => { ... }
 
 ### Mounting the APIs
 
-You can integrate ZenStack into your project with the `ZenStackFastifyPlugin` [fastify plugin](https://www.fastify.io/docs/latest/Reference/Plugins/):
+You can integrate ZenStack into your project with the `ZenStackMiddleware` [express middleware](https://expressjs.com/en/guide/using-middleware.html):
 
 ```ts
 import { PrismaClient } from '@prisma/client';
@@ -66,7 +66,7 @@ The Express.js adapter takes the following options to initialize:
 
 ### Using the APIs
 
-The APIs mounted by `ZenStackFastifyPlugin` conforms to the OpenAPI V3 spec, and provides a path for each model and database operation combination, as listed [here](/docs/reference/plugins/openapi#generated-api-paths).
+The APIs mounted by `ZenStackMiddleware` conforms to the OpenAPI V3 spec, and provides a path for each model and database operation combination, as listed [here](/docs/reference/plugins/openapi#generated-api-paths).
 
 <ApiRequest />
 
