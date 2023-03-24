@@ -806,6 +806,86 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Gets the "post-update" state of an entity. Only valid when used in a "update" access policy. Read more about access policies [here](#access-policy).
 
+-   `contains`
+
+    ```prisma
+        function contains(field: String, search: String, caseSensitive: Boolean?): Boolean {}
+    ```
+
+    Checks if the given field contains the search string. The search string is case-sensitive by default. Use `caseSensitive` to toggle the case sensitivity.
+
+    Equivalent to Prisma's [contains](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#contains) operator.
+
+-   `search`
+
+    ```prisma
+        function search(field: String, search: String): Boolean {}
+    ```
+
+    Checks if the given field contains the search string using [full-text-search](https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search).
+
+    Equivalent to Prisma's [search](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#search) operator.
+
+-   `startsWith`
+
+    ```prisma
+        function startsWith(field: String, search: String): Boolean {}
+    ```
+
+    Checks if the given field starts with the search string.
+
+    Equivalent to Prisma's [startsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#startswith) operator.
+
+-   `endsWith`
+
+    ```prisma
+        function endsWith(field: String, search: String): Boolean {}
+    ```
+
+    Checks if the given field ends with the search string.
+
+    Equivalent to Prisma's [endsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#endswith) operator.
+
+-   `has`
+
+    ```prisma
+        function has(field: Any[], search: Any): Boolean {}
+    ```
+
+    Check if the given field (list) contains the search value.
+
+    Equivalent to Prisma's [has](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#has) operator.
+
+-   `hasEvery`
+
+    ```prisma
+        function hasEvery(field: Any[], search: Any[]): Boolean {}
+    ```
+
+    Check if the given field (list) contains every element of the search list.
+
+    Equivalent to Prisma's [hasEvery](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hasevery) operator.
+
+-   `hasSome`
+
+    ```prisma
+        function hasSome(field: Any[], search: Any[]): Boolean {}
+    ```
+
+    Check if the given field (list) contains at least one element of the search list.
+
+    Equivalent to Prisma's [hasSome](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hassome) operator.
+
+-   `isEmpty`
+
+    ```prisma
+        function isEmpty(field: Any[]): Boolean {}
+    ```
+
+    Check if the given field (list) is empty.
+
+    Equivalent to Prisma's [isEmpty](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#isempty) operator.
+
 ### Examples
 
 Here're some examples on using field and model attributes:
@@ -1058,7 +1138,7 @@ Reference ::= Identifier
 MemberAccess ::= Expression "." Identifier
 
 Operator_Precedence#table
-Binary ::= Expression ("==" | "!=" | ">" | "<" | ">=" | "<=" | "&&" | "||")
+Binary ::= Expression ("==" | "!=" | ">" | "<" | ">=" | "<=" | "&&" | "||" || "in")
 
 Unary ::= "!" Expression
 
