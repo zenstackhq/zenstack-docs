@@ -93,7 +93,7 @@ npx zenstack generate && npx prisma db push
 Now let's update `/src/server/auth.ts` to the content below to
 use credentials auth and JWT-based session:
 
-```ts title='/src/pages/api/auth/[...nextauth].ts'
+```ts title='/src/server/auth.ts'
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
