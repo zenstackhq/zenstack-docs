@@ -5,13 +5,14 @@ sidebar_position: 5
 
 # @zenstackhq/openapi
 
-The `@zenstackhq/openapi` generates an [OpenAPI 3.0](https://spec.openapis.org/oas/v3.0.3) specification based on your ZModel schema. The output is a plain YAML or JSON file that can be used with tools like [Swagger UI](https://swagger.io/tools/swagger-ui/). You can also merge it with other OpenAPI specifications before serving it to your users.
+The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oas/v3.1.0) specification based on your ZModel schema. The output is a plain YAML or JSON file that can be used with tools like [Swagger UI](https://swagger.io/tools/swagger-ui/). You can also merge it with other OpenAPI specifications before serving it to your users.
 
 ## Options
 
 | Name        | Type   | Description                                   | Required | Default                |
 | ----------- | ------ | --------------------------------------------- | -------- | ---------------------- |
 | output      | String | Output file path (with suffix .yaml or .json) | Yes      |                        |
+| specVersion | String | OpenAPI specification version                 | No       | 3.1.0                  |
 | title       | String | API title                                     | No       | ZenStack Generated API |
 | version     | String | API version                                   | No       | 1.0.0                  |
 | prefix      | String | API path prefix, e.g., '/api'                 | No       |                        |
