@@ -82,7 +82,7 @@ plugin openapi {
 
 The generated API paths have 1:1 mapping with PrismaClient's CRUD methods. For `GET`/`DELETE` operations, the query args is passed as JSON-stringified text in the query parameter `q`. For `POST`/`PATCH`/`PUT` operations, the query args is passed as `application/json` in the request body.
 
-Check [here](https://editor.swagger.io/?url=https://gist.githubusercontent.com/ymc9/9c48bfbc9a0853ceb43497c3228c342b/raw/e264e4b04cb2d7c98ef02b64a84531c77a196d7a/blogging.openapi.yaml) for the generated specification for a blogging app.
+Check [here](https://editor.swagger.io/?url=https://gist.githubusercontent.com/ymc9/2888fae6fa60f1c7b26a8c226e6bab2f/raw/a4c78732a158a3436b6d5779695b6ab11a6edcf5/petstore.api.yaml) for the generated specification for a blogging app.
 
 -   **[model]/findMany**
 
