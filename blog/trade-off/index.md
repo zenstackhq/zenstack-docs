@@ -42,11 +42,11 @@ There is a very well-known fact that up to 98% of potential customers landing on
 After checking our database, it’s almost the same number. If so, in the real world, most anonymous users probably would never visit the website again, why do we still need to hold their behavior data forever? Here is our discussion about how to reduce the data:
 
 -   He: If you want to remove an anonymous user’s data, how could you make sure he will never come back again?
--   Me: Well, I couldn’t. But we could guess there is a big chance he will never return based on some heuristic method. For example, if one anonymous user’s last activity was already 7 days ago, which is the cookie lifetime for Safari.
+-   **Me: Well, I couldn’t. But we could guess there is a big chance he will never return based on some heuristic method. For example, if one anonymous user’s last activity was already 7 days ago, which is the cookie lifetime for Safari.**
 -   He: What if he comes again one day after 7 days?
--   Me: Hm, so we need to find a way to recover his behavior data. How about we create a separate cold database to store all the deleted anonymous user data? For an anonymous user who comes to the website, we could first check whether we could find his data in the normal database, if not, then we try to find his data from the cold database, and reactive the data by moving it from the cold database to the normal database.
+-   **Me: Hm, so we need to find a way to recover his behavior data. How about we create a separate cold database to store all the deleted anonymous user data? For an anonymous user who comes to the website, we could first check whether we could find his data in the normal database, if not, then we try to find his data from the cold database, and reactive the data by moving it from the cold database to the normal database.**
 -   He: It sounds like a solution. But we need to write additional code for this special case. And also if it happens, it will become even slower than now because of an extra database query.
--   Me: Yes, it’s a special case that we need to handle, but it could solve the problem. And since it’s a special case, let’s see how often it could happen.
+-   **Me: Yes, it’s a special case that we need to handle, but it could solve the problem. And since it’s a special case, let’s see how often it could happen.**
 
 After making the change, the problem is solved, and according to the log, the special case rarely happens.
 
