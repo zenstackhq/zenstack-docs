@@ -21,7 +21,7 @@ You need to enable `@core/zod` plugin if you use the [Express.js](/docs/referenc
 
 ```prisma title='/schema.zmodel'
 plugin zod {
-  provider = '@zenstackhq/zod'
+  provider = '@core/zod'
   output = "./src/lib/zod"
 }
 ```
