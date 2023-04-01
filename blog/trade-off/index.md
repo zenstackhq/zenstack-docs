@@ -39,7 +39,7 @@ There is a very well-known fact that up to 98% of potential customers landing on
 
 ![anonymous](https://user-images.githubusercontent.com/16688722/229223429-3e3dab84-7270-459f-8331-fdc6d0ce92e5.png)
 
-After checking our database, it’s almost the same number. If so, in the real world, most anonymous users probably would never visit the website again, why do we still need to hold their behavior data forever? Here is our discussion about how to reduce the data:
+After checking our database, it’s almost the same number. If so, in the real world, most anonymous users probably would never visit the website again, why do we still need to hold their behavior data forever? I shared my proposal with the leader of the backend team and we commenced discussions on potential solutions.
 
 -   He: If you want to remove an anonymous user’s data, how could you make sure he will never come back again?
 -   **Me: Well, I couldn’t. But we could guess there is a big chance he will never return based on some heuristic method. For example, if one anonymous user’s last activity was already 7 days ago, which is the cookie lifetime for Safari.**
