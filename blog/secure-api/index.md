@@ -2,7 +2,7 @@
 description: This post introduces three different approaches to implementing security rules for your web APIs - with application code, using database poicies, and with ORM.
 tags: [api, security, javascript]
 authors: yiming
-image: ./cover.jpg
+image: ./cover.png
 date: 2023-04-03
 ---
 
