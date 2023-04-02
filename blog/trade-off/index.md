@@ -7,7 +7,7 @@ date: 2023-03-31
 image: ./cover.jpg
 ---
 
-# Programming is the art of trade-off
+# Programming Is the Art of Trade-off
 
 ![Cover Image](cover.jpg)
 
