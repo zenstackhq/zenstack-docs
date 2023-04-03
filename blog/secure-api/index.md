@@ -6,7 +6,7 @@ image: ./cover.png
 date: 2023-04-03
 ---
 
-# Three Ways to Secure Your Database APIs: Which Is Right for You?
+# Three Ways to Secure Database APIs: Which Is Right for You?
 
 ![Cover image](cover.png)
 
