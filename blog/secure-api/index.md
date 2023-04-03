@@ -1,6 +1,6 @@
 ---
 description: This post introduces three different approaches to implementing security rules for your web APIs - with application code, using database poicies, and with ORM.
-tags: [api, security, javascript]
+tags: [api, security, orm]
 authors: yiming
 image: ./cover.png
 date: 2023-04-03
@@ -14,7 +14,7 @@ Implementing security is one of those tasks in software engineering, which we al
 
 <!-- truncate -->
 
-This article explains three different levels at which you can implement security measures for your web APIs and their pros and cons.
+This article explains three different levels at which you can implement security measures for your web APIs - application code, database policies, and ORM, together with their pros and cons.
 
 ## Application Code
 
