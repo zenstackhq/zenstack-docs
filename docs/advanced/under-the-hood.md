@@ -5,30 +5,30 @@ sidebar_position: 1
 
 # How Does ZenStack Work Under the Hood?
 
-ZenStack extends Prisma ORM in several aspects. First, it provides a modeling DSL (ZModel) - a superset of Prisma schema. Second, it allows to create enhancement wrappers to Prisma client at runtime for injecting extra behaviors. Third, it provides server adapters for installing automatic CRUD services into popular Node.js-based frameworks.
+ZenStack extends Prisma ORM mainly at two levels. First, it provides a modeling DSL (ZModel) - a superset of Prisma schema. Second, it allows to create enhancement wrappers to Prisma client at runtime for injecting extra behaviors.
 
-This document explains how each of these aspects works, so that you can make a more informed judgement on whether ZenStack is the right choice for you.
+This document explains how these extensions work, so that you can make a more informed judgement on whether ZenStack is the right choice for you.
 
 ## ZModel Language
 
 ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCode extension, using the awesome language toolkit [Langium](https://langium.org/). The DLS includes a plugin system, allowing a modular and extensible way to generate different artifacts from the schema. The core functionality of the toolkit is supported by the following three built-in plugins:
 
--   Prisma
+-   Prisma: `@core/prisma`
 
     The Prisma plugin generates the Prisma schema and Prisma client from the ZModel schema. The Prisma schema can then be used for common Prisma tasks, like `db push`, `migrate dev`, etc.
 
--   Model-meta
+-   Model-meta: `@core/model-meta`
 
     The model-meta plugin generates the model metadata, which provides basic information about models and fields at runtime. The metadata is much more lightweighted than the full ZModel AST and is much cheaper to load.
 
     The default output location is `node_modules/.zenstack/model-meta.ts`.
 
--   Policy
+-   Policy: `@core/policy`
 
     The policy plugin converts access policy rules (expressed with `@@allow` and `@@deny` attributes) into checker functions. The functions takes a context object as input and returns partial Prisma query objects, which will be injected into Prisma query arguments at runtime. The context object contains the following properties:
 
     -   `user`: the current user, which serves as the return value of [`auth()`](/docs/guides/understanding-access-policy#accessing-user-data) in the policy rules.
-    -   `prevValue`: the previous value of an entity before update, for supporting the [`future()`](/docs/guides/understanding-access-policy#update) function in the policy rules.
+    -   `preValue`: the previous value of an entity before update, for supporting the [`future()`](/docs/guides/understanding-access-policy#update) function in the policy rules.
 
     The default output location is `node_modules/.zenstack/policy.ts`.
 
@@ -100,7 +100,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
 The main responsibility of ZenStack's runtime is to create _enhanced_ Prisma client instances:
 
--   `withPassword` creates an enhanced client that automatically hash fields marked with the `@password` attribute before storing to the database.
+-   `withPassword` creates an enhanced client that automatically hashes fields marked with the `@password` attribute before storing to the database.
 -   `withOmit` creates an enhanced client that automatically strips fields marked with the `@omit` attribute before returning to the caller.
 -   `withPolicy` creates an enhanced client that enforces access policies expressed with `@@allow` and `@@deny` attributes.
 
@@ -140,10 +140,164 @@ prisma.user.update({
 });
 ```
 
+We need the following four measures to systematically enforce access policies:
+
+1. Inject filter conditions into the `where` clause in the context of "find many"
+
+    This covers cases like a direct `findMany`/`findUnique`/`findFirst`/... call:
+
+    ```ts
+    prisma.user.findMany({ where: { ... } });
+
+    // to
+
+    prisma.user.findMany({
+        where: {
+            AND: [
+                { /* original conditions */ },
+                { /* read conditions */ },
+            ],
+        },
+    });
+    ```
+
+    , or nested "find" on a to-many relation:
+
+    ```ts
+    prisma.user.findMany({ include: { posts: true } });
+
+    // to
+
+    prisma.user.findMany({
+        include: {
+            posts: {
+                where: {
+                    /* read conditions */
+                },
+            },
+        },
+    });
+    ```
+
+    , or an implicit "find" carried with a mutation:
+
+    ```ts
+    prisma.user.update({ data: { ... }, include: { posts: true } });
+
+    // to
+
+    prisma.user.update({ data: { ... }, include: { posts: { where: { /* read conditions */ } } } });
+    ```
+
+1. Inject filter conditions into the `where` clause of "mutate many"
+
+    This covers cases like `updateMany` and `deleteMany`, or nested of those ...:
+
+    ```ts
+    prisma.user.updateMany({ where: { ... }, data: { ... } });
+
+    // to
+
+    prisma.user.updateMany({
+        where: {
+            AND: [ { /* original conditions */ }, { /* update conditions */ } ]
+        },
+        data: { ... } });
+    ```
+
+    ```ts
+    prisma.user.update({ where: { ... }, data: { posts: { deleteMany: { where: { ... } } } } });
+
+    // to
+
+    prisma.user.update({ where: { ... },
+        data: {
+            posts: {
+                deleteMany: {
+                    AND: [ { /* original conditions */ }, { /* delete conditions */ } ]
+                }
+            }
+        }
+    });
+    ```
+
+1. Post-read check for entities fetched as a to-one relation
+
+    To-one relation is a special case for reading, because there's no way to do a filtering at the read time: you either include it or not. So we need to do a post-read check to make sure the fetched entity is allowed to be read.
+
+    ```ts
+    const user = prisma.user.findUnique({ where: { id: ... }, include: { profile: true } });
+
+    // to
+
+    const user = prisma.user.findUnique({ where: { id: ... }, include: { profile: true } });
+    if (profile && !readable(user.profile)) {
+       // throw rejected error
+    }
+    ```
+
+1. Transaction-protected mutations
+
+    Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling `future()` function) rules are protected by a transaction. The mutation is proceeded first, and then post-mutation checks are performed. If any of the checks fails, the transaction is rolled back.
+
+    Although for simple cases we can enforce policies by checking the mutation arguments, there're many cases where we can't safely rely on that. Employing a transaction is the most reliable way to achieve consistent result. In the future we may add arguments checking as an optimization where possible.
+
+    ```ts
+    prisma.user.create({ data: { ... } });
+
+    // to
+
+    prisma.$transaction((tx) => {
+        const user = prisma.user.create({ data: { ... } });
+        if (!createable(user)) {
+            // throw rejected error
+        }
+    }
+    ```
+
 ### The `auth` Function
+
+The `auth` function connects authentication with access control. It resolves to the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity after authentication is completed, and pass the result to the `withPolicy` or `withPresets` function as context.
+
+Although `auth` resolves to `User` model, since it's provided by the developer, there's no way to guarantee its value fully conforms to the `User` model: non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
+
+-   If `auth()` is `undefined`, its normalized to `null` when evaluating access policies.
+-   If `auth()` itself is `null`, any member access (or chained member access) is `null`.
+-   `expression == null` evaluates to `true` if `expression` is `null`.
+-   Otherwise, a boolean expression evaluates to `false` if a `null` value is involved.
 
 ### The `future` Function
 
+A "update" policy rule is treated as "post-update" rule if it involves a `future()` function call. `future()` represents the value of the model entity after the update is completed. In a "post-update" policy rule, any member accesses that are not prefixed with `future().` is treated as referencing the entity's value before the update. To support the evaluation of such rules, the entity value before update is captured, and passed as the `preValue` field in the context object passed to the checker function.
+
 ### Auxiliary Fields
 
-## RESTful Services
+When ZModel is transpiled to Prisma schema, two auxiliary fields are added to each model:
+
+-   `zenstack_guard`: Boolean, defaults to `true`
+
+    This field facilitates the evaluation of boolean expressions that don't involve a model field. E.g.,
+
+    ```ts
+    auth().role == 'admin';
+    ```
+
+    is (conceptually) translated to the following Prisma condition:
+
+    ```ts
+    {
+        where: {
+            zenstack_guard: {
+                user.role == 'admin';
+            }
+        }
+    }
+    ```
+
+-   `zenstack_transaction`: String, nullable
+
+    This field facilitates "create" and "post-update" rule checks. When conducting mutation with Prisma, it's not always straightforward to determine which entities are affected. For example, you can do a deeply nested update from a toplevel entity; or you can do an `upsert` with which there's no direct way to tell if an entity is updated or created.
+
+    To support such cases, we use a transaction to wrap the mutation, and set the `zenstack_transaction` field to a unique value containing a CUID and the operation (e.g., "create:clg4szzhq000008jf6ppybhb6"). Then, when checking rules, we can query the database (inside the transaction) to find out which entities are affected by the mutation.
+
+The auxiliary fields add some storage and computation overheads to the database, and we can consider to optimize their usage or even remove them in the future.
