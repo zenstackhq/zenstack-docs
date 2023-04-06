@@ -1,5 +1,5 @@
 ---
-description: How does ZenStack work under the hood?
+description: An explaination to the inner workings of ZenStack.
 sidebar_position: 1
 ---
 
