@@ -142,7 +142,7 @@ prisma.user.update({
 
 We need the following four measures to enforce access policies systematically:
 
-**1. Inject filter conditions into the "where" clause in the context of "find many"**
+1. **Inject filter conditions into the "where" clause in the context of "find many"**
 
     This covers cases like a direct `findMany`/`findUnique`/`findFirst`/... calls:
 
@@ -189,7 +189,7 @@ We need the following four measures to enforce access policies systematically:
     prisma.user.update({ data: { ... }, include: { posts: { where: { /* read conditions */ } } } });
     ```
 
-**1. Inject filter conditions into the "where" clause of "mutate many"**
+1. **Inject filter conditions into the "where" clause of "mutate many"**
 
     This covers cases like `updateMany` and `deleteMany`:
 
@@ -224,7 +224,7 @@ We need the following four measures to enforce access policies systematically:
     });
     ```
 
-**1. Post-read check for entities fetched as a to-one relation**
+1. **Post-read check for entities fetched as a to-one relation**
 
     To-one relation is a special case for reading because there's no way to do filtering at the read time: you either include it or not. So we need to do a post-read check to ensure the fetched entity can be read.
 
@@ -239,7 +239,7 @@ We need the following four measures to enforce access policies systematically:
     }
     ```
 
-**1. Transaction-protected mutations**
+1. **Transaction-protected mutations**
 
     Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling `future()` function) rules, are protected by a transaction. The mutation is conducted first, and then post-mutation checks are performed. If any of the checks fail, the transaction is rolled back.
 
