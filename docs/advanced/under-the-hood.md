@@ -124,23 +124,28 @@ export function withPresets<DbClient extends object>(
 Access policies, enabled by the `withPolicy` or `withPresets` enhancer, are the most complex parts of the system. Part of the complexity comes from the great flexibility Prisma offers in querying and mutating data. For example, to enforce "read" rules on a `Post` model, we need to consider several possibilities:
 
 ```ts
+// a direct where condition
 prisma.post.findMany({
     where: {...}
 });
 
+// nested fetch for relations
 prisma.user.findUnique({
     where: {id: ...},
     include: { posts: true }
 });
 
+// nested fetch during mutation
 prisma.user.update({
     where: {id: ...},
     data: { ... },
     select: { id: true, email: true, posts: true }
 });
+
+// ...
 ```
 
-We need the following four measures to enforce access policies systematically:
+We need the following measures to enforce access policies systematically:
 
 1. **Inject filter conditions into the "where" clause in the context of "find many"**
 
@@ -241,9 +246,9 @@ We need the following four measures to enforce access policies systematically:
 
 1. **Transaction-protected mutations**
 
-    Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling `future()` function) rules, are protected by a transaction. The mutation is conducted first, and then post-mutation checks are performed. If any of the checks fail, the transaction is rolled back.
+    Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling [`future()`](#the-future-function) function) rules, are protected by a transaction. The mutation is conducted first, and then post-mutation checks are performed. If any of the checks fail, the transaction is rolled back.
 
-    Although, for simple cases, we can enforce policies by checking the mutation arguments, there're many cases where we can't safely rely on that. Instead, employing a transaction is the most reliable way to achieve a consistent result. In the future, we may add arguments checking as an optimization where possible.
+    Although, for simple cases, we can enforce policies by checking the mutation input, there're many cases where we can't safely rely on that. Instead, employing a transaction is the most reliable way to achieve a consistent result. In the future, we may add input checking as an optimization where possible.
 
     ```ts
     prisma.user.create({ data: { ... } });
@@ -255,19 +260,27 @@ We need the following four measures to enforce access policies systematically:
         if (!createable(user)) {
             // throw rejected error
         }
-    }
+    })
     ```
 
 ### The `auth` function
 
 The `auth` function connects authentication with access control. It's typed as the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity from the database after authentication is completed and pass the result to the `withPolicy` or `withPresets` function as context.
 
-Although `auth` resolves to `User` model, since it's provided by the user, there's no way to guarantee its value fully conforms to the `User` model: non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
+Although `auth` resolves to `User` model, since it's provided by the user, there's no way to guarantee its value fully conforms to the `User` model: e.g., non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
 
 -   If `auth()` is `undefined`, it's normalized to `null` when evaluating access policies.
 -   If `auth()` itself is `null`, any member access (or chained member access) is `null`.
 -   `expression == null` evaluates to `true` if `expression` is `null`.
 -   Otherwise, a boolean expression evaluates to `false` if a `null` value is involved.
+
+Here're a few examples (assuming `auth()` is `null`):
+
+1. `auth() == null` -> `true`
+1. `auth() != null` -> `false`
+1. `auth().name == null` -> `true`
+1. `auth().age > 0` -> `false`
+1. `auth().age < 0` -> `false`
 
 ### The `future` function
 
@@ -290,9 +303,7 @@ When ZModel is transpiled to Prisma schema, two auxiliary fields are added to ea
     ```ts
     {
         where: {
-            zenstack_guard: {
-                user.role == 'admin';
-            }
+            zenstack_guard: user.role == 'admin';
         }
     }
     ```
