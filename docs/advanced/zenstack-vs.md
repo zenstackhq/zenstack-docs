@@ -1,6 +1,6 @@
 ---
 description: ZenStack compared with other related tools and services
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # ZenStack vs. Other Tools
