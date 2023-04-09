@@ -39,7 +39,7 @@ Why?🤔
 
 ## The problem
 
-We are building a full-stack toolkit [ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=legacy) on top of Primsa with a powerful access control layer in the schema:
+We are building a full-stack toolkit [ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=legacy) on top of Prisma with a powerful access control layer in the schema:
 
 ```tsx
 model Post {

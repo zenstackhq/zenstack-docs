@@ -102,26 +102,30 @@ This is just a simplified version. In your specific production case, you might a
 #### Pros
 
 -   Security
-   
+
     This is highly secure as it’s isolated from the database point of view. So it’s really hard for one tenant to see another tenant’s data accidentally, even if you have a sloppy developer.
+
 -   Scalability
-    
+
     It is flexible to make the load balance between high-volume tenants and low-volume tenants. Also, you have good control that one busy tenant won’t affect the neighbors.
+
 -   Customization
-    
+
     You can have customized data schema, functionality, and maintenance strategies for different tenants.
 
 #### Cons
 
 -   Maintainability
-    
+
     This is probably the one and only reason most people ditched it for the other approach. Maintaining dozens of databases might be affordable, but what about thousands or millions of databases like Notion? At that level, you definitely couldn’t maintain it manually. Instead, you probably need a set of automation to handle tasks like backup, monitoring, etc.
     In my experience with a data analytics product, we had a feature that created a separate database for each tenant to store and calculate their uploaded data. Luckily for me, there is a database operation team. Despite having a good personal relationship, the database operations team still found it challenging to manage thousands of databases. They described it as a burden and a hindrance whenever they wanted to make infrastructure changes. When we eventually refactored the code to eliminate this approach, our database operations team was so pleased that they took us out to a fancy dinner to celebrate. 😄
+
 -   Cross-tenant data sharing
-    
+
     There is often data that is meant to be shared between tenants, such as project templates, resources, and global configurations. One way to handle this is to duplicate this data in each tenant's database, which can then lead to synchronization issues that need to be resolved. Alternatively, a shared database can be used to store this data, which adds complexity to the system.
+
 -   Cross-tenant Analysis
-    
+
     If you need to run queries or reports across all tenants, which is a routine task for product marketing, it becomes more difficult and time-consuming. You might end up adopting some ETL tools to do so.
 
 #### When to use it
@@ -206,7 +210,7 @@ I love the way about RLS of centralizing the isolation policies in one place. Wo
 
 Here comes the full-stack toolkit ZenStack we are building. One of the most important things ZenStack is trying to solve is allowing you to define access policies directly inside your data model, so it's easier to keep the policies in sync when your data models evolve.
 
-**ZModel**, the modeling DSL of ZenStack, is a superset of the Prisma schema. For example, let’s add the Space(tenant) concept to the classical Prisma Post example. The Primsa schema would look like below:
+**ZModel**, the modeling DSL of ZenStack, is a superset of the Prisma schema. For example, let’s add the Space(tenant) concept to the classical Prisma Post example. The Prisma schema would look like below:
 
 ```prisma
 model User {
