@@ -1,6 +1,6 @@
 ---
 title: 'ZenStack: Start with Why'
-description: Using Golden Circle  to illustrate why/who/what we are building ZenStack
+description: Explain why,how,what we're building ZenStack using the Golden Circle framework.
 tags: [zenstack]
 authors: jiasheng
 date: 2023-04-09
