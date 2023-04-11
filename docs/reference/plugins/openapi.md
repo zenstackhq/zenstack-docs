@@ -37,7 +37,9 @@ plugin openapi {
 }
 ```
 
-The names of the configured security schemes will be added to the root `security` field and inherited by all operations. You can override the security scheme for a specific operation by using the `@@openapi.meta` attribute.
+The names of the configured security schemes will be added to the root `security` field and inherited by all operations. The plugin also respects the access policy rules defined in the schema. If a operation is fully open (e.g., `create` operation with `@@allow('create', true)` rule), an empty security array will be added to the operation to mark it as unprotected.
+
+You can override the security scheme for a specific model or operation by using the `@@openapi.meta` attribute.
 
 ## Attributes
 
@@ -47,7 +49,7 @@ The names of the configured security schemes will be added to the root `security
         attribute @@openapi.meta(_ meta: Object)
     ```
 
-    Provide metadata for a data model for generating OpenAPI specification. The input is an object containing customized configuration for each model and each CRUD operation. You can use to override per-operation-level Http method, API endpoint path, description, summary, tags, and etc. Currently there's no type checking for the structure, but we'll add that in the near future.
+    Provide metadata for a data model for generating OpenAPI specification. The input is an object containing customized configuration for each model and each CRUD operation. You can use it to override Http method, API endpoint path, description, summary, tags, security, and etc. Currently there's no type checking for the structure, but we'll add that in the near future.
 
     ### Model-level metadata
 
@@ -55,7 +57,7 @@ The names of the configured security schemes will be added to the root `security
 
     | Name           | Type   | Description                                     | Default                 |
     | -------------- | ------ | ----------------------------------------------- | ----------------------- |
-    | security       | Array  | Security schemes for this operation             |                         |
+    | security       | Array  | Security for this model                         |                         |
     | tagDescription | String | Description of the tag generated for this model | [Model Name] operations |
 
     ### Operation-level metadata
@@ -64,7 +66,7 @@ The names of the configured security schemes will be added to the root `security
 
     | Name        | Type   | Description                         | Default                                 |
     | ----------- | ------ | ----------------------------------- | --------------------------------------- |
-    | security    | Array  | Security schemes for this operation |                                         |
+    | security    | Array  | Security for this operation         |                                         |
     | description | String | Description of the operation        |                                         |
     | method      | String | HTTP method of the operation        | Depends on the operation                |
     | path        | String | API endpoint path of the operation  | The corresponding Prisma operation name |
