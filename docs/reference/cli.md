@@ -93,6 +93,20 @@ Generate with custom package manager and schema location.
 npx zenstack generate -p pnpm --schema src/my.zmodel
 ```
 
+### info
+
+Get information of installed ZenStack and related packages.
+
+```bash
+zenstack info [options] [path]
+```
+
+#### Arguments
+
+| Name | Description  | Default        |
+| ---- | ------------ | -------------- |
+| path | Project path | current folder |
+
 ### Config file
 
 ZenStack CLI loads configuration from `zenstack.config.json` file if it finds one. The config file path can be overridden with `--config` option.
