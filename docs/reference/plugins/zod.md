@@ -13,15 +13,14 @@ You need to enable `@core/zod` plugin if you use the [Express.js](/docs/referenc
 
 ## Options
 
-| Name   | Type   | Description      | Required |
-| ------ | ------ | ---------------- | -------- |
-| output | String | Output directory | Yes      |
+| Name   | Type   | Description      | Required | Default                    |
+| ------ | ------ | ---------------- | -------- | -------------------------- |
+| output | String | Output directory | No       | node_modules/.zenstack/zod |
 
 ## Example
 
 ```prisma title='/schema.zmodel'
 plugin zod {
   provider = '@core/zod'
-  output = "./src/lib/zod"
 }
 ```
