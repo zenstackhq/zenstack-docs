@@ -9,15 +9,35 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
 
 ## Options
 
-| Name        | Type   | Description                                   | Required | Default                |
-| ----------- | ------ | --------------------------------------------- | -------- | ---------------------- |
-| output      | String | Output file path (with suffix .yaml or .json) | Yes      |                        |
-| specVersion | String | OpenAPI specification version                 | No       | 3.1.0                  |
-| title       | String | API title                                     | No       | ZenStack Generated API |
-| version     | String | API version                                   | No       | 1.0.0                  |
-| prefix      | String | API path prefix, e.g., '/api'                 | No       |                        |
-| description | String | API description                               | No       |                        |
-| summary     | String | API summary                                   | No       |                        |
+| Name            | Type   | Description                                                                   | Required | Default                |
+| --------------- | ------ | ----------------------------------------------------------------------------- | -------- | ---------------------- |
+| output          | String | Output file path (with suffix .yaml or .json)                                 | Yes      |                        |
+| specVersion     | String | OpenAPI specification version                                                 | No       | 3.1.0                  |
+| title           | String | API title                                                                     | No       | ZenStack Generated API |
+| version         | String | API version                                                                   | No       | 1.0.0                  |
+| prefix          | String | API path prefix, e.g., '/api'                                                 | No       |                        |
+| description     | String | API description                                                               | No       |                        |
+| summary         | String | API summary                                                                   | No       |                        |
+| securitySchemes | Object | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
+
+### Security schemes
+
+The `securitySchemes` option is an object containing security schemes for the API, following the specification [here](https://swagger.io/docs/specification/authentication/). The object will be generated as the `securitySchemes` field under the `components` section in the OpenAPI specification.
+
+Example usage:
+
+```prisma
+plugin openapi {
+    provider = '@zenstackhq/openapi'
+    securitySchemes = {
+        basic: { type: 'http', scheme: 'basic' },
+        bearer: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+        apiKey: { type: 'apiKey', in: 'header', name: 'X-API-KEY' }
+    }
+}
+```
+
+The names of the configured security schemes will be added to the root `security` field and inherited by all operations. You can override the security scheme for a specific operation by using the `@@openapi.meta` attribute.
 
 ## Attributes
 
@@ -27,9 +47,32 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
         attribute @@openapi.meta(_ meta: Object)
     ```
 
-    Provide metadata for a data model for generating OpenAPI specification. The input is an object containing customized configuration for each model and each CRUD operation. You can use to override per-operation-level Http method, API endpoint path, description, summary and tags. Currently there's no type checking for the structure, but we'll add that in the near future.
+    Provide metadata for a data model for generating OpenAPI specification. The input is an object containing customized configuration for each model and each CRUD operation. You can use to override per-operation-level Http method, API endpoint path, description, summary, tags, and etc. Currently there's no type checking for the structure, but we'll add that in the near future.
 
-    For example:
+    ### Model-level metadata
+
+    The input object can contain the following top-level fields:
+
+    | Name           | Type   | Description                                     | Default                 |
+    | -------------- | ------ | ----------------------------------------------- | ----------------------- |
+    | security       | Array  | Security schemes for this operation             |                         |
+    | tagDescription | String | Description of the tag generated for this model | [Model Name] operations |
+
+    ### Operation-level metadata
+
+    The input object can contain operation-level metadata keyed by the Prisma operation name. Each entry can contain the following fields:
+
+    | Name        | Type   | Description                         | Default                                 |
+    | ----------- | ------ | ----------------------------------- | --------------------------------------- |
+    | security    | Array  | Security schemes for this operation |                                         |
+    | description | String | Description of the operation        |                                         |
+    | method      | String | HTTP method of the operation        | Depends on the operation                |
+    | path        | String | API endpoint path of the operation  | The corresponding Prisma operation name |
+    | summary     | String | Summary of the operation            |                                         |
+    | tags        | Array  | Tags of the operation               |                                         |
+    | deprecated  | Bool   | Whether the operation is deprecated | false                                   |
+
+    ### Example
 
     ```prisma
     model User {
@@ -37,6 +80,8 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
         email String @unique
 
         @@openapi.meta({
+            security: [ { basic: [] } ],
+            tagDescription: 'Operations for managing users',
             findMany: {
                 description: 'Find users matching the given conditions'
             },
@@ -45,8 +90,12 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
                 path: 'dodelete',
                 description: 'Delete a unique user',
                 summary: 'Delete a user yeah yeah',
-                tags: ['delete', 'user']
+                tags: ['delete', 'user'],
             },
+            createMany: {
+                security: [],
+                deprecated: true
+            }
         })
     }
     ```
@@ -61,7 +110,7 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
 
 ## Example
 
-```prisma title='/schema.zmodel'
+```prisma title='schema.zmodel'
 datasource db {
     provider = 'sqlite'
     url = 'file:./dev.db'
