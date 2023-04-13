@@ -63,3 +63,7 @@ async function getPrisma(req: NextApiRequest) {
     return withPresets(prisma, { user: auth ? { id: auth.userId } : undefined });
 }
 ```
+
+---
+
+You can find a working sample project [here](https://github.com/zenstackhq/docs-tutorial-clerk).
