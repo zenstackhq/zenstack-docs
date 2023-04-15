@@ -18,7 +18,7 @@ Almost all the SaaS now is collaborative, from the originator Salesforce to the 
 
 This article is the second part of the tutorial on building the app from scratch. It is assumed that you have read the first part of it to build the SaaS team space below:
 
-[https://zenstack.dev/blog/saas-demo](https://zenstack.dev/blog/saas-demo)
+[How to build a collaborative SaaS product using Next.js and ZenStack's access control policy](https://zenstack.dev/blog/saas-demo)
 
 So it will continue from there to adding the ToDo functionality below:
 
