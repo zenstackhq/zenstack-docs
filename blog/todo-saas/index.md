@@ -438,7 +438,7 @@ All done. Then you can enjoy collaborating in the team space now:
 
 ![Todo](https://user-images.githubusercontent.com/16688722/232254067-f8d562b7-7acc-4579-a782-adc44f8f8550.png)
 
-## 4. Requirement change
+## 4. Requirement Change
 
 Now we could only see the public Todo list in the space. Let’s say we would like to change it so that all the Todo lists could be seen. But for the private list, the todo under it could only be seen by its owner.
 
