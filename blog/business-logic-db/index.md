@@ -1,6 +1,6 @@
 ---
 title: Business Logic Inside Database - How Evil Is It?
-description: a retrospection to the "never put business logic inside the database" mantra
+description: A retrospective look at the "never put business logic inside the database" mantra
 tags: [database, webdev]
 authors: yiming
 date: 2023-04-17
