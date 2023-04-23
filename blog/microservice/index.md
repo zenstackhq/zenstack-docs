@@ -29,7 +29,7 @@ So, what happened? Is it because of the emergence of new trends and technologies
 
 Everything comes with a price, sometimes people forget the cost you need to pay when pursuing new trends in technology. Some typical costs include:
 
--   Development sprawl
+-   Increased development complexity
 -   Exponential infrastructure costs
 -   Added organizational overhead
 -   Debugging challenges
@@ -42,7 +42,7 @@ Before diving into microservices, it's important to consider the specific outcom
 
 Once you have clear answers to these questions, you can perform a cost-benefit analysis to determine whether microservices are truly necessary for you.
 
-### Monolith First
+### Monolith first
 
 Marrin Flower is well-known as the father of Microservices. But are you aware of the below statements of his:
 
@@ -111,11 +111,15 @@ With these tools, a small team or even a single developer can create a high-qual
 
 You can read more in another post [From FullStack to ZenStack](https://zenstack.dev/blog/fullstack-zenstack)
 
-### Complex lies in the data layer
+### Complexity lies in the data layer
 
-When it comes to scaling an application, it's common to think about the complexity of the code. However, fundamentally it is often the underlying data layer that makes it difficult to scale. In the old days, the data layer is often tightly coupled with the application code. The relationships between data entities become intricate especially if more raw SQL query is used.
+When it comes to scaling an application, it's common to think about the complexity of the code. However, in reality, the underlying data layer is often the root cause of scaling issues.Traditionally, the data layer has been tightly coupled with the application code, and as the application grows, the relationships between data entities become increasingly complex and difficult to manage.
 
-Using an ORM tool can simplify the process of managing data and make it easier to scale the application. [Prisma](https://www.prisma.io/) actually pushes it further by introducing the schema file to provide a clear and concise way to define the data models and relationships in an application.
+[Prisma](https://www.prisma.io/) has made significant progress in reducing this complexity by introducing the schema file to define the data model for the application.
+
+-   the schema file serves as a single source of truth for the data model, making it easy for developers to understand and manage the application's data layer.
+-   The schema file specifies the data types, relationships, and constraints of the data model explicitly, which can be easily modified and scaled as the application grows.
+-   The schema does a better job of communicating the intent and the understanding of the domain than the code does.
 
 ```prisma
 model User {
@@ -142,8 +146,6 @@ enum Role {
   ADMIN
 }
 ```
-
-The schema does a better job of communicating the intent and the understanding of the domain than the code does. It makes the relationship between the data entity extremely explicit.
 
 The toolkit [ZenStack](https://zenstack.dev/) we are building on top of the Prisma wants to go further along the path. We add the access policy layer in the schema file and automatically generate the safely guarded frontend data query libraries (hooks), OpenAPI, and [tRPC](https://trpc.io/) routers for you:
 
