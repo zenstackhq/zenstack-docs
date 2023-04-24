@@ -1,5 +1,5 @@
 ---
-title: Where did Microservices go
+title: Where Did Microservices Go
 description: Microservices have undergone a shift due to a combination of lessons learned and the emergence of new technologies.
 tags: [zenstack, Microservices]
 authors: jiasheng
@@ -7,7 +7,7 @@ date: 2023-04-22
 image: ./cover.jpg
 ---
 
-# Where did Microservices go
+# Where Did Microservices Go
 
 ![Cover Image](cover.jpg)
 
