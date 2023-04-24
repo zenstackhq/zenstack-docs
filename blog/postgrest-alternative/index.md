@@ -41,7 +41,12 @@ CREATE POLICY post_read_policy ON post FOR SELECT
     USING (published = true);
 ```
 
-In a complex system, you'll define lots of such rules to make sure everything is protected. The result is that using PostgREST is quite a SQL-intensive experience and may not fit everyone's preference. This article introduces an alternative approach that uses [Prisma ORM](https://www.prisma.io/) and [ZenStack](https://zenstack.dev) to achieve the same goal without writing a single line of SQL!
+PostgREST is a great tool in many ways but it may not fit everyone's preference for two reasons:
+
+1. It's a separate service that you need to host and manage in addition to your database and backend.
+1. It's very SQL-heavy, and you'll write a lot of SQL to define access policies in a complex system.
+
+This article introduces an alternative approach that uses [Prisma ORM](https://www.prisma.io/) and [ZenStack](https://zenstack.dev) to achieve the same goal without running one more service or writing a single line of SQL!
 
 ## About Prisma
 
