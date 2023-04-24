@@ -109,7 +109,9 @@ model Post {
 }
 ```
 
-More pleasant, isn't it? Read on for more side-by-side comparisons.
+More pleasant, isn't it? You can find a more comprehensive introduction to ZenStack's access policies [here](/docs/guides/understanding-access-policy).
+
+Read on for more side-by-side comparisons.
 
 ## More Examples Of Access Policy
 
@@ -206,6 +208,8 @@ app.use(
     })
 );
 ```
+
+A full list of currently supported adapters and their documentations can be found [here](/docs/category/server-adapters).
 
 The `/api/data` endpoint will then provide a full set of Prisma operations for each model in your schema, like `/api/data/post/findMany`. Since the Prisma client used is protected by the access policies, the generated web API is also secure.
 
