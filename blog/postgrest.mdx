@@ -43,7 +43,7 @@ To use PostgREST, you set up a config file, specify the connection string to the
 Strictly speaking, PostgREST doesn’t follow RESTful conventions, as it doesn’t use nested routes. Say, if you have a resource User in REST, by convention, a single user should be accessed via:
 
 ```ts
-GET / user / 1;
+GET /user/1;
 ```
 
 , while in PostgREST, you fetch it like:
