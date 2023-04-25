@@ -44,7 +44,7 @@ Once you have clear answers to these questions, you can perform a cost-benefit a
 
 ### Monolith first
 
-Marrin Flower is well-known as the father of Microservices. But are you aware of the below statements of his:
+Martin Fowler is well-known as influential voice in the microservices community. But are you aware of the below statements of his:
 
 > As I hear stories about teams using a [microservices architecture](https://martinfowler.com/articles/microservices.html), I've noticed a common pattern.
 >
@@ -58,7 +58,7 @@ There are two reasons:
 1. When you begin a new application, how sure are you that it will be useful to your users? The best way to find out if a software idea is useful is to build a simplistic version of it and see how well it works out. During this first phase you need to prioritize speed (and thus cycle time for feedback), so the premium of microservices is a drag you should do without.
 2. The Microservices will only work well if you come up with good, stable boundaries between the services. But even experienced architects working in familiar domains have great difficulty getting boundaries right at the beginning. By building a monolith first, you can figure out what the right boundaries are, before a microservices design brushes a layer of treacle over them.
 
-In conclusion, no architecture is often the best architecture in the early days of a system. Martin Flower’s Design Stamina Hypothesis also does a great job of illustrating this idea:
+In conclusion, no architecture is often the best architecture in the early days of a system. Martin Fowler’s Design Stamina Hypothesis also does a great job of illustrating this idea:
 
 ![Design Stamina Hypothesis](https://user-images.githubusercontent.com/16688722/233803439-92759ca0-b3e3-43f0-a1a1-8da45b9f0ec4.png)
 
