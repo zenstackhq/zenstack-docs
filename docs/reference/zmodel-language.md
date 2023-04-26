@@ -809,10 +809,10 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 -   `contains`
 
     ```prisma
-        function contains(field: String, search: String, caseSensitive: Boolean?): Boolean {}
+        function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
     ```
 
-    Checks if the given field contains the search string. The search string is case-sensitive by default. Use `caseSensitive` to toggle the case sensitivity.
+    Checks if the given field contains the search string. The search string is case-sensitive by default. Use `caseInSensitive` to toggle the case sensitivity.
 
     Equivalent to Prisma's [contains](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#contains) operator.
 
