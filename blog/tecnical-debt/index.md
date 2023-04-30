@@ -48,7 +48,7 @@ Remember how technical debt grows from the beginning?  So my take is that at lea
 The [ZenStack](https://zenstack.dev/) toolkit we are building is adhering to it. It uses the declarative data model on top of Prisma adding access policy and validation rules,  from which it will automatically generate APIs including OpenAPI, tPRC route, and hooks for you.  In the latest release, we add the abstract inheritance feature to further address it.  
 
 Let's review the steps in the SaaS example mentioned earlier to see how each one is addressed.
-You can represent this conceptually using the following model:
+You can represent this conceptually using the following model in the beginning:
 
 ```prisma
 /*
@@ -109,10 +109,12 @@ abstract model SpaceBase {
  * Model representing membership of a user in a space
  */
 model SpaceUser extends SpaceBase {
-    // user can read entries for spaces which he's a member of
-    @@allow('read', space.members?[owner == auth()])
+    nickName String
 }
 
+/*
+ * Model for a bug
+ */
 model Bug extends SpaceBase {
     title String
     priority Int
@@ -125,6 +127,9 @@ model Bug extends SpaceBase {
 Pay attention to the `SpaceBase` model,  it has all the necessary fields and access policies to support **tenant isolation**.  When we need to add the Task feature, instead of copy paste the code of the Bug feature,  you just need to simply extend the `SpaceBase` model like the below:
 
 ```prisma
+/*
+ * Model for a task
+ */
 model Task extends SpaceBase {
     title String
     size Int
