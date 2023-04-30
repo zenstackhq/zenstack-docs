@@ -959,6 +959,7 @@ model Model {
     -   Decimal
     -   Json
     -   Bytes
+    -   [Unsupported types](https://www.prisma.io/docs/concepts/components/prisma-schema/data-model#unsupported-types)
 
     A field's type can be any of the scalar or reference type, a list of the aforementioned type (suffixed with `[]`), or an optional of the aforementioned type (suffixed with `?`).
 
