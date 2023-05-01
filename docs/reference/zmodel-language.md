@@ -45,7 +45,7 @@ import [File_PATH]
 ```
 
 - **[File_PATH]**: 
-    Path to the ZModel file to be imported. Can be either a relative path or an absolute path, without .zmodel extension. Once a file is imported, all the stuffs 
+    Path to the ZModel file to be imported. Can be either a relative path or an absolute path, without .zmodel extension. Once a file is imported, all the declarations in that file will be included in the building process.
 
 ### Examples
 
