@@ -29,10 +29,31 @@ However, the standard capability of Prisma schema doesn't allow us to build the 
 1. Built-in attributes and functions for defining access policies
 1. Built-in attributes for defining field validation rules
 1. Utility attributes like `@password` and `@omit`
+1. Multi-schema files support 
 
 Some of these extensions have been asked for by the Prisma community for some time, so we hope that ZenStack can be helpful even just as an extensible version of Prisma.
 
 This section provides detailed descriptions of all aspects of the ZModel language, so you don't have to jump over to Prisma's documentation for extra learning.
+
+## Import 
+ZModel allows to import other ZModel files. This is useful when you want to split your schema into multiple files for better organization. Under the hood, it will recursively merge all the imported schemas, and generate a single Prisma schema file for the Prisma CLI to consume.
+
+### Syntax
+
+```prisma
+import [File_PATH]
+```
+
+- **[File_PATH]**: 
+    Path to the ZModel file to be imported. Can be either a relative path or an absolute path, without .zmodel extension. Once a file is imported, all the declarations in that file will be included in the building process.
+
+### Examples
+
+```prisma
+// there is a file called "user.zmodel" in the same directory
+import "user"
+```
+
 
 ## Data source
 
@@ -205,16 +226,17 @@ enum UserRole {
 
 ## Model
 
-Models represent the business entities of your application.
+Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract model would be eliminated in the generated prisma schema file. 
 
 ### Syntax
-
 ```prisma
-model [NAME] {
+(abstract)? model [NAME] (extends [ABSTRACT_MODEL_NAME](,[ABSTRACT_MODEL_NAME])*)? {
     [FIELD]*
 }
 ```
+-  **[abstract]**:
 
+    Optional. If present, the model is marked as abstract would not be mapped to a database table. Abstract models are only used as base classes for other models.
 -   **[NAME]**:
 
     Name of the model. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
@@ -222,6 +244,10 @@ model [NAME] {
 -   **[FIELD]**:
 
     Arbitrary number of fields. See [next section](#field) for details.
+
+-   **[ABSTRACT_MODEL_NAME]**:
+    
+    Name of an abstract model. 
 
 ### Note
 
@@ -232,10 +258,27 @@ See [here](/docs/reference/zmodel-language#attribute) for more details about att
 ### Example
 
 ```prisma
-model User {
+abstract model Basic {
     id String @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model User extends Basic {
+    name String 
 }
 ```
+
+The generated prisma file only contains one `User` model:
+```prisma
+model User {
+    id String @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name String @id
+}
+```
+
 
 ## Attribute
 
@@ -257,7 +300,7 @@ Attribute name. See [below](#built-in-attributes) for a full list of attributes.
 
 -   **[ARGS]**
 
-See [attribute arguments](#attribute-arguments).
+See [attribute arguments](#arguments).
 
 #### Model attribute
 
@@ -275,7 +318,7 @@ Attribute name. See [below](#built-in-attributes) for a full list of attributes.
 
 -   **[ARGS]**
 
-See [attribute arguments](#attribute-arguments).
+See [attribute arguments](#arguments).
 
 ### Arguments
 
