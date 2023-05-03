@@ -1,3 +1,7 @@
+---
+description: Managing Large Schema
+sidebar_position: 5
+---
 # Managing Large Schema
 
 As your business expands, your schema file grows with it. ZenStack offers increased flexibility in managing your schema file through the use of import schema and model inheritance. An example project is provided below for your reference:
