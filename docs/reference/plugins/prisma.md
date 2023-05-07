@@ -17,6 +17,7 @@ This plugin is always automatically included when `zenstack generate` is run. Yo
 | -------------- | ------- | ------------------------------------------------- | -------- | ---------------------- |
 | output         | String  | Output file path                                  | No       | ./prisma/schema.prisma |
 | generateClient | Boolean | Whether to run `prisma generate` after generation | No       | true                   |
+| format         | Boolean | Whether to run `prisma format` after generation   | No       | false                  |
 
 ## Example
 
@@ -25,5 +26,6 @@ plugin prisma {
     provider = '@core/prisma'
     output = './src/prisma/schema.prisma'
     generateClient = false
+    format = true
 }
 ```
