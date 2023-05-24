@@ -287,7 +287,7 @@ There is also a tutorial for how to create the project step by step:
 
 I love the way about ZenStack of using a declarative way to define the access policy in the schema. However, when it comes to tenant isolation, it appears that for each model, I have to duplicate the same access policies in the Post model above it. Would it be better if there is a way it could be reused?
 
-Here comes the inheritance feature we are working on:
+Here comes the inheritance feature:
 
 ```prisma
 abstract model Basic {
@@ -325,4 +325,4 @@ The tenant isolation is still handled seamlessly in the background.
 
 Consider the benefits of having a newly hired developer who is unfamiliar with the multi-tenant concept. Despite their lack of understanding, they can still perform their job without causing any issues.
 
-If you like it, join our [Discord](https://go.zenstack.dev/chat) or follow our [GitHub](https://github.com/zenstackhq/zenstack). You will get to use it the first time it is released.
+If you like it, join our [Discord](https://go.zenstack.dev/chat) or follow our [GitHub](https://github.com/zenstackhq/zenstack). You will see more features and usages there.
