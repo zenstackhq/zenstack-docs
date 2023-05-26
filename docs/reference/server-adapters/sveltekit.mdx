@@ -1,0 +1,57 @@
+---
+title: SvelteKit
+description: Adapter for integrating with SvelteKit
+sidebar_position: 2
+---
+
+import ErrorHandling from './_error-handling.md';
+import AdapterOptions from './_options.mdx';
+import UsingAPI from './_using-api.md';
+
+# SvelteKit Server Adapter
+
+The `@zenstackhq/server/sveltekit` module provides a quick way to install API endpoints onto a [SvelteKit](https://kit.svelte.dev/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+### Mounting the API
+
+You can mount the API by creating a SvelteKit server hooks like:
+
+```ts title='/src/hooks.server.ts'
+import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
+import { withPresets } from '@zenstackhq/runtime';
+import { getSessionUser } from '$lib/auth.ts';
+
+// create an enhanced Prisma client with user context
+function getPrisma(event: RequestEvent) {
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    return withPresets({ user: getSessionUser(event) });
+}
+
+// create the hooks handler with the `getPrisma` hook
+export const handle = SvelteKitHandler({ prefix: '/api/model', getPrisma });
+```
+
+:::tip
+You can use the [sequence helper](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks) to compose multiple server hooks.
+:::
+
+The SvelteKit hooks handler takes the following options to initialize:
+
+- prefix
+
+    <blockquote>string</blockquote>
+
+    Prefix for the mounted API endpoints. E.g.: /api/model.
+
+<AdapterOptions getPrisma='(event: RequestEvent) => unknown | Promise<unknown>' />
+
+### Using the API
+
+<UsingAPI />
+
+<ErrorHandling />
+
+### Fully working example
+
+You can find a fully working example [here](https://github.com/zenstackhq/docs-tutorial-nextjs).

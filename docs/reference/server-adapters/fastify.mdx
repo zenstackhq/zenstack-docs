@@ -1,13 +1,14 @@
 ---
+title: Fastify
 description: Adapter for integrating with Fastify
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import ErrorHandling from './_error-handling.md';
 import AdapterOptions from './_options.mdx';
 import UsingAPI from './_using-api.md';
 
-# Fastify
+# Fastify Adapter
 
 The `@zenstackhq/server/fastify` module provides a quick way to install API routes onto a [Fastify](https://www.fastify.io/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
 
@@ -33,6 +34,12 @@ server.register(ZenStackFastifyPlugin, {
 ```
 
 The Fastify adapter takes the following options to initialize:
+
+- prefix
+
+    <blockquote>string</blockquote>
+
+    Prefix for the mounted API endpoints. E.g.: /api/model.
 
 <AdapterOptions getPrisma='(request: FastifyRequest, reply: FastifyReply) => unknown | Promise<unknown>' />
 
