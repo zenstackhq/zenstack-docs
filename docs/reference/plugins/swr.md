@@ -8,7 +8,7 @@ sidebar_position: 5
 :::info
 This package is in preview stage and will supersede [`@zenstackhq/react`](/docs/reference/plugins/react) plugin in the future.
 
-If you're looking for generating hooks for [Tanstack Query](https://tanstack.com/query/latest), please checkout the [`@zenstackhq/swr`](/docs/reference/plugins/tanstack-query) plugin.
+If you're looking for generating hooks for [Tanstack Query](https://tanstack.com/query/latest), please checkout the [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) plugin.
 :::
 
 The `@zenstack/swr` plugin generates [SWR](https://swr.vercel.app/) hooks that call into the CRUD services provided by the [server adapters](/docs/category/server-adapters).
