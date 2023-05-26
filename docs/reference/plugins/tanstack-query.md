@@ -22,6 +22,7 @@ To use the generated hooks, you need to install "tanstack-query" for the target 
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
 | output  | String | Output directory                                        | Yes      |         |
+| target  | String | Target framework to generate for. Choose from "react" and "svelte".                                        | Yes      |         |
 | useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization                                        | No      | false        |
 
 ## Example
@@ -29,9 +30,10 @@ To use the generated hooks, you need to install "tanstack-query" for the target 
 Here's a quick example with a ReactJs blogging app. You can find a fully functional Todo app example [here](https://github.com/zenstackhq/sample-todo-nextjs-tanstack).
 
 ```prisma title='/schema.zmodel'
-plugin reactHooks {
+plugin hooks {
   provider = '@zenstackhq/tanstack-query'
   output = "./src/lib/hooks"
+  target = "react"
 }
 
 model User {
