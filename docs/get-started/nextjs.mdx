@@ -193,17 +193,18 @@ value (use a complex secret in production and don't check it into git):
 ZenStack has built-in support for Next.js and can provide database CRUD services
 automagically, so you don't need to write it yourself.
 
-First install the `@zenstackhq/next` and `@zenstackhq/react` packages:
+First install the `@zenstackhq/server` and `@zenstackhq/swr` packages:
 
 ```bash
-npm install @zenstackhq/next @zenstackhq/react swr
+npm install @zenstackhq/server swr
+npm install -D  @zenstackhq/swr
 ```
 
 Let's mount it to the `/api/model/[...path]` endpoint. Create a `/src/pages/api/model/[...path].ts`
 file and fill in the content below:
 
 ```ts title='/src/pages/api/model/[...path].ts'
-import { requestHandler } from '@zenstackhq/next';
+import { NextRequestHandler } from '@zenstackhq/server/next';
 import { withPresets } from '@zenstackhq/runtime';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerAuthSession } from '../../../server/auth';
@@ -216,7 +217,7 @@ async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
     return withPresets(prisma, { user: session?.user });
 }
 
-export default requestHandler({ getPrisma });
+export default NextRequestHandler({ getPrisma });
 ```
 
 The `/api/model` route is now ready to access database query and mutation requests.
@@ -226,8 +227,8 @@ automatically generate React hooks for you.
 Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
 
 ```prisma
-plugin reactHooks {
-  provider = '@zenstackhq/react'
+plugin hooks {
+  provider = '@zenstackhq/swr'
   output = "./src/lib/hooks"
 }
 ```
@@ -251,12 +252,12 @@ import type { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
 import Router from 'next/router';
 import { useState, type FormEvent } from 'react';
-import { useUser } from '../lib/hooks';
+import { useMutateUser } from '../lib/hooks';
 
 const Signup: NextPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { create: signup } = useUser();
+    const { createUser: signup } = useMutateUser();
 
     async function onSignup(e: FormEvent) {
         e.preventDefault();
@@ -319,7 +320,7 @@ const Signup: NextPage = () => {
 export default Signup;
 ```
 
-In the code above, we used the auto-generated `useUser` hooks to create new `User` entities.
+In the code above, we used the auto-generated `useMutateUser` hooks to create new `User` entities.
 
 :::tip
 
@@ -469,7 +470,7 @@ import { type NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { usePost } from '../lib/hooks';
+import { useFindManyPost, useMutatePost } from '../lib/hooks';
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -503,10 +504,10 @@ const SigninSignup = () => {
 
 const Posts = ({ user }: { user: AuthUser }) => {
     // Post crud hooks
-    const { findMany, create, update, del } = usePost();
+    const { createPost, updatePost, deletePost } = useMutatePost();
 
     // list all posts that're visible to the current user, together with their authors
-    const { data: posts } = findMany({
+    const { data: posts } = useFindManyPost({
         include: { author: true },
         orderBy: { createdAt: 'desc' },
     });
@@ -514,19 +515,19 @@ const Posts = ({ user }: { user: AuthUser }) => {
     async function onCreatePost() {
         const title = prompt('Enter post title');
         if (title) {
-            await create({ data: { title, authorId: user.id } });
+            await createPost({ data: { title, authorId: user.id } });
         }
     }
 
     async function onTogglePublished(post: Post) {
-        await update({
+        await updatePost({
             where: { id: post.id },
             data: { published: !post.published },
         });
     }
 
     async function onDelete(post: Post) {
-        await del({ where: { id: post.id } });
+        await deletePost({ where: { id: post.id } });
     }
 
     return (

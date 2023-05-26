@@ -1,0 +1,7 @@
+position: 100
+label: API Handlers
+collapsible: true
+collapsed: true
+link:
+    type: generated-index
+    title: API Handlers
