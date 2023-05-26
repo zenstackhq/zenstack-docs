@@ -9,7 +9,7 @@ import UsingAPI from './_using-api.md';
 
 # Next.js
 
-The `@zenstackhq/server/next` module provides a quick way to install API endpoints onto a [Next.js](https://nextjs.org/) project for exposing database CRUD. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+The `@zenstackhq/server/next` module provides a quick way to install API endpoints onto a [Next.js](https://nextjs.org/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
 
 ### Mounting the API
 
@@ -21,10 +21,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { withPresets } from '@zenstackhq/runtime';
 import { getSessionUser } from '../../../lib/auth.ts';
 
+// create an enhanced Prisma client with user context
 function getPrisma(req: NextApiRequest, res: NextApiResponse) {
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
     return withPresets({ user: getSessionUser(req, res) });
 }
 
+// create the request handler with the `getPrisma` hook
 export default NextRequestHandler({ getPrisma });
 ```
 

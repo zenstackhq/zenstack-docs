@@ -14,9 +14,9 @@ The APIs can be used in the following three ways:
 
 1. With directh HTTP calls
 
-    You can make direct HTTP calls to the server adapter using your favorite client library like `fetch` or `axios`. Refer to the documentation of the [API Handlers](/docs/category/api-handlers) for the API endpoints and data formats.
+    You can make direct HTTP calls to the server adapter using your favorite client libraries like `fetch` or `axios`. Refer to the documentation of the [API Handlers](/docs/category/api-handlers) for the API endpoints and data formats.
 
-    Here's some samples using `fetch` (with RPC-style API handler):
+    Here's an example using `fetch` (with RPC-style API handler):
 
     ```ts
     // create a user with two posts
@@ -64,4 +64,4 @@ The APIs can be used in the following three ways:
 
 1. With third-party client generators
 
-    ZenStack provides an [OpenAPI](/docs/reference/plugins/openapi) plugin for generating Open API 3.x specification from the ZModel. The generated OpenAPI spec can be used to generate client libraries for various languages and frameworks. For example, you can use [openapi-typescript](https://github.com/drwpow/openapi-typescript) to generate typescript client.
+    ZenStack provides an [OpenAPI](/docs/reference/plugins/openapi) plugin for generating Open API 3.x specification from the ZModel. The generated OpenAPI spec can be used to generate client libraries for various languages and frameworks. For example, you can use [openapi-typescript](https://github.com/drwpow/openapi-typescript) to generate a typescript client.

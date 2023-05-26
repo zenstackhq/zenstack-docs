@@ -1,5 +1,5 @@
 ---
-description: RESTful-style API handler
+description: RESTful-style API handler that provides resource-centric endpoints
 sidebar_position: 2
 title: RESTful API Handler
 ---
@@ -19,15 +19,47 @@ The factory function accepts an options object with the following fields:
 
 - endpoint
 
-  Required. A string field representing the base URL of the RESTful API, used for generating resource links.
+  Required. A `string` field representing the base URL of the RESTful API, used for generating resource links.
 
 - pageSize
 
-  Optional. A number field representing the default page size for listing resources and relationships. Defaults to 100. Set to Infinity to disable pagination.
+  Optional. A `number` field representing the default page size for listing resources and relationships. Defaults to 100. Set to Infinity to disable pagination.
 
 ## Endpoints and Features
 
-The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following endpoints and features are implemented (using a blogging application as an example):
+The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following sections list the endpoints and features are implemented. The examples refer to the following schema modeling a blogging app:
+
+```prisma
+model User {
+    id Int @id @default(autoincrement())
+    email String
+    posts Post[]
+}
+
+model Profile {
+    id Int @id @default(autoincrement())
+    gender String
+    user User @relation(fields: [userId], references: [id])
+    userId Int @unique
+}
+
+model Post {
+    id Int @id @default(autoincrement())
+    title String
+    published Boolean @default(false)
+    viewCount Int @default(0)
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+    comments Comment[]
+}
+
+model Comment {
+    id Int @id @default(autoincrement())
+    content String
+    post Post @relation(fields: [postId], references: [id])
+    postId Int
+}
+```
 
 ### Listing resources
 
@@ -56,10 +88,8 @@ GET /post
       {
          "attributes" : {
             "authorId" : 1,
-            "createdAt" : "2023-01-14T06:46:52.628Z",
             "published" : true,
             "title" : "My Awesome Post",
-            "updatedAt" : "2023-01-14T06:46:52.628Z",
             "viewCount" : 0
          },
          "id" : 1,
@@ -68,10 +98,7 @@ GET /post
          },
          "relationships" : {
             "author" : {
-               "data" : {
-                  "id" : 1,
-                  "type" : "user"
-               },
+               "data" : { "id" : 1, "type" : "user" },
                "links" : {
                   "related" : "http://myhost/api/post/1/author/1",
                   "self" : "http://myhost/api/post/1/relationships/author/1"
@@ -120,25 +147,20 @@ GET /post/1
    "data" : {
       "attributes" : {
          "authorId" : 1,
-         "createdAt" : "2023-01-14T06:46:52.628Z",
          "published" : true,
          "title" : "My Awesome Post",
-         "updatedAt" : "2023-01-14T06:46:52.628Z",
          "viewCount" : 0
       },
       "id" : 1,
       "links" : {
-         "self" : "http://localhost:3000/api/post/1"
+         "self" : "http://myhost/api/post/1"
       },
       "relationships" : {
          "author" : {
-            "data" : {
-               "id" : 1,
-               "type" : "user"
-            },
+            "data" : { "id" : 1, "type" : "user" },
             "links" : {
-               "related" : "http://localhost:3000/api/post/1/author/1",
-               "self" : "http://localhost:3000/api/post/1/relationships/author/1"
+               "related" : "http://myhost/api/post/1/author/1",
+               "self" : "http://myhost/api/post/1/relationships/author/1"
             }
          }
       },
@@ -148,7 +170,7 @@ GET /post/1
       "version" : "1.1"
    },
    "links" : {
-      "self" : "http://localhost:3000/api/post/1"
+      "self" : "http://myhost/api/post/1"
    }
 }
 ```
@@ -170,55 +192,48 @@ GET /:type/:id/relationships/:relationship
 
 #### Examples
 
-```ts
-// Fetching a to-one relationship
-GET /post/1/relationships/author
-```
+1. Fetching a to-one relationship
 
-```json
-{
-   "data" : {
-      "id" : 1,
-      "type" : "user"
-   },
-   "jsonapi" : {
-      "version" : "1.1"
-   },
-   "links" : {
-      "self" : "http://localhost:3000/api/post/1/relationships/author"
-   }
-}
-```
+    ```ts
+    GET /post/1/relationships/author
+    ```
 
-```ts
-// Fetching a to-many relationship
-GET /user/1/relationships/posts
-```
+    ```json
+    {
+        "data" : { "id" : 1, "type" : "user" },
+        "jsonapi" : {
+            "version" : "1.1"
+        },
+        "links" : {
+            "self" : "http://myhost/api/post/1/relationships/author"
+        }
+    }
+    ```
 
-```json
-{
-   "data" : [
-      {
-         "id" : 1,
-         "type" : "post"
-      },
-      {
-         "id" : 2,
-         "type" : "post"
-      }
-   ],
-   "jsonapi" : {
-      "version" : "1.1"
-   },
-   "links" : {
-      "first" : "http://localhost:3000/api/user/1/relationships/posts?page%5Blimit%5D=100",
-      "last" : "http://localhost:3000/api/user/1/relationships/posts?page%5Boffset%5D=0",
-      "next" : null,
-      "prev" : null,
-      "self" : "http://localhost:3000/api/user/1/relationships/posts"
-   }
-}
-```
+1. Fetching a to-many relationship
+
+    ```ts
+    GET /user/1/relationships/posts
+    ```
+
+    ```json
+    {
+        "data" : [
+            { "id" : 1, "type" : "post" },
+            { "id" : 2, "type" : "post" }
+        ],
+        "jsonapi" : {
+            "version" : "1.1"
+        },
+        "links" : {
+            "first" : "http://myhost/api/user/1/relationships/posts?page%5Blimit%5D=100",
+            "last" : "http://myhost/api/user/1/relationships/posts?page%5Boffset%5D=0",
+            "next" : null,
+            "prev" : null,
+            "self" : "http://myhost/api/user/1/relationships/posts"
+        }
+    }
+    ```
 
 ### Fetching related resources
 
@@ -248,13 +263,13 @@ GET /post/1/author
       },
       "id" : 1,
       "links" : {
-         "self" : "http://localhost:3000/api/user/1"
+         "self" : "http://myhost/api/user/1"
       },
       "relationships" : {
          "posts" : {
             "links" : {
-               "related" : "http://localhost:3000/api/user/1/posts",
-               "self" : "http://localhost:3000/api/user/1/relationships/posts"
+               "related" : "http://myhost/api/user/1/posts",
+               "self" : "http://myhost/api/user/1/relationships/posts"
             }
          }
       },
@@ -264,7 +279,7 @@ GET /post/1/author
       "version" : "1.1"
    },
    "links" : {
-      "self" : "http://localhost:3000/api/post/1/author"
+      "self" : "http://myhost/api/post/1/author"
    }
 }
 ```
@@ -273,7 +288,7 @@ GET /post/1/author
 
 #### Filtering
 
-You can use the `filter[:selector1][:selector2][...]=value` query parameter family to filter resource collections or relationship collections.
+You can use the `filter[:selector1][:selector2][...]=value` [query parameter family](https://jsonapi.org/format/#query-parameters-families) to filter resource collections or relationship collections.
 
 ##### Examples
 
@@ -391,7 +406,7 @@ You can use the `filter[:selector1][:selector2][...]=value` query parameter fami
 
 #### Sorting
 
-You can use the `sort` query parameter to sort resource collections or relationship collections. The value of the parameter can be a single field name or a comma-separated list of fields names. The order of the fields in the list determines the order of sorting. By default, sorting is done in ascending order. To sort in descending order, prefix the field name with a minus sign.
+You can use the `sort` query parameter to sort resource collections or relationship collections. The value of the parameter is a comma-separated list of fields names. The order of the fields in the list determines the order of sorting. By default, sorting is done in ascending order. To sort in descending order, prefix the field name with a minus sign.
 
 ##### Examples
 
@@ -403,7 +418,7 @@ GET /api/post?sort=createdAt,-viewCount
 
 When creating a RESTful API handler, you can pass in a `pageSize` option to control pagination behavior of fetching a collection of resources, related resources, and relationships. By default the page size is 100, and you can disable pagination by setting `pageSize` option to `Infinity`.
 
-When fetching a collection resource or relationship, you can use the `page[offset]=value` and `page[limit]=value` query parameter family to fetch a specific page. They're mapped to `skip` and `take` parameters in the query arguments sent to PrismaClient.
+When fetching a collection resource or relationship, you can use the `page[offset]=value` and `page[limit]=value` [query parameter family](https://jsonapi.org/format/#query-parameters-families) to fetch a specific page. They're mapped to `skip` and `take` parameters in the query arguments sent to PrismaClient.
 
 The response data of collection fetching contains pagination links that facilitate navigating through the collection. E.g.:
 
@@ -413,11 +428,11 @@ The response data of collection fetching contains pagination links that facilita
       ...
    ],
    "links" : {
-      "first" : "http://localhost:3000/api/post?page%5Blimit%5D=2",
-      "last" : "http://localhost:3000/api/post?page%5Boffset%5D=4",
-      "next" : "http://localhost:3000/api/post?page%5Boffset%5D=4&page%5Blimit%5D=2",
-      "prev" : "http://localhost:3000/api/post?page%5Boffset%5D=0&page%5Blimit%5D=2",
-      "self" : "http://localhost:3000/api/post"
+      "first" : "http://myhost/api/post?page%5Blimit%5D=2",
+      "last" : "http://myhost/api/post?page%5Boffset%5D=4",
+      "next" : "http://myhost/api/post?page%5Boffset%5D=4&page%5Blimit%5D=2",
+      "prev" : "http://myhost/api/post?page%5Boffset%5D=0&page%5Blimit%5D=2",
+      "self" : "http://myhost/api/post"
    }
 }
 ```
@@ -444,7 +459,7 @@ The response data of collection fetching contains pagination links that facilita
 
 #### Including related resources
 
-You can use the `include` query parameter to include related resources in the response. The value of the parameter can be a single field name or a comma-separated list of fields names. Field names can contain dots to reach into nested relationships.
+You can use the `include` query parameter to include related resources in the response. The value of the parameter is a comma-separated list of fields names. Field names can contain dots to reach into nested relationships.
 
 When including related resources, the response data takes the form of [Compound Documents](https://jsonapi.org/format/#document-compound-documents) and contains a `included` field carrying normalized related resources. E.g.:
 
@@ -458,10 +473,7 @@ When including related resources, the response data takes the form of [Compound 
          "id" : 1,
          "relationships" : {
             "author" : {
-               "data" : {
-                  "id" : 1,
-                  "type" : "user"
-               }
+               "data" : { "id" : 1, "type" : "user" }
             }
          },
          "type" : "post"
@@ -475,13 +487,13 @@ When including related resources, the response data takes the form of [Compound 
          },
          "id" : 1,
          "links" : {
-            "self" : "http://localhost:3000/api/user/1"
+            "self" : "http://myhost/api/user/1"
          },
          "relationships" : {
             "posts" : {
                "links" : {
-                  "related" : "http://localhost:3000/api/user/1/posts",
-                  "self" : "http://localhost:3000/api/user/1/relationships/posts"
+                  "related" : "http://myhost/api/user/1/posts",
+                  "self" : "http://myhost/api/user/1/relationships/posts"
                }
             }
          },
@@ -555,10 +567,7 @@ POST /:type
             },
             "relationships": {
                 "posts": {
-                    "data": [{
-                        "type": "post",
-                        "id": 1
-                    }]
+                    "data": [{ "type": "post", "id": 1 }]
                 }
             }
         }
@@ -614,10 +623,7 @@ Relationships can also be manipulated directly. See [Manipulating Relationships]
             "type": "user",
             "relationships": {
                 "posts": {
-                    "data": [{
-                        "type": "post",
-                        "id": 2
-                    }]
+                    "data": [{ "type": "post", "id": 2 }]
                 }
             }
         }
@@ -651,7 +657,7 @@ POST /:type/:id/relationships/:relationship
 
 ##### Status codes
 
-- 200: The request was successful and the resource was deleted.
+- 200: The request was successful and the relationship was updated.
 - 403: The request was forbidden.
 - 404: The requested resource type, ID, or relationship does not exist.
 
@@ -667,7 +673,7 @@ POST /user/1/relationships/posts
 }
 ```
 
-#### Updating a relationship
+#### Updating a relationship (to-one or to-many)
 
 ```ts
 PUT /:type/:id/relationships/:relationship
@@ -680,13 +686,13 @@ PATCH /:type/:id/relationships/:relationship
 
 ##### Status codes
 
-- 200: The request was successful and the resource was deleted.
+- 200: The request was successful and the relationship was updated.
 - 403: The request was forbidden.
 - 404: The requested resource type, ID, or relationship does not exist.
 
 ##### Examples
 
-1. Replacing to-many relationship
+1. Replacing a to-many relationship
 
     ```json
     PUT /user/1/relationships/posts
@@ -698,7 +704,7 @@ PATCH /:type/:id/relationships/:relationship
     }
     ```
 
-1. Replacing to-one relationship
+1. Replacing a to-one relationship
 
     ```json
     PUT /post/1/author
@@ -707,7 +713,7 @@ PATCH /:type/:id/relationships/:relationship
     }
     ```
 
-1. Clearing to-many relationship
+1. Clearing a to-many relationship
 
     ```json
     PUT /user/1/relationships/posts
@@ -716,7 +722,7 @@ PATCH /:type/:id/relationships/:relationship
     }
     ```
 
-1. Clearing to-one relationship
+1. Clearing a to-one relationship
 
     ```json
     PUT /post/1/author
@@ -724,32 +730,6 @@ PATCH /:type/:id/relationships/:relationship
         "data": null
     }
     ```
-
-#### Removing from a to-many relationship
-
-```ts
-DELETE /:type/:id/relationships/:relationship
-```
-
-Use this endpoint to remove one or more resources from a to-many relationship.
-
-##### Status codes
-
-- 200: The request was successful and the resource was deleted.
-- 403: The request was forbidden.
-- 404: The requested resource type, ID, or relationship does not exist.
-
-##### Examples
-
-```json
-DELETE /user/1/relationships/posts
-{
-    "data": [
-        { "type": "post", "id": "1" },
-        { "type": "post", "id": "2" }
-    ]
-}
-```
 
 ## Error Handling
 
@@ -759,10 +739,10 @@ An error response is an object containing the following fields:
 
     An array of error objects, each containing the following fields:
 
-    - code: string, error code
-    - status: number, HTTP status code
-    - title: string, error title
-    - detail: string, error detail
+    - code: `string`, error code
+    - status: `number`, HTTP status code
+    - title: `string`, error title
+    - detail: `string`, error detail
 
 ### Example
 

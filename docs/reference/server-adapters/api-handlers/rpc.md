@@ -1,12 +1,12 @@
 ---
-description: RPC-style API handler
+description: RPC-style API handler that fully mirrors PrismaClient's query API
 sidebar_position: 1
 title: RPC API Handler
 ---
 
 # RPC API Handler
 
-The RPC-style API handler exposes CRUD APIs directly as HTTP endpoints that fully mirror PrismaClient's query API. Consuming the APIs feels like making RPC calls to a PrismaClient then. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
+The RPC-style API handler exposes CRUD endpoints that fully mirror [PrismaClient's query API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries). Consuming the APIs feels like making RPC calls to a PrismaClient then. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
 
 It can be created as the following:
 
@@ -20,28 +20,31 @@ const handler = RPCApiHandler();
 
 #### Input
 
-For endpoints using `GET` and `DELETE` Http verbs, the query body JSON serialized and passed as the `q` query parameter. E.g.:
+For endpoints using `GET` and `DELETE` Http verbs, the query body is JSON-serialized and passed as the `q` query parameter. E.g.:
+
+```ts
+GET /api/post/findMany?q=%7B%22where%22%3A%7B%22public%22%3Atrue%7D%7D
+```
 
 - Endpoint: /api/post/findMany
 - Query parameters: `q` -> `{ "where" : { "public": true } }`
 
 For endpoints using other HTTP verbs, the query body is passed as `application/json` in the request body. E.g.:
 
-- Endpoint: /api/post/create
-- Request body: 
-    ```json
-    { "data": { "title": "Hello World" } }
-    ```
+```json
+POST /api/post/create
+{ "data": { "title": "Hello World" } }
+```
 
 #### Output
 
 The output shape conforms to the data structure returned by the corresponding PrismaClient API. E.g.:
 
-- Endpoint: /api/post/findMany
-- Output: 
-    ```json
-    [ { "id": 1, "title": "Hello World" } } ]
-    ```
+```json
+GET /api/post/findMany
+
+[ { "id": 1, "title": "Hello World" } } ]
+```
 
 ### Endpoints
 

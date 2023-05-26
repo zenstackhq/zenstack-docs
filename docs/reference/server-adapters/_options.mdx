@@ -1,13 +1,19 @@
--   getPrisma: `{props.getPrisma}`
+import CodeBlock from '@theme/CodeBlock';
+
+-   getPrisma (required)
+
+    <blockquote>{props.getPrisma}</blockquote>
 
     A callback for getting a PrismaClient instance for talking to the database. Usually you'll use an enhanced instance created with ZenStack's [`withPresets`](/docs/reference/runtime-api#withpresets) or [`withPolicy`](/docs/reference/runtime-api#withpolicy) APIs to ensure access policies are enforced.
 
--   zodSchemas: `ModelZodSchema | boolean | undefined`
+-   zodSchemas (optional)
+
+    <blockquote>{'ModelZodSchema | boolean | undefined'}</blockquote>
 
     Provides the Zod schemas used for validating CRUD request input. The Zod schemas can be generated with the `@core/zod` plugin. Pass `true` for this option to load the schemas from the default location. If you configured `@core/zod` plugin to output to a custom location, you can load the schemas explicitly and pass the loaded module to this option. E.g.:
 
     ```ts
-    NextRequestHandler({
+    factory({
         ...
         zodSchemas: require('./zod'),
     });
@@ -15,17 +21,21 @@
 
     Not passing this option or passing in `undefined` disables input validation.
 
--   useSuperJson: `boolean`
+-   useSuperJson (optional)
+
+    <blockquote>boolean</blockquote>
 
     Whether to use [superjson](https://github.com/blitz-js/superjson) for data serialization. Defaults to `false`.
 
--   handler: `HandleRequestFn`
+-   handler (optional)
+
+    <blockquote>{'(req: RequestContext) => Promise<Response>'}</blockquote>
 
     The request handler function. This option determines the API endpoints and its input and output formats. Currently ZenStack supports two styles of APIs: RPC (the default) and RESTful.
 
     - RPC
 
-        The goal of the RPC-style API handler is to fully mirror PrismaClient's API across the network, so that developers can continue enjoying the convenience and flexibility of Prisma's query syntax. This is the default choice for the `handler` option.
+        The goal of the RPC-style API handler is to fully mirror [PrismaClient's API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries) across the network, so that developers can continue enjoying the convenience and flexibility of Prisma's query syntax. This is the default choice for the `handler` option.
 
         The RPC-style handler can be created like:
 
