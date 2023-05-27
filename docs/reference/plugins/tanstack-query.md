@@ -21,7 +21,7 @@ To use the generated hooks, you need to install "tanstack-query" for the target 
 
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
-| output  | String | Output directory                                        | Yes      |         |
+| output  | String | Output directory (relative to the path of ZModel)                                        | Yes      |         |
 | target  | String | Target framework to generate for. Choose from "react" and "svelte".                                        | Yes      |         |
 | useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization                                        | No      | false        |
 

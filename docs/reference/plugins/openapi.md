@@ -11,7 +11,7 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
 
 | Name            | Type   | Description                                                                   | Required | Default                |
 | --------------- | ------ | ----------------------------------------------------------------------------- | -------- | ---------------------- |
-| output          | String | Output file path (with suffix .yaml or .json)                                 | Yes      |                        |
+| output          | String | Output file path (with suffix .yaml or .json, relative to the path of ZModel)                                 | Yes      |                        |
 | specVersion     | String | OpenAPI specification version                                                 | No       | 3.1.0                  |
 | title           | String | API title                                                                     | No       | ZenStack Generated API |
 | version         | String | API version                                                                   | No       | 1.0.0                  |

@@ -15,7 +15,7 @@ This plugin is always automatically included when `zenstack generate` is run. Yo
 
 | Name           | Type    | Description                                       | Required | Default                |
 | -------------- | ------- | ------------------------------------------------- | -------- | ---------------------- |
-| output         | String  | Output file path                                  | No       | ./prisma/schema.prisma |
+| output         | String  | Output file path (relative to the path of ZModel)                                  | No       | ./prisma/schema.prisma |
 | generateClient | Boolean | Whether to run `prisma generate` after generation | No       | true                   |
 | format         | Boolean | Whether to run `prisma format` after generation   | No       | false                  |
 

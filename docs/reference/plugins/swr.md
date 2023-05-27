@@ -21,7 +21,7 @@ To use the generated hooks, you need to install "swr" version 2.0.0 or above.
 
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
-| output  | String | Output directory                                        | Yes      |         |
+| output  | String | Output directory (relative to the path of ZModel)                                        | Yes      |         |
 | useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization                                        | No      | false        |
 
 ## Example

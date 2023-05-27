@@ -13,7 +13,7 @@ This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/
 
 | Name   | Type   | Description      | Required |
 | ------ | ------ | ---------------- | -------- |
-| output | String | Output directory | Yes      |
+| output | String | Output directory (relative to the path of ZModel) | Yes      |
 
 ## Example
 
