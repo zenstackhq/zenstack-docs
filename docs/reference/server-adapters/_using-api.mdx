@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The APIs can be used in the following three ways:
 
 1. With generated client hooks
@@ -12,11 +15,14 @@ The APIs can be used in the following three ways:
     The generated client hooks assumes the server adapter uses [RPC-style API handler](/docs/reference/server-adapters/api-handlers/rpc) (which is the default setting).
     :::
 
-1. With directh HTTP calls
+1. With direct HTTP calls
 
     You can make direct HTTP calls to the server adapter using your favorite client libraries like `fetch` or `axios`. Refer to the documentation of the [API Handlers](/docs/category/api-handlers) for the API endpoints and data formats.
 
-    Here's an example using `fetch` (with RPC-style API handler):
+    Here's an example using `fetch`:
+
+    <Tabs>
+    <TabItem value="rpc" label="RPC Handler">
 
     ```ts
     // create a user with two posts
@@ -61,6 +67,70 @@ The APIs can be used in the following three ways:
         ]
     }
     ```
+
+    </TabItem>
+
+    <TabItem value="rest" label="RESTful Handler">
+
+    ```ts
+    // create a user and attach two posts
+    const r = await fetch(`/api/user`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/vnd.api+json' },
+        body: JSON.stringify({
+            data: {
+                type: 'user',
+                attributes: {
+                    email: 'user1@abc.com'
+                },
+                relationships: {
+                    posts: {
+                        data: [
+                            { type: 'post', id: 1 },
+                            { type: 'post', id: 2 }
+                        ]
+                    }
+                }
+            }
+        })
+    });
+
+    console.log(await r.json());
+    ```
+
+    Output:
+
+    ```json
+    {
+        "jsonapi": { "version": "1.1" },
+        "data": {
+            "type": "user",
+            "id": 1,
+            "attributes": {
+                "email": "user1@abc.com",
+            },
+            "links": {
+                "self": "http://localhost/api/user/1",
+            },
+            "relationships": {
+                "posts": {
+                    "links": {
+                        "self": "http://localhost/api/user/1/relationships/posts",
+                        "related": "http://localhost/api/user/1/posts",
+                    },
+                    "data": [
+                        { "type": "post", "id": 1 },
+                        { "type": "post", "id": 2 },
+                    ],
+                },
+            },
+        },
+    }
+    ```
+
+    </TabItem>
+
+    </Tabs>
 
 1. With third-party client generators
 

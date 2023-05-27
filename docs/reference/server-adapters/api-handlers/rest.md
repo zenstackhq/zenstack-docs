@@ -11,7 +11,7 @@ The RESTful-style API handler exposes CRUD APIs as RESTful endpoints using [JSON
 It can be created as the following:
 
 ```ts
-import RestApiHandler from '@zenstackhq/server/api/rpc';
+import RestApiHandler from '@zenstackhq/server/api/rest';
 const handler = RestApiHandler({ endpoint: 'http://myhost/api' });
 ```
 
