@@ -16,7 +16,7 @@ plugin reactHooks {
 }
 ```
 
-If you set `fetcher` "react-query", replace with the following instead:
+If you set `fetcher` to "react-query", replace with the following instead:
 
 ```prisma
 plugin reactHooks {

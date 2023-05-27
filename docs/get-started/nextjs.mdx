@@ -1,4 +1,5 @@
 ---
+title: Next.js
 description: Step-by-step guide for building a blogging app with Next.js.
 sidebar_position: 1
 ---
@@ -6,15 +7,20 @@ sidebar_position: 1
 import Requirements from './_requirements.md';
 import Prerequisite from './_prerequisite.md';
 import InitTips from './_zenstack-init-tips.md';
+import PasswordOmit from './_password-omit.md';
 import AccessPolicy from './_access-policy.md';
 
-# For Next.js
+# Get Started With Next.js
 
 Let's have some fun by creating a simple blogging app. You'll see how effortless it is to have a secure backend service without actually coding it.
 
 You can find the final build result [here](https://github.com/zenstackhq/docs-tutorial-nextjs).
 
+## Requirements
+
 <Requirements />
+
+## Prerequisite
 
 <Prerequisite />
 
@@ -73,12 +79,7 @@ For simplicity, we'll use username/password-based authentication in this project
 we added a `password` field to support it, together with two access policy rules to control the
 permissions of this model.
 
-:::tip
-
-1. `@password` is a ZenStack attribute that marks a field to be hashed (using [bcryptjs](https://www.npmjs.com/package/bcryptjs)) before saving.
-1. `@omit` indicates the field should be dropped when returned from a query.
-
-:::
+<PasswordOmit />
 
 <AccessPolicy />
 
@@ -587,6 +588,8 @@ const Home: NextPage = () => {
 
 export default Home;
 ```
+
+## Verifying the result
 
 Restart the dev server and try creating a few posts. You should see something like the following:
 

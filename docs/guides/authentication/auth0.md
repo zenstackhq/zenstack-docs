@@ -1,6 +1,6 @@
 ---
 description: Integrating with Auth0.
-sidebar_position: 3
+sidebar_position: 4
 sidebar_label: 🚧 Auth0
 ---
 
