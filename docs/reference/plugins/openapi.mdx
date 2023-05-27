@@ -12,6 +12,7 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
 | Name            | Type   | Description                                                                   | Required | Default                |
 | --------------- | ------ | ----------------------------------------------------------------------------- | -------- | ---------------------- |
 | output          | String | Output file path (with suffix .yaml or .json, relative to the path of ZModel)                                 | Yes      |                        |
+| flavor          | String | API flavor: "rpc" or "rest". See [here](/docs/category/api-handlers) for more details.                                       | No       | rpc                   |
 | specVersion     | String | OpenAPI specification version                                                 | No       | 3.1.0                  |
 | title           | String | API title                                                                     | No       | ZenStack Generated API |
 | version         | String | API version                                                                   | No       | 1.0.0                  |
@@ -19,6 +20,21 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
 | description     | String | API description                                                               | No       |                        |
 | summary         | String | API summary                                                                   | No       |                        |
 | securitySchemes | Object | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
+
+### API flavor
+
+The `flavor` option controls the style of API endpoints and data format of the generated specification. Currently we support two flavors: `rpc` and `rest`. The default flavor is `rpc`.
+
+- rpc
+
+    Fully mirrors [PrismaClient's query API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries).
+
+- rest
+
+    RESTful resource-centric endpoints using [JSON:API](https://jsonapi.org/) as transportation format
+
+
+The two flavors correspond to the two style of APIs supported by ZenStack server adapters. See [here](/docs/category/api-handlers) for more details.
 
 ### Security schemes
 
@@ -62,6 +78,10 @@ You can override the security scheme for a specific model or operation by using 
 
     ### Operation-level metadata
 
+    :::info
+    Only supported by "rpc" flavor.
+    :::
+
     The input object can contain operation-level metadata keyed by the Prisma operation name. Each entry can contain the following fields:
 
     | Name        | Type   | Description                         | Default                                 |
@@ -74,33 +94,58 @@ You can override the security scheme for a specific model or operation by using 
     | tags        | Array  | Tags of the operation               |                                         |
     | deprecated  | Bool   | Whether the operation is deprecated | false                                   |
 
-    ### Example
+    ### Sample usage
 
-    ```prisma
-    model User {
-        id String @id
-        email String @unique
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-        @@openapi.meta({
-            security: [ { basic: [] } ],
-            tagDescription: 'Operations for managing users',
-            findMany: {
-                description: 'Find users matching the given conditions'
-            },
-            delete: {
-                method: 'put',
-                path: 'dodelete',
-                description: 'Delete a unique user',
-                summary: 'Delete a user yeah yeah',
-                tags: ['delete', 'user'],
-            },
-            createMany: {
-                security: [],
-                deprecated: true
-            }
-        })
-    }
-    ```
+<Tabs>
+<TabItem value="rpc" label={`Using "rpc" flavor`}>
+
+```prisma
+model User {
+    id String @id
+    email String @unique
+
+    @@openapi.meta({
+        security: [ { basic: [] } ],
+        tagDescription: 'Operations for managing users',
+        findMany: {
+            description: 'Find users matching the given conditions'
+        },
+        delete: {
+            method: 'put',
+            path: 'dodelete',
+            description: 'Delete a unique user',
+            summary: 'Delete a user yeah yeah',
+            tags: ['delete', 'user'],
+        },
+        createMany: {
+            security: [],
+            deprecated: true
+        }
+    })
+}
+```
+
+</TabItem>
+
+<TabItem value="rest" label={`Using "rest" flavor`}>
+
+```prisma
+model User {
+    id String @id
+    email String @unique
+
+    @@openapi.meta({
+        security: [ { basic: [] } ],
+        tagDescription: 'Operations for managing users',
+    })
+}
+```
+
+</TabItem>
+</Tabs>
 
 -   `@@openapi.ignore`
 
@@ -128,61 +173,3 @@ plugin openapi {
     prefix = '/api'
 }
 ```
-
-## Generated API paths
-
-The generated API paths have 1:1 mapping with PrismaClient's CRUD methods. For `GET`/`DELETE` operations, the query args is passed as JSON-stringified text in the query parameter `q`. For `POST`/`PATCH`/`PUT` operations, the query args is passed as `application/json` in the request body.
-
-Check [here](https://editor.swagger.io/?url=https://gist.githubusercontent.com/ymc9/2888fae6fa60f1c7b26a8c226e6bab2f/raw/a4c78732a158a3436b6d5779695b6ab11a6edcf5/petstore.api.yaml) for the generated specification for a blogging app.
-
--   **[model]/findMany**
-
-    _Default Http method:_ `GET`
-
--   **[model]/findUnique**
-
-    _Default Http method:_ `GET`
-
--   **[model]/findFirst**
-
-    _Default Http method:_ `GET`
-
--   **[model]/count**
-
-    _Default Http method:_ `GET`
-
--   **[model]/aggregate**
-
-    _Default Http method:_ `GET`
-
--   **[model]/groupBy**
-
-    _Default Http method:_ `GET`
-
--   **[model]/create**
-
-    _Default Http method:_ `POST`
-
--   **[model]/createMany**
-
-    _Default Http method:_ `POST`
-
--   **[model]/update**
-
-    _Default Http method:_ `PATCH` or `PUT`
-
--   **[model]/updateMany**
-
-    _Default Http method:_ `PATCH` or `PUT`
-
--   **[model]/upsert**
-
-    _Default Http method:_ `POST`
-
--   **[model]/delete**
-
-    _Default Http method:_ `DELETE`
-
--   **[model]/deleteMany**
-
-    _Default Http method:_ `DELETE`
