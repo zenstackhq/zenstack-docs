@@ -36,7 +36,7 @@ The hooks syntactically mirror the APIs of a standard Prisma client, including t
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
 | output  | String | Output directory (relative to the path of ZModel)                                        | Yes      |         |
-| fetcher | String | The data fetcher library to use: "swr" or "react-query" |          | "swr"   |
+| fetcher | String | The data fetcher library to use: "swr" or "react-query" |          | swr   |
 
 ## Description
 
