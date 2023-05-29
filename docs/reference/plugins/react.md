@@ -1,9 +1,31 @@
 ---
 description: Plugin for generating React data query hooks
-sidebar_position: 5
+sidebar_position: 9
 ---
 
 # @zenstackhq/react
+
+:::warning
+This package will be deprecated soon and replaced by [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) and [`@zenstackhq/swr`](/docs/reference/plugins/swr) plugins. To migrate to the new plugins, if you're using `@zenstackhq/react` with `fetcher` set to "swr", you can replace the plugin declaration in ZModel like:
+
+```prisma
+plugin reactHooks {
+  provider = "@zenstackhq/swr"
+  output = "./src/lib/hooks"
+  target = "react"
+}
+```
+
+If you set `fetcher` to "react-query", replace with the following instead:
+
+```prisma
+plugin reactHooks {
+  provider = "@zenstackhq/tanstack-query"
+  output = "./src/lib/hooks"
+  target = "react"
+}
+```
+:::
 
 The `@zenstack/react` plugin generates React hooks that call into the CRUD services provided by packages like [`@zenstack/next`](/docs/reference/server-adapters/next).
 
@@ -13,8 +35,8 @@ The hooks syntactically mirror the APIs of a standard Prisma client, including t
 
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
-| output  | String | Output directory                                        | Yes      |         |
-| fetcher | String | The data fetcher library to use: "swr" or "react-query" |          | "swr"   |
+| output  | String | Output directory (relative to the path of ZModel)                                        | Yes      |         |
+| fetcher | String | The data fetcher library to use: "swr" or "react-query" |          | swr   |
 
 ## Description
 

@@ -1,8 +1,9 @@
 ---
+title: 🚧 Nuxt.js
 description: Step-by-step guide for building a blogging app with Nuxt.js.
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# 🚧 For Nuxt.js
+# 🚧 Get Started With Nuxt.js
 
 Coming soon.

@@ -15,7 +15,7 @@ You need to enable `@core/zod` plugin if you use the [Express.js](/docs/referenc
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
-| output | String | Output directory | No       | node_modules/.zenstack/zod |
+| output | String | Output directory (relative to the path of ZModel) | No       | node_modules/.zenstack/zod |
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
 

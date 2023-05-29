@@ -15,7 +15,7 @@ This plugin is always automatically included when `zenstack generate` is run. Yo
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
-| output | String | Output directory | No       | node_modules/.zenstack |
+| output | String | Output directory (relative to the path of ZModel) | No       | node_modules/.zenstack |
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
 

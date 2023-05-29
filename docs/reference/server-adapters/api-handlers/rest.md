@@ -1,0 +1,760 @@
+---
+description: RESTful-style API handler that provides resource-centric endpoints
+sidebar_position: 2
+title: RESTful API Handler
+---
+
+# RESTful API Handler
+
+The RESTful-style API handler exposes CRUD APIs as RESTful endpoints using [JSON:API](https://jsonapi.org/) as transportation format. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
+
+It can be created as the following:
+
+```ts
+import RestApiHandler from '@zenstackhq/server/api/rest';
+const handler = RestApiHandler({ endpoint: 'http://myhost/api' });
+```
+
+The factory function accepts an options object with the following fields:
+
+- endpoint
+
+  Required. A `string` field representing the base URL of the RESTful API, used for generating resource links.
+
+- pageSize
+
+  Optional. A `number` field representing the default page size for listing resources and relationships. Defaults to 100. Set to Infinity to disable pagination.
+
+## Endpoints and Features
+
+The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following sections list the endpoints and features are implemented. The examples refer to the following schema modeling a blogging app:
+
+```prisma
+model User {
+    id Int @id @default(autoincrement())
+    email String
+    posts Post[]
+}
+
+model Profile {
+    id Int @id @default(autoincrement())
+    gender String
+    user User @relation(fields: [userId], references: [id])
+    userId Int @unique
+}
+
+model Post {
+    id Int @id @default(autoincrement())
+    title String
+    published Boolean @default(false)
+    viewCount Int @default(0)
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+    comments Comment[]
+}
+
+model Comment {
+    id Int @id @default(autoincrement())
+    content String
+    post Post @relation(fields: [postId], references: [id])
+    postId Int
+}
+```
+
+### Listing resources
+
+A specific type of resource can be listed using the following endpoint:
+
+```
+GET /:type
+```
+
+#### Status codes
+
+- 200: The request was successful and the response body contains the requested resources.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type does not exist.
+
+#### Examples
+
+```ts
+GET /post
+```
+
+```json
+{
+   "data" : [
+      {
+         "attributes" : {
+            "authorId" : 1,
+            "published" : true,
+            "title" : "My Awesome Post",
+            "viewCount" : 0
+         },
+         "id" : 1,
+         "links" : {
+            "self" : "http://myhost/api/post/1"
+         },
+         "relationships" : {
+            "author" : {
+               "data" : { "id" : 1, "type" : "user" },
+               "links" : {
+                  "related" : "http://myhost/api/post/1/author/1",
+                  "self" : "http://myhost/api/post/1/relationships/author/1"
+               }
+            }
+         },
+         "type" : "post"
+      }
+   ],
+   "jsonapi" : {
+      "version" : "1.1"
+   },
+   "links" : {
+      "first" : "http://myhost/api/post?page%5Blimit%5D=100",
+      "last" : "http://myhost/api/post?page%5Boffset%5D=0",
+      "next" : null,
+      "prev" : null,
+      "self" : "http://myhost/api/post"
+   }
+}
+```
+
+### Fetching a resource
+
+A unique resource can be fetched using the following endpoint:
+
+```ts
+GET /:type/:id
+```
+
+#### Status codes
+
+- 200: The request was successful and the response body contains the requested resource.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type or ID does not exist.
+
+#### Examples
+
+```ts
+GET /post/1
+```
+
+```json
+{
+   "data" : {
+      "attributes" : {
+         "authorId" : 1,
+         "published" : true,
+         "title" : "My Awesome Post",
+         "viewCount" : 0
+      },
+      "id" : 1,
+      "links" : {
+         "self" : "http://myhost/api/post/1"
+      },
+      "relationships" : {
+         "author" : {
+            "data" : { "id" : 1, "type" : "user" },
+            "links" : {
+               "related" : "http://myhost/api/post/1/author/1",
+               "self" : "http://myhost/api/post/1/relationships/author/1"
+            }
+         }
+      },
+      "type" : "post"
+   },
+   "jsonapi" : {
+      "version" : "1.1"
+   },
+   "links" : {
+      "self" : "http://myhost/api/post/1"
+   }
+}
+```
+
+### Fetching relationships
+
+A resource's relationships can be fetched using the following endpoint:
+
+```ts
+GET /:type/:id/relationships/:relationship
+```
+
+#### Status codes
+
+- 200: The request was successful and the response body contains the requested relationships.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type, ID, or relationship does not exist.
+
+#### Examples
+
+1. Fetching a to-one relationship
+
+    ```ts
+    GET /post/1/relationships/author
+    ```
+
+    ```json
+    {
+        "data" : { "id" : 1, "type" : "user" },
+        "jsonapi" : {
+            "version" : "1.1"
+        },
+        "links" : {
+            "self" : "http://myhost/api/post/1/relationships/author"
+        }
+    }
+    ```
+
+1. Fetching a to-many relationship
+
+    ```ts
+    GET /user/1/relationships/posts
+    ```
+
+    ```json
+    {
+        "data" : [
+            { "id" : 1, "type" : "post" },
+            { "id" : 2, "type" : "post" }
+        ],
+        "jsonapi" : {
+            "version" : "1.1"
+        },
+        "links" : {
+            "first" : "http://myhost/api/user/1/relationships/posts?page%5Blimit%5D=100",
+            "last" : "http://myhost/api/user/1/relationships/posts?page%5Boffset%5D=0",
+            "next" : null,
+            "prev" : null,
+            "self" : "http://myhost/api/user/1/relationships/posts"
+        }
+    }
+    ```
+
+### Fetching related resources
+
+```ts
+GET /:type/:id/:relationship
+```
+
+#### Status codes
+
+- 200: The request was successful and the response body contains the requested relationship.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type, ID, or relationship does not exist.
+
+#### Examples
+
+```ts
+GET /post/1/author
+```
+
+```json
+{
+   "data" : {
+      "attributes" : {
+         "email" : "emily@zenstack.dev",
+         "name" : "Emily"
+      },
+      "id" : 1,
+      "links" : {
+         "self" : "http://myhost/api/user/1"
+      },
+      "relationships" : {
+         "posts" : {
+            "links" : {
+               "related" : "http://myhost/api/user/1/posts",
+               "self" : "http://myhost/api/user/1/relationships/posts"
+            }
+         }
+      },
+      "type" : "user"
+   },
+   "jsonapi" : {
+      "version" : "1.1"
+   },
+   "links" : {
+      "self" : "http://myhost/api/post/1/author"
+   }
+}
+```
+
+### Fine-grained data fetching
+
+#### Filtering
+
+You can use the `filter[:selector1][:selector2][...]=value` [query parameter family](https://jsonapi.org/format/#query-parameters-families) to filter resource collections or relationship collections.
+
+##### Examples
+
+1. Equality filter against plain field
+
+    ```ts
+    GET /api/post?filter[published]=false
+    ```
+
+1. Equality filter against relationship
+
+    Relationship field can be filtered directly by its id.
+
+    ```ts
+    GET /api/post?filter[author]=1
+    ```
+
+    If the relationship is to-many, the filter has "some" semantic and evaluates to `true` if any of the items in the relationship matches.
+
+    ```ts
+    GET /api/user?filter[posts]=1
+    ```
+
+1. Filtering with multiple values
+
+    Multiple filter values can be separated by comma. Items statisfying any of the values will be returned.
+
+    ```ts
+    GET /api/post?filter[author]=1,2
+    ```
+
+1. Multiple filters
+
+    A request can carry multiple filters. Only items statisfying all filters will be returned.
+
+    ```ts
+    GET /api/post?filter[author]=1&filter[published]=true
+    ```
+
+1. Deep filtering
+
+    A filter can carry multiple field selectors to reach into relationships.
+
+    ```ts
+    GET /api/post?filter[author][name]=Emily
+    ```
+
+    When reaching into a to-many relationship, the filter has "some" semantic and evaluates to `true` if any of the items in the relationship matches.
+
+    ```
+    GET /api/user?filter[posts][published]=true
+    ```
+    
+1. Filtering with comparison operators
+
+    Filters can go beyond equality by appending an "operator suffix".
+
+    ```ts
+    GET /api/post?filter[viewCount$gt]=100
+    ```
+
+    The following operators are supported:
+
+    - **$lt**
+
+        Less than
+
+    - **$lte**
+    
+        Less than or equal to
+
+    - **$gt**
+    
+        Greater than
+
+    - **$gte**
+    
+        Greater than or equal to
+
+    - **$contains**
+        
+        String contains
+
+    - **$icontains**
+    
+        Case-insensitive string contains
+
+    - **$search**
+        
+        String full-text search
+
+    - **$startsWith**
+        
+        String starts with
+
+    - **$endsWith**
+    
+        String ends with
+
+    - **$has**
+    
+        Collection has value
+
+    - **$hasEvery**
+    
+        Collection has every element in value
+
+    - **$hasSome**
+    
+        Collection has some elements in value
+
+    - **$isEmpty**
+    
+        Collection is empty
+
+#### Sorting
+
+You can use the `sort` query parameter to sort resource collections or relationship collections. The value of the parameter is a comma-separated list of fields names. The order of the fields in the list determines the order of sorting. By default, sorting is done in ascending order. To sort in descending order, prefix the field name with a minus sign.
+
+##### Examples
+
+```ts
+GET /api/post?sort=createdAt,-viewCount
+```
+
+#### Pagination
+
+When creating a RESTful API handler, you can pass in a `pageSize` option to control pagination behavior of fetching a collection of resources, related resources, and relationships. By default the page size is 100, and you can disable pagination by setting `pageSize` option to `Infinity`.
+
+When fetching a collection resource or relationship, you can use the `page[offset]=value` and `page[limit]=value` [query parameter family](https://jsonapi.org/format/#query-parameters-families) to fetch a specific page. They're mapped to `skip` and `take` parameters in the query arguments sent to PrismaClient.
+
+The response data of collection fetching contains pagination links that facilitate navigating through the collection. E.g.:
+
+```json
+{
+   "data" : [
+      ...
+   ],
+   "links" : {
+      "first" : "http://myhost/api/post?page%5Blimit%5D=2",
+      "last" : "http://myhost/api/post?page%5Boffset%5D=4",
+      "next" : "http://myhost/api/post?page%5Boffset%5D=4&page%5Blimit%5D=2",
+      "prev" : "http://myhost/api/post?page%5Boffset%5D=0&page%5Blimit%5D=2",
+      "self" : "http://myhost/api/post"
+   }
+}
+```
+
+##### Examples
+
+1. Fetching a specific page of resources
+
+    ```ts
+    GET /api/post?page[offset]=10&page[limit]=5
+    ```
+
+1. Fetching a specific page of relationships
+
+    ```ts
+    GET /api/user/1/relationships/posts?page[offset]=10&page[limit]=5
+    ```
+
+1. Fetching a specific page of related resources
+
+    ```ts
+    GET /api/user/1/posts?page[offset]=10&page[limit]=5
+    ```
+
+#### Including related resources
+
+You can use the `include` query parameter to include related resources in the response. The value of the parameter is a comma-separated list of fields names. Field names can contain dots to reach into nested relationships.
+
+When including related resources, the response data takes the form of [Compound Documents](https://jsonapi.org/format/#document-compound-documents) and contains a `included` field carrying normalized related resources. E.g.:
+
+```json
+{
+   "data" : [
+      {
+         "attributes" : {
+            ...
+         },
+         "id" : 1,
+         "relationships" : {
+            "author" : {
+               "data" : { "id" : 1, "type" : "user" }
+            }
+         },
+         "type" : "post"
+      }
+   ],
+   "included" : [
+      {
+         "attributes" : {
+            "email" : "emily@zenstack.dev",
+            "name" : "Emily"
+         },
+         "id" : 1,
+         "links" : {
+            "self" : "http://myhost/api/user/1"
+         },
+         "relationships" : {
+            "posts" : {
+               "links" : {
+                  "related" : "http://myhost/api/user/1/posts",
+                  "self" : "http://myhost/api/user/1/relationships/posts"
+               }
+            }
+         },
+         "type" : "user"
+      }
+   ]
+}
+```
+
+##### Examples
+
+1. Including a direct relationship
+
+    ```ts
+    GET /api/post?include=author
+    ```
+
+1. Including a deep relationship
+
+    ```ts
+    GET /api/post?include=author.profile
+    ```
+
+1. Including multiple relationships
+
+    ```ts
+    GET /api/post?include=author,comments
+    ```
+
+### Creating a resource
+
+A new resource can be created using the following endpoint:
+
+```
+POST /:type
+```
+
+#### Status codes
+
+- 201: The request was successful and the resource was created.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type does not exist.
+
+#### Examples
+
+1. Creating a resource
+    ```json
+    POST /user
+    {
+        "data": {
+            "type": "user",
+            "attributes": {
+                "name": "Emily",
+                "email": "emily@zenstack.dev"
+            }
+        }
+    }
+    ```
+
+1. Creating a resource with relationships attached
+
+    ```json
+    POST /user
+    {
+        "data": {
+            "type": "user",
+            "attributes": {
+                "name": "Emily",
+                "email": "emily@zenstack.dev"
+            },
+            "relationships": {
+                "posts": {
+                    "data": [{ "type": "post", "id": 1 }]
+                }
+            }
+        }
+    }
+    ```
+
+### Updating a resource
+
+A resource can be updated using the following endpoints:
+
+```ts
+PUT /:type/:id
+PATCH /:type/:id
+```
+
+Both `PUT` and `PATCH` do partial update and has exactly the same behavior.
+
+:::info
+Besides plain fields, you can also include relationships in the request body. Please note that this won't update the related resource; instead if only replaces the relationships. If you update a to-many relationship, the new collection will entirely replace the old one.
+
+Relationships can also be manipulated directly. See [Manipulating Relationships](#manipulating-relationships) for more details.
+:::
+
+#### Status codes
+
+- 200: The request was successful and the resource was updated.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type or ID does not exist.
+
+#### Examples
+
+1. Updating a resource
+
+    ```json
+    PUT /post/1
+    {
+        "data": {
+            "type": "post",
+            "attributes": {
+                "title": "My Awesome Post"
+            }
+        }
+    }
+    ```
+
+1. Updating a resource's relationships
+
+    ```json
+    PUT /user/1
+    {
+        "data": {
+            "type": "user",
+            "relationships": {
+                "posts": {
+                    "data": [{ "type": "post", "id": 2 }]
+                }
+            }
+        }
+    }
+    ```
+
+
+### Deleting a resource
+
+A resource can be deleted using the following endpoint:
+
+#### Status codes
+
+- 204: The request was successful and the resource was deleted.
+- 403: The request was forbidden.
+- 404: The requested resource type or ID does not exist.
+
+```ts
+DELETE /:type/:id
+```
+
+### Manipulating relationships
+
+Relationships can be manipulated using the following endpoints:
+
+#### Adding to a to-many relationship
+
+```ts
+POST /:type/:id/relationships/:relationship
+```
+
+##### Status codes
+
+- 200: The request was successful and the relationship was updated.
+- 403: The request was forbidden.
+- 404: The requested resource type, ID, or relationship does not exist.
+
+##### Examples
+
+```json
+POST /user/1/relationships/posts
+{
+    "data": [
+        { "type": "post", "id": "1" },
+        { "type": "post", "id": "2" }
+    ]
+}
+```
+
+#### Updating a relationship (to-one or to-many)
+
+```ts
+PUT /:type/:id/relationships/:relationship
+PATCH /:type/:id/relationships/:relationship
+```
+
+:::info
+`PUT` and `PATCH` has exactly the same behavior and both relace the existing relationships with the new ones entirely.
+:::
+
+##### Status codes
+
+- 200: The request was successful and the relationship was updated.
+- 403: The request was forbidden.
+- 404: The requested resource type, ID, or relationship does not exist.
+
+##### Examples
+
+1. Replacing a to-many relationship
+
+    ```json
+    PUT /user/1/relationships/posts
+    {
+        "data": [
+            { "type": "post", "id": "1" },
+            { "type": "post", "id": "2" }
+        ]
+    }
+    ```
+
+1. Replacing a to-one relationship
+
+    ```json
+    PUT /post/1/author
+    {
+        "data": { "type": "user", "id": "2" }
+    }
+    ```
+
+1. Clearing a to-many relationship
+
+    ```json
+    PUT /user/1/relationships/posts
+    {
+        "data": []
+    }
+    ```
+
+1. Clearing a to-one relationship
+
+    ```json
+    PUT /post/1/author
+    {
+        "data": null
+    }
+    ```
+
+## Error Handling
+
+An error response is an object containing the following fields:
+
+- errors
+
+    An array of error objects, each containing the following fields:
+
+    - code: `string`, error code
+    - status: `number`, HTTP status code
+    - title: `string`, error title
+    - detail: `string`, error detail
+
+### Example
+
+```json
+{
+   "errors" : [
+      {
+         "code" : "unsupported-model",
+         "detail" : "Model foo doesn't exist",
+         "status" : 404,
+         "title" : "Unsupported model type"
+      }
+   ]
+}
+```

@@ -1,6 +1,6 @@
 ---
 description: Plugin for generating tRPC data query routes
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # @zenstackhq/trpc
@@ -13,7 +13,7 @@ This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/
 
 | Name   | Type   | Description      | Required |
 | ------ | ------ | ---------------- | -------- |
-| output | String | Output directory | Yes      |
+| output | String | Output directory (relative to the path of ZModel) | Yes      |
 
 ## Example
 
