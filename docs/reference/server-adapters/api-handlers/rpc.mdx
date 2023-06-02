@@ -4,17 +4,56 @@ sidebar_position: 1
 title: RPC API Handler
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # RPC API Handler
 
 The RPC-style API handler exposes CRUD endpoints that fully mirror [PrismaClient's query API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries). Consuming the APIs feels like making RPC calls to a PrismaClient then. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
 
-It can be created as the following:
+It can be created and used as the following:
 
-```ts
+<Tabs>
+<TabItem value="next" label="Next.js">
+
+```ts title='/src/pages/api/model/[...path].ts'
+import { NextRequestHandler } from '@zenstackhq/server/next';
 import RPCApiHandler from '@zenstackhq/server/api/rpc';
-const handler = RPCApiHandler();
+import { getPrisma } from '../../lib/db';
+
+export default NextRequestHandler({ 
+    getPrisma, 
+    handler: RPCApiHandler() // you can also omit it since `RPCApiHandler` is the default
+});
 ```
 
+</TabItem>
+
+<TabItem value="sveltekit" label="SvelteKit">
+
+```ts title='/src/hooks.server.ts'
+import zenstack from '@zenstackhq/server/sveltekit';
+import RPCApiHandler from '@zenstackhq/server/api/rpc';
+import { getPrisma } from './lib/db';
+
+export const handle = zenstack.SvelteKitHandler({
+    prefix: '/api/model',
+    handler: RPCApiHandler(), // you can also omit it since `RPCApiHandler` is the default
+    getPrisma
+});
+```
+
+</TabItem>
+
+<TabItem value="nuxt" label="Nuxt">
+
+```
+🚧 Coming soon
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Data Format
 
