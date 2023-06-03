@@ -499,7 +499,7 @@ curl -X POST localhost:3000/api/login \
 
 Now that we have authentication in place, we can add access control rules to our schema to secure our CRUD service. Make the following changes to the `Pet` and `Order` models:
 
-```ts title='/schema.zmodel' {9-13,24-25}
+```prisma title='/schema.zmodel' {9-13,24-25}
 model Pet {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
