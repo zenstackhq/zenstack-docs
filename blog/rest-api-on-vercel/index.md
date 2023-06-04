@@ -6,7 +6,7 @@ image: ./cover.png
 date: 2023-06-04
 ---
 
-# How to Host a Restful API on Vercel
+# How to Host a RESTful API on Vercel
 
 ![Cover image](cover.png)
 
