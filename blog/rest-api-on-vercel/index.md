@@ -41,7 +41,7 @@ The primary reference documentation that guides us through the process is [Using
 
 ### 1. Creating the project
 
-Let's first create a new Express.js project with Typescript.
+Let's first create a new Express.js project with Typescript support.
 
 ```bash
 mkdir vercel-petstore
@@ -344,7 +344,7 @@ Easy, isn't it? The automatically generated APIs provide resource-centric RESTfu
     curl 'localhost:3000/api/pet?include=order'
     ```
 
-Don't worry if you feel uncertain about the API endpoints and format. We'll get back to them shortly.
+Check [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest#endpoints-and-features) for a full list of endpoints and features. In a few moments, you'll also see how to generate an OpenAPI specification that thoroughly documents the API.
 
 Our API is up and running, but it has one big problem: it's not guarded by any security measures. As a result, anybody can read and update any data. Let's fix that in the following sections in two steps: authentication and authorization.
 
@@ -862,6 +862,6 @@ In case you had trouble following the steps, you can find the finished project [
 
 Vercel is a popular choice for deploying full-stack Javascript web apps. Its ability to host a pure backend API may sound like trivia. However, it may come in handy when you already have a backend codebase and want to enjoy a unified cloud platform.
 
-In this tutorial, you've seen that although implementing and deploying a secure RESTful API involves many tasks, by combining the right set of tools: Prisma, ZenStack, Vercel Postgres, it doesn't need to be complex and time-consuming.
+In this tutorial, you've seen implementing and deploying a secure RESTful API involves many tasks. However, with the right set of tools: Prisma, ZenStack, Vercel Postgres, it doesn't need to be complex and time-consuming.
 
 The key takeaway is that if you can use a single source of truth to represent your data schema and access rules, many other artifacts can be generated from it. As a result, it saves your precious time from writing boilerplate code and makes it much easier to keep everything in sync.
