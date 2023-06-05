@@ -11,6 +11,7 @@ import { description } from '../lib/content';
 import styles from './index.module.css';
 import UsedInProduction from '../components/UsedInProduction';
 import FrameworkIntegration from '../components/FrameworkIntegration';
+import RemoveComplexity from '../components/RemoveComplexity';
 
 function Header() {
     return (
@@ -66,6 +67,8 @@ export default function Home(): JSX.Element {
                 <ZenStackInStack />
 
                 <FrameworkIntegration />
+
+                <RemoveComplexity />
 
                 <UseCases />
 

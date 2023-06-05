@@ -5,7 +5,7 @@ export default function FrameworkIntegration(): JSX.Element {
         <section className="flex flex-col items-start lg:items-center w-full">
             <div>
                 <h2 className="text-2xl lg:text-4xl flex items-center pb-4">
-                    <span>Plays Well With The Framework You Love</span>
+                    <span>Play Well With The Frameworks/Standards You Love</span>
                 </h2>
             </div>
             <ul className="flex flex-col gap-4 md:gap-0">
@@ -15,6 +15,9 @@ export default function FrameworkIntegration(): JSX.Element {
                 <li>SvelteKit</li>
                 <li>Nuxt (coming soon)</li>
                 <li>tRPC</li>
+                <li>RESTful</li>
+                <li>OpenAPI</li>
+                <li>JSON:API</li>
             </ul>
         </section>
     );
