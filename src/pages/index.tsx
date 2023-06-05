@@ -12,6 +12,7 @@ import styles from './index.module.css';
 import UsedInProduction from '../components/UsedInProduction';
 import FrameworkIntegration from '../components/FrameworkIntegration';
 import RemoveComplexity from '../components/RemoveComplexity';
+import VOC from '../components/VOC';
 
 function Header() {
     return (
@@ -71,6 +72,8 @@ export default function Home(): JSX.Element {
                 <RemoveComplexity />
 
                 <UseCases />
+
+                <VOC />
 
                 <UsedInProduction />
 
