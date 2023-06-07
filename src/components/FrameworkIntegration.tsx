@@ -9,12 +9,13 @@ export default function FrameworkIntegration(): JSX.Element {
                 </h2>
             </div>
             <ul className="flex flex-col gap-4 md:gap-0">
-                <li>Express.js</li>
-                <li>Fastify</li>
                 <li>Next.js</li>
                 <li>SvelteKit</li>
                 <li>Nuxt (coming soon)</li>
                 <li>tRPC</li>
+                <li>Express.js</li>
+                <li>Fastify</li>
+                <li>Nest.js</li>
                 <li>RESTful</li>
                 <li>OpenAPI</li>
                 <li>JSON:API</li>

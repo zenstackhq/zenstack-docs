@@ -70,11 +70,6 @@ export default function ValueProposition(): JSX.Element {
                     <span className="ml-4"> More Than ORM</span>
                 </h2>
             </div>
-            {/* <p className="max-w-[720px] text-left lg:text-center text-base md:text-lg mb-8">
-                Prisma is a fantastic battle-tested ORM that abstracts away
-                database complexities. ZenStack unleashes its full potential and
-                lets you build web apps even faster.
-            </p>{' '} */}
             <div className="flex flex-wrap gap-4 md:gap-0">
                 {FeatureList.map((props, idx) => (
                     <Proposition key={idx} {...props} />

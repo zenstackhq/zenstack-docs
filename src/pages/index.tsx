@@ -62,14 +62,12 @@ export default function Home(): JSX.Element {
     return (
         <Layout title={`${siteConfig.title} - Prisma Catalyst For Full-stack Development`} description={description}>
             <Header />
-            <main className="flex flex-col container mx-auto gap-12 lg:gap-20 px-8 lg:px-16 py-12 lg:py-20">
+            <main className="flex flex-col container mx-auto gap-12 lg:gap-40 px-8 lg:px-16 py-12 lg:py-40">
                 <ValueProposition />
 
                 <ZenStackInStack />
 
                 <FrameworkIntegration />
-
-                <RemoveComplexity />
 
                 <UseCases />
 
