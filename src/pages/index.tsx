@@ -58,7 +58,7 @@ function Header() {
 
 function Section({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <section className={`px-8 py-16 lg:px-16 lg:py-32 ${className}`}>
+        <section className={`px-8 py-16 lg:px-16 lg:py-32 ${className ?? ''}`}>
             <div className="container">{children}</div>
         </section>
     );
