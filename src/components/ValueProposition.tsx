@@ -56,7 +56,7 @@ function Proposition({ title, img, description }: FeatureItem) {
 
 export default function ValueProposition(): JSX.Element {
     return (
-        <section className="flex flex-col items-start lg:items-center w-full">
+        <div className="flex flex-col items-start lg:items-center w-full">
             <div>
                 <h2 className="text-2xl lg:text-4xl flex items-center pb-4">
                     <span>
@@ -75,6 +75,6 @@ export default function ValueProposition(): JSX.Element {
                     <Proposition key={idx} {...props} />
                 ))}
             </div>
-        </section>
+        </div>
     );
 }

@@ -11,7 +11,6 @@ import { description } from '../lib/content';
 import styles from './index.module.css';
 import UsedInProduction from '../components/UsedInProduction';
 import FrameworkIntegration from '../components/FrameworkIntegration';
-import RemoveComplexity from '../components/RemoveComplexity';
 import VOC from '../components/VOC';
 
 function Header() {
@@ -57,29 +56,49 @@ function Header() {
     );
 }
 
+function Section({ children, className }: { children: React.ReactNode; className?: string }) {
+    return (
+        <section className={`px-8 py-16 lg:px-16 lg:py-32 ${className}`}>
+            <div className="container">{children}</div>
+        </section>
+    );
+}
+
 export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout title={`${siteConfig.title} - Prisma Catalyst For Full-stack Development`} description={description}>
             <Header />
-            <main className="flex flex-col container mx-auto gap-12 lg:gap-40 px-8 lg:px-16 py-12 lg:py-40">
-                <ValueProposition />
+            <main className="flex flex-col mx-auto">
+                <Section>
+                    <ValueProposition />
+                </Section>
 
-                <ZenStackInStack />
+                <Section className="bg-slate-50">
+                    <ZenStackInStack />
+                </Section>
 
-                <FrameworkIntegration />
+                <Section>
+                    <FrameworkIntegration />
+                </Section>
 
-                <UseCases />
+                <Section className="bg-slate-50">
+                    <UseCases />
+                </Section>
 
-                <VOC />
+                <Section>
+                    <VOC />
+                </Section>
 
-                <UsedInProduction />
+                <Section className="bg-slate-50">
+                    <UsedInProduction />
 
-                <div className="flex justify-center w-full">
-                    <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs/intro">
-                        Let's get started →
-                    </Link>
-                </div>
+                    <div className="flex justify-center w-full mt-16">
+                        <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs/intro">
+                            Let's get started →
+                        </Link>
+                    </div>
+                </Section>
             </main>
         </Layout>
     );
