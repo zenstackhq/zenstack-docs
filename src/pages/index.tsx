@@ -69,7 +69,7 @@ export default function Home(): JSX.Element {
     return (
         <Layout title={`${siteConfig.title} - Prisma Catalyst For Full-stack Development`} description={description}>
             <Header />
-            <main className="flex flex-col mx-auto">
+            <main className="flex flex-col">
                 <Section>
                     <ValueProposition />
                 </Section>

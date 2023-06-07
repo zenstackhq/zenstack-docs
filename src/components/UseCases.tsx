@@ -5,7 +5,7 @@ export default function UseCases(): JSX.Element {
         <section className="flex flex-col items-start lg:items-center w-full">
             <div>
                 <h2 className="text-2xl lg:text-4xl flex items-center pb-4">
-                    <span>How It Helps With Your Use Case</span>
+                    <span>What Can You Build With ZenStack?</span>
                 </h2>
             </div>
             <ul className="flex flex-col gap-4 md:gap-0">

@@ -115,18 +115,28 @@ export default function ZenStackInStack(): JSX.Element {
                             `}
                                 </CodeBlock> */}
                             </TabItem>
+
+                            <TabItem value="Nuxt" label="Nuxt">
+                                <p className="italic">Coming soon</p>
+                            </TabItem>
                         </Tabs>
                     </div>
 
                     <img className="max-w-3/4 block" src="/img/home/swagger-ui.png" />
-
                     <LearnMore url="/docs/guides/api" />
                 </div>
 
                 <div>
                     <Badge>Full-stack</Badge>
-                    <Title>Building Data-Driven Web Apps</Title>
-                    <Content></Content>
+                    <Title>Building Data-Driven UI</Title>
+                    <Content>
+                        Data query and mutation is one of the toughest topics for frontend development. ZenStack
+                        simplifies it by generating fully-typed client-side data access code (aka hooks) targeting the
+                        data query library of your choice (SWR, TanStack Query, etc.). Paired with the auto-generated
+                        backend CRUD APIs, your full-stack development experience will be at a whole new level.
+                    </Content>
+                    <img className="max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
+                    <LearnMore url="/docs/guide/fullstack" />
                 </div>
             </div>
         </div>
