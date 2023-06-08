@@ -36,18 +36,18 @@ export default function ZenStackInStack(): JSX.Element {
                             ZenStack automagically enforcing access control rules. Its core is framework-agnostic, and
                             runs wherever Prisma runs.
                         </Content>
-                        <img className="py-2 max-w-3/4 block" src="/img/banner-code.png" />
+                        <img className="py-4 max-w-3/4 block" src="/img/home/supercharged-orm.png" />
                         <LearnMore url="/docs/get-started/backend" />
                     </div>
                     <div>
                         <Badge>API</Badge>
-                        <Title>Building Database-Centric APIs</Title>
+                        <Title>Automatic Data-Access API Generation</Title>
                         <Content>
-                            Wrapping APIs around database is tedious and error-prone. ZenStack can install CRUD APIs to
-                            the framework of your choice with just a few lines of code. Thanks to the built-in access
-                            control support, the APIs are fully secure and can be directly exposed to the public. What
-                            about documentation? Turn on a plugin and an OpenAPI specification will be generated in
-                            seconds.
+                            Wrapping APIs around database is tedious and error-prone. ZenStack can introspect the schema
+                            and install CRUD APIs to the framework of your choice with just a few lines of code. Thanks
+                            to the built-in access control support, the APIs are fully secure and can be directly
+                            exposed to the public. What about documentation? Turn on a plugin and an OpenAPI
+                            specification will be generated in seconds.
                         </Content>
                         <div className="max-w-3/4">
                             <Tabs>
@@ -126,13 +126,12 @@ export default function ZenStackInStack(): JSX.Element {
                     </div>
                     <div>
                         <Badge>Full-stack</Badge>
-                        <Title>Building Data-Driven UI</Title>
+                        <Title>Frontend Data Fetching Library Generation</Title>
                         <Content>
                             Data query and mutation is one of the toughest topics for frontend development. ZenStack
                             simplifies it by generating fully-typed client-side data access code (aka hooks) targeting
-                            the data query library of your choice (SWR, TanStack Query, etc.). Paired with the
-                            auto-generated backend CRUD APIs, your full-stack development experience will be at a whole
-                            new level.
+                            the data query library of your choice (SWR, TanStack Query, etc.). The hooks call into the
+                            automatically generated APIs which are secured by the access policies.
                         </Content>
                         <img className="max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
                         <LearnMore url="/docs/guide/fullstack" />

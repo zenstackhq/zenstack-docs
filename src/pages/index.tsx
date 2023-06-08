@@ -27,8 +27,8 @@ function Header() {
                         <br /> Without Hassle
                     </h1>
                     <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed">
-                        A TypeScript toolkit that supercharges your favorite ORM, integrated with the Node.js frameworks
-                        you love.
+                        A TypeScript toolkit that supercharges Prisma ORM with a powerful access control layer and
+                        unleashes its full power for full-stack development.
                     </p>
                     <div className={styles.buttons}>
                         <Link

@@ -14,7 +14,7 @@ const FeatureList: FeatureItem[] = [
         description: (
             <>
                 Access control policies right inside your data model. No more brittle imperative authorization code. No
-                more complex SQL Row-Level-Security.
+                more complex SQL Row-Level-Security rules.
             </>
         ),
     },
