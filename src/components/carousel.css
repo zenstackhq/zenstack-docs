@@ -1,0 +1,18 @@
+.slick-track {
+    display: flex;
+}
+.slick-track .slick-slide {
+    display: flex;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.slick-prev:before {
+    font-size: 32px;
+    color: #e2e8f0;
+}
+.slick-next:before {
+    font-size: 32px;
+    color: #e2e8f0;
+}

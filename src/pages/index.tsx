@@ -93,9 +93,9 @@ export default function Home(): JSX.Element {
                 <Section className="bg-slate-50">
                     <UsedInProduction />
 
-                    <div className="flex justify-center w-full mt-16">
+                    <div className="flex justify-center w-full mt-20">
                         <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs/intro">
-                            Let's get started →
+                            Start Building Now →
                         </Link>
                     </div>
                 </Section>

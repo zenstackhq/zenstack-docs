@@ -115,9 +115,6 @@ export default function ZenStackInStack(): JSX.Element {
                                 `}
                                     </CodeBlock> */}
                                 </TabItem>
-                                <TabItem value="NuxtJS" label="NuxtJS">
-                                    <p className="italic">Coming soon</p>
-                                </TabItem>
                             </Tabs>
                         </div>
                         <img className="max-w-3/4 block" src="/img/home/swagger-ui.png" />
