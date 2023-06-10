@@ -43,3 +43,22 @@
 [data-theme='dark'] .shiki.min-light {
     display: none;
 }
+
+.slick-track {
+    display: flex !important;
+}
+.slick-track .slick-slide {
+    display: flex !important;
+    height: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.slick-prev:before {
+    font-size: 32px !important;
+    color: #e2e8f0 !important;
+}
+.slick-next:before {
+    font-size: 32px !important;
+    color: #e2e8f0 !important;
+}
