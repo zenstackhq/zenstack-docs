@@ -47,8 +47,8 @@ export default function VOC(): JSX.Element {
     var settings = {
         arrows: true,
         autoplay: true,
+        autoplaySpeed: 5000,
         infinite: true,
-        speed: 600,
         slidesToShow: 1,
         slidesToScroll: 1,
     };
@@ -82,7 +82,7 @@ export default function VOC(): JSX.Element {
 
                     <div>
                         <Quote
-                            text="Thanks for creating such a wonderful product! It was a breeze to adopt, and
+                            text="We've launched MermaidChart's team feature using ZenStack. Thanks for creating such a wonderful product! It was a breeze to adopt, and
                                     everyone in the team loves how easy writing the policies are."
                             author="Sid"
                             company="MermaidChart"
