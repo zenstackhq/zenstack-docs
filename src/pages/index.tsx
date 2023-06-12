@@ -44,11 +44,11 @@ function Header() {
                     <iframe
                         width="560"
                         height="315"
-                        src="https://www.youtube.com/embed/zXfzzxH1q8o"
+                        src="https://www.youtube.com/embed/WJxGoaVv5_I?autoplay=1&mute=1"
                         title="ZenStack Introduction"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
-                        className="shadow-xl"
+                        className="shadow-xl rounded-xl"
                     ></iframe>
                 </div>
             </div>
