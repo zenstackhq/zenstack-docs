@@ -2,13 +2,13 @@
 description: A retrospection of our journey of creating an open-source project and dedicating seven full-time months to it, so far.
 tags: [opensource]
 authors: yiming
-image: ./cover.jpg
+image: ./cover.png
 date: 2023-06-13
 ---
 
 # Our Open Source Journey: Seven Months In and Counting
 
-![Cover Image](cover.jpg)
+![Cover Image](cover.png)
 
 > Engineers like to solve problems. If there are no problems handily available, they will create their own problems.
 >
