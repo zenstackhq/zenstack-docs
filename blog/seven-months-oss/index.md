@@ -74,15 +74,15 @@ We’re not backed by VC, don’t have an immediate plan for raising funds, and 
 
 We know we can’t live on savings forever, and starving to death is definitely not part of the plan. We keep these options open for the future to make ZenStack a sustainable project:
 
-1. Turning it into a commercial vertical cloud service
+- Turning it into a commercial vertical cloud service
 
     Very much like what Vercel built above Next.js, but keep it fully open source so people can choose to self-host it for free.
 
-1. Taking for-hire development jobs
+- Taking for-hire development jobs
 
     Generate some revenue to compensate for the cost. It’s also a great way to gain insights by evaluating our own product in the field.
 
-1. Getting full-time jobs
+- Getting full-time jobs
 
     Entrepreneurship is not a one-way thing. At a certain point, we may feel that it takes more time to think through the future, and we can turn it into a part-time project for a while and wait for opportunities to mature.
 
