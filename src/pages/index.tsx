@@ -88,12 +88,7 @@ export default function Home(): JSX.Element {
 
                 <Section>
                     <VOC />
-                </Section>
-
-                <Section className="bg-slate-50">
-                    <UsedInProduction />
-
-                    <div className="flex justify-center w-full mt-20">
+                    <div className="flex justify-center w-full mt-8">
                         <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs/intro">
                             Start Building Now →
                         </Link>
