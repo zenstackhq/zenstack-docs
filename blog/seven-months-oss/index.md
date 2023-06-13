@@ -56,15 +56,15 @@ Open-source projects have natural marketing advantages. You’ve promised not to
 
 I can’t share how to be successful in promotion because we’re not "successful," but I can capture some of the things that seem to help:
 
-1. Bake paradigms into your product, not features
+- **Bake paradigms into your product, not features**
 
     The paradigm we sell is: you build better web apps if you do things more declaratively, write less code, and let IDE/compiler help you wherever possible. If you clarify this, people sharing the same preferences will find you and tell you what features to build.
 
-1. Connect with as many other things as you can
+- **Connect with as many other things as you can**
 
     Join the ecosystem, and be a good member who contributes value to a bigger theme. Most of our users found us from related projects.
 
-1. Be highly responsive to the community
+- **Be highly responsive to the community**
 
     This is something that requires zero skill but is super helpful. People don’t expect you to solve all their problems or add features right away. They want to know you care and are serious about the effort so they can have enough confidence to depend on you.
 
@@ -74,15 +74,15 @@ We’re not backed by VC, don’t have an immediate plan for raising funds, and 
 
 We know we can’t live on savings forever, and starving to death is definitely not part of the plan. We keep these options open for the future to make ZenStack a sustainable project:
 
-- Turning it into a commercial vertical cloud service
+- **Turning it into a commercial vertical cloud service**
 
     Very much like what Vercel built above Next.js, but keep it fully open source so people can choose to self-host it for free.
 
-- Taking for-hire development jobs
+- **Taking for-hire development jobs**
 
     Generate some revenue to compensate for the cost. It’s also a great way to gain insights by evaluating our own product in the field.
 
-- Getting full-time jobs
+- **Getting full-time jobs**
 
     Entrepreneurship is not a one-way thing. At a certain point, we may feel that it takes more time to think through the future, and we can turn it into a part-time project for a while and wait for opportunities to mature.
 
