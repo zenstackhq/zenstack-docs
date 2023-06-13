@@ -22,7 +22,7 @@ Starting an OSS project is the same "creating" endeavor in new packaging, in its
 
 ## So, What Do You Do?
 
-We made a modest decision. The product called [ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=seven-months-oss) that we’re building is a toolkit for simplifying full-stack web development, especially the backend part — something closely related to our past experiences. In the big picture, it belongs to software development infrastructure which is a vibrant domain. It’s not as sexy as Web3, Metaverse, Generative AI, etc., but we feel empathetic to the audience in the domain and have a good grasp of what needs to be fixed there.
+We made a modest decision. The product called [ZenStack](https://zenstack.dev) that we’re building is a toolkit for simplifying full-stack web development, especially the backend part — something closely related to our past experiences. In the big picture, it belongs to software development infrastructure which is a vibrant domain. It’s not as sexy as Web3, Metaverse, Generative AI, etc., but we feel empathetic to the audience in the domain and have a good grasp of what needs to be fixed there.
 
 Choosing what to do is a difficult decision to make, and its strategy is also very personal. I prefer to start with things I know and like, then explore what looks promising. You won’t lose if you genuinely enjoy the building process, even if the outcome is unexpected. It’s like real artists; recognition from your inner self is the foundation for everything else.
 
@@ -84,7 +84,7 @@ We know we can’t live on savings forever, and starving to death is definitely 
 
     Entrepreneurship is not a one-way thing. At a certain point, we may feel that it takes more time to think through the future, and we can turn it into a part-time project for a while and wait for opportunities to mature.
 
-[ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=seven-months-oss) is the central theme of our lives for the time being, and it might become a side track when needed. The bottom line is as long as it’s benefiting some people, we’ll keep evolving it.
+[ZenStack](https://zenstack.dev) is the central theme of our lives for the time being, and it might become a side track when needed. The bottom line is as long as it’s benefiting some people, we’ll keep evolving it.
 
 ---
 
