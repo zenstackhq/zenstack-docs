@@ -86,7 +86,7 @@ export default function VOC(): JSX.Element {
                                     everyone in the team loves how easy writing the policies are."
                             author="Sid"
                             company="MermaidChart"
-                            avatar="/img/logo/discord.png"
+                            avatar="https://avatars.githubusercontent.com/u/10703445?v=4"
                         />
                     </div>
                 </Slider>
