@@ -8,6 +8,8 @@ date: 2023-06-13
 
 # Our Open Source Journey: Seven Months In and Counting
 
+![Cover Image](cover.jpg)
+
 > Engineers like to solve problems. If there are no problems handily available, they will create their own problems.
 >
 > — Scott Adams
