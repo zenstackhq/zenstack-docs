@@ -2,7 +2,7 @@
 description: A retrospection of our journey of creating an open-source project and dedicating seven full-time months to it, so far.
 tags: [opensource]
 authors: yiming
-image: ./cover.png
+image: ./cover.jpg
 date: 2023-06-13
 ---
 
