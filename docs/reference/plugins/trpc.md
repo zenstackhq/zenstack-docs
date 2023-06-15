@@ -11,9 +11,10 @@ This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/
 
 ## Options
 
-| Name   | Type   | Description      | Required |
-| ------ | ------ | ---------------- | -------- |
-| output | String | Output directory (relative to the path of ZModel) | Yes      |
+| Name   | Type   | Description      | Required | Default |
+| ------ | ------ | ---------------- | -------- | ------- |
+| output | String | Output directory (relative to the path of ZModel) | Yes      | |
+| generateModelActions | String, String[] | Array or comma separated string for actions to generate for each model: `create`, `findUnique`, `update`, etc. | No      | All supported Prisma actions |
 
 ## Example
 
@@ -23,6 +24,7 @@ Here's an example with a blogging app:
 plugin trpc {
   provider = '@zenstackhq/trpc'
   output = 'server/routers/generated'
+  generateModelActions = 'create,update,findUnique,findMany'
 }
 
 model User {
