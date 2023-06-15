@@ -6,7 +6,7 @@ sidebar_position: 9
 # @zenstackhq/react
 
 :::warning
-This package will be deprecated soon and replaced by [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) and [`@zenstackhq/swr`](/docs/reference/plugins/swr) plugins. To migrate to the new plugins, if you're using `@zenstackhq/react` with `fetcher` set to "swr", you can replace the plugin declaration in ZModel like:
+This package is deprecated and replaced by [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) and [`@zenstackhq/swr`](/docs/reference/plugins/swr) plugins. To migrate to the new plugins, if you're using `@zenstackhq/react` with `fetcher` set to "swr", you can replace the plugin declaration in ZModel like:
 
 ```prisma
 plugin reactHooks {
