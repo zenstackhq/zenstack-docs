@@ -73,6 +73,21 @@ export {
 };
 ```
 
+:::info
+Next.js 13 has issues handling `@zenstackhq/runtime` and `@zenstackhq/server` packages when compiling server components. Please add the following config section to your `next.config.mjs` to exclude them:
+
+```js title='next.config.mjs'
+const config = {
+    experimental: {
+        serverComponentsExternalPackages: [
+            "@zenstackhq/runtime",
+            "@zenstackhq/server",
+        ],
+    },
+}
+```
+:::
+
 The Next.js API route handler takes the following options to initialize:
 
 <AdapterOptions getPrisma='(req: NextRequest) => unknown | Promise<unknown>' />
