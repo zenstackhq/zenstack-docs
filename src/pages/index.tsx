@@ -9,9 +9,8 @@ import UseCases from '../components/UseCases';
 import ZenStackInStack from '../components/ZenStackInStack';
 import { description } from '../lib/content';
 import styles from './index.module.css';
-import UsedInProduction from '../components/UsedInProduction';
 import FrameworkIntegration from '../components/FrameworkIntegration';
-import VOC from '../components/VOC';
+import VOC from '../components/VOCFlat';
 
 function Header() {
     return (
@@ -88,7 +87,8 @@ export default function Home(): JSX.Element {
 
                 <Section>
                     <VOC />
-                    <div className="flex justify-center w-full mt-8">
+
+                    <div className="flex justify-center w-full mt-32">
                         <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs/intro">
                             Start Building Now →
                         </Link>
