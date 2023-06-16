@@ -1,17 +1,27 @@
 import React from 'react';
 
+function Title({ children }: { children: React.ReactNode }) {
+    return <h3 className="mb-4 text-xl md:text-2xl lg:text-3xl tracking-tight font-semibold">{children}</h3>;
+}
+
+function Content({ children }: { children: React.ReactNode }) {
+    return <p className="mb-4 font-light text-gray-600 md:text-lg">{children}</p>;
+}
+
 export default function UseCases(): JSX.Element {
     return (
-        <section className="flex flex-col items-start lg:items-center w-full">
-            <div className="flex flex-col w-3/4">
-                <h2 className="text-2xl lg:text-4xl m-auto pb-16">What Can You Build With ZenStack?</h2>
-                <div className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+        <section className="flex flex-col items-center w-full">
+            <div className="flex flex-col xl:w-3/4 gap-12 lg:gap-16">
+                <h2 className="text-center text-2xl md:text-3xl lg:text-4xl m-auto pb-4 lg:pb-16">
+                    What Can You Build With ZenStack?
+                </h2>
+                <div className="gap-8 w-full px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6">
                     <div className="w-full flex justify-center">
                         <img className="w-80" src="/img/home/saas.png" alt="SaaS" />
                     </div>
                     <div className="mt-4 md:mt-0">
-                        <h2 className="mb-4 text-3xl tracking-tight font-semibold">Software as a Service</h2>
-                        <p className="mb-6 font-light text-gray-600 md:text-lg">
+                        <Title>Software as a Service</Title>
+                        <Content>
                             SaaS applications are by nature multi-tenant, and tenant data isolation is a key
                             requirement. Modern SaaS typically offer features involving collaboration and data sharing,
                             which further complicates the implementation.
@@ -19,39 +29,42 @@ export default function UseCases(): JSX.Element {
                             <br />
                             ZenStack's unique way of centrally and declaratively defining data access policies helps you
                             achieve a clean, reliable, and DRY authorization model with significantly less effort.
-                        </p>
+                        </Content>
                         <a href="/blog/multi-tenant">Learn More →</a>
                     </div>
                 </div>
 
-                <div className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+                <div className="gap-8 items-center px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6">
+                    <div className="flex lg:hidden w-full justify-center">
+                        <img className="w-80" src="/img/home/b2c.png" alt="SaaS" />
+                    </div>
                     <div className="mt-4 md:mt-0">
-                        <h2 className="mb-4 text-3xl tracking-tight font-semibold">B2C Applications</h2>
-                        <p className="mb-6 font-light text-gray-600 md:text-lg">
+                        <Title>B2C Applications</Title>
+                        <Content>
                             ZenStack streamlines full-stack development by automatically generating APIs and frontend
                             hooks, all from the single source of truth - your data model. This helps you and your team
                             reduce the time to market.
                             <br />
                             <br />
                             Write less boilerplate code. Focus on shipping features!
-                        </p>
+                        </Content>
                     </div>
-                    <div className="w-full flex justify-center">
+                    <div className="hidden lg:flex w-full justify-center">
                         <img className="w-80" src="/img/home/b2c.png" alt="SaaS" />
                     </div>
                 </div>
 
-                <div className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+                <div className="gap-8 items-center px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6">
                     <div className="w-full flex justify-center">
                         <img className="w-80 p-4" src="/img/home/internal-tools.png" alt="SaaS" />
                     </div>
                     <div className="mt-4 md:mt-0">
-                        <h2 className="mb-4 text-3xl tracking-tight font-semibold">Internal Tools</h2>
-                        <p className="mb-6 font-light text-gray-600 md:text-lg">
+                        <Title>Internal Tools</Title>
+                        <Content>
                             Be it a workflow management system, a customer support tool, or a data analytics dashboard,
                             ZenStack helps you organize business entities with ease and query data with unlimited
                             flexibility. An alternative when No-Code builders can't cut it.
-                        </p>
+                        </Content>
                     </div>
                 </div>
             </div>

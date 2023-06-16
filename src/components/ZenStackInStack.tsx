@@ -7,11 +7,11 @@ function Badge({ children }: { children: ReactNode }) {
 }
 
 function Title({ children }: { children: ReactNode }) {
-    return <h3 className="text-3xl font-semibold">{children}</h3>;
+    return <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold">{children}</h3>;
 }
 
 function Content({ children }: { children: ReactNode }) {
-    return <p className="text-lg text-slate-700 font-normal">{children}</p>;
+    return <p className="lg:text-lg text-slate-700 font-normal">{children}</p>;
 }
 
 function LearnMore({ url }: { url: string }) {
@@ -20,11 +20,12 @@ function LearnMore({ url }: { url: string }) {
 
 export default function ZenStackInStack(): JSX.Element {
     return (
-        <div className="flex justify-start lg:justify-center w-full">
-            <div className="flex flex-col text-left max-w-3/4">
-                <h2 className="text-2xl lg:text-4xl w-full mb-16">Empower Every Layer of Your Stack</h2>
-
-                <div className="flex flex-col gap-16">
+        <div className="flex flex-col justify-center w-full">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl w-full text-center mb-16">
+                Empower Every Layer of Your Stack
+            </h2>
+            <div className="w-full xl:max-w-3/4 mx-auto">
+                <div className="flex flex-col gap-16 text-left">
                     <div>
                         <Badge>Backend</Badge>
                         <Title>Supercharged ORM For Your Node.js Code</Title>
@@ -35,7 +36,7 @@ export default function ZenStackInStack(): JSX.Element {
                             ZenStack automagically enforcing access control rules. Its core is framework-agnostic, and
                             runs wherever Prisma runs.
                         </Content>
-                        <img className="py-4 max-w-3/4 block" src="/img/home/supercharged-orm.png" />
+                        <img className="py-4 xl:max-w-3/4 block" src="/img/home/supercharged-orm.png" />
                         <LearnMore url="/docs/get-started/backend" />
                     </div>
                     <div>
@@ -48,76 +49,76 @@ export default function ZenStackInStack(): JSX.Element {
                             exposed to the public. What about documentation? Turn on a plugin and an OpenAPI
                             specification will be generated in seconds.
                         </Content>
-                        <div className="max-w-3/4">
+                        <div className="xl:max-w-3/4">
                             <Tabs>
                                 <TabItem value="Express" label="Express">
                                     <img src="/img/home/server-adapter-express.png" />
                                     {/* <CodeBlock language="ts">
-                                        {`
-                            import { withPresets } from '@zenstackhq/runtime';
-                            import { ZenStackMiddleware } from '@zenstackhq/server/express';
-                            import RestApiHandler from '@zenstackhq/server/api/rpc';
-                    
-                            app.use(
-                              '/api/model',
-                              ZenStackMiddleware({
-                                getPrisma: (req) => withPresets(prisma, { user: getSessionUser(req) }),
-                                handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
-                              })
-                            );
-                            `}
-                                    </CodeBlock> */}
+                                            {`
+                                import { withPresets } from '@zenstackhq/runtime';
+                                import { ZenStackMiddleware } from '@zenstackhq/server/express';
+                                import RestApiHandler from '@zenstackhq/server/api/rpc';
+                
+                                app.use(
+                                  '/api/model',
+                                  ZenStackMiddleware({
+                                    getPrisma: (req) => withPresets(prisma, { user: getSessionUser(req) }),
+                                    handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
+                                  })
+                                );
+                                `}
+                                        </CodeBlock> */}
                                 </TabItem>
                                 <TabItem value="Fastify" label="Fastify">
                                     <img src="/img/home/server-adapter-fastify.png" />
                                     {/* <CodeBlock language="ts">
-                                        {`
-                            import { withPresets } from '@zenstackhq/runtime';
-                            import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
-                            import RestApiHandler from '@zenstackhq/server/api/rpc';
-                    
-                            server.register(ZenStackFastifyPlugin, {
-                              prefix: '/api/model',
-                              getPrisma: (req) => withPresets(prisma, { user: getSessionUser(req) }),
-                              handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
-                            });
-                                `}
-                                    </CodeBlock> */}
+                                            {`
+                                import { withPresets } from '@zenstackhq/runtime';
+                                import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
+                                import RestApiHandler from '@zenstackhq/server/api/rpc';
+                
+                                server.register(ZenStackFastifyPlugin, {
+                                  prefix: '/api/model',
+                                  getPrisma: (req) => withPresets(prisma, { user: getSessionUser(req) }),
+                                  handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
+                                });
+                                    `}
+                                        </CodeBlock> */}
                                 </TabItem>
                                 <TabItem value="Next.js" label="Next.js">
                                     <img src="/img/home/server-adapter-nextjs.png" />
                                     {/* <CodeBlock language="ts">
-                                        {`
-                            import { withPresets } from '@zenstackhq/runtime';
-                            import { NextRequestHandler } from '@zenstackhq/server/next';
-                            import RestApiHandler from '@zenstackhq/server/api/rest';
-                    
-                            export default NextRequestHandler({
-                              getPrisma: (req, res) => withPresets({ user: getSessionUser(req, res) }),
-                              handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
-                            });
-                                `}
-                                    </CodeBlock> */}
+                                            {`
+                                import { withPresets } from '@zenstackhq/runtime';
+                                import { NextRequestHandler } from '@zenstackhq/server/next';
+                                import RestApiHandler from '@zenstackhq/server/api/rest';
+                
+                                export default NextRequestHandler({
+                                  getPrisma: (req, res) => withPresets({ user: getSessionUser(req, res) }),
+                                  handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
+                                });
+                                    `}
+                                        </CodeBlock> */}
                                 </TabItem>
                                 <TabItem value="SvelteKit" label="SvelteKit">
                                     <img src="/img/home/server-adapter-sveltekit.png" />
                                     {/* <CodeBlock language="ts">
-                                        {`
-                            import { withPresets } from '@zenstackhq/runtime';
-                            import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
-                            import RestApiHandler from '@zenstackhq/server/api/rpc';
-                    
-                            export const handle = SvelteKitHandler({
-                              prefix: '/api/model',
-                              getPrisma: (event) => withPresets({ user: getSessionUser(event) }),
-                              handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
-                            });
-                                `}
-                                    </CodeBlock> */}
+                                            {`
+                                import { withPresets } from '@zenstackhq/runtime';
+                                import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
+                                import RestApiHandler from '@zenstackhq/server/api/rpc';
+                
+                                export const handle = SvelteKitHandler({
+                                  prefix: '/api/model',
+                                  getPrisma: (event) => withPresets({ user: getSessionUser(event) }),
+                                  handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
+                                });
+                                    `}
+                                        </CodeBlock> */}
                                 </TabItem>
                             </Tabs>
                         </div>
-                        <img className="max-w-3/4 block" src="/img/home/swagger-ui.png" />
+                        <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" />
                         <LearnMore url="/docs/guides/api" />
                     </div>
                     <div>
@@ -129,7 +130,7 @@ export default function ZenStackInStack(): JSX.Element {
                             the data query library of your choice (SWR, TanStack Query, etc.). The hooks call into the
                             automatically generated APIs which are secured by the access policies.
                         </Content>
-                        <img className="max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
+                        <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
                         <LearnMore url="/docs/guide/fullstack" />
                     </div>
                 </div>

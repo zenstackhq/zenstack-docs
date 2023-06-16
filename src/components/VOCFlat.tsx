@@ -2,7 +2,7 @@ import React from 'react';
 
 function Tweet({ url, image }: { url: string; image: string }) {
     return (
-        <div className="w-[360px] h-[512px]">
+        <div className="w-[300px] h-[426px] md:w-[360px] md:h-[512px]">
             <a href={url}>
                 <img src={image} className="p-4 h-full shadow-xl rounded-xl border border-gray-100 border-solid" />
             </a>
@@ -22,13 +22,13 @@ function Quote({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex justify-center items-center w-[360px] h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
+        <div className="flex justify-center items-center w-[300px] h-[426px] md:w-[360px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
             <div className="flex flex-col h-full text-center py-6">
                 <div className="flex-grow flex items-center justify-center">
                     <div className="flex flex-col">
                         <svg
                             aria-hidden="true"
-                            className="w-10 h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
+                            className="w-8 h-8 lg:w-10 lg:h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
                             viewBox="0 0 24 27"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,9 @@ function Quote({
                                 fill="currentColor"
                             />
                         </svg>
-                        <p className="text-xl italic px-4 pb-6 font-medium text-gray-900 dark:text-white">{children}</p>
+                        <p className="text-lg md:text-xl italic px-4 pb-6 font-medium text-gray-800 dark:text-white">
+                            {children}
+                        </p>
                     </div>
                 </div>
                 <figcaption className="flex items-center justify-center space-x-3">
@@ -56,7 +58,7 @@ function Quote({
 export default function VOC(): JSX.Element {
     return (
         <div className="flex flex-col items-start lg:items-center w-full">
-            <h2 className="text-2xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 mx-auto">
                 <Tweet url="https://twitter.com/nikolasburk/status/1625066262555504641" image="/img/home/tweet1.png" />
 

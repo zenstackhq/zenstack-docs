@@ -4,7 +4,7 @@
  */
 
 .heroBanner {
-    padding: 8rem 0;
+    padding: 8rem 2rem;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -18,7 +18,8 @@
 
 @media screen and (max-width: 996px) {
     .heroBanner {
-        padding: 2rem;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
     }
 }
 

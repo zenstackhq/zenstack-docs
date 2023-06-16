@@ -1,17 +1,21 @@
 import React from 'react';
 
+function Title({ children }: { children: React.ReactNode }) {
+    return <h3 className="text-xl underline lg:no-underline md:text-2xl text-center pb-4 text-gray-700">{children}</h3>;
+}
+
 function Logo({ src }: { src: string }): JSX.Element {
     return <img src={src} className="h-12 object-contain block" />;
 }
 
 export default function FrameworkIntegration(): JSX.Element {
     return (
-        <div className="flex justify-start lg:justify-center w-full">
-            <div className="flex flex-col text-center w-3/4">
-                <h2 className="text-2xl lg:text-4xl pb-20">Integrated With The Tools You Love</h2>
-                <div className="flex flex-row justify-between w-full">
+        <div className="flex justify-center w-full">
+            <div className="flex flex-col text-center xl:w-3/4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl pb-20">Integrated With The Tools You Love</h2>
+                <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-16">
                     <div>
-                        <h3 className="text-center pb-4">Server & Full-stack</h3>
+                        <Title>Server & Full-stack</Title>
                         <div className="flex flex-col gap-4">
                             <Logo src="/img/logo/nextjs.png" />
                             <Logo src="/img/logo/remix.png" />
@@ -23,14 +27,14 @@ export default function FrameworkIntegration(): JSX.Element {
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-center pb-4">Data Query Client</h3>
+                        <Title>Data Query Client</Title>
                         <div className="flex flex-col gap-4">
                             <Logo src="/img/logo/swr.png" />
                             <Logo src="/img/logo/tanstackquery.png" />
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-center pb-4">API</h3>
+                        <Title>API</Title>
                         <div className="flex flex-col gap-4">
                             <Logo src="/img/logo/rest.png" />
                             <Logo src="/img/logo/jsonapi.png" />

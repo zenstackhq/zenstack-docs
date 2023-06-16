@@ -15,10 +15,11 @@ import VOC from '../components/VOCFlat';
 function Header() {
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
-            <div className="container flex flex-col lg:flex-row items-center justify-between gap-8">
-                <div className="text-left flex flex-col items-start lg:w-1/2">
-                    <h1 className="hero__title font-bold text-3xl lg:text-6xl mb-8 lg:mb-8 lg:leading-[70px]">
-                        From Database to{' '}
+            <div className="w-full xl:container grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <div className="w-full text-left flex flex-col items-start">
+                    <h1 className="hero__title font-bold text-3xl md:text-5xl xl:text-6xl mb-8 lg:mb-8 lg:leading-[70px]">
+                        <span className="inline-block 2xl:hidden leading-relaxed">Database to </span>
+                        <span className="hidden 2xl:inline-block leading-relaxed">From Database to </span>{' '}
                         <span>
                             <Typewriter words={['API', 'Service', 'UI']} loop={true} />
                         </span>
@@ -38,16 +39,26 @@ function Header() {
                         </Link>
                     </div>
                 </div>
-                <div className="lg:w-1/2 mx-[-40px] lg:mx-auto">
-                    {/* <img src="/img/banner-code.png" /> */}
+                <div className="w-full h-full mx-auto flex justify-center">
+                    <div className="block: xl:hidden w-full relative pt-[56%]">
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src="https://www.youtube.com/embed/dI8LeuFTr9c?autoplay=1mute=1"
+                            title="ZenStack Introduction"
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay"
+                            allowFullScreen
+                            className="absolute inset-0 rounded-xl shadow-xl"
+                        ></iframe>
+                    </div>
                     <iframe
                         width="560"
-                        height="315"
-                        src="https://www.youtube.com/embed/WJxGoaVv5_I?autoplay=1&mute=1"
+                        height="100%"
+                        src="https://www.youtube.com/embed/dI8LeuFTr9c?autoplay=1&mute=1"
                         title="ZenStack Introduction"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
-                        className="shadow-xl rounded-xl"
+                        className="hidden xl:block shadow-xl rounded-xl"
                     ></iframe>
                 </div>
             </div>
@@ -57,8 +68,8 @@ function Header() {
 
 function Section({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <section className={`px-8 py-16 lg:px-16 lg:py-32 ${className ?? ''}`}>
-            <div className="container">{children}</div>
+        <section className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 ${className ?? ''}`}>
+            <div className="w-full lg:container">{children}</div>
         </section>
     );
 }
