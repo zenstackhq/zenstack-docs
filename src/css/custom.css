@@ -32,14 +32,7 @@
     --ifm-color-primary-lightest: #ffaa66;
     --docusaurus-highlighted-code-line-bg: rgba(0, 148, 0, 0.3);
 }
+
 .footer {
     @apply px-8 lg:px-16;
-}
-
-[data-theme='light'] .shiki.nord {
-    display: none;
-}
-
-[data-theme='dark'] .shiki.min-light {
-    display: none;
 }

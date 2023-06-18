@@ -64,6 +64,11 @@ export default function VOC(): JSX.Element {
 
                 <Tweet url="https://twitter.com/mike_alche/status/1634568367351767041" image="/img/home/tweet2.png" />
 
+                <Tweet
+                    url="https://twitter.com/faruk_encoded/status/1637358537121624066"
+                    image="/img/home/tweet3.png"
+                />
+
                 <Quote author="Leevis" company="Cofounder Ptmind" avatar="/img/logo/leevis.png">
                     We have a fairly complex authorization model, and I'm really impressed that ZenStack has the
                     flexibility to support it!
@@ -85,10 +90,6 @@ export default function VOC(): JSX.Element {
                 <Quote author="Augustin" company="" avatar="https://avatars.githubusercontent.com/u/43639468">
                     Thank you @ymc9 and @jiasheng for all the hard work 👏. It's great to have so many features already
                     for a beta. Can't wait for version 1.0 😄.
-                </Quote>
-
-                <Quote author="keanugrieves" company="" avatar="/img/logo/discord.png">
-                    ZenStack seems like a dream come true.
                 </Quote>
             </div>
         </div>

@@ -24,7 +24,7 @@ function Header() {
                             <Typewriter words={['API', 'Service', 'UI']} loop={true} />
                         </span>
                         {','}
-                        <br /> Without Hassle
+                        <br /> In Minutes
                     </h1>
                     <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed">
                         A TypeScript toolkit that supercharges Prisma ORM with a powerful access control layer and
