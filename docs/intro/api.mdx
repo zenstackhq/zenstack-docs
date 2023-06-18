@@ -3,6 +3,9 @@ description: Automatic CRUD API
 sidebar_position: 4
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
 # Automatic CRUD API
 
 Many backend services have big chunks of code wrapping around the database and providing access-controlled CRUD APIs. These are boring boilerplate code that are both tedious to write and error-prone to maintain.
@@ -106,6 +109,20 @@ POST /api/model/post
 // List all published posts with their authors
 GET /api/model/post?filter[published]=true&include=author
 ```
+
+:::info
+
+API handlers are framework-independent components that determines the endpoints and data format of the API. The following diagram illustrates their relationships with server adapters.
+
+<ThemedImage
+    alt="ZModel Generation"
+    sources={{
+        light: useBaseUrl('/img/intro/api-handler-light.png'),
+        dark: useBaseUrl('/img/intro/api-handler-dark.png'),
+    }}
+/>
+
+:::
 
 As you can see, with a few lines of code, you can get a full-fledged CRUD API for your data models. See [here](/docs/category/server-adapters) for details on how to use the server adapter specific to your framework. You may also be interested in generating a [OpenAPI](https://www.openapis.org/) specification using the [`@zenstackhq/openapi`](/docs/reference/plugins/openapi) plugin.
 
