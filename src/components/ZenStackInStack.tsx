@@ -30,10 +30,10 @@ export default function ZenStackInStack(): JSX.Element {
                         <Badge>Backend</Badge>
                         <Title>Supercharged ORM For Your Node.js Code</Title>
                         <Content>
-                            ZenStack extends Prisma ORM with a powerfull access control layer. By defining policies
-                            right inside data model, your schema becomes the single source of truth. By using a
+                            ZenStack extends Prisma ORM with a powerful access control layer. By defining policies right
+                            inside the data model, your schema becomes the single source of truth. By using a
                             policy-enabled database client, you can enjoy the same Prisma API you already love, with
-                            ZenStack automagically enforcing access control rules. Its core is framework-agnostic, and
+                            ZenStack automagically enforcing access control rules. Its core is framework-agnostic and
                             runs wherever Prisma runs.
                         </Content>
                         <img className="py-4 xl:max-w-3/4 block" src="/img/home/supercharged-orm.png" />
@@ -43,10 +43,10 @@ export default function ZenStackInStack(): JSX.Element {
                         <Badge>API</Badge>
                         <Title>Automatic Data-Access API Generation</Title>
                         <Content>
-                            Wrapping APIs around database is tedious and error-prone. ZenStack can introspect the schema
-                            and install CRUD APIs to the framework of your choice with just a few lines of code. Thanks
-                            to the built-in access control support, the APIs are fully secure and can be directly
-                            exposed to the public. What about documentation? Turn on a plugin and an OpenAPI
+                            Wrapping APIs around a database is tedious and error-prone. ZenStack can introspect the
+                            schema and install CRUD APIs to the framework of your choice with just a few lines of code.
+                            Thanks to the built-in access control support, the APIs are fully secure and can be directly
+                            exposed to the public. What about documentation? Turn on a plugin, and an OpenAPI
                             specification will be generated in seconds.
                         </Content>
                         <div className="xl:max-w-3/4">
@@ -125,10 +125,10 @@ export default function ZenStackInStack(): JSX.Element {
                         <Badge>Full-stack</Badge>
                         <Title>Frontend Data Fetching Library Generation</Title>
                         <Content>
-                            Data query and mutation is one of the toughest topics for frontend development. ZenStack
+                            Data query and mutation are one of the toughest topics for frontend development. ZenStack
                             simplifies it by generating fully-typed client-side data access code (aka hooks) targeting
                             the data query library of your choice (SWR, TanStack Query, etc.). The hooks call into the
-                            automatically generated APIs which are secured by the access policies.
+                            automatically generated APIs, which are secured by the access policies.
                         </Content>
                         <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
                         <LearnMore url="/docs/intro/frontend" />

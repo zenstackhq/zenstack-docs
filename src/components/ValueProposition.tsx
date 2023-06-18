@@ -23,8 +23,8 @@ const FeatureList: FeatureItem[] = [
         img: '/img/auto-api.png',
         description: (
             <>
-                CRUD APIs and frontend hooks are automatically generated. With the access control support, the APIs are
-                safe to be called directly from the frontend.
+                CRUD APIs and frontend hooks are automatically generated. With access control support, the APIs are safe
+                to be called directly from the frontend.
             </>
         ),
     },
@@ -34,7 +34,7 @@ const FeatureList: FeatureItem[] = [
         description: (
             <>
                 No more duplicating type definitions and syncing changes. Use one single toolkit to generate types for
-                your entire stack, and enjoy flawless auto-completion.
+                your entire stack and enjoy flawless auto-completion.
             </>
         ),
     },

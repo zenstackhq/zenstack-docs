@@ -23,8 +23,8 @@ export default function UseCases(): JSX.Element {
                         <Title>Software as a Service</Title>
                         <Content>
                             SaaS applications are by nature multi-tenant, and tenant data isolation is a key
-                            requirement. Modern SaaS typically offer features involving collaboration and data sharing,
-                            which further complicates the implementation.
+                            requirement. Modern SaaS typically offers features involving collaboration and data sharing,
+                            further complicating implementation.
                             <br />
                             <br />
                             ZenStack's unique way of centrally and declaratively defining data access policies helps you
@@ -61,9 +61,9 @@ export default function UseCases(): JSX.Element {
                     <div className="mt-4 md:mt-0">
                         <Title>Internal Tools</Title>
                         <Content>
-                            Be it a workflow management system, a customer support tool, or a data analytics dashboard,
-                            ZenStack helps you organize business entities with ease and query data with unlimited
-                            flexibility. An alternative when No-Code builders can't cut it.
+                            Whether a workflow management system, a customer support tool, or a data analytics
+                            dashboard, ZenStack helps you easily organize business entities and query data with
+                            unlimited flexibility — an alternative when No-Code builders can't cut it.
                         </Content>
                     </div>
                 </div>
