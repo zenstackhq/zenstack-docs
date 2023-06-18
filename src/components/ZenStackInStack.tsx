@@ -37,7 +37,7 @@ export default function ZenStackInStack(): JSX.Element {
                             runs wherever Prisma runs.
                         </Content>
                         <img className="py-4 xl:max-w-3/4 block" src="/img/home/supercharged-orm.png" />
-                        <LearnMore url="/docs/get-started/backend" />
+                        <LearnMore url="/docs/intro/zmodel" />
                     </div>
                     <div>
                         <Badge>API</Badge>
@@ -119,7 +119,7 @@ export default function ZenStackInStack(): JSX.Element {
                             </Tabs>
                         </div>
                         <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" />
-                        <LearnMore url="/docs/guides/api" />
+                        <LearnMore url="/docs/intro/api" />
                     </div>
                     <div>
                         <Badge>Full-stack</Badge>
@@ -131,7 +131,7 @@ export default function ZenStackInStack(): JSX.Element {
                             automatically generated APIs which are secured by the access policies.
                         </Content>
                         <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
-                        <LearnMore url="/docs/guide/fullstack" />
+                        <LearnMore url="/docs/intro/frontend" />
                     </div>
                 </div>
             </div>
