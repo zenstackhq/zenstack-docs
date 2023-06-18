@@ -3,6 +3,9 @@ description: Plugin for generating Tanstack Query query and mutation hooks
 sidebar_position: 6
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # @zenstackhq/tanstack-query
 
 :::info
@@ -62,10 +65,59 @@ model Post {
 }
 ```
 
-### Component
+### App Setup
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<Tabs>
+
+<TabItem value="react" label="React">
+
+```tsx
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Provider as ZenStackHooksProvider } from '../lib/hooks';
+
+const queryClient = new QueryClient();
+
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+    return (
+        <QueryClientProvider client={queryClient}>
+                <ZenStackHooksProvider value={{ endpoint: '/api/model' }}>
+                    <AppContent />
+                </ZenStackHooksProvider>
+        </QueryClientProvider>
+    );
+}
+
+```
+
+</TabItem>
+
+<TabItem value="svelte" label="Svelte">
+
+```svelte
+
+<script lang="ts">
+    import { SvelteQueryContextKey } from '$lib/hooks';
+    import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+    import { setContext } from 'svelte';
+
+    const queryClient = new QueryClient();
+    setContext(SvelteQueryContextKey, { endpoint: '/api/model' });
+</script>
+
+<div>
+    <QueryClientProvider client={queryClient}>
+        <slot />
+    </QueryClientProvider>
+</div>
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### Component
 
 <Tabs>
 <TabItem value="react" label="React">

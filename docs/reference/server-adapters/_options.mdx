@@ -54,7 +54,7 @@ import CodeBlock from '@theme/CodeBlock';
 
         ```ts
         import RestApiHandler from '@zenstackhq/server/api/rest';
-        const handler = RestApiHandler();
+        const handler = RestApiHandler({ endpoint: 'http://myhost/api' });
         ```
 
         For more details, please check out [RESTful API Handler](/docs/reference/server-adapters/api-handlers/rest).

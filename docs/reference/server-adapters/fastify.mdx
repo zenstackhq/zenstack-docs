@@ -24,9 +24,9 @@ import { getSessionUser } from './auth.ts';
 
 const server = fastify();
 
-// serve OpenAPI at /api/openapi
+// serve OpenAPI at /api/model
 server.register(ZenStackFastifyPlugin, {
-    prefix: '/api/openapi',
+    prefix: '/api/model',
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
     getPrisma: (request) => withPresets(prisma, { user: getSessionUser(request) }),

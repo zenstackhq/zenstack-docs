@@ -1,7 +1,7 @@
 position: 2
-label: 'Get Started'
+label: Quick Start
 collapsible: true
 collapsed: false
 link:
     type: generated-index
-    title: Get Started
+    title: Quick Start

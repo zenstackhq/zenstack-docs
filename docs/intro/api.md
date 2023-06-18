@@ -1,0 +1,112 @@
+---
+description: Automatic CRUD API
+sidebar_position: 4
+---
+
+# Automatic CRUD API
+
+Many backend services have big chunks of code wrapping around the database and providing access-controlled CRUD APIs. These are boring boilerplate code that are both tedious to write and error-prone to maintain.
+
+With the access-policy-enhanced Prisma client, ZenStack can automatically provide a full-fledged CRUD API for your data models, through a set of framework-specific server adapters. Currently, we have adapters for [Next.js](https://nextjs.org), [SvelteKit](https://kit.svelte.dev/), [Express](https://expressjs.com/) and [Fastify](https://www.fastify.io/).
+
+Let's see how it works using Express as an example.
+
+```ts title='app.ts'
+
+import { PrismaClient } from '@prisma/client';
+import { withPolicy } from '@zenstackhq/runtime';
+import { ZenStackMiddleware } from '@zenstackhq/server/express';
+import express from 'express';
+import { getSessionUser } from './auth'
+
+const prisma = new PrismaClient();
+const app = express();
+
+app.use(express.json());
+
+// options for creating the Express middleware that provides the CRUD API
+const options = {
+    // called for every request to get a Prisma client instance
+    getPrisma: (request) => {
+        // getSessionUser extracts the current session user from the request,
+        // its implementation depends on your auth solution
+        const user = getSessionUser(request);
+
+        // return a policy-enhanced Prisma client
+        return withPolicy(prisma, { user });
+    }
+}
+
+// mount the middleware to "/api/model" route
+app.use(
+    '/api/model',
+    ZenStackMiddleware(options)
+);
+```
+
+:::info
+
+There's no hard requirement to use an enhanced Prisma client with the API, but you should always do it to make sure the APIs are protected when they're exposed to the Internet.
+
+:::
+
+With the code above, a set of CRUD APIs are mounted at route "/api/model". By default, the APIs provide a "Prisma-RPC" style endpoints which mirror the Prisma client APIs. For example, you can consume it like the following:
+
+```ts
+// Create a post for user#1
+POST /api/model/post
+{
+    "data": {
+        "title": "Post 1",
+        "author": { "connect": { "id": 1 } }
+    }
+}
+
+// List all published posts with their authors
+GET /api/model/post/findMany?q={"where":{"published":true},"include":{"author":true}}
+```
+
+You can also choose to provide a more RESTful-style API by initializing the middleware with a RESTful API handler:
+
+```ts title='app.ts'
+import RestApiHandler from '@zenstackhq/server/api/rest';
+
+const options = {
+    getPrisma: (request) => {...},
+    // use RESTful-style API handler
+    handler: RestApiHandler({ endpoint: 'http://myhost/api' })
+}
+
+// mount the middleware to "/api/model" route
+app.use(
+    '/api/model',
+    ZenStackMiddleware(options)
+);
+```
+
+Now the API endpoints follow the RESTful conventions (using [JSON:API](https://jsonapi.org/) as transport):
+
+```ts
+// Create a post for user#1
+POST /api/model/post
+{
+    "data": {
+        "type": 'post',
+        "attributes": {
+            "title": "Post 1"
+        },
+        relationships: {
+            author: {
+                data: { type: 'user', id: 1 }
+            }
+        }
+    }
+}
+
+// List all published posts with their authors
+GET /api/model/post?filter[published]=true&include=author
+```
+
+As you can see, with a few lines of code, you can get a full-fledged CRUD API for your data models. See [here](/docs/category/server-adapters) for details on how to use the server adapter specific to your framework. You may also be interested in generating a [OpenAPI](https://www.openapis.org/) specification using the [`@zenstackhq/openapi`](/docs/reference/plugins/openapi) plugin.
+
+With the APIs in place, you can now use it to build the user interface. In the next section, let's see how ZenStack simplifies this part by generating data-access hooks for the frontend.

@@ -1,4 +1,8 @@
 {
     "trailingSlash": false,
-    "redirects": [{ "source": "/docs", "destination": "/docs/intro" }]
+    "redirects": [
+        { "source": "/docs", "destination": "/docs/intro" },
+        { "source": "/docs/category/get-started", "destination": "/docs/category/quick-start" },
+        { "source": "/docs/get-started/:path*", "destination": "/docs/quick-start/:path*" }
+    ]
 }

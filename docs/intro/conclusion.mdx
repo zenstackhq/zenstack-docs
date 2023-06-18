@@ -1,0 +1,34 @@
+---
+description: Conclusion
+sidebar_position: 6
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+# Conclusion
+
+Thank you for following through the introduction and I hope you enjoyed the reading.
+
+One of the design goals of ZenStack is to package its features into loosely coupled components, and let the developers choose what to use and how to mix and match them. For example, if your project is a monorepo one using one of the "meta-frameworks" like Next.js, you can use ZenStack across your entire stack like the following:
+
+<ThemedImage
+    alt="ZenStack Architecture"
+    sources={{
+        light: useBaseUrl('/img/intro/zenstack-nextjs-light.png'),
+        dark: useBaseUrl('/img/intro/zenstack-nextjs-dark.png'),
+    }}
+/>
+
+However, you can also only pick the parts that suit your needs best:
+
+- Improved Prisma schema with features like [multi-file support and model inheritance](/docs/guides/multiple-schema).
+- Implementing [multi-tenancy](/blog/multi-tenant).
+- A better way to achieve [soft delete](/blog/soft-delete).
+- Headless [RESTful API](/blog/rest-api-on-vercel) over the Node.js framework of your choice, with Swagger documentation.
+
+Next steps:
+
+- Check out the [Quick Start](/docs/category/quick-start) docs to get started with the framework of choice.
+- Learn how to accomplish certain goals with ZenStack in the [Guides](/docs/category/guides).
+- Check out [Reference](/docs/category/reference) for detailed schema language and API documentation.
