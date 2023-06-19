@@ -5,7 +5,7 @@ function Title({ children }: { children: React.ReactNode }) {
 }
 
 function Content({ children }: { children: React.ReactNode }) {
-    return <p className="mb-4 font-light text-gray-600 md:text-lg">{children}</p>;
+    return <p className="mb-4 font-light text-slate-700 dark:text-slate-400 md:text-lg">{children}</p>;
 }
 
 export default function UseCases(): JSX.Element {

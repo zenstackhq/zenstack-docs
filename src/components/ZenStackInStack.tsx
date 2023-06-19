@@ -11,7 +11,7 @@ function Title({ children }: { children: ReactNode }) {
 }
 
 function Content({ children }: { children: ReactNode }) {
-    return <p className="lg:text-lg text-slate-700 font-normal">{children}</p>;
+    return <p className="lg:text-lg text-slate-700 dark:text-slate-400 font-normal">{children}</p>;
 }
 
 function LearnMore({ url }: { url: string }) {

@@ -68,7 +68,11 @@ function Header() {
 
 function Section({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <section className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 ${className ?? ''}`}>
+        <section
+            className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 ${
+                className ?? ''
+            } dark:bg-black dark:text-gray-200`}
+        >
             <div className="w-full lg:container">{children}</div>
         </section>
     );

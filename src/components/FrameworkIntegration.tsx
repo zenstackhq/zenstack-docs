@@ -1,7 +1,11 @@
 import React from 'react';
 
 function Title({ children }: { children: React.ReactNode }) {
-    return <h3 className="text-xl underline lg:no-underline md:text-2xl text-center pb-4 text-gray-700">{children}</h3>;
+    return (
+        <h3 className="text-xl underline lg:no-underline md:text-2xl text-center pb-4 text-slate-700 dark:text-slate-300">
+            {children}
+        </h3>
+    );
 }
 
 function Logo({ src }: { src: string }): JSX.Element {
