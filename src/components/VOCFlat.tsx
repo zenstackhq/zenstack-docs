@@ -14,14 +14,16 @@ function Quote({
     author,
     company,
     avatar,
+    link,
     children,
 }: {
     author: string;
     company: string;
     avatar: string;
+    link?: string;
     children: React.ReactNode;
 }) {
-    return (
+    const quote = (
         <div className="flex justify-center items-center w-[300px] h-[426px] md:w-[360px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
             <div className="flex flex-col h-full text-center py-6">
                 <div className="flex-grow flex items-center justify-center">
@@ -38,7 +40,7 @@ function Quote({
                                 fill="currentColor"
                             />
                         </svg>
-                        <p className="text-lg md:text-xl italic px-4 pb-6 font-medium text-gray-800 dark:text-white">
+                        <p className="text-lg md:text-xl italic px-4 pb-6 font-medium md:leading-relaxed text-gray-600 dark:text-white">
                             {children}
                         </p>
                     </div>
@@ -47,12 +49,22 @@ function Quote({
                     <img className="h-8 rounded-full" src={avatar} alt="profile picture" />
                     <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
                         <cite className="pr-3 font-medium text-gray-900 dark:text-white">{author}</cite>
-                        <cite className="pl-3 text-sm text-gray-500 dark:text-gray-400">{company}</cite>
+                        <cite className="text-sm text-gray-500 dark:text-gray-400">{company}</cite>
                     </div>
                 </figcaption>
             </div>
         </div>
     );
+
+    if (link) {
+        return (
+            <a href={link} className="hover:no-underline" target="_blank">
+                {quote}
+            </a>
+        );
+    } else {
+        return quote;
+    }
 }
 
 export default function VOC(): JSX.Element {
@@ -60,34 +72,69 @@ export default function VOC(): JSX.Element {
         <div className="flex flex-col items-start lg:items-center w-full">
             <h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 mx-auto">
-                <Tweet url="https://twitter.com/nikolasburk/status/1625066262555504641" image="/img/home/tweet1.png" />
+                <Quote
+                    author="Nikolas Burk"
+                    company="Prisma"
+                    avatar="https://unavatar.io/twitter/nikolasburk"
+                    link="https://twitter.com/nikolasburk/status/1625066262555504641"
+                >
+                    <div className="text-left text-lg">
+                        <p className="mb-8">👀 This project by @jiashenggo and @ymcao9 looks really interesting!</p>
+                        <div className="text-sm">
+                            <p>✅ Data access rules in the Prisma schema</p>
+                            <p>✅ Custom attributes in the Prisma schema</p>
+                            <p>✅ Fullstack with E2E type-safety</p>
+                        </div>
+                        <p>👉 zenstack.dev</p>
+                    </div>
+                </Quote>
 
-                <Tweet url="https://twitter.com/mike_alche/status/1634568367351767041" image="/img/home/tweet2.png" />
+                <Quote
+                    author="Mike Alche ☀️"
+                    company=""
+                    avatar="/img/logo/mike_alche.jpg"
+                    link="https://twitter.com/mike_alche/status/1634568367351767041"
+                >
+                    This library on top of @prisma and @trpcio seems pretty sweet.
+                    <br />
+                    <br />
+                    Like REALLY nice
+                    <br />
+                    <br />
+                    Maybe the future
+                </Quote>
 
-                <Tweet
-                    url="https://twitter.com/faruk_encoded/status/1637358537121624066"
-                    image="/img/home/tweet3.png"
-                />
+                <Quote author="Sid" company="MermaidChart" avatar="/img/logo/sid.jpg">
+                    <div className="text-lg">
+                        We've launched{' '}
+                        <a href="https://www.mermaidchart.com/" target="_blank">
+                            MermaidChart
+                        </a>
+                        's team feature using ZenStack.
+                        <br />
+                        <br />
+                        Thanks for creating such a wonderful product! It was a breeze to adopt, and everyone in the team
+                        loves how easy writing the policies are.
+                    </div>
+                </Quote>
+
+                <Quote
+                    author="Faruk Abdulla Munshi"
+                    company="Codebuddy"
+                    avatar="/img/logo/faruk_encoded.jpg"
+                    link="https://twitter.com/faruk_encoded/status/1637358537121624066"
+                >
+                    Authentication and setting policy in ORM layer???
+                    <br />
+                    <br /> 🤯 This is really crazy.
+                </Quote>
 
                 <Quote author="Leevis" company="Cofounder Ptmind" avatar="/img/logo/leevis.png">
                     We have a fairly complex authorization model, and I'm really impressed that ZenStack has the
                     flexibility to support it!
                 </Quote>
 
-                <Quote
-                    author="Sid"
-                    company="MermaidChart"
-                    avatar="https://avatars.githubusercontent.com/u/10703445?v=4"
-                >
-                    We've launched{' '}
-                    <a href="https://www.mermaidchart.com/" target="_blank">
-                        MermaidChart
-                    </a>
-                    's team feature using ZenStack. Thanks for creating such a wonderful product! It was a breeze to
-                    adopt, and everyone in the team loves how easy writing the policies are.
-                </Quote>
-
-                <Quote author="Augustin" company="" avatar="https://avatars.githubusercontent.com/u/43639468">
+                <Quote author="Augustin" company="" avatar="/img/logo/augustin.jpg">
                     Thank you @ymc9 and @jiasheng for all the hard work 👏. It's great to have so many features already
                     for a beta. Can't wait for version 1.0 😄.
                 </Quote>

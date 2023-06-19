@@ -197,6 +197,13 @@ const config = {
             };
         },
     ],
+
+    scripts: [
+        {
+            src: '/_vercel/insights/script.js',
+            defer: true,
+        },
+    ],
 };
 
 module.exports = config;
