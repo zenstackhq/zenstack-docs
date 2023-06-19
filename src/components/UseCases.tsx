@@ -1,11 +1,15 @@
 import React from 'react';
 
 function Title({ children }: { children: React.ReactNode }) {
-    return <h3 className="mb-4 text-xl md:text-2xl lg:text-3xl tracking-tight font-semibold">{children}</h3>;
+    return (
+        <h3 className="mb-4 text-xl md:text-2xl lg:text-3xl tracking-tight font-semibold text-gray-700 dark:text-gray-300">
+            {children}
+        </h3>
+    );
 }
 
 function Content({ children }: { children: React.ReactNode }) {
-    return <p className="mb-4 font-light text-slate-700 dark:text-slate-400 md:text-lg">{children}</p>;
+    return <p className="mb-4 text-gray-600 dark:text-gray-400 md:text-lg">{children}</p>;
 }
 
 export default function UseCases(): JSX.Element {

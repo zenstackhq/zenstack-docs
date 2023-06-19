@@ -40,7 +40,7 @@ function Quote({
                                 fill="currentColor"
                             />
                         </svg>
-                        <p className="text-lg md:text-xl italic px-4 pb-6 font-medium md:leading-relaxed text-gray-600 dark:text-white">
+                        <p className="text-lg md:text-xl italic px-4 pb-6 font-medium md:leading-relaxed text-gray-600 dark:text-gray-300">
                             {children}
                         </p>
                     </div>
@@ -48,7 +48,7 @@ function Quote({
                 <figcaption className="flex items-center justify-center space-x-3">
                     <img className="h-8 rounded-full" src={avatar} alt="profile picture" />
                     <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
-                        <cite className="pr-3 font-medium text-gray-900 dark:text-white">{author}</cite>
+                        <cite className="pr-3 font-medium text-gray-700 dark:text-gray-300">{author}</cite>
                         <cite className="text-sm text-gray-500 dark:text-gray-400">{company}</cite>
                     </div>
                 </figcaption>

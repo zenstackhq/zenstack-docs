@@ -26,7 +26,7 @@ function Header() {
                         {','}
                         <br /> In Minutes
                     </h1>
-                    <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed">
+                    <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed text-gray-100 dark:text-gray-700">
                         A TypeScript toolkit that supercharges Prisma ORM with a powerful access control layer and
                         unleashes its full power for full-stack development.
                     </p>
@@ -69,9 +69,9 @@ function Header() {
 function Section({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
         <section
-            className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 ${
+            className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200  ${
                 className ?? ''
-            } dark:bg-gray-900 dark:text-gray-200`}
+            }`}
         >
             <div className="w-full lg:container">{children}</div>
         </section>

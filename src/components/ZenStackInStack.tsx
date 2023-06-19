@@ -7,11 +7,13 @@ function Badge({ children }: { children: ReactNode }) {
 }
 
 function Title({ children }: { children: ReactNode }) {
-    return <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold">{children}</h3>;
+    return (
+        <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-700 dark:text-gray-300">{children}</h3>
+    );
 }
 
 function Content({ children }: { children: ReactNode }) {
-    return <p className="lg:text-lg text-slate-700 dark:text-slate-400 font-normal">{children}</p>;
+    return <p className="lg:text-lg text-gray-600 dark:text-gray-400 font-normal">{children}</p>;
 }
 
 function LearnMore({ url }: { url: string }) {
