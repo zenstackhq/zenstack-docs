@@ -3,9 +3,6 @@ description: ZenStack is a Node.js/TypeScript toolkit that simplifies the develo
 sidebar_position: 1
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import ThemedImage from '@theme/ThemedImage';
-
 # Introduction
 
 ZenStack is a Node.js/TypeScript toolkit that simplifies the development of a web app's backend. It supercharges [Prisma ORM](https://prisma.io) with a powerful access control layer and unleashes its full potential for full-stack development. We created it with the belief that developers can build better applications by:
@@ -29,14 +26,6 @@ To achieve these goals, ZenStack progressively enhances Prisma at multiple level
 🧩 A plugin system for great extensibility
 
 </ul>
-
-<ThemedImage
-    alt="ZenStack Layers"
-    sources={{
-        light: useBaseUrl('/img/intro/zenstack-layers-light.png'),
-        dark: useBaseUrl('/img/intro/zenstack-layers-dark.png'),
-    }}
-/>
 
 In the following sections, we'll guide you through understanding each layer of the extensions, and you'll see how ZenStack can help you build a full-stack web app much faster.
 
