@@ -1,10 +1,8 @@
 ---
 description: Automatic CRUD API
+sidebar_label: 4. Automatic CRUD API
 sidebar_position: 4
 ---
-
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import ThemedImage from '@theme/ThemedImage';
 
 # Automatic CRUD API
 
@@ -109,21 +107,6 @@ POST /api/model/post
 // List all published posts with their authors
 GET /api/model/post?filter[published]=true&include=author
 ```
-
-:::info
-
-API handlers are framework-independent components that determines the endpoints and data format of the API. The following diagram illustrates their relationships with server adapters.
-
-<ThemedImage
-    alt="ZModel Generation"
-    sources={{
-        light: useBaseUrl('/img/intro/api-handler-light.png'),
-        dark: useBaseUrl('/img/intro/api-handler-dark.png'),
-    }}
-/>
-
-:::
-
 As you can see, with a few lines of code, you can get a full-fledged CRUD API for your data models. See [here](/docs/category/server-adapters) for details on how to use the server adapter specific to your framework. You may also be interested in generating a [OpenAPI](https://www.openapis.org/) specification using the [`@zenstackhq/openapi`](/docs/reference/plugins/openapi) plugin.
 
 With the APIs in place, you can now use it to build the user interface. In the next section, let's see how ZenStack simplifies this part by generating data-access hooks for the frontend.

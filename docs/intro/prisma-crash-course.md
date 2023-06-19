@@ -1,5 +1,6 @@
 ---
 description: A Crash Course of Prisma ORM
+sidebar_label: 1. Prisma Crash Course
 sidebar_position: 1
 ---
 # Prisma Crash Course

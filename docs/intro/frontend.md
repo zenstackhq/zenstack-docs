@@ -1,6 +1,7 @@
 ---
 description: Frontend Data Access
-sidebar_position: 4
+sidebar_label: 5. Frontend Data Access
+sidebar_position: 5
 ---
 
 # Frontend Data Access

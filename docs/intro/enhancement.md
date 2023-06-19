@@ -1,5 +1,6 @@
 ---
 description: Enhanced Prisma Client
+sidebar_label: 3. Enhanced Prisma Client
 sidebar_position: 3
 ---
 
@@ -61,6 +62,7 @@ await prisma.user.create({
 
 // the call below returns all posts since there's no filtering
 const posts = await prisma.post.findMany();
+assert(posts.length == 2, 'should return all posts');
 
 // create a policy-enhanced wrapper with a user context for user#1
 import { withPolicy } from '@zenstackhq/runtime';
@@ -69,14 +71,15 @@ const enhanced = withPolicy(prisma, { user: { id: 1 }});
 // even without any filtering, the call below only returns
 // posts that're readable by user#1, i.e., [post#1]
 const userPosts = await enhanced.post.findMany();
+assert(userPosts.length == 1 && userPosts[0].id == 1], 'should return only post#1');
 
-// the call below fails because user#1 is not allowed to update post#2
+// ❌ the call below fails because user#1 is not allowed to update post#2
 await enhanced.post.update({
     where: { id: 2 },
     data: { published: true }
 });
 
-// the call below fails because "title" field violates the `@length` constraint
+// ❌ the call below fails because "title" field violates the `@length` constraint
 await enhanced.post.create({
     data: { title: 'Hi' }
 });

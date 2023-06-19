@@ -1,5 +1,6 @@
 ---
 description: ZModel - An Extended Prisma Schema
+sidebar_label: 2. ZModel - An Extended Prisma Schema
 sidebar_position: 2
 ---
 
@@ -67,18 +68,22 @@ model Post {
 
 ```
 
-:::tip
-- `email` and `length` are built-in custom attributes for data validation.
-- `@@allow` is a built-in custom attribute for attaching access control policies.
-- `auth` is a built-in function for accessing the current user.
-:::
-
 :::info
+- `@email` and `@length` are built-in attributes for data validation.
+- `@@allow` is a built-in attribute for attaching access control policies.
+- `auth()` is a built-in function for accessing the current user.
+
 If you're familar with PostgreSQL's [row-level security](https://www.postgresql.org/docs/15/ddl-rowsecurity.html), you'll find the ideas similar. However, ZenStack's access control
  is implemented at the ORM layer, so it's not limited to PostgreSQL, and it's also a lot easier to write than SQL.
 :::
 
 Being able to attach access policies and data validation to the data model is cool, but it's useless unless it has a runtime effect. Don't worry, we'll get to that in the next section.
+
+:::info
+
+The ZModel language makes other extensions to Prisma schema besides access policies, such as [multi-file schema and model inheritance](/docs/guides/multiple-schema). More will be added in the future. Sometimes people simply use ZenStack as a better version of Prisma.
+
+:::
 
 ### Transpiling to Prisma Schema
 
