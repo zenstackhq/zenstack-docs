@@ -15,7 +15,7 @@ import VOC from '../components/VOCFlat';
 function Header() {
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
-            <div className="w-full xl:container grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <div className="w-full xl:container grid grid-cols-1 xl:grid-cols-2 gap-8 text-white dark:text-gray-800">
                 <div className="w-full text-left flex flex-col items-start">
                     <h1 className="hero__title font-bold text-3xl md:text-5xl xl:text-6xl mb-8 lg:mb-8 lg:leading-[70px]">
                         <span className="inline-block 2xl:hidden leading-relaxed">Database to </span>
@@ -71,7 +71,7 @@ function Section({ children, className }: { children: React.ReactNode; className
         <section
             className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 ${
                 className ?? ''
-            } dark:bg-black dark:text-gray-200`}
+            } dark:bg-gray-900 dark:text-gray-200`}
         >
             <div className="w-full lg:container">{children}</div>
         </section>
