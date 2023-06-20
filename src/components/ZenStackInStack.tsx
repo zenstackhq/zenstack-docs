@@ -30,7 +30,7 @@ export default function ZenStackInStack(): JSX.Element {
                 <div className="flex flex-col gap-16 text-left">
                     <div>
                         <Badge>Backend</Badge>
-                        <Title>Supercharged ORM For Your Node.js Code</Title>
+                        <Title>Supercharged ORM</Title>
                         <Content>
                             ZenStack extends Prisma ORM with a powerful access control layer. By defining policies right
                             inside the data model, your schema becomes the single source of truth. By using a
@@ -50,7 +50,7 @@ export default function ZenStackInStack(): JSX.Element {
                     </div>
                     <div>
                         <Badge>API</Badge>
-                        <Title>Automatic Data-Access API Generation</Title>
+                        <Title>Automatic CRUD API</Title>
                         <Content>
                             Wrapping APIs around a database is tedious and error-prone. ZenStack can introspect the
                             schema and install CRUD APIs to the framework of your choice with just a few lines of code.
