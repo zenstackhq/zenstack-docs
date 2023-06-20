@@ -6,7 +6,7 @@ sidebar_position: 5
 
 # Frontend Data Access
 
-ZenStack has a small core, and many of its functionalities are implemented as plugins. Generating frontend data access library is good example of such a plugin. For example, you can enable the generation of TanStack Query hooks (for React) as follows:
+ZenStack has a small core, and many of its functionalities are implemented as plugins. Generating a frontend data access library is an excellent example of such a plugin. For example, you can enable the generation of TanStack Query hooks (for React) as follows:
 
 ```prisma
 
@@ -18,7 +18,7 @@ plugin hooks {
 
 ```
 
-The generated hooks provide a set of APIs closely mirror that of Prisma client, and calls into the automatic CRUD API introduced in the previous section. Here're a few examples for using them:
+The generated hooks provide a set of APIs that closely mirror that of Prisma Client and call into the automatic CRUD API introduced in the previous section. Here're a few examples of using them:
 
 ```tsx
 
@@ -60,4 +60,4 @@ const Posts = ({ userId }: { userId: string }) => {
 
 ```
 
-ZenStack currently provides plugins for generating client hooks targeting [TanStack Query](/docs/reference/plugins/tanstack-query) (supports React and Vue) and [SWR](/docs/reference/plugins/swr) (React only).
+ZenStack currently provides plugins for generating client hooks targeting [TanStack Query](/docs/reference/plugins/tanstack-query) (which supports React and Vue) and [SWR](/docs/reference/plugins/swr) (React only).

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # Enhanced Prisma Client
 
-The ZModel language allows us to enrich our data models with semantics that couldn't be done with Prisma. Similarly, at runtime, ZenStack provides APIs that ***enhances*** Prisma client instances. These enhancements are transparent proxies, so they have exactly the same APIs as the regular Prisma client, but add additional behaviors.
+The ZModel language allows us to enrich our data models with semantics that couldn't be done with Prisma. Similarly, at runtime, ZenStack provides APIs that ***enhance*** Prisma Client instances. These enhancements are transparent proxies, so they have exactly the same APIs as the regular Prisma Client but add additional behaviors.
 
 The most interesting enhancement is the enforcement of access policies. Let's say we have the following ZModel:
 
@@ -38,7 +38,7 @@ You can see how the enhancement works in the following code snippet:
 
 ```ts
 
-// create a regular Prisma client first
+// create a regular Prisma Client first
 const prisma = new PrismaClient();
 
 // create two users and a post for each
@@ -86,12 +86,12 @@ await enhanced.post.create({
 
 ```
 
-When building a backend service, you can centralize authorization concerns into the schema using access policies, and then use the enhanced Prisma client across your service code. This pratice can bring three clear benefits:
+When building a backend service, you can centralize authorization concerns into the schema using access policies and then use the enhanced Prisma Client across your service code. This practice can bring three clear benefits:
 
 - A smaller code base.
 - A more secure and reliable result compared to manually writing authorization logic.
-- Better maintainability, since when authorization rules evolve, the schema is the only place where you need to make changes.
+- Better maintainability since when authorization rules evolve, the schema is the only place where you need to make changes.
 
 You can find more information about access policies [here](/docs/guides/understanding-access-policy).
 
-In fact, you may not need to implement a backend service at all if the service is mainly CRUD. With an access-control-enhanced Prisma client, a full-fledged CRUD service can be generated automatically. Let's see how it works in the next section.
+In fact, you may not need to implement a backend service at all if the service is mainly CRUD. With an access-control-enhanced Prisma Client, a full-fledged CRUD service can be generated automatically. Let's see how it works in the next section.

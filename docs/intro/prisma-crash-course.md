@@ -11,7 +11,7 @@ Feel free to skip to the [next section](/docs/intro/zmodel) if you are already f
 
 ZenStack is built above Prisma ORM, so it'll be important to have a basic understanding of it.
 
-Prisma is a so-called "schema-first" ORM that simplifies database access for Node.js and TypeScript applications. It provides an intuitive and concise DSL (domain specific language) for defining data models, and it generates a type-safe client for accessing the database.
+Prisma is a so-called "schema-first" ORM that simplifies database access for Node.js and TypeScript applications. It provides an intuitive and concise DSL (Domain-Specific Language) for defining data models and generates a type-safe client for accessing the database.
 
 This guide is by no means a comprehensive introduction to Prisma, but it covers the most essential parts of understanding and using it.
 
@@ -29,9 +29,9 @@ model User {
 
 ```
 
-The `User` model contains a primary key `id` (indicated by the `@id` attribute), a unique `email` field, and an optional `name` field. The `@default` attribute specifies the default value of the field, and the `autoincrement` function instructs the database to generate incrementing values automatically.
+The `User` model contains a primary key `id` (indicated by the `@id` attribute), a unique `email` field, and an optional `name` field. The `@default` attribute specifies the field's default value, and the `autoincrement` function instructs the database to generate incrementing values automatically.
 
-Modeling relationships is also easy. The following example shows a `Post` model that has a one-to-many relationship with the `User` model. The `@relation` attribute is the key for connecting the two models by associating them with a foreign key.
+Modeling relationships is also easy. The following example shows a `Post` model with a one-to-many relationship with the `User` model. The `@relation` attribute is the key for connecting the two models by associating them with a foreign key.
 
 ```prisma
 
@@ -58,7 +58,7 @@ You can run the Prisma CLI to generate a type-safe client for accessing the data
 npx prisma generate
 ```
 
-The client is generated into the `@prisma/client` package, and an be used as the following:
+The client is generated into the `@prisma/client` package and can be used as the following:
 
 ```ts
 import { PrismaClient } from '@prisma/client'
@@ -92,5 +92,17 @@ const posts = prisma.post.findMany({
 // here the `posts` is smartly inferred to be typed `Array<Post & { author: User }>`
 console.log(posts[0].author.email);
 ```
+
+## Prisma Migrate
+
+To synchronize your schema to the database tables and fields, run the "migrate" command:
+
+```bash
+npx prisma migrate dev
+```
+
+It synchronizes the local database with the schema and generates a migration record (used for reconstructing database's schema when your app deploys).
+
+---
 
 Prisma has a rich set of other features not covered here, like schema migration, data browsing, etc., but we've got enough knowledge to understand and use ZenStack.
