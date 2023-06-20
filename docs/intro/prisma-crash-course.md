@@ -93,7 +93,7 @@ const posts = prisma.post.findMany({
 console.log(posts[0].author.email);
 ```
 
-## Prisma Migrate
+### Prisma Migrate
 
 To synchronize your schema to the database tables and fields, run the "migrate" command:
 
