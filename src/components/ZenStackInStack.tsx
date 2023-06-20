@@ -132,7 +132,7 @@ export default function ZenStackInStack(): JSX.Element {
                     </div>
                     <div>
                         <Badge>Full-stack</Badge>
-                        <Title>Frontend Data Fetching Library Generation</Title>
+                        <Title>Frontend Query Code Generation</Title>
                         <Content>
                             Data query and mutation are one of the toughest topics for frontend development. ZenStack
                             simplifies it by generating fully-typed client-side data access code (aka hooks) targeting

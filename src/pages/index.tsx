@@ -96,11 +96,11 @@ export default function Home(): JSX.Element {
                     <FrameworkIntegration />
                 </Section>
 
-                <Section className="bg-slate-50">
+                {/* <Section className="bg-slate-50">
                     <UseCases />
-                </Section>
+                </Section> */}
 
-                <Section>
+                <Section className="bg-slate-50">
                     <VOC />
 
                     <div className="flex justify-center w-full mt-32">

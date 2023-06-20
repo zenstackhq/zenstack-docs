@@ -15,16 +15,19 @@ function Quote({
     company,
     avatar,
     link,
+    twitter,
     children,
 }: {
     author: string;
     company: string;
     avatar: string;
     link?: string;
+    twitter?: boolean;
     children: React.ReactNode;
 }) {
     const quote = (
-        <div className="flex justify-center items-center w-[300px] h-[426px] md:w-[360px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
+        <div className="flex justify-center items-center relative w-[300px] h-[426px] md:w-[360px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
+            {twitter && <img src="/img/logo/twitter.png" className="absolute w-5 top-6 right-6" />}
             <div className="flex flex-col h-full text-center py-6">
                 <div className="flex-grow flex items-center justify-center">
                     <div className="flex flex-col">
@@ -75,6 +78,7 @@ export default function VOC(): JSX.Element {
             <h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 mx-auto">
                 <Quote
+                    twitter={true}
                     author="Nikolas Burk"
                     company="Prisma"
                     avatar="https://unavatar.io/twitter/nikolasburk"
@@ -92,6 +96,7 @@ export default function VOC(): JSX.Element {
                 </Quote>
 
                 <Quote
+                    twitter={true}
                     author="Mike Alche ☀️"
                     company=""
                     avatar="/img/logo/mike_alche.jpg"
