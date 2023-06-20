@@ -30,7 +30,7 @@ export default function ZenStackInStack(): JSX.Element {
                 <div className="flex flex-col gap-16 text-left">
                     <div>
                         <Badge>Backend</Badge>
-                        <Title>Supercharged ORM</Title>
+                        <Title>ORM With Access Control</Title>
                         <Content>
                             ZenStack extends Prisma ORM with a powerful access control layer. By defining policies right
                             inside the data model, your schema becomes the single source of truth. By using a
