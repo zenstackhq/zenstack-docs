@@ -21,7 +21,7 @@ module.exports = {
             '3/4': '75%',
         },
     },
-    plugins: [require('@tailwindcss/typography'), require('daisyui')],
+    plugins: [require('@tailwindcss/typography')],
     darkMode: ['class', '[data-theme="dark"]'],
     corePlugins: { preflight: false },
 };
