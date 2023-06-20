@@ -1,0 +1,98 @@
+---
+description: ZModel - An Extended Prisma Schema
+sidebar_label: 2. ZModel - An Extended Prisma Schema
+sidebar_position: 2
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+# ZModel - An Extended Prisma Schema
+
+Prisma is awesome, but its potential is limited by the fact that its schema language is not open to extension. For example, it'd be nice to attach field annotations for data validation, like:
+
+```prisma
+model User {
+    ...
+    email String @email
+}
+```
+
+However, since Prisma doesn't support custom attributes, it's not possible. There have been community efforts to workaround this limitation by smuggling information into code comments in the schema file, but it's brittle, not scalable, and looking ugly.
+
+### The ZModel Language
+
+ZenStack made a bold decision to fully replicate the Prisma schema language and then add what's needed above that, so as to have infinite extensibility in the future. The "ZModel" languages introduced by ZenStack is a superset of Prisma schema. Among all the extensions, the most important one is the support for custom attributes, with which you can add new semantics to the schema, e.g.,
+
+```prisma
+
+attribute @email()
+
+model User {
+    ...
+    email String @email
+}
+```
+
+### Access Control & Data Validation
+
+Based on the custom attributes support, ZModel offers a set of built-in attributes and functions for tackling two very important aspects of a data model: access control and data validation. Here're some quick show cases:
+
+```prisma
+
+model User {
+    id Int @id
+    email String @unique @email // ✅ field must be a valid email
+    posts Post[]
+
+    // 🔐 everyone can signup, and user profile is also publicly readable
+    @@allow('create,read', true)
+
+    // 🔐 only the user can update or delete his own profile
+    @@allow('update,delete', auth() == this)
+}
+
+model Post {
+    id Int @id
+    title String @length(min: 5, max: 255) // ✅ field mustn't be too short or too long
+    published Boolean @default(false)
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+
+    // 🔐 author has full access
+    @@allow('all', auth() == author)
+
+    // 🔐 logged-in users can view published posts
+    @@allow('read', auth() != null && published)
+}
+
+```
+
+:::info
+- `@email` and `@length` are built-in attributes for data validation.
+- `@@allow` is a built-in attribute for attaching access control policies.
+- `auth()` is a built-in function for accessing the current user.
+
+If you're familar with PostgreSQL's [row-level security](https://www.postgresql.org/docs/15/ddl-rowsecurity.html), you'll find the ideas similar. However, ZenStack's access control
+ is implemented at the ORM layer, so it's not limited to PostgreSQL, and it's also a lot easier to write than SQL.
+:::
+
+Being able to attach access policies and data validation to the data model is cool, but it's useless unless it has a runtime effect. Don't worry, we'll get to that in the next section.
+
+:::info
+
+The ZModel language makes other extensions to Prisma schema besides access policies, such as [multi-file schema and model inheritance](/docs/guides/multiple-schema). More will be added in the future. Sometimes people simply use ZenStack as a better version of Prisma.
+
+:::
+
+### Transpiling to Prisma Schema
+
+The `zenstack` CLI compiles the ZModel schema and generates a standard Prisma schema file out of it, along with other artifacts. You can use it in your regular Prisma development workflows, like Prisma Client generation, schema migration, etc.
+
+<ThemedImage
+    alt="ZModel Generation"
+    sources={{
+        light: useBaseUrl('/img/intro/zmodel-generation-light.png'),
+        dark: useBaseUrl('/img/intro/zmodel-generation-dark.png'),
+    }}
+/>

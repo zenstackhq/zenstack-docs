@@ -220,4 +220,4 @@ The `/api/data` endpoint will then provide a full set of Prisma operations for e
 
 ## Wrap Up
 
-I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/category/get-started) and [Guides](/docs/category/guides) pages for more details, and join our [Discord](https://discord.com/invite/Ykhr738dUe) for questions and updates!
+I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/category/quick-start) and [Guides](/docs/category/guides) pages for more details, and join our [Discord](https://discord.com/invite/Ykhr738dUe) for questions and updates!
