@@ -3,7 +3,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 function Badge({ children }: { children: ReactNode }) {
-    return <div className="badge badge-outline badge-accent border-solid inline text-xs">{children}</div>;
+    return (
+        <span className="text-emerald-500 dark:text-emerald-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-xl border border-solid border-emerald-500 dark:border-emerald-600">
+            {children}
+        </span>
+    );
 }
 
 function Title({ children }: { children: ReactNode }) {
