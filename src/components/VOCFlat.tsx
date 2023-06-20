@@ -28,18 +28,20 @@ function Quote({
             <div className="flex flex-col h-full text-center py-6">
                 <div className="flex-grow flex items-center justify-center">
                     <div className="flex flex-col">
-                        <svg
-                            aria-hidden="true"
-                            className="w-8 h-8 lg:w-10 lg:h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
-                            viewBox="0 0 24 27"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z"
-                                fill="currentColor"
-                            />
-                        </svg>
+                        <div className="hidden md:block">
+                            <svg
+                                aria-hidden="true"
+                                className="w-8 h-8 lg:w-10 lg:h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
+                                viewBox="0 0 24 27"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z"
+                                    fill="currentColor"
+                                />
+                            </svg>
+                        </div>
                         <p className="text-lg md:text-xl italic px-4 pb-6 font-medium md:leading-relaxed text-gray-600 dark:text-gray-300">
                             {children}
                         </p>
@@ -80,12 +82,12 @@ export default function VOC(): JSX.Element {
                 >
                     <div className="text-left text-lg">
                         <p className="mb-8">👀 This project by @jiashenggo and @ymcao9 looks really interesting!</p>
-                        <div className="text-sm">
-                            <p>✅ Data access rules in the Prisma schema</p>
-                            <p>✅ Custom attributes in the Prisma schema</p>
-                            <p>✅ Fullstack with E2E type-safety</p>
+                        <div className="text-sm leading-normal lg:leading-loose">
+                            <div>✅ Data access rules in the Prisma schema</div>
+                            <div>✅ Custom attributes in the Prisma schema</div>
+                            <div>✅ Fullstack with E2E type-safety</div>
                         </div>
-                        <p>👉 zenstack.dev</p>
+                        <div className="mt-4">👉 zenstack.dev</div>
                     </div>
                 </Quote>
 

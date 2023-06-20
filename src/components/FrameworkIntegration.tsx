@@ -8,8 +8,25 @@ function Title({ children }: { children: React.ReactNode }) {
     );
 }
 
-function Logo({ src }: { src: string }): JSX.Element {
-    return <img src={src} className="h-12 object-contain block" />;
+function Logo({
+    src,
+    darkSrc,
+    darkModeBrightness,
+}: {
+    src: string;
+    darkSrc?: string;
+    darkModeBrightness?: number;
+}): JSX.Element {
+    return (
+        <>
+            <img src={src} className="h-12 object-contain block dark:hidden" />
+            <img
+                src={darkSrc ?? src}
+                className="h-12 object-contain hidden dark:block"
+                style={darkModeBrightness ? { filter: `brightness(${darkModeBrightness})` } : {}}
+            />
+        </>
+    );
 }
 
 export default function FrameworkIntegration(): JSX.Element {
@@ -21,29 +38,57 @@ export default function FrameworkIntegration(): JSX.Element {
                     <div>
                         <Title>Server & Full-stack</Title>
                         <div className="flex flex-col gap-4">
-                            <Logo src="/img/logo/nextjs.png" />
-                            <Logo src="/img/logo/remix.png" />
-                            <Logo src="/img/logo/sveltekit.png" />
-                            <Logo src="/img/logo/nuxtjs.png" />
-                            <Logo src="/img/logo/expressjs.png" />
-                            <Logo src="/img/logo/fastify.png" />
-                            <Logo src="/img/logo/nestjs.png" />
+                            <Logo
+                                src="/img/logo/nextjs.png"
+                                darkSrc="/img/logo/nextjs-dark.png"
+                                darkModeBrightness={0.8}
+                            />
+                            <Logo src="/img/logo/remix.png" darkModeBrightness={0.8} />
+                            <Logo
+                                src="/img/logo/sveltekit.png"
+                                darkSrc="/img/logo/sveltekit-dark.png"
+                                darkModeBrightness={0.85}
+                            />
+                            <Logo
+                                src="/img/logo/nuxtjs.png"
+                                darkSrc="/img/logo/nuxtjs-dark.png"
+                                darkModeBrightness={0.85}
+                            />
+                            <Logo src="/img/logo/expressjs.png" darkSrc="/img/logo/expressjs-dark.png" />
+                            <Logo
+                                src="/img/logo/fastify.png"
+                                darkSrc="/img/logo/fastify-dark.png"
+                                darkModeBrightness={0.85}
+                            />
+                            <Logo src="/img/logo/nestjs.png" darkModeBrightness={0.85} />
                         </div>
                     </div>
                     <div>
                         <Title>Data Query Client</Title>
                         <div className="flex flex-col gap-4">
-                            <Logo src="/img/logo/swr.png" />
+                            <Logo src="/img/logo/swr.png" darkSrc="/img/logo/swr-dark.png" darkModeBrightness={0.85} />
                             <Logo src="/img/logo/tanstackquery.png" />
                         </div>
                     </div>
                     <div>
                         <Title>API</Title>
                         <div className="flex flex-col gap-4">
-                            <Logo src="/img/logo/rest.png" />
+                            <Logo
+                                src="/img/logo/rest.png"
+                                darkSrc="/img/logo/rest-dark.png"
+                                darkModeBrightness={0.85}
+                            />
                             <Logo src="/img/logo/jsonapi.png" />
-                            <Logo src="/img/logo/openapi.png" />
-                            <Logo src="/img/logo/trpc.png" />
+                            <Logo
+                                src="/img/logo/openapi.png"
+                                darkSrc="/img/logo/openapi-dark.png"
+                                darkModeBrightness={0.85}
+                            />
+                            <Logo
+                                src="/img/logo/trpc.png"
+                                darkSrc="/img/logo/trpc-dark.png"
+                                darkModeBrightness={0.85}
+                            />
                         </div>
                     </div>
                 </div>

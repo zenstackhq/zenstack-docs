@@ -38,7 +38,14 @@ export default function ZenStackInStack(): JSX.Element {
                             ZenStack automagically enforcing access control rules. Its core is framework-agnostic and
                             runs wherever Prisma runs.
                         </Content>
-                        <img className="py-4 xl:max-w-3/4 block" src="/img/home/supercharged-orm.png" />
+                        <img
+                            className="py-4 xl:max-w-3/4 block dark:hidden"
+                            src="/img/home/supercharged-orm-light.png"
+                        />
+                        <img
+                            className="py-4 xl:max-w-3/4 hidden dark:block"
+                            src="/img/home/supercharged-orm-dark.png"
+                        />
                         <LearnMore url="/docs/intro/zmodel" />
                     </div>
                     <div>
