@@ -51,17 +51,16 @@ const config = {
                 },
             },
         ],
-        [
-            'docusaurus-preset-shiki-twoslash',
-            {
-                themes: ['min-light', 'nord'],
-            },
-        ],
     ],
 
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
+            colorMode: {
+                defaultMode: 'light',
+                respectPrefersColorScheme: false,
+            },
+
             metadata: [
                 {
                     name: 'keywords',
@@ -195,6 +194,13 @@ const config = {
                     return postcssOptions;
                 },
             };
+        },
+    ],
+
+    scripts: [
+        {
+            src: '/_vercel/insights/script.js',
+            defer: true,
         },
     ],
 };
