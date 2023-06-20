@@ -78,7 +78,6 @@ export default function VOC(): JSX.Element {
             <h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 mx-auto">
                 <Quote
-                    twitter={true}
                     author="Nikolas Burk"
                     company="Prisma"
                     avatar="https://unavatar.io/twitter/nikolasburk"
@@ -95,22 +94,6 @@ export default function VOC(): JSX.Element {
                     </div>
                 </Quote>
 
-                <Quote
-                    twitter={true}
-                    author="Mike Alche ☀️"
-                    company=""
-                    avatar="/img/logo/mike_alche.jpg"
-                    link="https://twitter.com/mike_alche/status/1634568367351767041"
-                >
-                    This library on top of @prisma and @trpcio seems pretty sweet.
-                    <br />
-                    <br />
-                    Like REALLY nice
-                    <br />
-                    <br />
-                    Maybe the future
-                </Quote>
-
                 <Quote author="Sid" company="MermaidChart" avatar="/img/logo/sid.jpg">
                     <div className="text-lg">
                         We've launched{' '}
@@ -123,6 +106,21 @@ export default function VOC(): JSX.Element {
                         Thanks for creating such a wonderful product! It was a breeze to adopt, and everyone in the team
                         loves how easy writing the policies are.
                     </div>
+                </Quote>
+
+                <Quote
+                    author="Mike Alche ☀️"
+                    company=""
+                    avatar="/img/logo/mike_alche.jpg"
+                    link="https://twitter.com/mike_alche/status/1634568367351767041"
+                >
+                    This library on top of @prisma and @trpcio seems pretty sweet.
+                    <br />
+                    <br />
+                    Like REALLY nice
+                    <br />
+                    <br />
+                    Maybe the future
                 </Quote>
 
                 <Quote
