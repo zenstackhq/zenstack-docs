@@ -15,7 +15,7 @@ function Header() {
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
             <div className="w-full flex justify-center">
-                <div className="w-full xl:container grid grid-cols-1 xl:grid-cols-2 gap-8 text-white dark:text-gray-800">
+                <div className="w-full xl:container grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 text-white dark:text-gray-800">
                     <div className="w-full text-left flex flex-col items-start">
                         <h1 className="hero__title font-bold text-3xl md:text-5xl xl:text-6xl mb-8 lg:mb-8 lg:leading-[70px] whitespace-nowrap">
                             <span className="inline-block 2xl:hidden leading-relaxed">Database to </span>
@@ -52,7 +52,7 @@ function Header() {
                             ></iframe>
                         </div>
                         <iframe
-                            width="560"
+                            width="100%"
                             height="100%"
                             src="https://www.youtube.com/embed/dI8LeuFTr9c?autoplay=1&mute=1"
                             title="ZenStack Introduction"
