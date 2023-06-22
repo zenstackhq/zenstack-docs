@@ -60,7 +60,7 @@ npx zenstack@latest init
 
 The template project already contains a `Note` model. Let's repurpose it to be a `Post` model. Rename it from `Note` to `Post`, and add a `published` field to store if the post is published or not. Also add access control rules with `@@allow` attribute to authorize requests.
 
-```prisma {0,4,10-14} title='/schema.zmodel'
+```zmodel {0,4,10-14} title='/schema.zmodel'
 model Post {
   id String @id @default(cuid())
   title String
@@ -83,7 +83,7 @@ model Post {
 
 Also we need to rename the relation in the `User` model from `notes` to `posts`.
 
-```prisma {6} title='/schema.zmodel'
+```zmodel {6} title='/schema.zmodel'
 model User {
   id String @id @default(cuid())
   email String @unique

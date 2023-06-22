@@ -20,7 +20,7 @@ You can include any field you want in the `User` model, as long as you provide t
 
 The following code shows an example blog post schema:
 
-```prisma
+```zmodel
 model User {
     id String @id
     @@ignore

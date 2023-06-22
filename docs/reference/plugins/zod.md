@@ -21,7 +21,7 @@ You need to enable `@core/zod` plugin if you use the [Express.js](/docs/referenc
 
 ## Example
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin zod {
   provider = '@core/zod'
 }
@@ -29,7 +29,7 @@ plugin zod {
 
 You can turn off the `compile` option and use a custom `output` location if you want the generated Zod schema to be compiled along with your own Typescript project:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin zod {
   provider = '@core/zod'
   output = 'src/lib/zod'

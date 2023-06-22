@@ -16,5 +16,6 @@ export default function prismIncludeLanguages(PrismObject) {
         require(`prismjs/components/prism-${lang}`);
     });
     require('prism-svelte');
+    require('../lib/prism-zmodel');
     delete globalThis.Prism;
 }

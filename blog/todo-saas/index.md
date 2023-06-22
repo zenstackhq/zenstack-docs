@@ -37,7 +37,7 @@ We will add two new models `List` and `Todo`. The relationship between them and 
 
 The model definitions would be like below:
 
-```prisma
+```zmodel
 model List {
     id String @id @default(uuid())
     createdAt DateTime @default(now())
@@ -68,7 +68,7 @@ model Todo {
 
 Then we should also add the reversed relation fields in `User` and `Space`
 
-```prisma
+```zmodel
 model User {
     ...
     lists List[]
@@ -89,7 +89,7 @@ Do you still remember how did we achieve **tenant isolation** using [Collection 
 
 -   List
 
-    ```prisma
+    ```zmodel
     model List {
         ...
         // require login
@@ -116,7 +116,7 @@ Do you still remember how did we achieve **tenant isolation** using [Collection 
 
 -   Todo
 
-    ```prisma
+    ```zmodel
     model Todo {
         ...
         // require login

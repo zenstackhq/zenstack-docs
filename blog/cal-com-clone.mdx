@@ -104,7 +104,7 @@ Also, install the [VS Code extension](https://marketplace.visualstudio.com/items
 
 The scaffolded project already contains a sample Todo data model. Let's add our booking-related models to it:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 
 // Booking entity
 model Booking {
@@ -149,7 +149,7 @@ model InvitedUser {
 
 Also, make an update to the `User` model to include references to `Booking` and `InviteUser`, and make it publicly readable.
 
-```prisma {8-12} title='/schema.zmodel'
+```zmodel {8-12} title='/schema.zmodel'
 
 model User {
   id    String @id @default(cuid())

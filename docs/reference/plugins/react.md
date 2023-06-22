@@ -8,7 +8,7 @@ sidebar_position: 9
 :::warning
 This package is deprecated and replaced by [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) and [`@zenstackhq/swr`](/docs/reference/plugins/swr) plugins. To migrate to the new plugins, if you're using `@zenstackhq/react` with `fetcher` set to "swr", you can replace the plugin declaration in ZModel like:
 
-```prisma
+```zmodel
 plugin reactHooks {
   provider = "@zenstackhq/swr"
   output = "./src/lib/hooks"
@@ -18,7 +18,7 @@ plugin reactHooks {
 
 If you set `fetcher` to "react-query", replace with the following instead:
 
-```prisma
+```zmodel
 plugin reactHooks {
   provider = "@zenstackhq/tanstack-query"
   output = "./src/lib/hooks"
@@ -83,7 +83,7 @@ Special thanks to [@ecyrbe](https://github.com/ecyrbe) for suggesting this worka
 
 Here's an example with a blogging app:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin reactHooks {
   provider = '@zenstackhq/react'
   output = "./src/lib/hooks"

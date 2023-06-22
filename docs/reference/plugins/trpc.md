@@ -20,7 +20,7 @@ This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/
 
 Here's an example with a blogging app:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin trpc {
   provider = '@zenstackhq/trpc'
   output = 'server/routers/generated'

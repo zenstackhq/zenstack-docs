@@ -96,7 +96,7 @@ Soft delete is a popular way to handle deletion by putting a marker on entities 
 
 With client extensions, you can implement soft delete in a central place. For example, suppose you have a schema like this:
 
-```prisma
+```zmodel
 model User {
   id      Int     @id @default(autoincrement())
   email   String  @unique

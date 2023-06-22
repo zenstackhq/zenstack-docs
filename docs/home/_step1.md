@@ -1,4 +1,4 @@
-```prisma
+```zmodel
 model User {
     id String @id
     // @email is a field validation rule

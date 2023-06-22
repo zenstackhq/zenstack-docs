@@ -21,7 +21,7 @@ This plugin is always automatically included when `zenstack generate` is run. Yo
 
 ## Example
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin prisma {
     provider = '@core/prisma'
     output = './src/prisma/schema.prisma'
