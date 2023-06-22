@@ -119,7 +119,7 @@ We'll focus on #2 and utilize ZenStack to implement authorization without manual
 Let's add the following access policies to the `User` and `Post` model to implement the
 requirements we laid out previously:
 
-```prisma {6-7,22-25} title='/schema.zmodel'
+```zmodel {6-7,22-25} title='/schema.zmodel'
 model User {
     id Int @id() @default(autoincrement())
     email String @unique()

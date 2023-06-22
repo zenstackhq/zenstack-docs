@@ -14,7 +14,7 @@ To get access policies to work, ZenStack needs to be connected to the authentica
 
 NextAuth is agnostic about the underlying database type, but it requires specific table structures, depending on how you configure it. Therefore, your ZModel definitions should reflect these requirements. A sample `User` model is shown here (to be used with `CredentialsProvider`):
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique @email

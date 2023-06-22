@@ -93,7 +93,7 @@ This is usually the first task for a backend developer. This used to involve cre
 
 Thanks to Prisma, all of the above tasks have been simplified into an intuitive data model, as shown below:
 
-```prisma
+```zmodel
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -145,7 +145,7 @@ This is the majority of the work and is what really matters for each business. E
 
 However, there is no standard to integrate with these 3rd parties. You need to go through the documentation, API, and SDK of each and integrate it into your system. In my opinion, It’s not only time-consuming but also could make the whole system less stable if you don’t do it right. Do you also see this as a pain point for you? Do you want to have a standard and centralized way to see these 3rd party models as part of your own model, like:
 
-```prisma
+```zmodel
 // nextauth
 model Account {
     id                String  @id @default(cuid())

@@ -41,7 +41,7 @@ model ToDo extends Base
 
 The generated `schema.prisma` file would be:
 
-```prisma
+```zmodel
 /// @@allow('all', auth() != null && published)
 model User {
     name String

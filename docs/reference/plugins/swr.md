@@ -28,7 +28,7 @@ To use the generated hooks, you need to install "swr" version 2.0.0 or above.
 
 Here's a quick example with a blogging app. You can find a fully functional Todo app example [here](https://github.com/zenstackhq/sample-todo-nextjs).
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin hooks {
   provider = '@zenstackhq/swr'
   output = "./src/lib/hooks"

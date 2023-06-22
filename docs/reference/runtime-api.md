@@ -103,7 +103,7 @@ type WithPolicyOptions = {
 
 #### Example
 
-```prisma
+```zmodel
 // ZModel
 model Post {
     id String @id
@@ -154,7 +154,7 @@ type WithOmitOptions = {
 
 #### Example
 
-```prisma
+```zmodel
 // ZModel
 model User {
     id String @id
@@ -201,7 +201,7 @@ type WithPasswordOptions = {
 
 #### Example
 
-```prisma
+```zmodel
 // ZModel
 model User {
     id String @id

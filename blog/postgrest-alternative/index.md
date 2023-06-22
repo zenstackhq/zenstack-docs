@@ -54,7 +54,7 @@ Prisma is a modern Typescript ORM that takes a schema-first approach and generat
 
 A simple blogging app's schema looks like the following:
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String
@@ -87,7 +87,7 @@ ZenStack supercharges Prisma and turns it into a powerful full-stack development
 
 Still using our blogging app as an example, the access policies can be added as the following (which is equivalent to the PostgREST example above):
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String
@@ -133,7 +133,7 @@ CREATE POLICY "public_readable_to_all" ON Post
 
 ZenStack:
 
-```prisma
+```zmodel
 model Post {
   ...
   @@allow('read', true)
@@ -157,7 +157,7 @@ CREATE POLICY post_admin_update_policy
 
 ZenStack:
 
-```prisma
+```zmodel
 model Post {
   ...
   @@allow('update', auth().role == 'ADMIN')
@@ -186,7 +186,7 @@ CREATE POLICY post_group_admin_update_policy
 
 ZenStack:
 
-```prisma
+```zmodel
 model Post {
   ...
   @@allow('update', author.groups?[group.users?[userId == auth().id && role == 'ADMIN']])

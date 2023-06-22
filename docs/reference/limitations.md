@@ -21,7 +21,7 @@ Right now, the focus of this project is SQL databases, and there's no plan to su
 
 Currently, it's not possible to compare fields in access policies expressions. For example, the following usages are not allowed yet, but will be supported in the future:
 
-```prisma
+```zmodel
 model A {
     x Int
     y Int

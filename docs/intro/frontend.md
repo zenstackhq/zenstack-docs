@@ -8,7 +8,7 @@ sidebar_position: 5
 
 ZenStack has a small core, and many of its functionalities are implemented as plugins. Generating a frontend data access library is an excellent example of such a plugin. For example, you can enable the generation of TanStack Query hooks (for React) as follows:
 
-```prisma
+```zmodel
 
 plugin hooks {
     provider = "@zenstackhq/tanstack-query"

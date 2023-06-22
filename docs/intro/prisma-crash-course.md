@@ -19,7 +19,7 @@ This guide is by no means a comprehensive introduction to Prisma, but it covers 
 
 You can define your data models in a file called `schema.prisma`. Here's an example:
 
-```prisma
+```zmodel
 
 model User {
     id Int @id @default(autoincrement())
@@ -33,7 +33,7 @@ The `User` model contains a primary key `id` (indicated by the `@id` attribute),
 
 Modeling relationships is also easy. The following example shows a `Post` model with a one-to-many relationship with the `User` model. The `@relation` attribute is the key for connecting the two models by associating them with a foreign key.
 
-```prisma
+```zmodel
 
 model User {
     id Int @id @default(@autoincrement())

@@ -34,7 +34,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
     For example, for the following `Post` model:
 
-    ```prisma
+    ```zmodel
     model Post {
         id        String @id @default(cuid())
         createdAt DateTime @default(now())

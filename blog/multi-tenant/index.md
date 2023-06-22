@@ -212,7 +212,7 @@ Here comes the full-stack toolkit ZenStack we are building. One of the most impo
 
 **ZModel**, the modeling DSL of ZenStack, is a superset of the Prisma schema. For example, let’s add the Space(tenant) concept to the classical Prisma Post example. The Prisma schema would look like below:
 
-```prisma
+```zmodel
 model User {
     id String @id @default(uuid())
     name String?
@@ -248,7 +248,7 @@ model Post {
 
 To make Post tenant isolation, you just need to add the below access policy:
 
-```prisma
+```zmodel
 model Post {
     id String @id @default(uuid())
     title String
@@ -289,7 +289,7 @@ I love the way about ZenStack of using a declarative way to define the access po
 
 Here comes the inheritance feature:
 
-```prisma
+```zmodel
 abstract model Basic {
     id String @id @default(uuid())
     createdAt DateTime @default(now())
@@ -313,7 +313,7 @@ model Post extends Basic {
 
 So if you need to add a new `Comment` model, you can just extend the `Basic` model. Then you can define it as what you always do in Prisma:
 
-```prisma
+```zmodel
 model Comment extends Basic{
     content String
     post Post @relation(fields: [postId], references: [id], onDelete: Cascade)

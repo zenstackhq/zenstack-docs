@@ -121,7 +121,7 @@ npx zenstack@latest init
 
 The `zenstack` CLI installs Prisma and other dependencies and creates a boilerplate `schema.zmodel` file. Update it with the following content to reflect our requirements:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 datasource db {
     provider = "postgresql"
     url = env("POSTGRES_PRISMA_URL")
@@ -356,7 +356,7 @@ Let's first look at the signup part. Since the `User` resource already has a CRU
 
 Replace the `User` model in `schema.zmodel` with the following content:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -421,7 +421,7 @@ app.use(
 
 Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. Let's open up the `create` and `read` operations for `User` to support the signup/login flow:
 
-```prisma title='/schema.zmodel' {6-10}
+```zmodel title='/schema.zmodel' {6-10}
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -499,7 +499,7 @@ curl -X POST localhost:3000/api/login \
 
 Now that we have authentication in place, we can add access control rules to our schema to secure our CRUD service. Make the following changes to the `Pet` and `Order` models:
 
-```prisma title='/schema.zmodel' {9-13,24-25}
+```zmodel title='/schema.zmodel' {9-13,24-25}
 model Pet {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
@@ -745,7 +745,7 @@ npm install -D @zenstackhq/openapi
 
 Then enable the OpenAPI plugin in the `schema.zmodel` file:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin openapi {
     provider = '@zenstackhq/openapi'
     prefix = '/api'

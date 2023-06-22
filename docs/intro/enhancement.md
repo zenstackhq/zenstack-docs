@@ -10,7 +10,7 @@ The ZModel language allows us to enrich our data models with semantics that coul
 
 The most interesting enhancement is the enforcement of access policies. Let's say we have the following ZModel:
 
-```prisma
+```zmodel
 model User {
     id Int @id
     posts Post[]

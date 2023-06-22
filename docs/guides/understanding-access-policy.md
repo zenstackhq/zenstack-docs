@@ -19,7 +19,7 @@ Access policies are only effective when you call Prisma methods enhanced with [`
 
 Access policies are expressed with the `@@allow` and `@@deny` model attributes. The attributes take two parameters. The first is the operation: create/read/update/delete. You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
 
-```prisma
+```zmodel
 attribute @@allow(_ operation: String, _ condition: Boolean)
 
 attribute @@deny(_ operation: String, _ condition: Boolean)
@@ -38,7 +38,7 @@ data can be accessed with the special `auth()` function in access policy rules. 
 
 You can access its field to implement RBAC like:
 
-```prisma
+```zmodel
 model Post {
     // full access for admins
     // "role" field must be defined in the "User" model
@@ -48,7 +48,7 @@ model Post {
 
 , or you can use it to check the user's identity directly.
 
-```prisma
+```zmodel
 model Post {
     ...
     author User @relation(fields: [authorId], references: [id])
@@ -82,7 +82,7 @@ When a create operation is rejected, a [`PrismaClientKnownRequestError`](https:/
 
 "Read" operations are filtered by _**read**_ rules. For `findMany`, entities failing policy checks are silently dropped. For `findUnique` and `findFirst`, `null` is returned if the requested entity exists but fails policy checks. For `findUniqueOrThrow` and `findFirstOrThrow`, an error is thrown if the requested entity exists but fails policy checks.
 
-```prisma
+```zmodel
 model Foo {
     id String @id
     value Int
@@ -102,7 +102,7 @@ db.foo.findMany(); // => []
 
 The _**read**_ rules also determine if the result of a mutation - create, update or delete can be read back. Therefore, even if a mutation succeeds (and is persisted), the call can still result in a [`PrismaClientKnownRequestError`](https://www.prisma.io/docs/reference/api-reference/error-reference#prismaclientknownrequesterror) because the entity being returned doesn't satisfy _**read**_ rules.
 
-```prisma
+```zmodel
 model Foo {
     id String @id
     value Int
@@ -125,7 +125,7 @@ const created = await db.foo.create({ data: { value: 0 } });
 
 "Update" operations are governed by the _**update**_ rules. An entity has a "pre-update" and "post-update" state. Fields used in _**update**_ rules implicitly refer to the "pre-update" state, and you can use the `future()` function to refer to the "post-update" state. [Field validation](/docs/reference/zmodel-language#field-validation) is also considered a part of _**update**_ rules.
 
-```prisma
+```zmodel
 model Post {
     id String @id
     title String @length(1, 100)
@@ -139,7 +139,7 @@ model Post {
 
 For top-level or nested `updateMany`, access policies are used to "trim" the scope of the update (by merging with the "where" clause provided by the user). This can end up with fewer entities being updated than without policies. For unique update, either with a top-level `update` or a nested `update` to "to-one" relation, the update will be rejected if it fails policy checks. When an update operation is rejected, a [`PrismaClientKnownRequestError`](https://www.prisma.io/docs/reference/api-reference/error-reference#prismaclientknownrequesterror) is thrown with code [`P2004`](https://www.prisma.io/docs/reference/api-reference/error-reference#p2004).
 
-```prisma
+```zmodel
 model Foo {
     id String @id
     value Int
@@ -162,7 +162,7 @@ await db.foo.update({ where: { id: '1' }, data: { value: 1 } });
 
 Update operations can contain nested writes - creates, updates or deletes, and if a nested-written model has corresponding rules, they're also enforced. The entire update happens in a transaction.
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String

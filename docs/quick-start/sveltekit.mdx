@@ -64,7 +64,7 @@ npx zenstack@latest init
 
 Replace the `User` and `Post` models in the `/schema.zmodel` file with the following content:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique @email

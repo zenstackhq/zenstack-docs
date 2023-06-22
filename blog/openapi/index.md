@@ -100,7 +100,7 @@ npx zenstack@latest init
 
 The `zenstack` CLI installs Prisma and other dependencies and creates a boilerplate `schema.zmodel` file. Update it with the following content to reflect our requirements:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 datasource db {
     provider = 'sqlite'
     url = 'file:./petstore.db'
@@ -281,7 +281,7 @@ For this simple service, we'll adopt an email/password based authentication and 
 
 Let's first look at the signup part. Since the `User` resource already has a CRUD API, we don't need to implement a separate API for signup, since signup is just creating a `User`. The only thing that we need to take care of is to make sure we store hashed passwords instead of plain text. Achieving this is simple; just add a `@password` attribute to the `password` field. ZenStack will automatically hash the field before storing it in the database. Note that we also added the `@omit` attribute to mark `password` field to be dropped from the response since we don't want it ever to be returned to the client.
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -337,7 +337,7 @@ app.use('/api', ZenStackMiddleware({ getPrisma: () => withPresets(prisma) }));
 
 Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. Let's open up the `create` and `read` operations for `User` to support the signup/login flow:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -610,7 +610,7 @@ npm install -D @zenstackhq/openapi
 
 Enable the OpenAPI plugin in the `schema.zmodel` file:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 plugin openapi {
     provider = '@zenstackhq/openapi'
     prefix = '/api'

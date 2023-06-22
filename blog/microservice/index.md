@@ -121,7 +121,7 @@ When it comes to scaling an application, it's common to think about the complexi
 -   The schema file specifies the data types, relationships, and constraints of the data model explicitly, which can be easily modified and scaled as the application grows.
 -   The schema does a better job of communicating the intent and the understanding of the domain than the code does.
 
-```prisma
+```zmodel
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -149,7 +149,7 @@ enum Role {
 
 The toolkit [ZenStack](https://zenstack.dev/) we are building on top of the Prisma wants to go further along the path. We add the access policy layer in the schema file and automatically generate the safely guarded frontend data query libraries (hooks), OpenAPI, and [tRPC](https://trpc.io/) routers for you:
 
-```prisma
+```zmodel
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())

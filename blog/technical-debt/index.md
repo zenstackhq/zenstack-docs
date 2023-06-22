@@ -50,7 +50,7 @@ The [ZenStack](https://zenstack.dev/) toolkit we are building is adhering to it.
 Let's review the steps in the SaaS example mentioned earlier to see how each one is addressed.
 You can represent this conceptually using the following model in the beginning:
 
-```prisma
+```zmodel
 /*
  * Model for a team space 
  */
@@ -126,7 +126,7 @@ model Bug extends SpaceBase {
 
 Pay attention to the `SpaceBase` model,  it has all the necessary fields and access policies to support **tenant isolation**.  When we need to add the Task feature, instead of copy paste the code of the Bug feature,  you just need to simply extend the `SpaceBase` model like the below:
 
-```prisma
+```zmodel
 /*
  * Model for a task
  */
@@ -144,7 +144,7 @@ To support the admin role,  the change you need to make in the schema are below:
 
 - add an enum `SpaceUserRole`
     
-    ```prisma
+    ```zmodel
     /*
      * Enum for user's role in a space
      */
@@ -156,7 +156,7 @@ To support the admin role,  the change you need to make in the schema are below:
     
 - add role field in `SpaceUser`
     
-    ```prisma
+    ```zmodel
     model SpaceUser extends SpaceBase {
         role SpaceUserRole
         ...
@@ -165,7 +165,7 @@ To support the admin role,  the change you need to make in the schema are below:
     
 - add the policy in `SpaceBase`
     
-    ```prisma
+    ```zmodel
     abstract model SpaceBase {
         ...
         //allow admin user to do anything

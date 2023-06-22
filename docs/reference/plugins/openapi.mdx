@@ -42,7 +42,7 @@ The `securitySchemes` option is an object containing security schemes for the AP
 
 Example usage:
 
-```prisma
+```zmodel
 plugin openapi {
     provider = '@zenstackhq/openapi'
     securitySchemes = {
@@ -61,7 +61,7 @@ You can override the security scheme for a specific model or operation by using 
 
 -   `@@openapi.meta`
 
-    ```prisma
+    ```zmodel
         attribute @@openapi.meta(_ meta: Object)
     ```
 
@@ -102,7 +102,7 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="rpc" label={`Using "rpc" flavor`}>
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String @unique
@@ -132,7 +132,7 @@ model User {
 
 <TabItem value="rest" label={`Using "rest" flavor`}>
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String @unique
@@ -149,7 +149,7 @@ model User {
 
 -   `@@openapi.ignore`
 
-    ```prisma
+    ```zmodel
     attribute @@openapi.ignore()
     ```
 
@@ -157,7 +157,7 @@ model User {
 
 ## Example
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 datasource db {
     provider = 'sqlite'
     url = 'file:./dev.db'

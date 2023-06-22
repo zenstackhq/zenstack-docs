@@ -11,7 +11,7 @@ import ThemedImage from '@theme/ThemedImage';
 
 Prisma is awesome, but its potential is limited by the fact that its schema language is not open to extension. For example, it'd be nice to attach field annotations for data validation, like:
 
-```prisma
+```zmodel
 model User {
     ...
     email String @email
@@ -24,7 +24,7 @@ However, since Prisma doesn't support custom attributes, it's not possible. Ther
 
 ZenStack made a bold decision to fully replicate the Prisma schema language and then add what's needed above that, so as to have infinite extensibility in the future. The "ZModel" languages introduced by ZenStack is a superset of Prisma schema. Among all the extensions, the most important one is the support for custom attributes, with which you can add new semantics to the schema, e.g.,
 
-```prisma
+```zmodel
 
 attribute @email()
 
@@ -38,7 +38,7 @@ model User {
 
 Based on the custom attributes support, ZModel offers a set of built-in attributes and functions for tackling two very important aspects of a data model: access control and data validation. Here're some quick show cases:
 
-```prisma
+```zmodel
 
 model User {
     id Int @id
