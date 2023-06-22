@@ -1,5 +1,5 @@
 ---
-description: RedwoodJS is an awesome full-stack framework that bundles many features needed for building modern web applications. This post explores an alternative way of implementing authorization in RedwoodJS projects when its built-in RBAC is not sufficient.
+description: RedwoodJS is an excellent full-stack framework that bundles many tools for building modern web applications. This post explores an alternative way of implementing authorization in RedwoodJS projects when its built-in RBAC is not sufficient.
 tags: [fullstack, authorization]
 authors: yiming
 image: ./cover.png
