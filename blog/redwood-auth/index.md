@@ -101,6 +101,8 @@ export const createComment = ({ input }) => {
 
 Although this works, our authorization logic has started to creep into many places in the code base, and the system gets harder to reason about and maintain.
 
+Let's try a different approach.
+
 ## Letting ORM Do the Heavy Lifting
 
 All the authorization logic eventually does one thing: prevent data that shouldn't be read or modified from being read or modified - in other words, it's a data filter. Who lives closer to the data? Yes, the ORM! Why not let it do the heavy lifting for us?
@@ -111,7 +113,7 @@ Here's how it goes.
 
 ### 1. The Modeling Part
 
-ZenStack uses a schema language called "ZModel" to model data and access control policies. ZModel is a superset of Prisma's schema language. Its data modeling part is essentially the same as in Prisma but with additional attributes for expressing access policy rules.
+ZenStack uses a schema language called "ZModel" to model data and access control policies. ZModel is a superset of Prisma's schema language. Its data modeling part is essentially the same as in Prisma but with additional attributes for expressing access policy rules (the `@@allow` attribute shown below).
 
 Here's how our `Post` and `Comment` models look like in ZModel:
 
@@ -159,6 +161,10 @@ The `zenstack` CLI compiles ZModel down to a plain Prisma schema (stripping the 
 
 In the service code, we'll use ZenStack's runtime API to create "enhanced" Prisma Client instances that are aware of the access policies. Such instances are transparent proxies, so they have the same API as the original Prisma Client. They intercept CRUD calls, apply policy checks, and make injections into the Prisma query as necessary.
 
+:::info
+The enhanced Prisma Client rejects all CRUD calls by default. You must set rules to grant permissions.
+:::
+
 We can adopt it in two steps:
 
 1. Add a helper to create an enhanced client for the current user
@@ -199,11 +205,15 @@ We can adopt it in two steps:
 
     ```
 
+    :::info
+    It's crucial to call `authDb()` each time and not cache the result to capture the current user correctly.
+    :::
+
     As you can see, except for using the `authDb()` helper, we've removed all imperative authorization code from the service layer. However, our backend is still secure because the access policies are enforced by the ORM.
 
 ## Conclusion
 
-Authorization is a very challenging topic, no matter what framework you choose to use. This post demonstrated how ZenStack could help you implement authorization in a centralized, concise, and declarative way. You can find the full project code [here](https://github.com/zenstackhq/sample-redwood-blog).
+Authorization is a very challenging topic, no matter what framework you choose to use. This post demonstrated how ZenStack could help you implement authorization in a centralized, concise, and declarative way. You can find the full project code [here](https://github.com/zenstackhq/sample-redwood-blog). If you'd like to learn more about ZenStack, check out this comprehensive introduction [here](https://zenstack.dev/docs/intro/).
 
 We created ZenStack based on this belief:
 
