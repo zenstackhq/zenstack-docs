@@ -213,7 +213,11 @@ We can adopt it in two steps:
 
 ## Conclusion
 
-Authorization is a very challenging topic, no matter what framework you choose to use. This post demonstrated how ZenStack could help you implement authorization in a centralized, concise, and declarative way. You can find the full project code [here](https://github.com/zenstackhq/sample-redwood-blog). If you'd like to learn more about ZenStack, check out this comprehensive introduction [here](https://zenstack.dev/docs/intro/).
+Authorization is a very challenging topic, no matter what framework you choose to use. This post demonstrated how ZenStack could help you implement authorization in a centralized, concise, and declarative way. You can find the full project code below:
+
+>[https://github.com/zenstackhq/sample-redwood-blog](https://github.com/zenstackhq/sample-redwood-blog)
+
+If you'd like to learn more about ZenStack, check out this comprehensive introduction [here](https://zenstack.dev/docs/intro/).
 
 We created ZenStack based on this belief:
 
