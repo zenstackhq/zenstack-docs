@@ -18,7 +18,7 @@ Regarding authorization, RedwoodJS has built-in support for RBAC (Role-Based Acc
 
 ## The Scenario
 
-Every RedwoodJS user started through the official tutorial, a simple blog app. It has a `Post` model representing a blog post, which has a one-to-many relationship to a `Comment` model representing a comment on a post.
+Every RedwoodJS user started through the official tutorial, a simple blog app. It has a `User` system, a `Post` model representing a blog post, which has a one-to-many relationship to a `Comment` model representing a comment on a post.
 
 The tutorial demonstrated RBAC by implementing the following requirements:
 
