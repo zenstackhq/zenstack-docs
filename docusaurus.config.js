@@ -34,6 +34,7 @@ const config = {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                     path: 'docs',
+                    editUrl: 'https://github.com/zenstackhq/zenstack-docs/edit/main',
                 },
                 blog: {
                     showReadingTime: true,
