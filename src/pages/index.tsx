@@ -82,7 +82,10 @@ function Section({ children, className }: { children: React.ReactNode; className
 export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
-        <Layout title={`${siteConfig.title} - Prisma Catalyst For Full-stack Development`} description={description}>
+        <Layout
+            title={`${siteConfig.title} - Lighting-Fast Development for Database-Centric Apps`}
+            description={description}
+        >
             <Header />
             <main className="flex flex-col">
                 <Section>
