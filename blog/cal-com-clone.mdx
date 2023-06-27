@@ -149,7 +149,7 @@ model InvitedUser {
 
 Also, make an update to the `User` model to include references to `Booking` and `InviteUser`, and make it publicly readable.
 
-```zmodel {8-12} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 
 model User {
   id    String @id @default(cuid())
@@ -158,11 +158,13 @@ model User {
   updatedAt DateTime @updatedAt
   password Password? @omit
   notes Note[]
+  // highlight-start
   invitations InvitedUser[]
   bookings Booking[]
 
   // user profiles are publicly readable
   @@allow('read', true)
+  // highlight-end
 }
 
 ```

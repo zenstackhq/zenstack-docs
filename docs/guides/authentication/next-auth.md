@@ -37,13 +37,14 @@ You can find the detailed database model requirements [here](https://next-auth.j
 
 Adapter is a NextAuth mechanism for hooking in custom persistence of auth-related entities, like User, Account, etc. Since ZenStack is based on Prisma, you can use PrismaAdapter for the job:
 
-```ts {6} title='/src/pages/api/auth/[...nextauth].ts'
+```ts title='/src/pages/api/auth/[...nextauth].ts'
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
     // install Prisma adapter
+    // highlight-next-line
     adapter: PrismaAdapter(prisma),
     ...
 };
