@@ -119,15 +119,17 @@ We'll focus on #2 and utilize ZenStack to implement authorization without manual
 Let's add the following access policies to the `User` and `Post` model to implement the
 requirements we laid out previously:
 
-```zmodel {6-7,22-25} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id Int @id() @default(autoincrement())
     email String @unique()
     name String?
     posts Post[]
 
+    // highlight-start
     // make user profile public
     @@allow('read', true)
+    // highlight-end
 }
 
 model Post {
@@ -141,11 +143,13 @@ model Post {
     author User? @relation(fields: [authorId], references: [id])
     authorId Int?
 
+    // highlight-start
     // author has full access
     @@allow('all', auth() == author)
 
     // logged-in users can view published posts
     @@allow('read', auth() != null && published)
+    // highlight-end
 }
 ```
 
@@ -205,13 +209,14 @@ function getPrisma(req: Request) {
 Then, change our `POST /post` API to use extracted user id instead of passing in user email in the body
 when creating a new post:
 
-```ts {6} title='/src/index.ts'
+```ts title='/src/index.ts'
 app.post(`/post`, async (req, res) => {
     const { title, content } = req.body;
     const result = await prisma.post.create({
         data: {
             title,
             content,
+            // highlight-next-line
             author: { connect: { id: getUserId(req) } },
         },
     });
@@ -221,8 +226,9 @@ app.post(`/post`, async (req, res) => {
 
 Finally, change all code that uses `prisma` to `getPrisma(req)`. Here I'm showing only one occurrence:
 
-```ts {1} title='/src/index.ts'
+```ts title='/src/index.ts'
 app.get(`/post`, async (req, res) => {
+    // highlight-next-line
     const post = await getPrisma(req).post.findMany({
         include: { author: true },
     });
