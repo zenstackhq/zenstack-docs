@@ -1,5 +1,5 @@
 ---
-title: 'How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code Using ZenStack'
+title: 'How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code'
 description: Use schema as the single source of truth for the SaaS backend
 tags: [zenstack, saas, backend, access-control, nodejs, typescript]
 authors: jiasheng
@@ -7,7 +7,7 @@ date: 2023-06-21
 image: ./cover.png
 ---
 
-# How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code Using ZenStack
+# How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code
 
 ![Cover Image](cover.png)
 
@@ -159,9 +159,11 @@ All the multi-tenant, soft delete and sharing features will just work automatica
 
 So you already have the schema as the single source of the truth for your business model and your access control. You probably expect to see the Typescript/Javascript code you need to write next. Here is the exciting part:
 
-**That’s all. You'll hardly need to write any TS/JS code. The access control will be seamlessly handled behind the scenes by the code generated from the access policies we discussed earlier.**
+**That’s all. You'll hardly need to write any TS/JS code at all. ZenStack automatically generates API for you with access control seamlessly injected at runtime..**
 
-While you may observe several lines of code in **`index.ts`**, it is primarily for installing the automatically generated RESTful APIs into Express.js (which seamlessly integrates with all major Node.js frameworks) and starting the application.
+While you may observe several lines of code in **`index.ts`**, it is primarily for installing the automatically generated RESTful APIs into Express.js and starting the application.
+
+💡 _It supports the majority of Node.js frameworks like Next.js, Sveletkit, Fastify, etc._
 
 ## Let’s play around
 
