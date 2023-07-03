@@ -1392,61 +1392,123 @@ model User {
 
 ### Overview
 
-Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules are only applied on individual fields and are only checked for 'create' and 'update' operations.
+Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules cannot access the current user with the `auth()` function and are only checked for 'create' and 'update' operations. The main purpose of field validation is to ensure data integrity and consistency, not for access control.
 
-Internally ZenStack uses [zod](https://github.com/colinhacks/zod ':target=blank') for validation.
+The [`@core/zod`](/docs/reference/plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
 
-### Validation attributes
+### Field-level validation attributes
 
-The following attributes can be used to attach field validation rules:
+The following attributes can be used to attach validation rules to individual fields:
 
 #### String
 
--   `@length(_ min: Int?, _ max: Int?)`
+-   `@length(_ min: Int?, _ max: Int?, _ message: String?)`
 
     Validates length of a string field.
 
--   `@startsWith(_ text: String)`
+-   `@startsWith(_ text: String, _ message: String?)`
 
     Validates a string field value starts with the given text.
 
--   `@endsWith(_ text: String)`
+-   `@endsWith(_ text: String, _ message: String?)`
 
     Validates a string field value ends with the given text.
 
--   `@email()`
+-   `@contains(_text: String, _ message: String?)`
+
+    Validates a string field value contains the given text.
+
+-   `@email(_ message: String?)`
 
     Validates a string field value is a valid email address.
 
--   `@url()`
+-   `@url(_ message: String?)`
 
     Validates a string field value is a valid url.
 
--   `@datetime()`
+-   `@datetime(_ message: String?)`
 
     Validates a string field value is a valid ISO datetime.
 
--   `@regex(_ regex: String)`
+-   `@regex(_ regex: String, _ message: String?)`
 
     Validates a string field value matches a regex.
 
 #### Number
 
--   `@gt(_ value: Int)`
+-   `@gt(_ value: Int, _ message: String?)`
 
     Validates a number field is greater than the given value.
 
--   `@gte(_ value: Int)`
+-   `@gte(_ value: Int, _ message: String?)`
 
     Validates a number field is greater than or equal to the given value.
 
--   `@lt(_ value: Int)`
+-   `@lt(_ value: Int, _ message: String?)`
 
     Validates a number field is less than the given value.
 
--   `@lte(_ value: Int)`
+-   `@lte(_ value: Int, _ message: String?)`
 
     Validates a number field is less than or equal to the given value.
+
+### Model-level validation attributes
+
+You can use the `@@validate` attribute to attach validation rules to a model. 
+
+```
+@@validate(_ value: Boolean, _ message: String?)
+```
+
+Model-level rules can reference multiple fields, use relation operators (`==`, `!=`, `>`, `>=`, `<`, `<=`) to compare fields, use boolean operators (`&&`, `||`, and `!`) to compose conditions, and can use the following functions to evaluate conditions for fields:
+
+-   `function length(field: String, min: Int, max: Int?): Boolean`
+
+    Validates length of a string field.
+
+-   `function regex(field: String, regex: String): Boolean`
+
+    Validates a string field value matches a regex.
+
+-   `function email(field: String): Boolean`
+
+    Validates a string field value is a valid email address.
+
+-   `function datetime(field: String): Boolean`
+
+    Validates a string field value is a valid ISO datetime.
+
+-   `function url(field: String)`
+
+    Validates a string field value is a valid url.
+
+-   `function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean`
+
+    Validates a string field contains the search string.
+
+-   `function startsWith(field: String, search: String): Boolean`
+
+    Validates a string field starts with the search string.
+
+-   `function endsWith(field: String, search: String): Boolean`
+
+    Validates a string field ends with the search string.
+
+-   `function has(field: Any[], search: Any): Boolean`
+
+    Validates a list field contains the search value.
+
+-   `function hasEvery(field: Any[], search: Any[]): Boolean`
+
+    Validates a list field contains every element in the search list.
+
+-   `function hasSome(field: Any[], search: Any[]): Boolean`
+
+    Validates a list field contains some elements in the search list.
+
+-   `function isEmpty(field: Any[]): Boolean`
+
+    Validates a list field is null or empty.
 
 ### Example
 
@@ -1454,9 +1516,12 @@ The following attributes can be used to attach field validation rules:
 model User {
     id String @id
     handle String @regex("^[0-9a-zA-Z]{4,16}$")
-    email String @email @endsWith("@myorg.com")
+    email String? @email @endsWith("@myorg.com", "must be an email from myorg.com")
     profileImage String? @url
-    age Int @gt(0)
+    age Int @gte(18)
+    activated Boolean @default(false)
+
+    @@validate(!activated || email != null, "activated user must have an email")
 }
 ```
 

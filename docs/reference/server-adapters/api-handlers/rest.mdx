@@ -124,40 +124,43 @@ GET /post
 
 ```json
 {
-   "data" : [
-      {
-         "attributes" : {
-            "authorId" : 1,
-            "published" : true,
-            "title" : "My Awesome Post",
-            "viewCount" : 0
-         },
-         "id" : 1,
-         "links" : {
-            "self" : "http://myhost/api/post/1"
-         },
-         "relationships" : {
-            "author" : {
-               "data" : { "id" : 1, "type" : "user" },
-               "links" : {
-                  "related" : "http://myhost/api/post/1/author/1",
-                  "self" : "http://myhost/api/post/1/relationships/author/1"
-               }
-            }
-         },
-         "type" : "post"
-      }
-   ],
-   "jsonapi" : {
-      "version" : "1.1"
-   },
-   "links" : {
-      "first" : "http://myhost/api/post?page%5Blimit%5D=100",
-      "last" : "http://myhost/api/post?page%5Boffset%5D=0",
-      "next" : null,
-      "prev" : null,
-      "self" : "http://myhost/api/post"
-   }
+    "meta": {
+        "total": 1
+    },
+    "data": [
+        {
+            "attributes": {
+                "authorId": 1,
+                "published": true,
+                "title": "My Awesome Post",
+                "viewCount": 0
+            },
+            "id": 1,
+            "links": {
+                "self": "http://myhost/api/post/1"
+            },
+            "relationships": {
+                "author": {
+                    "data": { "id": 1, "type": "user" },
+                    "links": {
+                        "related": "http://myhost/api/post/1/author/1",
+                        "self": "http://myhost/api/post/1/relationships/author/1"
+                    }
+                }
+            },
+            "type": "post"
+        }
+    ],
+    "jsonapi": {
+        "version": "1.1"
+    },
+    "links": {
+        "first": "http://myhost/api/post?page%5Blimit%5D=100",
+        "last": "http://myhost/api/post?page%5Boffset%5D=0",
+        "next": null,
+        "prev": null,
+        "self": "http://myhost/api/post"
+    }
 }
 ```
 
@@ -184,34 +187,34 @@ GET /post/1
 
 ```json
 {
-   "data" : {
-      "attributes" : {
-         "authorId" : 1,
-         "published" : true,
-         "title" : "My Awesome Post",
-         "viewCount" : 0
-      },
-      "id" : 1,
-      "links" : {
-         "self" : "http://myhost/api/post/1"
-      },
-      "relationships" : {
-         "author" : {
-            "data" : { "id" : 1, "type" : "user" },
-            "links" : {
-               "related" : "http://myhost/api/post/1/author/1",
-               "self" : "http://myhost/api/post/1/relationships/author/1"
+    "data": {
+        "attributes": {
+            "authorId": 1,
+            "published": true,
+            "title": "My Awesome Post",
+            "viewCount": 0
+        },
+        "id": 1,
+        "links": {
+            "self": "http://myhost/api/post/1"
+        },
+        "relationships": {
+            "author": {
+                "data": { "id": 1, "type": "user" },
+                "links": {
+                    "related": "http://myhost/api/post/1/author/1",
+                    "self": "http://myhost/api/post/1/relationships/author/1"
+                }
             }
-         }
-      },
-      "type" : "post"
-   },
-   "jsonapi" : {
-      "version" : "1.1"
-   },
-   "links" : {
-      "self" : "http://myhost/api/post/1"
-   }
+        },
+        "type": "post"
+    },
+    "jsonapi": {
+        "version": "1.1"
+    },
+    "links": {
+        "self": "http://myhost/api/post/1"
+    }
 }
 ```
 
@@ -460,20 +463,23 @@ When creating a RESTful API handler, you can pass in a `pageSize` option to cont
 
 When fetching a collection resource or relationship, you can use the `page[offset]=value` and `page[limit]=value` [query parameter family](https://jsonapi.org/format/#query-parameters-families) to fetch a specific page. They're mapped to `skip` and `take` parameters in the query arguments sent to PrismaClient.
 
-The response data of collection fetching contains pagination links that facilitate navigating through the collection. E.g.:
+The response data of collection fetching contains pagination links that facilitate navigating through the collection. The "meta" section also contains the total count available. E.g.:
 
 ```json
 {
-   "data" : [
-      ...
-   ],
-   "links" : {
-      "first" : "http://myhost/api/post?page%5Blimit%5D=2",
-      "last" : "http://myhost/api/post?page%5Boffset%5D=4",
-      "next" : "http://myhost/api/post?page%5Boffset%5D=4&page%5Blimit%5D=2",
-      "prev" : "http://myhost/api/post?page%5Boffset%5D=0&page%5Blimit%5D=2",
-      "self" : "http://myhost/api/post"
-   }
+    "meta": {
+        "total": 10
+    },
+    "data" : [
+        ...
+    ],
+    "links" : {
+        "first" : "http://myhost/api/post?page%5Blimit%5D=2",
+        "last" : "http://myhost/api/post?page%5Boffset%5D=4",
+        "next" : "http://myhost/api/post?page%5Boffset%5D=4&page%5Blimit%5D=2",
+        "prev" : "http://myhost/api/post?page%5Boffset%5D=0&page%5Blimit%5D=2",
+        "self" : "http://myhost/api/post"
+    }
 }
 ```
 
