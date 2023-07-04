@@ -6,7 +6,7 @@ image: ./cover.png
 date: 2023-07-04
 ---
 
-# Streamlined Form Validation in Your Javascript Stack
+# Streamlining Form Validation in Your Javascript Stack
 
 ![Cover image](cover.png)
 
