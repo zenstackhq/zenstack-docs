@@ -41,6 +41,14 @@ The Express.js adapter takes the following options to initialize:
 
 <AdapterOptions getPrisma='(request: Request, response: Response) => unknown | Promise<unknown>' />
 
+- sendResponse (optional)
+
+    <blockquote>boolean</blockquote>
+
+    Controls if the middleware directly sends a response. If set to false, the response is stored in the `res.locals` object and then the middleware calls the `next()` function to pass the control to the next middleware. Subsequent middleware or request handlers need to make sure to send a response.
+    
+    Defaults to `true`.
+
 ### Using the API
 
 <UsingAPI />
