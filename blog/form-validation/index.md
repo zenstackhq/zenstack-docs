@@ -12,7 +12,7 @@ date: 2023-07-04
 
 Modern web applications often intensively deal with accepting and storing user-generated data. The interaction can happen by submitting forms, uploading files, or any other form of interactivity. Data validation is crucial to ensuring that the application functions correctly and securely. However, having separate validation logic in different places in the application stack makes the app more costly and harder to maintain.
 
-An ideal solution would be to express the validation rules in a central place (close to where data is defined) and let it take effect in every application layer. In this post, I will demonstrate how to achieve this with the ZenStack toolkit.
+An ideal solution would be to express the validation rules in a central place (close to where data is defined) and let it take effect in every application layer. In this post, I will demonstrate how to achieve this with the [ZenStack](https://github.com/zenstackhq/zenstack) toolkit.
 
 <!-- truncate -->
 
