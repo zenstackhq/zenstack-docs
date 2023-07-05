@@ -17,6 +17,45 @@ The hooks syntactically mirror the APIs of a standard Prisma client, including t
 
 To use the generated hooks, you need to install "swr" version 2.0.0 or above.
 
+## Context Provider
+
+The plugin generates a React context provider which you can use to configure the behavior of the hooks. The following options are available on the provider:
+
+- endpoint
+
+    The endpoint to use for the queries. Defaults to "/api/model".
+
+- fetch
+
+    A custom `fetch` function to use for the queries. Defaults to the browser's built-in `fetch`. 
+
+Example for using the context provider:
+
+```tsx
+import { FetchFn, Provider as ZenStackHooksProvider } from '../lib/hooks';
+
+// custom fetch function that adds a custom header
+const myFetch: FetchFn = (url, options) => {
+    options = options ?? {};
+    options.headers = {
+        ...options.headers,
+        'x-my-custom-header': 'hello world',
+    };
+    return fetch(url, options);
+};
+
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+    return (
+        <ZenStackHooksProvider value={{ endpoint: '/api/model', fetch: myFetch }}>
+            <AppContent />
+        </ZenStackHooksProvider>
+    );
+}
+
+export default MyApp;
+
+```
+
 ## Options
 
 | Name    | Type   | Description                                             | Required | Default |
