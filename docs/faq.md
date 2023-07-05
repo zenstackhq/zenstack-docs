@@ -45,3 +45,7 @@ No. ZenStack references Prisma as a peer dependency and should work with Prisma 
 ### Does ZenStack work with Prisma migration?
 
 Yes. When you run `zenstack generate` it generates a standard Prisma schema file that can be used with Prisma migration.
+
+### Are there any other IDE integrations besides VSCode?
+
+Unfortunately for the time being, VSCode is the only officially supported IDE. There have been many asks about JetBrains. ZenStack's language tooling is built with [Langium](https://github.com/langium/langium), and we'll need to wait for the resolution of [this issue](https://github.com/langium/langium/issues/999) to evaluate JetBrains support.
