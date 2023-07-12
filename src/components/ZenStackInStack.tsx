@@ -45,10 +45,12 @@ export default function ZenStackInStack(): JSX.Element {
                         <img
                             className="py-4 xl:max-w-3/4 block dark:hidden"
                             src="/img/home/supercharged-orm-light.png"
+                            alt="supercharged orm"
                         />
                         <img
                             className="py-4 xl:max-w-3/4 hidden dark:block"
                             src="/img/home/supercharged-orm-dark.png"
+                            alt="supercharged orm"
                         />
                         <LearnMore url="/docs/intro/zmodel" />
                     </div>
@@ -65,7 +67,7 @@ export default function ZenStackInStack(): JSX.Element {
                         <div className="xl:max-w-3/4">
                             <Tabs>
                                 <TabItem value="Express" label="Express">
-                                    <img src="/img/home/server-adapter-express.png" />
+                                    <img src="/img/home/server-adapter-express.png" alt="express.js server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
                                 import { withPresets } from '@zenstackhq/runtime';
@@ -83,7 +85,7 @@ export default function ZenStackInStack(): JSX.Element {
                                         </CodeBlock> */}
                                 </TabItem>
                                 <TabItem value="Fastify" label="Fastify">
-                                    <img src="/img/home/server-adapter-fastify.png" />
+                                    <img src="/img/home/server-adapter-fastify.png" alt="fastify server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
                                 import { withPresets } from '@zenstackhq/runtime';
@@ -99,7 +101,7 @@ export default function ZenStackInStack(): JSX.Element {
                                         </CodeBlock> */}
                                 </TabItem>
                                 <TabItem value="Next.js" label="Next.js">
-                                    <img src="/img/home/server-adapter-nextjs.png" />
+                                    <img src="/img/home/server-adapter-nextjs.png" alt="next.js server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
                                 import { withPresets } from '@zenstackhq/runtime';
@@ -114,7 +116,7 @@ export default function ZenStackInStack(): JSX.Element {
                                         </CodeBlock> */}
                                 </TabItem>
                                 <TabItem value="SvelteKit" label="SvelteKit">
-                                    <img src="/img/home/server-adapter-sveltekit.png" />
+                                    <img src="/img/home/server-adapter-sveltekit.png" alt="svelte kit server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
                                 import { withPresets } from '@zenstackhq/runtime';
@@ -131,7 +133,7 @@ export default function ZenStackInStack(): JSX.Element {
                                 </TabItem>
                             </Tabs>
                         </div>
-                        <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" />
+                        <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" alt="swagger ui" />
                         <LearnMore url="/docs/intro/api" />
                     </div>
                     <div>
@@ -143,7 +145,7 @@ export default function ZenStackInStack(): JSX.Element {
                             the data query library of your choice (SWR, TanStack Query, etc.). The hooks call into the
                             automatically generated APIs, which are secured by the access policies.
                         </Content>
-                        <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" />
+                        <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" alt="client hooks" />
                         <LearnMore url="/docs/intro/frontend" />
                     </div>
                 </div>
