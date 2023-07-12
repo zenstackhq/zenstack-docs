@@ -4,7 +4,11 @@ function Tweet({ url, image }: { url: string; image: string }) {
     return (
         <div className="w-[300px] h-[426px] md:w-[360px] md:h-[512px]">
             <a href={url}>
-                <img src={image} className="p-4 h-full shadow-xl rounded-xl border border-gray-100 border-solid" />
+                <img
+                    src={image}
+                    className="p-4 h-full shadow-xl rounded-xl border border-gray-100 border-solid"
+                    alt="twitter post"
+                />
             </a>
         </div>
     );
@@ -27,7 +31,7 @@ function Quote({
 }) {
     const quote = (
         <div className="flex justify-center items-center relative w-[300px] h-[426px] md:w-[360px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
-            {twitter && <img src="/img/logo/twitter.png" className="absolute w-5 top-6 right-6" />}
+            {twitter && <img src="/img/logo/twitter.png" className="absolute w-5 top-6 right-6" alt="twitter" />}
             <div className="flex flex-col h-full text-center py-6">
                 <div className="flex-grow flex items-center justify-center">
                     <div className="flex flex-col">

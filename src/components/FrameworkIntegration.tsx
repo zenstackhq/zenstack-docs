@@ -17,13 +17,15 @@ function Logo({
     darkSrc?: string;
     darkModeBrightness?: number;
 }): JSX.Element {
+    const alt = src.split('/').pop()?.split('.')[0] ?? 'logo';
     return (
         <>
-            <img src={src} className="h-12 object-contain block dark:hidden" />
+            <img src={src} className="h-12 object-contain block dark:hidden" alt={alt} />
             <img
                 src={darkSrc ?? src}
                 className="h-12 object-contain hidden dark:block"
                 style={darkModeBrightness ? { filter: `brightness(${darkModeBrightness})` } : {}}
+                alt={alt}
             />
         </>
     );

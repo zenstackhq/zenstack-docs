@@ -44,7 +44,7 @@ function Proposition({ title, img, description }: FeatureItem) {
     return (
         <div className="lg:max-w-1/3 w-full">
             <div className="text-center">
-                <img className="w-48 p-10" src={img} />
+                <img className="w-48 p-10" src={img} alt={title} />
             </div>
             <div className="text--center padding-horiz--md">
                 <h3 className="text-xl text-bold text-center lg:text-2xl text-gray-700 dark:text-gray-300">{title}</h3>
