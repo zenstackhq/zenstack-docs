@@ -17,6 +17,10 @@ No, it is not implemented with Postgres RLS. Instead, ZenStack applies access co
 1. A significantly simpler syntax for access control rules compared to SQL RLS.
 1. Colocating access control rules with the data model.
 
+### Does using ZenStack introduce more connections to my databases?
+
+No. It's common to create enhanced PrismaClient wrappers per request (for binding to different user identity). Under the hood all such wrappers share the same PrismaClient instance and thus the same database connection.
+
 ### Is ZenStack framework-agnostic?
 
 Yes, ZenStack is framework-agnostic. The core of ZenStack's runtime is a transparent proxy wrapping a PrismaClient, so it can be used in any framework that can run Prisma. ZenStack already provides adapters for popular frameworks like [Next.js](/docs/reference/server-adapters/next) and [Fastify](/docs/reference/server-adapters/fastify), and more are being made. It's also easy to write your own adapters.
