@@ -50,6 +50,7 @@ The generated schemas have the following three parts:
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
 | output | String | Output directory (relative to the path of ZModel) | No       | node_modules/.zenstack/zod |
+| modelOnly | Boolean | Only generate schemas for the models, but not for the Prisma CRUD input arguments | No | false |
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
 
