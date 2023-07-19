@@ -162,7 +162,7 @@ For real-world applications you should usually use a framework or service instea
 
 Create a `/src/routes/signup/+page.svelte` file with the following content:
 
-```svelte title='/src/routes/signup.svelte'
+```svelte title='/src/routes/signup/+page.svelte'
 <script lang="ts">
     import { enhance } from '$app/forms';
     import type { ActionData } from './$types';
@@ -270,7 +270,7 @@ Create an account to continue.
 
 Create a `/src/routes/signin/+page.svelte` file with the following content:
 
-```svelte title='/src/routes/signin.svelte'
+```svelte title='/src/routes/signin/+page.svelte'
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { ActionData } from '../signin/$types';
