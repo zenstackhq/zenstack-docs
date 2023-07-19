@@ -261,7 +261,7 @@ npm run dev
 Hit [http://localhost:5173/signup](http://localhost:5173/signup) and you should see the signup page like:
 
 <div align="center">
-    <img src="/img/quick-start/sveltekit/signup.png" width="800" />
+    <img src="/img/get-started/sveltekit/signup.png" width="800" />
 </div>
 
 Create an account to continue.
@@ -352,7 +352,7 @@ export const actions = {
 Hit [http://localhost:5173/signin](http://localhost:5173/signin) and you should see the signin page like:
 
 <div align="center">
-    <img src="/img/quick-start/sveltekit/signin.png" width="800" />
+    <img src="/img/get-started/sveltekit/signin.png" width="800" />
 </div>
 
 Try signing in with the account you just created.
@@ -587,19 +587,19 @@ As you can see, our server-side code doesn't contain any authorization logic. Ye
 Now our app is complete and let's verify the result. Create two posts with your current account, and publish one of them:
 
 <div align="center">
-    <img src="/img/quick-start/sveltekit/yiming-posts.png" width="800" />
+    <img src="/img/get-started/sveltekit/yiming-posts.png" width="800" />
 </div>
 
 Now, open a new incognito window and sign up a new account _emily&#64;zenstack.dev_. "Post1" should appear in her list, since our access policy allows all users to read published posts.
 
 <div align="center">
-    <img src="/img/quick-start/sveltekit/emily-posts.png" width="800" />
+    <img src="/img/get-started/sveltekit/emily-posts.png" width="800" />
 </div>
 
 We didn't do any UI blocking to prevent Emily from unpublishing or deleting other people's posts; however, if she tries to do so, the operation will be rejected by the server-side code:
 
 <div align="center">
-    <img src="/img/quick-start/sveltekit/update-error.png" width="800" />
+    <img src="/img/get-started/sveltekit/update-error.png" width="800" />
 </div>
 
 In a real application you can catch the error and render a proper message to the user.
