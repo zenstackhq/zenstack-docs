@@ -18,6 +18,10 @@ This is a more com comprehensive SaaS project with team space and the correspond
 
     [https://github.com/zenstackhq/sample-todo-nextjs-tanstack](https://github.com/zenstackhq/sample-todo-nextjs-tanstack)
 
+- Next.js + tRPC
+
+    [https://github.com/zenstackhq/sample-todo-trpc](https://github.com/zenstackhq/sample-todo-trpc)
+
 - SvelteKit + TanStack Query
 
     [https://github.com/zenstackhq/sample-todo-sveltekit](https://github.com/zenstackhq/sample-todo-sveltekit)
