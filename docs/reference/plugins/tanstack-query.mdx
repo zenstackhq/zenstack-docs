@@ -109,7 +109,6 @@ export default MyApp;
     </QueryClientProvider>
 </div>
 ```
-
 </Tab>
 
 </Tabs>
@@ -167,9 +166,9 @@ const queryClient = new QueryClient();
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (
         <QueryClientProvider client={queryClient}>
-                <ZenStackHooksProvider value={{ endpoint: '/api/model' }}>
-                    <AppContent />
-                </ZenStackHooksProvider>
+            <ZenStackHooksProvider value={{ endpoint: '/api/model' }}>
+                <AppContent />
+            </ZenStackHooksProvider>
         </QueryClientProvider>
     );
 }
@@ -198,6 +197,24 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 </div>
 
 ```
+
+:::tip
+
+If you're using [SvelteKit](https://kit.svelte.dev/), you need to make sure the package `@zenstackhq/tanstack-query` is not treated as an external dependency by Vite, otherwise you'll encounter errors when the SvelteKit server renders the app. To do this, add the following section into `vite.config.js`:
+
+```js title='/vite.config.js'
+
+const config = {
+    ...
+    ssr: {
+        noExternal: ['@zenstackhq/tanstack-query'],
+    },
+};
+
+export default config;
+
+```
+:::
 
 </TabItem>
 

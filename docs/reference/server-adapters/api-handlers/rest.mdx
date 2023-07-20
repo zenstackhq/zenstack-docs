@@ -6,8 +6,11 @@ title: RESTful API Handler
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import DataTypeSerialization from './_data_type_serialization.md';
 
 # RESTful API Handler
+
+## Introduction
 
 The RESTful-style API handler exposes CRUD APIs as RESTful endpoints using [JSON:API](https://jsonapi.org/) as transportation format. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
 
@@ -776,6 +779,63 @@ PATCH /:type/:id/relationships/:relationship
         "data": null
     }
     ```
+
+## Serialization
+
+ZenStack uses [superjson](https://github.com/blitz-js/superjson) to serialize and deserialize data. Superjson generates two parts during serialization:
+
+- json:
+
+    The JSON-compatible serialization result.
+
+- meta:
+
+    The serialization metadata including information like field types that facilitates deserialization.
+
+If the data only involves simple data types, the serialization result is the same as regular `JSON.stringify`, and no `meta` part is generated. However, for complex data types (like `Bytes`, `Decimal`, etc.), a `meta` object will be generated, which needs to be carried along when sending the request, and will also be included in the response.
+
+When sending requests, if superjson-serializing the request body results in a `meta` object, it should be put into a ```{ "serialization": meta }``` object and included in the `meta` field of the request body. For example, if you have a `bytes` field of type `Bytes`, the request body should look like:
+
+```json
+POST /post
+{
+    "data": {
+        "type": "post",
+        "attributes": {
+            ...
+            "bytes": "AQID" // base64-encoded bytes
+        }
+    },
+    "meta": { 
+        "serialization": {"values": { "data.attributes.bytes": [[ "custom", "Bytes"]] } } 
+    } 
+}
+```
+
+Correspondingly, the response body of a query may look like:
+
+```json
+GET /post/1
+{
+    "data": {
+        "id": "1",
+        "type": "post",
+        "attributes": {
+            ...
+            "bytes": "AQID" // base64-encoded bytes
+        }
+    },
+    "meta": { 
+        "serialization": {"values": { "data.attributes.bytes": [[ "custom", "Bytes"]] } } 
+    } 
+}
+```
+
+You should use the `meta.serialization` field value to superjson-deserialize the response body.
+
+### Data Type Serialization Format
+
+<DataTypeSerialization />
 
 ## Error Handling
 

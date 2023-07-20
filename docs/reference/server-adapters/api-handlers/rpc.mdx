@@ -6,8 +6,11 @@ title: RPC API Handler
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import DataTypeSerialization from './_data_type_serialization.md';
 
 # RPC API Handler
+
+## Introduction
 
 The RPC-style API handler exposes CRUD endpoints that fully mirror [PrismaClient's query API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries). Consuming the APIs feels like making RPC calls to a PrismaClient then. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
 
@@ -55,11 +58,11 @@ export const handle = zenstack.SvelteKitHandler({
 
 </Tabs>
 
-### Data Format
+## Wire Format
 
-#### Input
+### Input
 
-For endpoints using `GET` and `DELETE` Http verbs, the query body is JSON-serialized and passed as the `q` query parameter. E.g.:
+For endpoints using `GET` and `DELETE` Http verbs, the query body is serialized and passed as the `q` query parameter. E.g.:
 
 ```ts
 GET /api/post/findMany?q=%7B%22where%22%3A%7B%22public%22%3Atrue%7D%7D
@@ -75,17 +78,95 @@ POST /api/post/create
 { "data": { "title": "Hello World" } }
 ```
 
-#### Output
+### Output
 
-The output shape conforms to the data structure returned by the corresponding PrismaClient API. E.g.:
+The output shape conforms to the data structure returned by the corresponding PrismaClient API, wrapped into a `data` field. E.g.:
 
 ```json
 GET /api/post/findMany
 
-[ { "id": 1, "title": "Hello World" } } ]
+{
+    "data": [ { "id": 1, "title": "Hello World" } ]
+}
 ```
 
-### Endpoints
+### Serialization
+
+This section explains the details about data serialization. If you're using generated hooks to consume the API, the generated code already automatically deals with serialization for you, and you don't need to do any further processing.
+
+ZenStack uses [superjson](https://github.com/blitz-js/superjson) to serialize and deserialize data - including the `q` query parameter, the request body, and the response body. Superjson generates two parts during serialization:
+
+- json:
+
+    The JSON-compatible serialization result.
+
+- meta:
+
+    The serialization metadata including information like field types that facilitates deserialization.
+
+If the data only involves simple data types, the serialization result is the same as regular `JSON.stringify`, and no `meta` part is generated. However, for complex data types (like `Bytes`, `Decimal`, etc.), a `meta` object will be generated, which needs to be carried along when sending the request, and will also be included in the response.
+
+The following part explains how the `meta` information is included for different situations:
+
+- The `q` query parameter
+
+    If during superjson-serialization of the `q` parameter, a `meta` object is generated, it should be put into an object `{ serialization: meta }`, JSON-stringified, and included as an additional query parameter `meta`. For example, if you have a field named `bytes` of `Bytes` type, and you may want to query with a filter like ```{ where: { bytes: Buffer.from([1,2,3]) } }```. Superjson-serializing the query object results in:
+    ```json
+    {
+        "json": { "where": { "bytes": "AQID" } }, // base-64 encoded bytes
+        "meta": { "values": { "where.bytes": [["custom","Bytes"]] } }
+    }
+    ```
+    Your query URL should look like:
+    ```json
+    GET /api/post/findMany?q={"where":{"bytes":"AQID"}}&meta={"serialization":{"values":{"where.bytes":[["custom","Bytes"]]}}}
+    ```
+
+- The request body
+
+    If during superjson-serialization of the request body, a `meta` object is generated, it should be put into an object `{ serialization: meta }`, and included as an additional field `meta` field in the request body. For example, if you have a field named `bytes` of `Bytes` type, and you may want to create a record with a value like ```{ data: { bytes: Buffer.from([1,2,3]) } }```. Superjson-serializing the request body results in:
+    ```json
+    {
+        "json": { "bytes": "AQID" }, // base-64 encoded bytes
+        "meta": { "values": { "bytes": [[ "custom", "Bytes" ]] } }
+    }
+    ```
+    Your request body should look like:
+    ```json
+    POST /api/post/create
+
+    { 
+        "data": { "bytes": "AQID" },
+        "meta": { "serialization": {"values": { "bytes": [[ "custom","Bytes" ]] } } } 
+    }
+    ```
+
+- The response body
+
+    If during superjson-serialization of the response body, a `meta` object is generated, it will be put into an object `{ serialization: meta }`, and included as an additional field `meta` field in the response body. For example, if you have a field named `bytes` of `Bytes` type, and a `findFirst` query returns ```{ id: 1, bytes: Buffer.from([1,2,3]) }```. Superjson-serializing the request body results in:
+    ```json
+    {
+        "json": { "id": 1, "bytes":"AQID" }, // base-64 encoded bytes
+        "meta": { "values": { "bytes": [[ "custom", "Bytes" ]] } }
+    }
+    ```
+    Your response body will look like:
+    ```json
+    GET /api/post/findFirst
+
+    { 
+        "data": { "id": 1, "bytes": "AQID" },
+        "meta": { "serialization": {"values": { "bytes": [[ "custom","Bytes"]] } } } 
+    }
+    ```
+
+    You should use the meta.serialization field value to superjson-deserialize the response body.
+
+#### Data Type Serialization Format
+
+<DataTypeSerialization />
+
+## Endpoints
 
 -   **[model]/findMany**
 
@@ -139,9 +220,9 @@ GET /api/post/findMany
 
     _Http method:_ `DELETE`
 
-### HTTP Status Code and Error Responses
+## HTTP Status Code and Error Responses
 
-#### Status code
+### Status code
 
 The HTTP status code used by the endpoints follows the following rules:
 
@@ -150,7 +231,7 @@ The HTTP status code used by the endpoints follows the following rules:
 - `400` is used for invalid requests, e.g., malformed request body.
 - `500` is used for other unexpected errors.
 
-#### Error response format
+### Error response format
 
 ```ts
 {
