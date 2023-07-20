@@ -10,20 +10,22 @@ This is a more com comprehensive SaaS project with team space and the correspond
 
 ### Project
 
-[https://github.com/zenstackhq/sample-todo-nextjs](https://github.com/zenstackhq/sample-todo-nextjs)
+- Next.js + SWR
 
-### Stack
+    [https://github.com/zenstackhq/sample-todo-nextjs](https://github.com/zenstackhq/sample-todo-nextjs)
 
--   [Next.js](https://nextjs.org/)
--   [NextAuth](https://next-auth.js.org/)
--   [TailwindCSS](https://tailwindcss.com/)
--   [Prisma](https://prisma.io)
--   [ZenStack](https://zenstack.dev)
+- Next.js + TanStack Query
+
+    [https://github.com/zenstackhq/sample-todo-nextjs-tanstack](https://github.com/zenstackhq/sample-todo-nextjs-tanstack)
+
+- SvelteKit + TanStack Query
+
+    [https://github.com/zenstackhq/sample-todo-sveltekit](https://github.com/zenstackhq/sample-todo-sveltekit)
 
 ### Deployment environment
 
 -   [Vercel](https://vercel.com)
--   [Supabase](https://supabase.com) (for a Postgres database only)
+-   [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres)
 
 ### Features
 
