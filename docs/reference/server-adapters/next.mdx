@@ -98,6 +98,27 @@ The Next.js API route handler takes the following options to initialize:
 
 </Tabs>
 
+### Controlling what endpoints to expose
+
+You can use a [Next.js middleware](https://nextjs.org/docs/pages/building-your-application/routing/middleware) to further control what endpoints to expose. For example, if you're using a RESTful API handler installed at "/api/model", you can disallow listing all `User` entities by adding a middleware like:
+
+```ts title='/src/middleware.ts'
+import { type NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+    const url = new URL(request.url);
+    if (
+        request.method === 'GET' &&
+        url.pathname.match(/^\/api\/model\/user\/?$/)
+    ) {
+        return NextResponse.json({ error: 'Not allowed' }, { status: 405 });
+    }
+}
+
+export const config = {
+    matcher: '/api/model/:path*',
+};
+```
 
 ### Using the API
 
