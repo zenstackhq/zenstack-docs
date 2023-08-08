@@ -70,14 +70,14 @@ export default function ZenStackInStack(): JSX.Element {
                                     <img src="/img/home/server-adapter-express.png" alt="express.js server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
-                                import { withPresets } from '@zenstackhq/runtime';
+                                import { enhance } from '@zenstackhq/runtime';
                                 import { ZenStackMiddleware } from '@zenstackhq/server/express';
                                 import RestApiHandler from '@zenstackhq/server/api/rpc';
                 
                                 app.use(
                                   '/api/model',
                                   ZenStackMiddleware({
-                                    getPrisma: (req) => withPresets(prisma, { user: getSessionUser(req) }),
+                                    getPrisma: (req) => enhance(prisma, { user: getSessionUser(req) }),
                                     handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
                                   })
                                 );
@@ -88,13 +88,13 @@ export default function ZenStackInStack(): JSX.Element {
                                     <img src="/img/home/server-adapter-fastify.png" alt="fastify server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
-                                import { withPresets } from '@zenstackhq/runtime';
+                                import { enhance } from '@zenstackhq/runtime';
                                 import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
                                 import RestApiHandler from '@zenstackhq/server/api/rpc';
                 
                                 server.register(ZenStackFastifyPlugin, {
                                   prefix: '/api/model',
-                                  getPrisma: (req) => withPresets(prisma, { user: getSessionUser(req) }),
+                                  getPrisma: (req) => enhance(prisma, { user: getSessionUser(req) }),
                                   handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
                                 });
                                     `}
@@ -104,12 +104,12 @@ export default function ZenStackInStack(): JSX.Element {
                                     <img src="/img/home/server-adapter-nextjs.png" alt="next.js server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
-                                import { withPresets } from '@zenstackhq/runtime';
+                                import { enhance } from '@zenstackhq/runtime';
                                 import { NextRequestHandler } from '@zenstackhq/server/next';
                                 import RestApiHandler from '@zenstackhq/server/api/rest';
                 
                                 export default NextRequestHandler({
-                                  getPrisma: (req, res) => withPresets({ user: getSessionUser(req, res) }),
+                                  getPrisma: (req, res) => enhance({ user: getSessionUser(req, res) }),
                                   handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
                                 });
                                     `}
@@ -119,13 +119,13 @@ export default function ZenStackInStack(): JSX.Element {
                                     <img src="/img/home/server-adapter-sveltekit.png" alt="svelte kit server adapter" />
                                     {/* <CodeBlock language="ts">
                                             {`
-                                import { withPresets } from '@zenstackhq/runtime';
+                                import { enhance } from '@zenstackhq/runtime';
                                 import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
                                 import RestApiHandler from '@zenstackhq/server/api/rpc';
                 
                                 export const handle = SvelteKitHandler({
                                   prefix: '/api/model',
-                                  getPrisma: (event) => withPresets({ user: getSessionUser(event) }),
+                                  getPrisma: (event) => enhance({ user: getSessionUser(event) }),
                                   handler: RestApiHandler({ endpoint: 'http://localhost/api/model' })
                                 });
                                     `}

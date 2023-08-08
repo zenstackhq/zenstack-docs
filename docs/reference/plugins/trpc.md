@@ -30,7 +30,7 @@ This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/
 
 ### Preparing tRPC Context
 
-The generated tRPC routers require a `prisma` field in the context and you need to make sure to include it when creating the context. You can use any PrismaClient instance for it, but most likely you want to use one created with [`withPresets`](/docs/reference/runtime-api#withpresets) or [`withPolicy`](/docs/reference/runtime-api#withpolicy) so that the client enforces access control policies.
+The generated tRPC routers require a `prisma` field in the context and you need to make sure to include it when creating the context. You can use any PrismaClient instance for it, but most likely you want to use one created with [`enhance`](/docs/reference/runtime-api#enhance) so that the client enforces access control policies.
 
 ```ts
 export const createContext = async ({ req, res }: CreateNextContextOptions) => {
@@ -38,7 +38,7 @@ export const createContext = async ({ req, res }: CreateNextContextOptions) => {
     return {
         session,
         // use access-control-enabled db client
-        prisma: withPresets(prisma, { user: session?.user }),
+        prisma: enhance(prisma, { user: session?.user }),
     };
 };
 ```

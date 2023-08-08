@@ -50,7 +50,7 @@ For most of the cases you should use a Prisma client that's "enhanced" by ZenSta
 
 ```ts title='/src/server/context.ts'
 
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { prisma } from './db';
 import { getSessionUser } from './auth';
 
@@ -58,7 +58,7 @@ export const createContext = async ({ req, res }: CreateNextContextOptions) => {
     return {
         ...,
         // use access-control-enabled Prisma client
-        prisma: await withPresets(prisma, { user: getSessionUser(req, res) }),
+        prisma: await enhance(prisma, { user: getSessionUser(req, res) }),
     };
 };
 ```

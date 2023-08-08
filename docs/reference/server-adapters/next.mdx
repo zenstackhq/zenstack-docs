@@ -27,7 +27,7 @@ You can use it to create a request handler in an API endpoint like:
 ```ts title='/src/pages/api/model/[...path].ts'
 import { NextRequestHandler } from '@zenstackhq/server/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { prisma } from '../../../lib/db.ts';
 import { getSessionUser } from '../../../lib/auth.ts';
 
@@ -35,7 +35,7 @@ import { getSessionUser } from '../../../lib/auth.ts';
 function getPrisma(req: NextApiRequest, res: NextApiResponse) {
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
-    return withPresets(prisma, { user: getSessionUser(req, res) });
+    return enhance(prisma, { user: getSessionUser(req, res) });
 }
 
 // create the request handler with the `getPrisma` hook
@@ -53,7 +53,7 @@ The Next.js API route handler takes the following options to initialize:
 ```ts title='/src/app/api/model/[...path]/route.ts'
 import { NextRequestHandler } from '@zenstackhq/server/next';
 import type { NextRequest } from "next/server";
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { prisma } from '../../../lib/db.ts';
 import { getSessionUser } from '../../../lib/auth.ts';
 
@@ -61,7 +61,7 @@ import { getSessionUser } from '../../../lib/auth.ts';
 function getPrisma(req: NextRequest) {
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
-    return withPresets(prisma, { user: getSessionUser(req) });
+    return enhance(prisma, { user: getSessionUser(req) });
 }
 
 const handler = NextRequestHandler({ getPrisma, useAppDir: true });

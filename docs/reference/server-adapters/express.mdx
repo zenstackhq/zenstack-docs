@@ -18,7 +18,7 @@ You can integrate ZenStack into your project with the `ZenStackMiddleware` [expr
 
 ```ts
 import { PrismaClient } from '@prisma/client';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import express from 'express';
 
@@ -32,7 +32,7 @@ app.use(
     ZenStackMiddleware({
         // getSessionUser extracts the current session user from the request, its
         // implementation depends on your auth solution
-        getPrisma: (request) => withPresets(prisma, { user: getSessionUser(request) }),
+        getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
     })
 );
 ```

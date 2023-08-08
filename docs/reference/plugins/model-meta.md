@@ -29,9 +29,9 @@ plugin zod {
 }
 ```
 
-Runtime APIs like [`withPresets`](/docs/reference/runtime-api#withpresets) and [`withPolicy`](/docs/reference/runtime-api#withpolicy) depend on the output of this plugin and by default load it from the default output location. If you customize the output location, you need to load and pass it manually:
+Runtime APIs like [`enhance`](/docs/reference/runtime-api#enhance) and [`withPolicy`](/docs/reference/runtime-api#withpolicy) depend on the output of this plugin and by default load it from the default output location. If you customize the output location, you need to load and pass it manually:
 
 ```ts
 const meta = require('./lib/zenstack/model-meta').default;
-const db = withPresets(prisma, { user }, undefined, meta);
+const db = enhance(prisma, { user }, undefined, meta);
 ```
