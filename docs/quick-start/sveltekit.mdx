@@ -208,7 +208,7 @@ Then create its server-side form handler `/src/routes/signup/+page.server.ts` wi
 ```ts title='/src/routes/signup/+page.server.ts'
 import { createToken, JWT_TOKEN_COOKIE_NAME } from '$lib/auth';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { isPrismaClientKnownRequestError, withPresets } from '@zenstackhq/runtime';
+import { isPrismaClientKnownRequestError, enhance } from '@zenstackhq/runtime';
 import { prisma } from '../../lib/db';
 
 export const actions = {
@@ -221,7 +221,7 @@ export const actions = {
             return fail(400, { email, password, missing: true });
         }
 
-        const db = withPresets(prisma);
+        const db = enhance(prisma);
 
         try {
             // create the user together with a default space
@@ -385,7 +385,7 @@ import { env } from '$env/dynamic/private';
 import { JWT_TOKEN_COOKIE_NAME } from '$lib/auth';
 import { prisma } from '$lib/db';
 import type { Handle } from '@sveltejs/kit';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import jwt from 'jsonwebtoken';
 
 const auth = (async ({ event, resolve }) => {
@@ -408,7 +408,7 @@ const auth = (async ({ event, resolve }) => {
     }
 
     // create an enhanced PrismaClient that recognizes access policies
-    event.locals.db = withPresets(prisma, {
+    event.locals.db = enhance(prisma, {
         user: event.locals.user ? { id: event.locals.user.id } : undefined
     });
 

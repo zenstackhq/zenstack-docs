@@ -11,7 +11,7 @@ This document introduces the access policy enforcement behavior regarding differ
 
 :::tip
 
-Access policies are only effective when you call Prisma methods enhanced with [`withPolicy`](/docs/reference/runtime-api#withpolicy) or [`withPresets`](/docs/reference/runtime-api#withpresets).
+Access policies are only effective when you call Prisma methods enhanced with [`enhance`](/docs/reference/runtime-api#enhance) or [`withPolicy`](/docs/reference/runtime-api#withpolicy).
 
 :::
 
@@ -33,7 +33,7 @@ attribute @@deny(_ operation: String, _ condition: Boolean)
 
 ## Accessing user data
 
-When using `withPresets` or `withPolicy` to wrap a Prisma client for authorization, you pass in a context object containing the data about the current user (verified by authentication). This user
+When using `enhance` to wrap a Prisma client for authorization, you pass in a context object containing the data about the current user (verified by authentication). This user
 data can be accessed with the special `auth()` function in access policy rules. Note that `auth()` function's return value is typed as the `User` model in your schema, so only fields defined in the `User` model are accessible.
 
 You can access its field to implement RBAC like:

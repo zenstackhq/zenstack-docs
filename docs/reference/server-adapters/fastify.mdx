@@ -17,7 +17,7 @@ The `@zenstackhq/server/fastify` module provides a quick way to install API rout
 You can integrate ZenStack into your project with the `ZenStackFastifyPlugin` [fastify plugin](https://www.fastify.io/docs/latest/Reference/Plugins/):
 
 ```ts
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
 import { prisma } from './db.ts';
 import { getSessionUser } from './auth.ts';
@@ -29,7 +29,7 @@ server.register(ZenStackFastifyPlugin, {
     prefix: '/api/model',
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
-    getPrisma: (request) => withPresets(prisma, { user: getSessionUser(request) }),
+    getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
 });
 ```
 

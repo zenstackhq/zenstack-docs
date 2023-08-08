@@ -403,17 +403,17 @@ app.post('/api/login', async (req, res) => {
 });
 ```
 
-Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `withPresets` call so that the `@password` and `@omit` attributes can take effect.
+Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `enhance` call so that the `@password` and `@omit` attributes can take effect.
 
 Replace the corresponding part of the code in `/api/app.ts` with the following:
 
 ```ts title='/api/app.ts' {5}
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 
 app.use(
     '/api',
     ZenStackMiddleware({
-        getPrisma: () => withPresets(prisma),
+        getPrisma: () => enhance(prisma),
         handler: apiHandler,
     })
 );
@@ -539,9 +539,9 @@ You can learn more about access policies [here](https://zenstack.dev/docs/guides
 
 By declaratively defining access policies in the schema, you no longer need to implement these rules in your API. It's easier to ensure consistency, making the schema a single source of truth for your data's shape and security rules.
 
-There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `withPresets` call as the context.
+There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `enhance` call as the context.
 
-Add a `getUser` helper to decode the user from the token, and pass that to the `withPresets` call:
+Add a `getUser` helper to decode the user from the token, and pass that to the `enhance` call:
 
 ```ts title='/api/index.ts' {0-15,23}
 import type { Request } from 'express';
@@ -567,7 +567,7 @@ app.use(
     '/api',
     ZenStackMiddleware({
         getPrisma: (req) => {
-            return withPresets(prisma, { user: getUser(req) });
+            return enhance(prisma, { user: getUser(req) });
         },
         handler: apiHandler
     })

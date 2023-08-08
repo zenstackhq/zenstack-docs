@@ -12,11 +12,11 @@ This document provides references for runtime APIs exported from the `@zenstackh
 
 Enhancement APIs create wrappers around a Prisma client to add additional behavior. These wrappers can be freely combined to fine-tune what behavior to include.
 
-### withPresets
+### enhance
 
 #### Description
 
-Calling `withPresets` is the simplest way to include all essential enhancements offered by ZenStack, including access policies, field validation, field omission, and password hashing. It's equivalent to calling:
+Calling `enhance` is the simplest way to include all essential enhancements offered by ZenStack, including access policies, field validation, field omission, and password hashing. It's equivalent to calling:
 
 ```ts
 withOmit(withPassword(withPolicy(prisma, options)));
@@ -25,10 +25,10 @@ withOmit(withPassword(withPolicy(prisma, options)));
 #### Signature
 
 ```ts
-function withPresets<DbClient extends object>(
+function enhance<DbClient extends object>(
     prisma: DbClient,
     context?: WithPolicyContext,
-    options?: WithPresetsOptions
+    options?: EnhancementOptions
 ): DbClient;
 ```
 
@@ -41,7 +41,7 @@ function withPresets<DbClient extends object>(
 Typing for the `options` parameter:
 
 ```ts
-type WithPresetsOptions = {
+type EnhancementOptions = {
     policy?: PolicyDef;
     modelMeta?: ModelMeta;
     logPrismaQuery?: boolean;
@@ -58,8 +58,16 @@ type WithPresetsOptions = {
 
 ```ts
 const session = getSession();
-const enhancedClient = withPresets(prisma, { user: session.user });
+const enhancedClient = enhance(prisma, { user: session.user });
 ```
+
+### withPresets
+
+#### Description
+
+:::warning
+This API is equivalent to [`enhance`](#enhance) and will be deprecated soon.
+:::
 
 ### withPolicy
 

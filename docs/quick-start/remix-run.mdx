@@ -118,10 +118,10 @@ Remove a few files and folders that are not needed anymore:
 First add a helper method to `/app/db.server.ts` to get an access-policy-enabled prisma client. We'll use this wrapper to manipulate the `Post` model.
 
 ```ts title='/app/db.server.ts'
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 
 export function getEnhancedPrisma(userId: string) {
-    return withPresets(prisma, { user: { id: userId } });
+    return enhance(prisma, { user: { id: userId } });
 }
 ```
 
