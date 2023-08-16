@@ -44,7 +44,7 @@ We will continue improving the parity between ZModel and Prisma Schema regarding
 
 ### Does ZenStack require a specific Prisma version?
 
-No. ZenStack references Prisma as a peer dependency and should work with Prisma 4.0 and above.
+No. ZenStack references Prisma as a peer dependency and should work with Prisma 4.8.0 and above.
 
 ### Does ZenStack work with Prisma migration?
 

@@ -446,7 +446,7 @@ npm install @zenstackhq/next @zenstackhq/react
 Let’s create a new file `src/server/enhanced-db.ts`
 
 ```tsx
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import type { GetServerSidePropsContext } from 'next';
 import { getServerAuthSession } from './auth';
 import { prisma } from './db';
@@ -458,7 +458,7 @@ export async function getEnhancedPrisma(ctx: {
     const session = await getServerAuthSession(ctx);
     // create a wrapper of Prisma client that enforces access policy,
     // data validation, and @password, @omit behaviors
-    return withPresets(prisma, { user: session?.user });
+    return enhance(prisma, { user: session?.user });
 }
 ```
 

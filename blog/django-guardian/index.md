@@ -156,7 +156,7 @@ export function updatePost(request: Request, slug: string, data: PostUpdateInput
     // get an access-control enabled Prisma wrapper
     // the "user" context value supports the `auth()`
     // function in the permission rules
-    const db = withPresets(prisma, { user });
+    const db = enhance(prisma, { user });
 
     // error will be thrown if the current user doesn't
     // have permission

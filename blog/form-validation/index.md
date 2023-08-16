@@ -96,11 +96,11 @@ Before building the UI, let's implement the API that accepts the signup submissi
 
 ```ts
 import { PrismaClient } from '@prisma/client';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { NextResponse } from 'next/server';
 
 // create a database client enhanced by ZenStack that enforces data validation
-const db = withPresets(new PrismaClient());
+const db = enhance(new PrismaClient());
 
 export async function POST(request: Request) {
     const data = await request.json();
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
 The implementation is fairly straightforward, and the following line is the key:
 
 ```ts
-const db = withPresets(new PrismaClient());
+const db = enhance(new PrismaClient());
 ```
 
 We created a PrismaClient and "enhanced" it with a ZenStack wrapper that injects data behavior logic at runtime.
