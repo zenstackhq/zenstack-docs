@@ -17,6 +17,12 @@ Access policies are only effective when you call Prisma methods enhanced with [`
 
 ## General rules
 
+:::info
+
+Field-level access policies are in preview stage and its behavior may change in the future. Please let us know your feedback!
+
+:::
+
 Access policies are expressed with the `@@allow`/`@@deny` model attributes or `@allow`/`@deny` field attributes. The attributes take two parameters. The first is the operation: create/read/update/delete (only read/update for field-level policies). You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
 
 ```zmodel
