@@ -584,6 +584,36 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
 
+-   `@allow`
+
+    ```zmodel
+        attribute @allow(_ operation: String, _ condition: Boolean)
+    ```
+
+    Defines an access policy that allows the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+
+-   `@deny`
+
+    ```zmodel
+        attribute @deny(_ operation: String, _ condition: Boolean)
+    ```
+
+    Defines an access policy that allows the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be denied       
+
 -   `@password`
 
     ```zmodel
@@ -1133,7 +1163,9 @@ When defining a relation, you can specify what happens when one side of a relati
 
 ## Access policy
 
-Access policies use `@@allow` and `@@deny` rules to specify the eligibility of an operation over a model entity. The signatures of the attributes are:
+### Model-level policy
+
+Model-level access policies are defined with `@@allow` and `@@deny` attributes. They specify the eligibility of an operation over a model entity. The signatures of the attributes are:
 
 -   `@@allow`
 
@@ -1145,7 +1177,7 @@ Access policies use `@@allow` and `@@deny` rules to specify the eligibility of a
 
     | Name      | Description                                                                                                                                                              |
     | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
 -   `@@deny`
@@ -1158,7 +1190,39 @@ Access policies use `@@allow` and `@@deny` rules to specify the eligibility of a
 
     | Name      | Description                                                                                                                                                              |
     | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
+
+### Field-level policy
+
+Field-level access policies are defined with `@allow` and `@deny` attributes. They control whether the annotated field can be read or updated. If a field fails "read" check, it'll be deleted when returned. If a field is set to be updated but fails "update" check, the update operation will be rejected.
+
+The signatures of the attributes are:
+
+-   `@@allow`
+
+    ```zmodel
+        attribute @allow(_ operation: String, _ condition: Boolean)
+    ```
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+
+-   `@@deny`
+
+    ```zmodel
+        attribute @deny(_ operation: String, _ condition: Boolean)
+    ```
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including ``"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
 
 ### Policy expressions
@@ -1275,11 +1339,20 @@ In this example, `user` refers to `user` field of `Membership` model because `sp
 
 ### Combining multiple rules
 
-A model can contain an arbitrary number of policy rules. The logic of combining them is as follows:
+A model can contain an arbitrary number of policy rules. The logic of combining model-level rules is as follows:
 
--   The operation is rejected if any of the conditions in `@@deny` rules evaluate to `true`
--   Otherwise, the operation is permitted if any of the conditions in `@@allow` rules evaluate to `true`
--   Otherwise, the operation is rejected
+-   The operation is rejected if any of the conditions in `@@deny` rules evaluate to `true`.
+-   Otherwise, the operation is permitted if any of the conditions in `@@allow` rules evaluate to `true`.
+-   Otherwise, the operation is rejected.
+
+A field can also contain an arbitrary number of policy rules. The logic of combining field-level rules is as follows:
+
+-   The operation is rejected if any of the conditions in `@deny` rules evaluate to `true`.
+-   Otherwise, if there exists any `@allow` rule and at least one of them evaluates to `true`, the operation is permitted.
+-   Otherwise, if there exists any `@allow` rule but none one of them evaluates to `true`, the operation is rejected.
+-   Otherwise, the operation is permitted.
+
+Please note the difference between model-level and field-level rules. Model-level access are by-default denied, while field-level access are by-default allowed.
 
 ### Pre-update vs. post-update
 
@@ -1300,6 +1373,10 @@ model Post {
     @@allow('update', author == auth() && future().author == author)
 }
 ```
+
+:::info
+The `future()` function is not supported in field-level access policies. To express post-update rules, put them into model-level policies.
+:::
 
 ### Examples
 
