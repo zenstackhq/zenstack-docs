@@ -17,19 +17,41 @@ Access policies are only effective when you call Prisma methods enhanced with [`
 
 ## General rules
 
-Access policies are expressed with the `@@allow` and `@@deny` model attributes. The attributes take two parameters. The first is the operation: create/read/update/delete. You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
+:::info
+
+Field-level access policies are in preview stage and its behavior may change in the future. Please let us know your feedback!
+
+:::
+
+Access policies are expressed with the `@@allow`/`@@deny` model attributes or `@allow`/`@deny` field attributes. The attributes take two parameters. The first is the operation: create/read/update/delete (only read/update for field-level policies). You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
 
 ```zmodel
 attribute @@allow(_ operation: String, _ condition: Boolean)
 
+attribute @allow(_ operation: String, _ condition: Boolean)
+
 attribute @@deny(_ operation: String, _ condition: Boolean)
+
+attribute @deny(_ operation: String, _ condition: Boolean)
 ```
 
-`@@allow` opens up permissions while `@@deny` turns them off. You can use them multiple times and combine them in a model. Whether an operation is permitted is determined as follows:
+`@@allow`/`@allow` opens up permissions while `@@deny`/`@deny` turns them off. You can use them multiple times and combine them in a model. Whether an operation is permitted is determined as follows:
+
+For model-level policies:
 
 1. If any `@@deny` rule evaluates to true, it's denied.
 1. If any `@@allow` rule evaluates to true, it's allowed.
 1. Otherwise, it's denied.
+
+For field-level policies:
+
+1. If any `@deny` rule evaluates to true, it's denied.
+1. If there exists `@allow` rules and at least one of them evaluates to true, it's allowed.
+1. If there exists `@allow` rules but none of them evaluates to true, it's denied.
+1. Otherwise, it's allowed.
+
+Please note the difference between model-level and field-level rules. Model-level access are by-default denied, while field-level access are by-default allowed. E.g., if you don't specify any "read" rule for a model, the model is not readable. However, if you don't specify any "read" rule for a field, the field is readable.
+
 
 ## Accessing user data
 
@@ -91,7 +113,7 @@ model Foo {
 ```
 
 ```ts
-// given there's a single Foo { id: "1", value: "0" } in the database
+// given there's a single Foo { id: "1", value: 0 } in the database
 
 db.foo.findUnique({ where: { id: '1' } }); // => null
 db.foo.findUniqueOrThrow({ where: { id: '1' } }); // => throws
@@ -111,8 +133,22 @@ model Foo {
 ```
 
 ```ts
-// an entity is created in the database, but the call eventually throws
+// an entity is created in the database, but the call eventually throws because the result cannot be read back
 const created = await db.foo.create({ data: { value: 0 } });
+```
+
+Field-level read rules don't affect the readability of model entities as a whole, however the annotated field is omitted from the result if it fails the checks.
+
+```zmodel
+model Foo {
+    id String @id
+    value Int @allow('read', value > 0)
+}
+```
+
+```ts
+// given there's a single Foo { id: "1", value: 0 } in the database
+db.foo.findUnique({ where: { id: '1' } }); // => { id: '1' }
 ```
 
 ### Update
@@ -196,6 +232,8 @@ await db.user.update({
     },
 });
 ```
+
+The handling of field-level update rules is the same as model-level ones. The only difference is that the rules are only activated when the annotated field is part of the update operation. In another word, when a field is set to be updated, its update rules are merged with model-level rules.
 
 ### Delete
 
