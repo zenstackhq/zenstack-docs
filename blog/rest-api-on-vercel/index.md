@@ -123,40 +123,39 @@ The `zenstack` CLI installs Prisma and other dependencies and creates a boilerpl
 
 ```zmodel title='/schema.zmodel'
 datasource db {
-    provider = "postgresql"
-    url = env("POSTGRES_PRISMA_URL")
-    directUrl = env("POSTGRES_URL_NON_POOLING")
-    shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model User {
-    id String @id @default(cuid())
-    email String @unique
-    password String
-    orders Order[]
+  id       String  @id @default(cuid())
+  email    String  @unique
+  password String
+  orders   Order[]
 }
 
 model Pet {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    name String
-    category String
-    order Order? @relation(fields: [orderId], references: [id])
-    orderId String?
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  category  String
+  order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   String?
 }
 
 model Order {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    pets Pet[]
-    user User @relation(fields: [userId], references: [id])
-    userId String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pets      Pet[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 ```
 
