@@ -605,7 +605,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
         attribute @deny(_ operation: String, _ condition: Boolean)
     ```
 
-    Defines an access policy that allows the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+    Defines an access policy that denies the annotated field to be read or updated. Read more about access policies [here](#access-policy).
 
     _Params_:
 
