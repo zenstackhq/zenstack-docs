@@ -102,7 +102,7 @@ Now, let's focus on the modeling part and see how painless implementing differen
 
 ### Role-Based Access Control
 
-RBAC is one of the most common authorization models - users are assigned different roles, and resource access privileges are controlled at the role level. Despite its limitations, RBAC is a popular choice for simple applications, and some frameworks (like [RedwoodJS](https://redwoodjs.com/)) have built-in support for it.
+[RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) is one of the most common authorization models - users are assigned different roles, and resource access privileges are controlled at the role level. Despite its limitations, RBAC is a popular choice for simple applications, and some frameworks (like [RedwoodJS](https://redwoodjs.com/)) have built-in support for it.
 
 In the following example, the app has user and admin roles. All users are granted "read" access to Post, and admin users are given full access.
 
@@ -135,6 +135,8 @@ model Post {
 
 ### Attribute-Based Access Control
 
+[ABAC](https://en.wikipedia.org/wiki/Attribute-based_access_control) provides much greater flexibility by using attributes as building blocks for access control, and the attributes can come from users or resources. 
+
 ZenStack doesn't really distinguish RBAC and ABAC. In fact, if we consider "role" as an attribute of "User", RBAC is a special case of ABAC. The following example shows how RBAC and ABAC can be mixed:
 
 ```zmodel
@@ -166,7 +168,7 @@ model Post {
 
     // RBAC & ABAC: non-editor users are not allowed to modify "published" field
     // "future()" represents the entity's post-update state
-		@@deny('update', user.role() != EDITOR && future().published != published)
+	@@deny('update', user.role() != EDITOR && future().published != published)
 }
 ```
 
@@ -256,11 +258,11 @@ If you're interested in digging deeper, check out this post for a comprehensive 
 
 ### Soft Deletion
 
-Soft delete is a widely used practice. Instead of physically deleting entities, a special deleted field is set to true to mark it as (logically) deleted.
+Soft delete is a widely used practice. Instead of physically deleting entities, a special `deleted` field is set to true to mark it as (logically) deleted.
 
 It helps in two ways:
-- It's easier to recover data in case of accidental deletion
-- The deleted entities may still be useful for purposes like analytics
+- It's easier to recover data in case of accidental deletion.
+- The deleted entities may still be useful for purposes like analytics.
 
 The challenge with soft delete is that you must consistently filter out the "deleted" rows in most cases, which is repetitive and error-prone. Although this is not an authorization problem, ZenStack's access policies can also be of great help here:
 
@@ -281,7 +283,7 @@ Check out the following post for more details:
 
 ### Field-Level Access Control
 
-Besides controlling row-level access, you can also attach policies to fields. For example, you can implement the requirement of "non-editor users are not allowed to modify the `published` field in a different way like:
+Besides controlling row-level access, you can also attach policies to fields. For example, you can implement the requirement of "non-editor users are not allowed to modify the `published` field" in a different way like:
 
 ```zmodel
 model Post {
@@ -307,7 +309,7 @@ Combined with role-level (model-level) rules, you can implement a complex author
 
 ### Real-Time Notification
 
-Prisma released an exciting preview cloud-based feature called [Pulse](https://www.prisma.io/data-platform/pulse) a few weeks ago. It uses CDC techniques to subscribe to data changes and sends real-time notifications to the client. Very handy for building highly interactive applications.
+Prisma released an exciting preview cloud-based feature called [Pulse](https://www.prisma.io/data-platform/pulse) a few weeks ago. It uses [CDC techniques](https://en.wikipedia.org/wiki/Change_data_capture) to subscribe to data changes and sends real-time notifications to the client. Very handy for building highly interactive applications.
 
 For example, we can subscribe to "create", "update" and "delete" events to our Post model like:
 
