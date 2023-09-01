@@ -115,5 +115,3 @@ The config file is a JSON object with the following properties:
 
 | Name                 | Description                                                         | Default              |
 | -------------------- | ------------------------------------------------------------------- | -------------------- |
-| guardFieldName       | Database field name for the auxiliary `zenstack_guard` field.       | zenstack_guard       |
-| transactionFieldName | Database field name for the auxiliary `zenstack_transaction` field. | zenstack_transaction |

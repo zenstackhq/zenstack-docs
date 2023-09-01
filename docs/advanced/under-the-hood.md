@@ -60,7 +60,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
         return {
             OR: [
                 user == null
-                    ? { zenstack_guard: false }
+                    ? { OR: [] } // false condition
                     : {
                           author: {
                               is: {
@@ -70,9 +70,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
                       },
                 {
                     AND: [
-                        {
-                            zenstack_guard: user != null,
-                        },
+                        user == null ? { OR: [] } : { AND: [] },
                         {
                             published: true,
                         },
@@ -85,7 +83,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
     function Post_update(context: QueryContext) {
         const user = hasAllFields(context.user, ['id']) ? context.user : null;
         return user == null
-            ? { zenstack_guard: false }
+            ? { OR: [] } // false condition
             : {
                   author: {
                       is: {
@@ -284,37 +282,3 @@ Here're a few examples (assuming `auth()` is `null`):
 ### The `future` function
 
 An "update" policy rule is treated as a "post-update" rule if it involves a `future()` function call. `future()` represents the value of the model entity after the update is completed. In a "post-update" policy rule, any member accesses that are not prefixed with `future().` is treated as referencing the entity's value before the update. To support the evaluation of such rules, the entity value before the update is captured and passed as the `preValue` field in the context object passed to the checker function.
-
-### Auxiliary Fields
-
-:::info
-The newest release of ZenStack doesn't rely on the auxiliary fields for policy checks anymore. This section is kept only for reference and will be removed in the future.
-:::
-
-When ZModel is transpiled to Prisma schema, two auxiliary fields are added to each model:
-
--   `zenstack_guard`: Boolean, defaults to `true`
-
-    This field facilitates the evaluation of boolean expressions that don't involve a model field. E.g.,
-
-    ```ts
-    auth().role == 'admin';
-    ```
-
-    is (conceptually) translated to the following Prisma condition:
-
-    ```ts
-    {
-        where: {
-            zenstack_guard: user.role == 'admin';
-        }
-    }
-    ```
-
--   `zenstack_transaction`: String, nullable
-
-    This field facilitates "create" and "post-update" rule checks. When conducting mutation with Prisma, it's not always straightforward to determine which entities are affected. For example, you can do a deeply nested update from a top-level entity; or an `upsert` with which there's no direct way to tell if an entity is updated or created.
-
-    To support such cases, we use a transaction to wrap the mutation and set the `zenstack_transaction` field to a unique value containing a CUID and the operation (e.g., "create:clg4szzhq000008jf6ppybhb6"). Then, when checking rules, we can query the database (inside the transaction) to find out which entities are affected by the mutation.
-
-The auxiliary fields add some storage and computation overheads to the database, and we can consider optimizing their usage or even removing them in the future.

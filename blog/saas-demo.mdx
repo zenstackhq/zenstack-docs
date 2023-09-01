@@ -304,7 +304,7 @@ function User_read(context: QueryContext): any {
                             is: {
                                 members: {
                                     some: !user
-                                        ? { zenstack_guard: false }
+                                        ? { OR: [] } // false condition
                                         : {
                                               user: {
                                                   is: {
@@ -321,7 +321,7 @@ function User_read(context: QueryContext): any {
                 },
             },
             !user
-                ? { zenstack_guard: false }
+                ? { OR: [] } // false condition
                 : {
                       id: {
                           equals: user ? user.id : null,
