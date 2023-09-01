@@ -1206,7 +1206,7 @@ Field-level access policies are defined with `@allow` and `@deny` attributes. Th
 
 The signatures of the attributes are:
 
--   `@@allow`
+-   `@allow`
 
     ```zmodel
         attribute @allow(_ operation: String, _ condition: Boolean)
@@ -1219,7 +1219,7 @@ The signatures of the attributes are:
     | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
--   `@@deny`
+-   `@deny`
 
     ```zmodel
         attribute @deny(_ operation: String, _ condition: Boolean)
