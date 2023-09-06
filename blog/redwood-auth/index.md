@@ -170,13 +170,13 @@ We can adopt it in two steps:
 1. Add a helper to create an enhanced client for the current user
 
     ```js title='api/src/lib/db.js'
-    import { withPolicy } from '@zenstackhq/runtime';
+    import { enhance } from '@zenstackhq/runtime';
 
     /*
      * Returns ZenStack wrapped Prisma Client with access policies enabled.
      */
     export function authDb() {
-      return withPolicy(db, { user: context.currentUser });
+      return enhance(db, { user: context.currentUser });
     }
 
     ```

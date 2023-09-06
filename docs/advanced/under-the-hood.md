@@ -98,9 +98,10 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
 The primary responsibility of ZenStack's runtime is to create _enhanced_ Prisma client instances:
 
+-   `enhance` creates an enhanced client that includes all behaviors below.
+-   `withPolicy` creates an enhanced client that enforces access policies expressed with `@@allow` and `@@deny` attributes.
 -   `withPassword` creates an enhanced client that automatically hashes fields marked with the `@password` attribute before storing them in the database.
 -   `withOmit` creates an enhanced client that automatically strips fields marked with the `@omit` attribute before returning to the caller.
--   `withPolicy` creates an enhanced client that enforces access policies expressed with `@@allow` and `@@deny` attributes.
 
 ### Proxies
 

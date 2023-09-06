@@ -65,8 +65,8 @@ const posts = await prisma.post.findMany();
 assert(posts.length == 2, 'should return all posts');
 
 // create a policy-enhanced wrapper with a user context for user#1
-import { withPolicy } from '@zenstackhq/runtime';
-const enhanced = withPolicy(prisma, { user: { id: 1 }});
+import { enhance } from '@zenstackhq/runtime';
+const enhanced = enhance(prisma, { user: { id: 1 }});
 
 // even without any filtering, the call below only returns
 // posts that're readable by user#1, i.e., [post#1]
