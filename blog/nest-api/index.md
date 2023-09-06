@@ -140,7 +140,7 @@ A few examples:
 
       return this.prismaService.post.findMany({
         where: { AND: [searchFilter, authFilter] },
-        // make sure to exclude "email" field
+        // make sure to exclude "email" field; needed in all routes that fetch posts
         include: { author: { select: { id: true, name: true, role: true } } },
         ...
       });
@@ -352,7 +352,7 @@ After running `npx zenstack generate` again, you can serve the spec through a "d
 
 ## Conclusion
 
-Thank you for taking time to read this article. The completed project with the implementation of the three approaches can be found here: [https://github.com/ymc9/nestjs-prisma-blog-app](https://github.com/ymc9/nestjs-prisma-blog-app).
+Thank you for taking time to read this article. The completed project with the implementation of the three approaches can be found here: [https://github.com/ymc9/nestjs-prisma-blog-app](https://github.com/ymc9/nestjs-prisma-blog-app). You can also find a more complex SaaS-like example in [this blog post](https://zenstack.dev/blog/saas-backend).
 
 These approaches progressively reduce the amount of code we write and delegate more work to the toolkit. Which one is better might be more a matter of taste. Some prefer verbosity over hidden magic, while others cannot resist elegance and exquisiteness. Join our [discord server](https://discord.gg/Ykhr738dUe) to share your thoughts! If you find the ideas behind ZenStack interesting, please [give it a star](https://github.com/zenstackhq/zenstack) so more people can find it.
 
