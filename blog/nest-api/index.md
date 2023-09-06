@@ -10,9 +10,9 @@ image: ./cover.png
 
 ![Cover image](cover.png)
 
-NestJS is a great framework. It's versatile, rock solid, and thoroughly documented. You can build pretty much any kind of backend with it: RESTful, GraphQL, WebSocket, Microservice, etc. Among everything, building APIs above databases is still one of the top tasks of backend developers. With the rise of Prisma ORM, more and more people are pairing it with NestJS to get the job done - more easily and pleasantly, thanks to Prisma's awesome DX.
+NestJS is a great framework. It's versatile, rock solid, and thoroughly documented. You can build pretty much any backend with it: RESTful, GraphQL, WebSocket, Microservice, etc. Among everything, building APIs above databases is still one of the top tasks of backend developers. With the rise of Prisma ORM, more and more people are pairing it with NestJS to get the job done - more efficiently and pleasantly, thanks to Prisma's superb DX.
 
-If that's the combo you're using or plan to use, you can't miss this article. I'll demonstrate three different approaches of building a secure RESTful API, starting the most traditional one, and then progressively show how to reduce the amount of code that we write and yet achieve a better result.
+You can't miss this article if that's the combo you're using or plan to use. I'll demonstrate three approaches to building a secure RESTful API, starting with the most traditional one, and then progressively show how to reduce the amount of code we write and achieve a better result.
 
 <!--truncate-->
 
@@ -20,13 +20,13 @@ Let's get started 🚀
 
 ## The Story
 
-We'll use a simple blogging app as an example thought out this article. Our work will be based on the NestJS + Prisma starter project [here](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nestjs). You can also create a new project from it with a one liner:
+We'll use a simple blogging app as an example through out this article. Our work will be based on the NestJS + Prisma starter project [here](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nestjs). You can also create a new project from it with a one liner:
 
 ```bash
 npx try-prisma@latest --template typescript/rest-nestjs
 ```
 
-The project has a `PrismaService` configured for database access, and also implemented a few basic CRUD endpoints for listing users, posts, and managing the published status of posts. However, the API is incomplete because there's no access control to the endpoints. Anyone can do anything.
+The project has a `PrismaService` configured for database access and implemented a few basic CRUD endpoints for listing users and posts and managing the published status of posts. However, the API is incomplete because there's no access control to the endpoints. Anyone can do anything.
 
 To turn it into a more meaningful real-world API, let's assume the following requirements:
 
@@ -35,17 +35,17 @@ To turn it into a more meaningful real-world API, let's assume the following req
 1. Everyone can create an account.
 1. User profiles are readable to everyone except for the `email` field.
 1. Users can only update profiles that belong to them.
-1. Users have two different roles: `USER` and `EDITOR`. See below for differences.
+1. Users have two roles: `USER` and `EDITOR`. See below for differences.
 
 **Posts:**
 
-1. Users with `USER` role has full access to their own posts, except that they can't update the `published` field. They have no write access to other users' posts.
-1. Users with `EDITOR` role has full access to all posts including updating the `published` field.
+1. Users with `USER` role have full access to their own posts, except that they can't update the `published` field. They have no write access to other users' posts.
+1. Users with `EDITOR` role have full access to all posts, including updating the `published` field.
 1. Published posts are readable to everyone.
 
-For the sake of brevity, we're not going to implement a real authentication module in this article. Instead, we'll use the "x-user-id" HTTP header to identify the current user, and the "x-user-role" header to identify the role. In a real-world application, you can use a signed JWT token to replace the implementation.
+We won't implement an actual authentication module in this article for brevity. Instead, we'll use the "x-user-id" HTTP header to identify the current user and the "x-user-role" header to determine the role. You can use a signed JWT token to replace the implementation in a real-world application.
 
-Here's how our Prisma schema looks like:
+Here's how our Prisma schema looks:
 
 ```zmodel
 model User {
@@ -70,11 +70,10 @@ model Post {
 
 ## The Traditional Way
 
-The most straightforward way to implement the business rules is, of course, to just implement it. First we can make our lives a bit easier by extracting user identity from a central place and store it into Async Context so we don't need to pass it around everywhere. The [`nest-cls`](https://papooch.github.io/nestjs-cls/introduction/quick-start) package came in handy for this. First, register its middleware to the root module:
+The most straightforward way to implement the business rules is, of course, to implement them. First, we can make our lives a bit easier by extracting user identity from a central place and storing it in [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage) so we don't need to pass it around everywhere. The [`nest-cls`](https://papooch.github.io/nestjs-cls/introduction/quick-start) package came in handy. First, register its middleware to the root module:
 
 ```ts
 import { ClsModule } from 'nestjs-cls';
-import { CrudMiddleware } from './crud.middleware';
 
 @Module({
   imports: [
@@ -99,7 +98,7 @@ export class AppModule implements NestModule {
 }
 ```
 
-Then we can inject the `ClsService` into controllers and services where we need the identity. We need to add code for proper permission checking and filtering in many places to achieve the requirements. 
+Then, we can inject the `ClsService` into controllers and services where we need the identity. To achieve the requirements, we must add code for proper permission checking and filtering in many places.
 
 A few examples:
 
@@ -115,7 +114,7 @@ A few examples:
     }
     ```
 
-1. Filter for `published` posts when listing and also make sure author emails are not exposed
+1. Filter for readable posts when listing and also make sure author emails are not exposed
 
     ```ts
     private get currentUser() {
@@ -134,7 +133,7 @@ A few examples:
         : { published: true };
     }
 
-    @Get('feed')
+    @Get('post')
     async getFilteredPosts(...): Promise<PostModel[]> {
       const searchFilter = ...; // search conditions for filtering title, etc.
       const authFilter = this.makePostAuthFilter();
@@ -160,7 +159,7 @@ A few examples:
     }
     ```
 
-I'm not sure how you feel, but I don't enjoy writing these intricate conditions. It's just too easy to make miss things and end up with releasing an insecure API. There ought to be a way to define them in a more centralized and declarative way.
+I'm not sure how you feel, but I don't enjoy writing these intricate conditions. It's too easy to miss things and end up releasing an insecure API. There should be a way to define them more centrally and declaratively.
 
 ## The Declarative Way
 
