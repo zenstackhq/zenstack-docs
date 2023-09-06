@@ -163,7 +163,7 @@ I'm not sure how you feel, but I don't enjoy writing these intricate conditions.
 
 ## The Declarative Way
 
-Before getting into details, I need to introduce a new thing called [ZenStack](https://github.com/zenstackhq/zenstack) first. ZenStack is a toolkit built above Prisma and makes it a more powerful weapon for full-stack development. One of the main extensions it made to Prisma is the introduction of access policies. It uses a separate DSL called ZModel to model both data schema and access policies, and under the hood, generates a Prisma schema and other code that helps enforces such policies at runtime.
+Before getting into details, I need to introduce a new thing called [ZenStack](https://github.com/zenstackhq/zenstack) first. ZenStack is a toolkit built above Prisma, and makes it a more powerful weapon for full-stack development. One of the main extensions it made to Prisma was the introduction of access policies. It uses a separate DSL called ZModel to model both data schema and access policies. Under the hood, it generates a Prisma schema and other code that helps enforces such policies at runtime.
 
 Here's how our requirements can be modeled in ZModel:
 
@@ -198,14 +198,14 @@ Quick notes for each of the rules (marked #N) above:
 
 1. Only the users can see their own email address. `auth()` is a built-in function that returns the current user.
 1. Users have full access to their own profiles.
-1. Other users can read all profiles (except for the `email` field, see #1).
+1. Other users can read all profiles (except for the `email` field; see #1).
 1. The `published` field can only be updated by users with `EDITOR` role.
 1. Author and "EDITOR" users have full access.
 1. Published posts are readable to everyone.
 
 You can then run `npx zenstack generate` to generate the Prisma schema and other supporting code.
 
-You might have many questions in your mind right now. How does it work at runtime? Where does the value for `auth()` come from? Let's see how to get things hooked up.
+You may have many questions right now. How does it work at runtime? Where does the value for `auth()` come from? Let's see how to get things hooked up.
 
 The first step is to create a new `EnhancedPrismaService` as a wrapper to our existing `PrismaService`:
 
@@ -224,10 +224,7 @@ export class EnhancedPrismaService {
   ) {}
 
   private get enhancedPrisma() {
-    const id = this.clsService.get('userId');
-    const role = this.clsService.get('userRole') ?? 'USER';
-    const user = id ? { id: Number(id), role } : undefined;
-    return enhance(this.prismaService, { user });
+    return enhance(this.prismaService, { user: this.clsService.get('user') });
   }
 
   get user(): PrismaClient['user'] {
@@ -239,11 +236,11 @@ export class EnhancedPrismaService {
 }
 ```
 
-The key to the wrapping is the call to the `enhance` API provided by ZenStack. It creates a transparent proxy around an existing PrismaClient, intercept CRUD calls and injects filtering and checking to enforce the access policies. The API is called with a "user" context object to represent the current user, which in turn provides value to the `auth()` function call used in our access policy rules.
+The key to the wrapping is the call to the `enhance` API provided by ZenStack. It creates a transparent proxy around an existing PrismaClient, intercepts CRUD calls, and injects filtering and checking to enforce the access policies. The API is called with a "user" context object to represent the current user, which provides value to the `auth()` function call used in our access policy rules.
 
-As a result, when we call `enhancedPrisma.post.findMany(...)`, only posts readable to the current user are returned even if you don't provide any filter. Also, when we call `enhancedPrisma.post.update(...)`, the call will be rejected with an error if the current user doesn't have the permission to update the post.
+As a result, when we call `enhancedPrisma.post.findMany(...)`, only posts readable to the current user are returned even if you don't provide any filter. Also, when we call `enhancedPrisma.post.update(...)`, the call will be rejected with an error if the current user doesn't have permission to update the post.
 
-To use this new setup, the only thing we need to do is to replace the injected `PrismaService` with `EnhancedPrismaService` in our controllers, and use it for all CRUD operations. We can then remove all authorization checks and filtering from the controller, and everything just works automatically.
+To use this new setup, we only need to replace the injected `PrismaService` with `EnhancedPrismaService` in our controllers and use it for all CRUD operations. We can then remove all authorization checks and filtering from the controller; everything works automatically.
 
 ```ts
 export class DeclarativeController {
@@ -251,7 +248,8 @@ export class DeclarativeController {
 
   @Get('users')
   async getAllUsers() {
-    // just do a simple `findMany` call, the `email` field is automatically excluded based on the access policy
+    // just do a simple `findMany` call, the `email` field is automatically 
+    // excluded based on the access policy
     return this.enhancedPrisma.user.findMany();
   }
 
@@ -270,7 +268,7 @@ export class DeclarativeController {
 }
 ```
 
-By moving authorization into the schema declaratively, we've make our controller code much cleaner. What's even better is that, if you need to add more API endpoints in the future, as long as the security requirements don't change, the access policies will continue protecting them without any extra work.
+By moving authorization into the schema declaratively, we've made our controller code much cleaner. Even better, if you need to add more API endpoints in the future, as long as the security requirements don't change, the access policies will continue protecting them without any extra work.
 
 Your schema has become the single source of truth for your data and their rules.
 
@@ -278,9 +276,9 @@ Your schema has become the single source of truth for your data and their rules.
 
 > By letting go it all gets done. - *Lao Tzu*
 
-We've made some significant progress by moving access policies into the schema. However, after removing authorization code from the controller, have you noticed that the controller itself now looks boilerplate-ish?
+We've made some significant progress by moving access policies into the schema. However, after removing the authorization code from the controller, have you noticed the controller itself now looks boilerplate-ish?
 
-In the final approach, let's completely remove the controller! We'll use ZenStack's other feature to automatically install a full-fledged RESTful CRUD API for us. ZenStack provides a built-in ExpressJS middleware to install CRUD APIs for our models in the schema. Since NestJS (by default) uses Express to handle HTTP requests, we can just use the middleware directly with some simple dependency-injection wrapper code.
+In the final approach, let's completely remove the controller! We'll use ZenStack's other feature to install a full-fledged RESTful CRUD API automatically. ZenStack provides a built-in ExpressJS middleware to provide CRUD APIs for our models in the schema. Since NestJS (by default) uses Express to handle HTTP requests, we can use the middleware directly with some simple dependency-injection wrapper code.
 
 First, implement a NextJS middleware that wraps the ZenStack's Express middleware:
 
@@ -290,13 +288,14 @@ import { enhance } from '@zenstackhq/runtime';
 import RESTHandler from '@zenstackhq/server/api/rest';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import { Request, Response } from 'express';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class CrudMiddleware implements NestMiddleware {
-  constructor(private readonly enhancedPrisma: EnhancedPrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   use(req: Request, _res: Response, next: (error?: any) => void) {
+    // base url for RESTful resource linkage
     const baseUrl = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
 
     // get the current user from request
@@ -326,7 +325,7 @@ export class AppModule implements NestModule {
 }
 ```
 
-That's it! Now we have a full set of RESTful CRUD APIs at "/api/zen" that conforms to the [JSON:API](https://jsonapi.org/) specification, and the APIs are fully protected by the access policies. The API provides rich filtering and relation-fetching capabilities. The following are some examples and you can find more details [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest#endpoints-and-features).
+That's it! Now we have a complete set of RESTful CRUD APIs at "/api/zen" that conforms to the [JSON:API](https://jsonapi.org/) specification, and the access policies fully protect the APIs. The API provides rich filtering and relation-fetching capabilities. The following are some examples; you can find more details [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest#endpoints-and-features).
 
 ```bash
 # Fetch posts together with their authors
@@ -339,7 +338,7 @@ GET /api/zen/post/1/author
 GET /api/zen/post?filter[title$contains]=hello
 ```
 
-A RESTful API is not complete without an OpenAPI specification. To get that, simply turn on the `@zenstackhq/openapi` plugin in your ZModel file:
+A RESTful API is only complete with an OpenAPI specification. To get that, simply turn on the `@zenstackhq/openapi` plugin in your ZModel file:
 
 ```zmodel title="/schema.zmodel"
 plugin openapi {
@@ -349,12 +348,12 @@ plugin openapi {
 }
 ```
 
-After running `npx zenstack generate` again, you can serve spec through a "docs" endpoint or load it into SwaggerUI.
+After running `npx zenstack generate` again, you can serve the spec through a "docs" endpoint or load it into SwaggerUI.
 
 ## Conclusion
 
-Thank you for taking time to read this article. The completed project including the three approaches can be found here: [https://github.com/ymc9/nestjs-prisma-blog-app](https://github.com/ymc9/nestjs-prisma-blog-app).
+Thank you for taking time to read this article. The completed project with the implementation of the three approaches can be found here: [https://github.com/ymc9/nestjs-prisma-blog-app](https://github.com/ymc9/nestjs-prisma-blog-app).
 
-These approaches progressively reduce the amount of code that we write and delegate more work to the toolkit. Which one is really better might be more a matter of taste. Some peoople prefer verbosity over hidden magic, which others are unable to resist elegancy and exquisiteness. Join our [discord server](https://discord.gg/Ykhr738dUe) to share your thoughts! If you find the ideas behind ZenStack interesting, please [give it a star](https://github.com/zenstackhq/zenstack) so more people can find it.
+These approaches progressively reduce the amount of code we write and delegate more work to the toolkit. Which one is better might be more a matter of taste. Some prefer verbosity over hidden magic, while others cannot resist elegance and exquisiteness. Join our [discord server](https://discord.gg/Ykhr738dUe) to share your thoughts! If you find the ideas behind ZenStack interesting, please [give it a star](https://github.com/zenstackhq/zenstack) so more people can find it.
 
 Happy coding!
