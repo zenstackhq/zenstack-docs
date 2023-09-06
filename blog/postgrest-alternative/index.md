@@ -198,7 +198,7 @@ model Post {
 At runtime, ZenStack creates a transparent proxy around a regular Prisma client and injects proper filtering and checks to enforce access policies. For example, when you run the following code:
 
 ```ts
-const posts = await withPolicy(prisma, {user: session.user}).post.findMany();
+const posts = await enhance(prisma, {user: session.user}).post.findMany();
 ```
 
 , only posts readable to the current user are returned.
@@ -209,7 +209,7 @@ Furthermore, it provides server adapters to install an automatic CRUD service to
 app.use(
     '/api/data',
     ZenStackMiddleware({
-        getPrisma: (request) => withPolicy(prisma, { user: getSessionUser(request) }),
+        getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
     })
 );
 ```

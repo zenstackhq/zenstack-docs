@@ -184,7 +184,7 @@ Next, add two helper methods to get a Prisma client that's bound to the current 
 
 ```ts title='/src/index.ts'
 import { Request } from 'express';
-import { withPolicy } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 
 function getUserId(req: Request) {
     return parseInt(req.header('X-USER-ID')!);
@@ -194,15 +194,13 @@ function getUserId(req: Request) {
 function getPrisma(req: Request) {
     const userId = getUserId(req);
     const user = Number.isNaN(userId) ? undefined : { id: userId };
-    return withPolicy(prisma, {
-        user,
-    });
+    return enhance(prisma, { user });
 }
 ```
 
 :::tip
 
-`withPolicy` is a ZenStack runtime API that wraps a Prisma client and enhances it with access policy checks.
+`enhance` is a ZenStack runtime API that wraps a Prisma client and enhances it with access policy checks.
 
 :::
 

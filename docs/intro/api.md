@@ -15,7 +15,7 @@ Let's see how it works using Express as an example.
 ```ts title='app.ts'
 
 import { PrismaClient } from '@prisma/client';
-import { withPolicy } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import express from 'express';
 import { getSessionUser } from './auth'
@@ -34,7 +34,7 @@ const options = {
         const user = getSessionUser(request);
 
         // return a policy-enhanced Prisma Client
-        return withPolicy(prisma, { user });
+        return enhance(prisma, { user });
     }
 }
 

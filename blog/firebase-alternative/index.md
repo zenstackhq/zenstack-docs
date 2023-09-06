@@ -343,7 +343,7 @@ export function Posts(user: User) {
 In our alternative solution, we can achieve a better result using Next.js + ZenStack. First, install an automatic CRUD API provided by ZenStack as a Next.js API route:
 
 ```ts title="src/pages/api/model/[...path].ts"
-import { withPolicy } from "@zenstackhq/runtime";
+import { enhance } from "@zenstackhq/runtime";
 import { NextRequestHandler } from "@zenstackhq/server/next";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerAuthSession } from "../../../server/auth";
@@ -352,7 +352,7 @@ import { prisma } from "../../../server/db";
 async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerAuthSession({ req, res });
   // create a wrapper of Prisma client that enforces access policy
-  return withPolicy(prisma, { user: session?.user });
+  return enhance(prisma, { user: session?.user });
 }
 
 export default NextRequestHandler({ getPrisma });
