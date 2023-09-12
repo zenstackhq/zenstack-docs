@@ -257,7 +257,7 @@ export class DeclarativeController {
   async getFilteredPosts(...): Promise<PostModel[]> {
     const searchCondition = ...; // search conditions for filtering title, etc.
 
-    return this.prismaService.post.findMany({
+    return this.enhancedPrisma.post.findMany({
       // no need to filter for "published: true" or current user anymore
       where: searchCondition,
       // no need to exclude `email` field anymore
