@@ -67,6 +67,8 @@ export default MyApp;
 
 Here's a quick example with a blogging app. You can find a fully functional Todo app example [here](https://github.com/zenstackhq/sample-todo-nextjs).
 
+### Schema
+
 ```zmodel title='/schema.zmodel'
 plugin hooks {
   provider = '@zenstackhq/swr'
@@ -96,6 +98,8 @@ model Post {
   @@allow('read', auth() != null && published)
 }
 ```
+
+### Using Query and Mutation Hooks
 
 ```tsx title='/src/components/posts.tsx'
 import type { Post } from '@prisma/client';
@@ -130,6 +134,60 @@ const Posts = ({ userId }: { userId: string }) => {
                     </li>
                 ))}
             </ul>
+        </>
+    );
+};
+```
+
+### Using Infinite Query
+
+See [SWR's documentation](https://swr.vercel.app/docs/pagination) for more details.
+
+```tsx title='/src/components/posts.tsx'
+import type { Post } from '@prisma/client';
+import { useInfiniteFindManyPost } from '../lib/hooks';
+
+// post list component with infinite loading
+const Posts = ({ userId }: { userId: string }) => {
+
+    const PAGE_SIZE = 10;
+
+    const { data: pages, size, setSize } = useInfiniteFindManyPost(
+        (pageIndex, previousPageData) => {
+            if (previousPageData && !previousPageData.length) {
+                return null;
+            }
+            return {
+                include: { author: true },
+                orderBy: { createdAt: 'desc' },
+                take: PAGE_SIZE,
+                skip: pageIndex * PAGE_SIZE,
+            };
+        }
+    );
+
+    const isEmpty = pages?.[0]?.length === 0;
+    const isReachingEnd = isEmpty || (pages && pages[pages.length - 1].length < PAGE_SIZE);
+
+    return (
+        <>
+            <ul>
+                {pages?.map((posts, index) => (
+                    <React.Fragment key={index}>
+                        {posts?.map((post) => (
+                            <li key={post.id}>
+                                {post.title} by {post.author.email}
+                            </li>
+                        ))}
+                    </React.Fragment>
+                ))}
+            </ul>
+
+            {!isReachingEnd && (
+                <button onClick={() => setSize(size + 1)}>
+                    Load more
+                </button>
+            )}
         </>
     );
 };
