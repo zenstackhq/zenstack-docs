@@ -20,6 +20,7 @@ Options:
   -h, --help             display help for command
 
 Commands:
+  info [path]            Get information of installed ZenStack and related packages.
   init [options] [path]  Initialize an existing project for ZenStack.
   generate [options]     Generates RESTful API and Typescript client for your data model.
   help [command]         display help for command
@@ -47,7 +48,7 @@ zenstack init [options] [path]
 | --------------------- | ------------------------------------------------ | ----------------------------------------- |
 | --prisma              | location of Prisma schema file to bootstrap from | &lt;project path&gt;/prisma/schema.prisma |
 | -p, --package-manager | package manager to use: "npm", "yarn", or "pnpm" | auto detect                               |
-| -c, --config [file]   | see [here](#config-file) for details             | zenstack.config.json                      |
+| --no-version-check    | do not check for new versions of ZenStack        | false                  |
 
 #### Examples
 
@@ -71,13 +72,22 @@ Generates Prisma schema and other artifacts as specified by "plugin"s in ZModel.
 zenstack generate [options]
 ```
 
+#### Arguments
+
+| Name | Description  | Default        |
+| ---- | ------------ | -------------- |
+| path | Project path | current folder |
+
 #### Options
 
-| Name                  | Description                                      | Default              |
-| --------------------- | ------------------------------------------------ | -------------------- |
-| --schema              | schema file (with extension .zmodel)             | ./schema.zmodel      |
-| -p, --package-manager | package manager to use: "npm", "yarn", or "pnpm" | auto detect          |
-| -c, --config [file]   | see [here](#config-file) for details             | zenstack.config.json |
+| Name                  | Description                                      | Default                |
+| --------------------- | ------------------------------------------------ | ---------------------- |
+| --schema              | schema file (with extension .zmodel)             | ./schema.zmodel        |
+| -p, --package-manager | package manager to use: "npm", "yarn", or "pnpm" | auto detect            |
+| -o, --output &lt;path&gt;   | default output directory for built-in plugins    | node_modules/.zenstack |
+| --no-default-plugins  | do not automatically run built-in plugins        | false                  |
+| --no-compile          | do not compile the output of built-in plugins    | false                  |
+| --no-version-check    | do not check for new versions of ZenStack        | false                  |
 
 #### Examples
 
@@ -107,11 +117,11 @@ zenstack info [options] [path]
 | ---- | ------------ | -------------- |
 | path | Project path | current folder |
 
-### Config file
+<!-- ### Config file
 
 ZenStack CLI loads configuration from `zenstack.config.json` file if it finds one. The config file path can be overridden with `--config` option.
 
 The config file is a JSON object with the following properties:
 
 | Name                 | Description                                                         | Default              |
-| -------------------- | ------------------------------------------------------------------- | -------------------- |
+| -------------------- | ------------------------------------------------------------------- | -------------------- | -->

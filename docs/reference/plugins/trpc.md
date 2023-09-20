@@ -134,8 +134,4 @@ export const appRouter = createCRUDRouter(t.router, t.procedure);
 export type AppRouter = typeof appRouter;
 ```
 
-:::info
-The generated tRPC routers use [`zod`](https://github.com/colinhacks/zod) for input validation. Howerver, zod had [a regression](https://github.com/colinhacks/zod/issues/2184) in version higher than "v3.21.1", causing the generated code fail to compile. Please make sure you use zod version <= "v3.21.1".
-:::
-
 Check out the [Using With tRPC](/docs/guides/trpc) guide for more details about using ZenStack in a tRPC project.

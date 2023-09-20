@@ -13,10 +13,6 @@ The `@core/zod` plugin generates [Zod](https://github.com/colinhacks/zod) schema
 You need to explicitly enable `@core/zod` plugin if you use the [Express.js](/docs/reference/server-adapters/express) or [Fastify](/docs/reference/server-adapters/fastify) server adapter with `zodSchemas` option enabled.
 :::
 
-:::info
-Zod had [a regression](https://github.com/colinhacks/zod/issues/2184) in version higher than "v3.21.1", causing the generated code fail to compile. Please make sure you use zod version <= "v3.21.1".
-:::
-
 By default, the Zod schemas are generated into `node_modules/.zenstack/zod` directory, and are reexported through `@zenstackhq/runtime/zod`. If you configure the plugin to output to a custom location, you can just directly import from there.
 
 The generated schemas have the following three parts:
@@ -53,6 +49,7 @@ The generated schemas have the following three parts:
 | modelOnly | Boolean | Only generate schemas for the models, but not for the Prisma CRUD input arguments | No | false |
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
+| noUncheckedInput | Boolean | Disables schema generation for Prisma's ["Unchecked"](https://github.com/prisma/prisma/discussions/10121#discussioncomment-1621254) input types | No | false |
 
 ## Example
 

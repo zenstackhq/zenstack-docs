@@ -16,5 +16,28 @@ The enhanced Prisma client can throw extra errors when an operation is rejected 
 throw new PrismaClientKnownRequestError(message, {
     clientVersion: getVersion(),
     code: 'P2004',
+    meta: ...
 });
 ```
+
+The error contains a `meta` field providing more information about the error. It contains the following fields:
+
+- `reason`
+    
+    A string field indicating the detailed reason of the rejection. Its value can be one of the following:
+
+    - *ACCESS_POLICY_VIOLATION*
+  
+        CRUD failed because of access policy violation.
+
+    - *RESULT_NOT_READABLE*
+  
+        CRUD succeeded but the result was not readable (violating "read" access policies).
+
+    - *DATA_VALIDATION_VIOLATION*
+    
+        CRUD failed because of a [field validation](/docs/reference/zmodel-language#field-validation) error.
+
+- `zodErrors`
+  
+    An object field containing the raw Zod validation errors. Only present if the `reason` is `DATA_VALIDATION_VIOLATION`. See [Zod documentation](https://zod.dev/?id=error-handling) for more details.

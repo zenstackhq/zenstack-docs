@@ -220,7 +220,7 @@ export default config;
 
 </Tabs>
 
-### Component
+### Using Query and Mutation Hooks
 
 <Tabs>
 <TabItem value="react" label="React">
@@ -274,7 +274,7 @@ const Posts = ({ userId }: { userId: string }) => {
 
     export let userId: string;
 
-    const posts = useFindManyPost();
+    const query = useFindManyPost();
     const create = useCreatePost();
 
     function onCreatePost() {
@@ -290,10 +290,125 @@ const Posts = ({ userId }: { userId: string }) => {
 <div>
     <button on:click={onCreatePost}>Create</button>
     <ul>
-        {#each $posts as post (post.id))}
+        {#each $query.data as post (post.id)}
             <li>{post.title} by {post.author.email}</li>
         {/each}
     </ul>
+</div>
+```
+
+</TabItem>
+</Tabs>
+
+### Using Infinite Query
+
+<Tabs>
+<TabItem value="react" label="React">
+
+See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/react/guides/infinite-queries) for more details.
+
+```tsx title='/src/components/Posts.tsx'
+import type { Post } from '@prisma/client';
+import { useInfiniteFindManyPost } from '../lib/hooks';
+
+// post list component with infinite loading
+const Posts = () => {
+    const PAGE_SIZE = 10;
+
+    const fetchArgs = {
+        include: { author: true },
+        orderBy: { createdAt: 'desc' as const },
+        take: PAGE_SIZE,
+    };
+
+    const { data, fetchNextPage, hasNextPage } = useInfiniteFindManyPost(fetchArgs, {
+        getNextPageParam: (lastPage, pages) => {
+            if (lastPage.length < PAGE_SIZE) {
+                return undefined;
+            }
+            const fetched = pages.flatMap((item) => item).length;
+            return {
+                ...fetchArgs,
+                skip: fetched,
+            };
+        },
+    });    
+
+    return (
+        <>
+            <ul>
+                {data?.pages.map((posts, i) => (
+                    <React.Fragment key={i}>
+                        {posts?.map((post) => (
+                            <li key={post.id}>
+                                {post.title} by {post.author.email}
+                            </li>
+                        ))}
+                    </React.Fragment>
+                ))}
+            </ul>
+            {hasNextPage && (
+                <button onClick={() => fetchNextPage()}>
+                    Load more
+                </button>
+            )}
+        </>
+    );
+};
+```
+
+</TabItem>
+
+<TabItem value="svelte" label="Svelte">
+
+See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/svelte/examples/svelte/load-more-infinite-scroll) for more details.
+
+```svelte title='/src/components/Posts.svelte'
+<script lang="ts">
+    // post list component with infinite loading
+
+    import type { Post } from '@prisma/client';
+    import { useInfiniteFindManyPost } from '../lib/hooks';
+
+    const PAGE_SIZE = 10;
+
+    const fetchArgs = {
+        include: { author: true },
+        orderBy: { createdAt: 'desc' as const },
+        take: PAGE_SIZE,
+    };
+
+    const query = useInfiniteFindManyPost(fetchArgs, {
+        getNextPageParam: (lastPage, pages) => {
+            if (lastPage.length < PAGE_SIZE) {
+                return undefined;
+            }
+            const fetched = pages.flatMap((item) => item).length;
+            return {
+                ...fetchArgs,
+                skip: fetched,
+            };
+        },
+    });    
+</script>
+
+<div>
+    <ul>
+        <div>
+            {#if $query.data}
+                {#each $query.data.pages as posts, i (i)}
+                    {#each posts as post (post.id)}
+                        <li>{post.title} by {post.author.email}</li>
+                    {/each}
+                {/each}
+            {/if}
+        </div>
+    </ul>
+    {#if $query.hasNextPage}
+        <button on:click={() => $query.fetchNextPage()}>
+            Load more
+        </button>
+    {/if}
 </div>
 ```
 
