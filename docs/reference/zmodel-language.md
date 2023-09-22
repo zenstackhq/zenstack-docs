@@ -189,8 +189,8 @@ plugin [PLUGIN_NAME] {
 ### Example
 
 ```zmodel
-plugin reactHooks {
-    provider = '@zenstackhq/react'
+plugin swr {
+    provider = '@zenstackhq/swr'
     output = 'lib/hooks'
 }
 ```

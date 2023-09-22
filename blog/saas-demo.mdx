@@ -437,10 +437,10 @@ NEXTAUTH_SECRET = abc123;
 
 ZenStack has built-in support for Next.js and can provide database CRUD services automatically, so you don't need to write it yourself.
 
-First install the `@zenstackhq/next`and `@zenstackhq/react`packages:
+First install the `@zenstackhq/next`and `@zenstackhq/swr`packages:
 
 ```bash
-npm install @zenstackhq/next @zenstackhq/react
+npm install @zenstackhq/next @zenstackhq/swr
 ```
 
 Let’s create a new file `src/server/enhanced-db.ts`
@@ -482,8 +482,8 @@ The `/api/model` route is now ready to access database queries and mutation req
 Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
 
 ```tsx
-plugin reactHooks {
-  provider = '@zenstackhq/react'
+plugin swr {
+  provider = '@zenstackhq/swr'
   output = "./src/lib/hook
 }
 ```
