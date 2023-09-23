@@ -93,9 +93,9 @@ model Post {
   @@allow('read', auth() != null && published)
 }
 
-// generate react hooks under ./src/lib/hook
+// generate swr hooks under ./src/lib/hook
 plugin reactHooks {
-  provider = '@zenstackhq/react'
+  provider = '@zenstackhq/swr'
   output = "./src/lib/hook
 }
 

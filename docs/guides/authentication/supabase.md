@@ -71,7 +71,7 @@ With these in place, your own `User` table will be always in sync with Supabase 
 
 ### Creating an enhanced Prisma client
 
-To get ZenStack's access policies to work, you need to create an enhanced `PrismaClient` with a current user context. The way to fetch "current user" on the server side depends on the type of server you're using. Supabase provides a set of [auth helpers](https://supabase.com/docs/guides/auth/auth-helpers) for different frameworks. For example, if you're following [this guide] to use Supabase Auth with Next.js (app router), you can create an enhanced `PrismaClient` using `@supabase/auth-helpers-nextjs` like the following:
+To get ZenStack's access policies to work, you need to create an enhanced `PrismaClient` with a current user context. The way to fetch "current user" on the server side depends on the type of server you're using. Supabase provides a set of [auth helpers](https://supabase.com/docs/guides/auth/auth-helpers) for different frameworks. For example, if you're following [this guide](https://supabase.com/docs/guides/auth/auth-helpers/nextjs) to use Supabase Auth with Next.js (app router), you can create an enhanced `PrismaClient` using `@supabase/auth-helpers-nextjs` like the following:
 
 ```ts
 import { enhance } from '@zenstackhq/runtime';

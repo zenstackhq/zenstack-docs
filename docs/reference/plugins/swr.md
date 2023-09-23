@@ -6,8 +6,6 @@ sidebar_position: 5
 # @zenstackhq/swr
 
 :::info
-This package is in preview stage and will supersede [`@zenstackhq/react`](/docs/reference/plugins/react) plugin in the future.
-
 If you're looking for generating hooks for [Tanstack Query](https://tanstack.com/query/latest), please checkout the [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) plugin.
 :::
 
