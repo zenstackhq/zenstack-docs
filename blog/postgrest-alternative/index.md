@@ -114,7 +114,7 @@ model Post {
 }
 ```
 
-More pleasant, isn't it? You can find a more comprehensive introduction to ZenStack's access policies [here](/docs/guides/understanding-access-policy).
+More pleasant, isn't it? You can find a more comprehensive introduction to ZenStack's access policies [here](/docs/the-complete-guide/part1/access-policy/).
 
 Read on for more side-by-side comparisons.
 
@@ -220,4 +220,4 @@ The `/api/data` endpoint will then provide a full set of Prisma operations for e
 
 ## Wrap Up
 
-I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/category/quick-start) and [Guides](/docs/category/guides) pages for more details, and join our [Discord](https://discord.gg/Ykhr738dUe) for questions and updates!
+I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/quick-start) and [Guides](/docs/category/recipes) pages for more details, and join our [Discord](https://discord.gg/Ykhr738dUe) for questions and updates!

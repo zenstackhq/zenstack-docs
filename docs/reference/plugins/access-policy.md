@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # @core/access-policy
 
-The `@core/access-policy` plugin generates access policy guard objects from [policy rules](/docs/guides/understanding-access-policy) (defined using `@@allow` and `@@deny` attributes).
+The `@core/access-policy` plugin generates access policy guard objects from [policy rules](/docs/the-complete-guide/part1/access-policy/) (defined using `@@allow` and `@@deny` attributes).
 
 :::info
 This plugin is always automatically included when `zenstack generate` is run. You only need to add it to your ZModel if you want to customize its options.

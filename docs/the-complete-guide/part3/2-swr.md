@@ -1,5 +1,5 @@
 ---
-sidebar_label: 2.2 RPC
+sidebar_label: 2. SWR
 ---
 
 # Prisma Crash Course

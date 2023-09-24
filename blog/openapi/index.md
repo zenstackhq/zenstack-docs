@@ -431,7 +431,7 @@ The syntax for `@@allow` and `@@deny` is pretty self-explanatory. A few things t
 -   The `future()` function returns the entity value after an update is applied.
 -   The second `@@allow` rule on the `Pet` model looks a bit complex. It's needed because we want to disallow creating orders that include sold pets. On the database level, it means that the `orderId` field of `Pet` can only be updated if it's `null` (meaning it's not sold yet). We also used the `future()` function to disallow updates to other fields.
 
-You can learn more about access policies [here](https://zenstack.dev/docs/guides/understanding-access-policy).
+You can learn more about access policies [here](https://zenstack.dev/docs/the-complete-guide/part1/access-policy/).
 
 By declaratively defining access policies in the schema, you don't need to implement these rules in your API anymore. It's easier to ensure consistency, making the schema a single source of truth for your data's shape and security rules.
 
