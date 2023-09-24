@@ -16,28 +16,3 @@ As a workaround, use [interactive transactions](https://www.prisma.io/docs/conce
 ### MongoDB is not supported
 
 Right now, the focus of this project is SQL databases, and there's no plan to support MongoDB in the near future.
-
-### Comparison between fields in access policies
-
-Currently, it's not possible to compare fields in access policies expressions. For example, the following usages are not allowed yet, but will be supported in the future:
-
-```zmodel
-model A {
-    x Int
-    y Int
-    @@allow('read', x > y)
-}
-
-model B {
-    x String
-    y String
-    @@allow('read', contains(x, y))
-}
-
-model C {
-    x String
-    y String[]
-    @@allow('read', x in y)
-}
-```
-

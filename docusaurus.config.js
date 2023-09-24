@@ -82,7 +82,7 @@ const config = {
                 },
                 items: [
                     {
-                        to: 'docs/intro',
+                        to: 'docs/welcome',
                         position: 'left',
                         label: 'Get Started',
                     },
@@ -112,7 +112,7 @@ const config = {
                         items: [
                             {
                                 label: 'Get Started',
-                                to: '/docs/intro',
+                                to: '/docs/welcome',
                             },
                             {
                                 label: 'Reference',
