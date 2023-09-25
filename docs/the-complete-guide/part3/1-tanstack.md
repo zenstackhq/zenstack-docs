@@ -2,4 +2,4 @@
 sidebar_label: 1. TanStack Query
 ---
 
-# Prisma Crash Course
+# Generating TanStack Query Hooks
