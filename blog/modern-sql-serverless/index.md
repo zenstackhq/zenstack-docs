@@ -15,14 +15,14 @@ SQL databases have been powering the web since its inception. The combination of
 
 Under the flourishing surface, the new generation of modern SQL databases is renovating this 50-year-old technology and gradually reshaping how we use it to build web applications - what we do with it, how we manage it, and how we program against it. This series of articles tries to explore this topic from multiple fronts, including:
 
-- Serverless & Edge
-- Programmability
-- Integration with Development Flow
-- AI Capabilities
-
-<!-- truncate -->
+- **#1 Serverless & Edge (this post)**
+- [#2 New Ways to Program](/blog/modern-sql-programming)
+- #3 Integration with Development Flow (coming soon)
+- #4 AI Capabilities (coming soon)
 
 Let's talk about "Serverless" and "Edge-Ready" today.
+
+<!-- truncate -->
 
 ---
 
@@ -92,3 +92,7 @@ I hope you find the advances of these serverless and edge-ready databases as exc
 
 Meanwhile, being able to query from the edge doesn't mean you should just do it. "User-perceived performance" is an intricate topic, and you should always make a tailored decision based on your application's specific traits and, most importantly, thoroughly test it out in the real world.
 
+### The Full Series of *How Modern SQL Databases Are Changing Web Development*
+
+- [#1 Serverless & Edge](/blog/modern-sql-serverless)
+- [#2 New Ways to Program](/blog/modern-sql-programming)
