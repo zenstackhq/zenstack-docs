@@ -195,8 +195,6 @@ ADD
   COLUMN "ownerId" INTEGER;
 ```
 
-![Prisma Migration](prisma-migration.png)
-
 ## CRUD Operations
 
 Both Drizzle and Prisma provide fully-typed database client APIs. However, their philosophies are quite different.
