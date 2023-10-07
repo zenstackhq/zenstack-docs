@@ -15,9 +15,7 @@ For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution
 
 <!--truncate-->
 
-> *Disclaimer:*
-> 
-> I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack), a full-stack toolkit built on top of Prisma. I have more experience with Prisma than Drizzle, but I'll try my best to be objective and fair.
+> *Disclaimer:* I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack), a full-stack toolkit built on top of Prisma. I have more experience with Prisma than Drizzle, but I'll try my best to be objective and fair.
 
 ## Requirements
 
