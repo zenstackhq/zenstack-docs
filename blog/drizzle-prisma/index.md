@@ -109,7 +109,7 @@ export const posts = pgTable('posts', {
 
 Schema building is a whole different story for Prisma. It uses a DLS (Domain-Specific Language) for the job. You'll have to learn the syntax, but it's fairly intuitive and easy to pick up. Here's how the Prisma version of the schema looks like:
 
-```prisma title='/prisma/schema.prisma'
+```zmodel title='/prisma/schema.prisma'
 generator client {
   provider = "prisma-client-js"
 }
@@ -186,6 +186,14 @@ While evolving my API's schema, I made several rounds of migration with Drizzle 
 ![Drizzle Migration](drizzle-migration.png)
 
 On the contrary, Prisma naively drops the old column and creates a new one. It can cause catastrophic results if you fail to notice and make the necessary manual changes - one of those long-standing unresolved usability issues.
+
+```sql
+-- AlterTable
+ALTER TABLE
+  "Post" DROP COLUMN "userId",
+ADD
+  COLUMN "ownerId" INTEGER;
+```
 
 ![Prisma Migration](prisma-migration.png)
 
