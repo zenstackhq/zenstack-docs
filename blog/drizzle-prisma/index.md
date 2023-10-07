@@ -201,7 +201,7 @@ ADD
 
 Both Drizzle and Prisma provide fully-typed database client APIs. However, their philosophies are quite different.
 
-Drizzle positions itself more like a "SQL query builder". Its query syntax directly mirrors how you write a query in SQL, of course, with the benefit of static type-checking, IDE auto-completion, etc. That implies to make good use of Drizzle, you need to have a good understanding of SQL and feel comfortable with "thinking in SQL". Let me use the following example to explain what I mean here. As mentioned in the [Requirements](#requirements) section, a `Post` is readable to everyone if one of the following satisfies:
+Drizzle positions itself more like a "SQL query builder". Its query syntax directly mirrors how you write a query in SQL, of course, with the benefit of a fluent API, static type-checking, IDE auto-completion, etc. That implies to make good use of Drizzle, you need to have a good understanding of SQL and feel comfortable with "thinking in SQL". Let me use the following example to explain what I mean here. As mentioned in the [Requirements](#requirements) section, a `Post` is readable to everyone if one of the following satisfies:
 1. It's published
 2. The reading user is its author
 3. The reading user is the owner of the space it belongs to
@@ -292,7 +292,7 @@ Will we build a Drizzle version of ZenStack? I hope we can, but that'll require 
 
 So, which one is better? Yes, you guessed it right: "It depends". As the competition gets more and more intense, some developers may jump from one bandwagon to another. But I forecast that Drizzle can grow to a good-sized market share. Then, each of them will have a relatively stable user base - as there are always developers who prefer control, flexibility, and transparency and others who favor simplicity, ease of use, and conservation of brain power.
 
-One thing I definitely love to see is that Drizzle keeps pushing the Prisma team to fix all those long-standing issues that have been bothering their users for years.
+My vote still goes to Prisma for now. One thing I definitely love to see is that Drizzle keeps pushing the Prisma team to fix all those long-standing issues that have been bothering their users for years.
 
 ## Source Code
 
