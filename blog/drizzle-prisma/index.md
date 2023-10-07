@@ -11,27 +11,29 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution for building database-centric applications for quite a while. But recently, a new challenger has emerged. If you've been closely tracking the ORM space, you've probably heard of [Drizzle](https://drizzle.dev/), a new ORM that claims to be more flexible, more performant, and an overall better alternative. But is it really? In this article, I'll quest for the answer to that question. Following the "Show, Don't Tell" mantra, I'll achieve it by building the same API twice, with Drizzle and Prisma respectively.
+For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution for building database-centric applications for quite a while. But recently, a new challenger has emerged. If you've been closely tracking the ORM space, you've probably heard of [Drizzle](https://drizzle.dev/), a new ORM that claims to be more flexible, performant, and an overall better alternative. But is it really? In this article, I'll quest for the answer to that question. Following the "Show, Don't Tell" mantra, I'll achieve it by building the same API twice, with Drizzle and Prisma, respectively.
 
 <!--truncate-->
 
 > *Disclaimer:*
 > 
-> I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack), a full-stack toolkit built on top of Prisma. I have a lot more experiences with Prisma than Drizzle, but I'll try my best to be objective and fair.
+> I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack), a full-stack toolkit built on top of Prisma. I have more experience with Prisma than Drizzle, but I'll try my best to be objective and fair.
 
 ## Requirements
 
-I don't want the API to be another "hello world" example, as no insight can be generated out of that. But using a too complex one also makes it hard to be contained in a blog post. So I ended up using a simple "blog post" scenario but adding a "multi-tenancy" twist into it:
+I don't want the API to be another "hello world" example, as no insight can be generated. However, using an overly complex one also makes it hard to be contained in a blog post. So, I decided to use a simple "blog post" scenario but add a "multi-tenancy" twist.
 
-- `Space` forms the tenancy boundary. A `Space` contain a list of `Post`s.
-- `User`s are global, and can be invited into `Space`s by space admins. I.e., `Space` and `User` forms a many-to-many relationship.
+Here are the requirements:
+
+- `Space` forms the tenancy boundary. A `Space` contains a list of `Post`s.
+- `User`s are global and can be invited into `Space`s by space admins. I.e., `Space` and `User` form a many-to-many relationship.
 - A `User` can have one of the two roles in a space: `MEMBER` or `ADMIN`.
 - `User`s can create `Post`s in `Space`s. A `Post` has a `published` state indicating if it's visible to all.
-- A `Post` is readable to everyone if it's published, and is always readable to its author and space owner/admins.
+- A `Post` is readable to everyone if it's published and is always readable to its author and space owner/admins.
 
 ## Schema
 
-The biggest difference between Drizzle and Prisma lies in how schema is defined. Drizzle is all TypeScript. You know how to write a schema if you know TypeScript. Nothing else is needed. Its schema builder API allows to describe every aspect of your tables, relationships, and constraints. Here's how the schema looks like for our API:
+The most significant difference between Drizzle and Prisma lies in how schema is defined. Drizzle is all TypeScript. You know how to write a schema if you know TypeScript. Nothing else is needed. Its schema builder API lets you describe every aspect of your tables, relationships, and constraints. Here's what the schema looks like for our API:
 
 ```ts title='/db/schema.ts'
 
@@ -107,7 +109,7 @@ export const posts = pgTable('posts', {
 
 ```
 
-Schema building is a whole different story for Prisma. It uses a DLS (Domain-Specific Language) for the job. You'll have to learn the syntax, but it's actually fairly intuitive and easy to pick up. Here's how the Prisma version of the schema looks like:
+Schema building is a whole different story for Prisma. It uses a DLS (Domain-Specific Language) for the job. You'll have to learn the syntax, but it's fairly intuitive and easy to pick up. Here's how the Prisma version of the schema looks like:
 
 ```prisma title='/prisma/schema.prisma'
 generator client {
@@ -165,35 +167,35 @@ model Post {
 
 ```
 
-So, which is better? They're functionally completely equivalent. I'd say Prisma's schema is more terser, less noisy, and thus more pleasant to read. That's what you're supposed to get with a custom language, at the price of additional learning effort.
+So, which is better? They're functionally wholly equivalent, but Prisma's schema is terser, less noisy, and thus more pleasant to read. That's what you're supposed to get with a custom language at the price of additional learning costs.
 
-Drizzle's approach, given it's just TS code, does allow a lot more flexibility. For example, you can have conditional branches in schema, and use functions to extract reusable blocks. But I doubt these are frequently used in practice.
+Drizzle's approach, given it's just TS code, does allow a lot more flexibility. For example, you can have conditional branches in a schema and use functions to extract reusable blocks. But I wonder if these are frequently used in practice.
 
 ## Iteration Speed
 
-In terms of the speed of feedback loop for local development, Drizzle is the clear winner. Its API's typing is fully powered by TypeScript's type inference. There's no code generation. Your changes made on the schema side are immediately reflected on the database client API side.
+Regarding the speed of the feedback loop for local development, Drizzle is the clear winner. Its API's typing is fully powered by TypeScript's type inference. There's no code generation. Your changes made on the schema side are immediately reflected on the database client API side.
 
-In comparison, Prisma's workflow is slightly clunky. Whenever you change the schema file, you need to run `prisma generate` to regenerate the client code. It's pretty fast, but still adds more workload to the developers, and can easily cause confusion if you forget to do it. Also, IDE's language server also tends to lag when a batch of files are overwritten.
+In comparison, Prisma's workflow is slightly clunky. You must run `prisma generate` to regenerate the client code whenever you change the schema file. It's fast but still adds more workload to the developers and can easily cause confusion if you forget to do it. Also, IDE's language server also tends to lag when a batch of files is overwritten.
 
 Again, this is another price paid for using a DSL.
 
 ## Migration
 
-Migration is the process of generating and replaying a set of database schema changes for bringing the database to a new state.
+Migration is the process of generating and replaying a set of database schema changes to bring the database to a new state.
 
-While evolving my API's schema, I made several rounds of migration with Drizzle and Prisma, respectively. The experiences are mostly on par, but I really like Drizzle's handling to renaming columns, which has been a long-time pain point for Prisma users. When Drizzle detects a possible renaming, it nicely enters interactive mode and lets you choose your intention:
+While evolving my API's schema, I made several rounds of migration with Drizzle and Prisma, respectively. The experiences are mostly on par, but I appreciate Drizzle's handling of renaming columns, which has been a long-time pain point for Prisma users. When Drizzle detects a possible renaming, it nicely enters interactive mode and lets you choose your intention:
 
 ![Drizzle Migration](drizzle-migration.png)
 
-On the contrary, Prisma simply drops the old column and creates a new one. This can cause catastrophic results if you failed to notice it and make the necessary manual changes. One of those long-standing unresolved usability issues.
+On the contrary, Prisma naively drops the old column and creates a new one. It can cause catastrophic results if you fail to notice and make the necessary manual changes - one of those long-standing unresolved usability issues.
 
 ![Prisma Migration](prisma-migration.png)
 
 ## CRUD Operations
 
-Both Drizzle and Prisma provide fully-typed database client APIs. However their philosophies are quite different.
+Both Drizzle and Prisma provide fully-typed database client APIs. However, their philosophies are quite different.
 
-Drizzle positions itself more like a "SQL query builder". Its query syntax directly mirrors how you write a query in SQL, of course with the benefit of static type-checking, IDE auto-completion, etc. That implies to make good use of Drizzle, you need to have a good understanding of SQL, and feel comfortable with "thinking in SQL". Let me use the following example to show what I mean here. As mentioned in the [Requirements](#requirements) section, a `Post` is readable to everyone if one of the following satisfies:
+Drizzle positions itself more like a "SQL query builder". Its query syntax directly mirrors how you write a query in SQL, of course, with the benefit of static type-checking, IDE auto-completion, etc. That implies to make good use of Drizzle, you need to have a good understanding of SQL and feel comfortable with "thinking in SQL". Let me use the following example to explain what I mean here. As mentioned in the [Requirements](#requirements) section, a `Post` is readable to everyone if one of the following satisfies:
 1. It's published
 2. The reading user is its author
 3. The reading user is the owner of the space it belongs to
@@ -234,7 +236,7 @@ db
     );
 ```
 
-In comparison, Prisma's query syntax is more "object-oriented", or more precisely, "graph-like". It provides a higher-level of abstraction for traversing and querying relationships. The same query can be written lin Prisma like:
+In comparison, Prisma's query syntax is more "object-oriented", or, more precisely, "graph-like". It provides a higher level of abstraction for traversing and querying relationships. The same query can be written in Prisma like:
 
 ```ts
 prisma.post.findMany({
@@ -264,17 +266,11 @@ prisma.post.findMany({
 });
 ```
 
-I personally prefer Prisma's approach, as it saves your brain power for thinking through how join works. The query intuitively has a top-down structure and naturally traverses into relationships whenever you need to. Undeniably, Drizzle's approach is more flexible, as it allows you have direct control over how the generated SQL query looks like, and since it guarantees "one SQL per query", it can sometimes gives better performance than Prisma does. But Prisma's query is just a lot more pleasant to write.
-
-## Conclusion
-
-So, which one is better? Yes, you guessed it right: "It depends". As the competition gets more and more intense, some developers may jump from one bandwagon to another. But my forecast is that Drizzle can grow to a good-sized market share and then each of them will have a relatively stable user base - as there're always developers who prefer control, flexibility, and transparency, and others who favor simplicity, ease of use, and conservation of brain power.
-
-One thing I would definitely love to see is that Drizzle keeps pushing Prisma team to fix all those long-standing issues that have been bothering their users for years.
+I prefer Prisma's approach, as it saves your brain power to think through how "join" works. The query intuitively has a top-down structure and naturally traverses into relationships whenever you need to. Undeniably, Drizzle's approach is more flexible, as it allows you to have direct control over what the generated SQL query looks like. Plus, since it guarantees "one SQL per query", it can sometimes perform better than Prisma. But Prisma's query is just a lot more pleasant to write.
 
 ## Why Do We Build Above Prisma?
 
-As mentioned previously, I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack) - a toolkit that supercharges Prisma with access control and automatic CRUD API & hooks. Why did we choose to build such capabilities above Prisma? There're several reasons:
+As mentioned previously, I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack) - a toolkit that supercharges Prisma with access control and automatic CRUD API & hooks. Why did we choose to build such capabilities above Prisma?
 
 1. Prisma's schema is more "statically analyzable"
    
@@ -282,9 +278,15 @@ As mentioned previously, I'm the author of [ZenStack](https://github.com/zenstac
    
 2. Prisma's query syntax has limited power
 
-    Prisma's query API is flexible but not too flexible. It didn't try to expose the full power of SQL, and that restraint is exactly what we need. We can enforce access policies by injecting into Prisma's query input object, but it can be prohibitively hard if we have to face the entire flexibility of SQL.
+    Prisma's query API is flexible but not too flexible. It didn't try to expose the full power of SQL, and that restraint is precisely what we need. We can enforce access policies by injecting into Prisma's query input object, but it can be prohibitively hard if we have to face the entire flexibility of SQL.
 
-Will we build a Drizzle version of ZenStack? I hope we can, but that'll for sure require us to rethink through many things.
+Will we build a Drizzle version of ZenStack? I hope we can, but that'll require us to rethink many things.
+
+## Conclusion
+
+So, which one is better? Yes, you guessed it right: "It depends". As the competition gets more and more intense, some developers may jump from one bandwagon to another. But I forecast that Drizzle can grow to a good-sized market share. Then, each of them will have a relatively stable user base - as there are always developers who prefer control, flexibility, and transparency and others who favor simplicity, ease of use, and conservation of brain power.
+
+One thing I definitely love to see is that Drizzle keeps pushing the Prisma team to fix all those long-standing issues that have been bothering their users for years.
 
 ## Source Code
 
