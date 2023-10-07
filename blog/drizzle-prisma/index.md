@@ -29,7 +29,9 @@ Here are the requirements:
 - `User`s can create `Post`s in `Space`s. A `Post` has a `published` state indicating if it's visible to all.
 - A `Post` is readable to everyone if it's published and is always readable to its author and space owner/admins.
 
-## Schema
+## The Comparison
+
+### Schema
 
 The most significant difference between Drizzle and Prisma lies in how schema is defined. Drizzle is all TypeScript. You know how to write a schema if you know TypeScript. Nothing else is needed. Its schema builder API lets you describe every aspect of your tables, relationships, and constraints. Here's what the schema looks like for our API:
 
@@ -169,7 +171,7 @@ So, which is better? They're functionally wholly equivalent, but Prisma's schema
 
 Drizzle's approach, given it's just TS code, does allow a lot more flexibility. For example, you can have conditional branches in a schema and use functions to extract reusable blocks. But I wonder if these are frequently used in practice.
 
-## Iteration Speed
+### Iteration Speed
 
 Regarding the speed of the feedback loop for local development, Drizzle is the clear winner. Its API's typing is fully powered by TypeScript's type inference. There's no code generation. Your changes made on the schema side are immediately reflected on the database client API side.
 
@@ -177,7 +179,7 @@ In comparison, Prisma's workflow is slightly clunky. You must run `prisma genera
 
 Again, this is another price paid for using a DSL.
 
-## Migration
+### Migration
 
 Migration is the process of generating and replaying a set of database schema changes to bring the database to a new state.
 
@@ -195,7 +197,7 @@ ADD
   COLUMN "ownerId" INTEGER;
 ```
 
-## CRUD Operations
+### CRUD Operations
 
 Both Drizzle and Prisma provide fully-typed database client APIs. However, their philosophies are quite different.
 
