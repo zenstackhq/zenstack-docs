@@ -11,7 +11,7 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution for building database-centric applications for quite a while. But recently, a new challenger has emerged. If you've been closely tracking the ORM space, you've probably heard of [Drizzle](https://drizzle.dev/), a new ORM that claims to be more flexible, performant, and an overall better alternative. But is it really? In this article, I'll quest for the answer to that question. Following the "Show, Don't Tell" mantra, I'll achieve it by building the same API twice, with Drizzle and Prisma, respectively.
+For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution for building database-centric applications for quite a while. But recently, a new challenger has emerged. If you've been closely tracking the ORM space, you've probably heard of [Drizzle](https://drizzle.dev/), a new ORM that claims to be more flexible, performant, and an overall better alternative. In this article, I'll quest for a comparison. Following the "Show, Don't Tell" mantra, I'll achieve it by building the same API twice, with Drizzle and Prisma, respectively.
 
 <!--truncate-->
 
@@ -28,6 +28,32 @@ Here are the requirements:
 - A `User` can have one of the two roles in a space: `MEMBER` or `ADMIN`.
 - `User`s can create `Post`s in `Space`s. A `Post` has a `published` state indicating if it's visible to all.
 - A `Post` is readable to everyone if it's published and is always readable to its author and space owner/admins.
+
+```mermaid
+erDiagram
+    Space {
+        int id
+        string name
+    }
+    User {
+        int id
+        string email
+    }
+    SpaceUser {
+        int id
+        SpaceUserRole role
+    }
+    Post {
+        int id
+        string title
+        boolean published
+    }
+    Space ||..o{ SpaceUser : hasMember
+    User ||--o{ Space: owns
+    User ||..o{ SpaceUser : memberOf
+    Space ||--o{ Post : has
+    User ||--o{ Post : authors
+```
 
 ## The Comparison
 
@@ -201,13 +227,16 @@ ADD
 
 Both Drizzle and Prisma provide fully-typed database client APIs. However, their philosophies are quite different.
 
-Drizzle positions itself more like a "SQL query builder". Its query syntax directly mirrors how you write a query in SQL, of course, with the benefit of a fluent API, static type-checking, IDE auto-completion, etc. That implies to make good use of Drizzle, you need to have a good understanding of SQL and feel comfortable with "thinking in SQL". Let me use the following example to explain what I mean here. As mentioned in the [Requirements](#requirements) section, a `Post` is readable to everyone if one of the following satisfies:
-1. It's published
-2. The reading user is its author
-3. The reading user is the owner of the space it belongs to
-4. The reading user is an admin of the space it belongs to
+Drizzle positions itself more like a "SQL query builder". Its query syntax directly mirrors how you write a query in SQL, of course, with the benefit of a fluent API, static type-checking, IDE auto-completion, etc. That implies to make good use of Drizzle, you need to have a good understanding of SQL and feel comfortable with "thinking in SQL". Let me use the following example to explain what I mean here.
 
-In Drizzle, this requires the following code:
+As mentioned in the [Requirements](#requirements) section, to list `Post`s readable to the current user, we need to find the items that match any of the following conditions:
+
+1. It's published and the current user is a member of the space it belongs to
+2. The current user is its author
+3. The current user is the owner of the space it belongs to
+4. The current user is an admin of the space it belongs to
+
+In Drizzle, this requires the following code (some non-trivial SQL construction!):
 
 ```ts
 db
@@ -230,8 +259,11 @@ db
     )
     .where(
         or(
-            // 1. published
-            eq(posts.published, true),
+            // 1. published and current user is a member of the space
+            and(
+                eq(posts.published, true),
+                eq(spaceUsers.userId, req.uid!)
+            ),
             // 2. authored by the current user
             eq(posts.authorId, req.uid!),
             // 3. belongs to space owned by the current user
@@ -250,8 +282,11 @@ prisma.post.findMany({
     where: {
         spaceId: space.id,
         OR: [
-            // 1. published
-            { published: true },
+            // 1. published and current user is a member of the space
+            {
+                published: true,
+                space: { members: { some: { userId: req.uid! } } },
+            },            
             // 2. authored by the current user
             { authorId: req.uid! },
             // 3. belongs to space owned by the current user
@@ -278,13 +313,46 @@ I prefer Prisma's approach, as it saves your brain power to think through how "j
 
 As mentioned previously, I'm the author of [ZenStack](https://github.com/zenstackhq/zenstack) - a toolkit that supercharges Prisma with access control and automatic CRUD API & hooks. Why did we choose to build such capabilities above Prisma?
 
-1. Prisma's schema is more "statically analyzable"
+1. **Prisma's schema is more "statically analyzable"**
    
    Compared to TypeScript, which is a full-fledged programming language, a DSL is much easier to analyze and reason.
    
-2. Prisma's query syntax has limited power
+2. **Prisma's query syntax has limited power**
 
     Prisma's query API is flexible but not too flexible. It didn't try to expose the full power of SQL, and that restraint is precisely what we need. We can enforce access policies by injecting into Prisma's query input object, but it can be prohibitively hard if we have to face the entire flexibility of SQL.
+
+When using ZenStack, you can directly model the access policies inside the schema, like:
+
+```zmodel
+model Post {
+    id Int @id @default(autoincrement())
+    title String
+    published Boolean @default(false)
+    author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId Int?
+    space Space? @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+    spaceId Int?
+  
+    @@allow('all', 
+        auth() == author // author has full access
+        || space.owner == auth() // space owner has full access
+        || space.members?[user == auth() && role == ADMIN]) // space admin has full access
+  
+    // published posts can be read by anyone in the space
+    @@allow('read', published && space.members?[user == auth()])
+}
+```
+
+And then the query for listing `Post`s to the current user can be simplified significantly:
+
+```ts
+db.post.findMany({
+    include: { author: true },
+    where: {
+        space: { slug: req.params.slug },
+    },
+});
+```
 
 Will we build a Drizzle version of ZenStack? I hope we can, but that'll require us to rethink many things.
 
@@ -300,3 +368,4 @@ You can find the source code of the two implementations here:
 
 - [Drizzle Version](https://github.com/ymc9/blog-api-drizzle)
 - [Prisma Version](https://github.com/ymc9/blog-api-prisma)
+- [ZenStack Version](https://github.com/ymc9/blog-api-zenstack)
