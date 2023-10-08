@@ -34,7 +34,9 @@ Some of the most common use cases of ZenStack include:
 
 ZenStack is a comprehensive toolkit that touches a wide range of topics. For most developers, we'd recommend you to start with the [The Complete Guide](/docs/the-complete-guide) to build a solid understanding of each layer of ZenStack's functionalities. The guide is designed to layout concepts gradually and lead you through the learning journey from using ZenStack just as a better ORM, to leveraging its total power in full-stack development.
 
-If you're the kind of inpatient developer who wants to gets one's hand dirty ASAP, you can also jump straight to the [Quick Start](/docs/quick-start) guide. It explains how to use the CLI to quickly scaffold a ZenStack project targeting the framework of your choice.
+If you're the kind of inpatient developer who wants to gets one's hand dirty ASAP, you can also jump straight to the [Quick Start](/docs/quick-start) guide. It shows how to quickly set up a ZenStack project targeting the framework of your choice.
+
+<!-- It explains how to use the CLI to quickly scaffold a ZenStack project targeting the framework of your choice. -->
 
 ## Other Resources
 
