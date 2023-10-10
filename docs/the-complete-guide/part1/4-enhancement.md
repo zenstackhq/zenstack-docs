@@ -112,4 +112,6 @@ const db = enhance(prisma, { user: getSessionUser() }, { loadPath: 'lib/zenstack
 
 ---
 
-In this chapter, we gave an abstract overview about Enhanced Prisma Client. In the next chapters, you'll see how each different kind of enhancement helps simplify your development work.
+In this chapter, we gave an abstract overview about Enhanced Prisma Client. In the next chapters, you'll see how each kind of enhancement helps simplify your development work.
+
+Let's roll on.
