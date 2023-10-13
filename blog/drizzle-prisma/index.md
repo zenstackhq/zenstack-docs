@@ -11,7 +11,7 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution for building database-centric applications for quite a while. But recently, a new challenger has emerged. If you've been closely tracking the ORM space, you've probably heard of [Drizzle](https://drizzle.dev/), a new ORM that claims to be more flexible, performant, and an overall better alternative. In this article, I'll quest for a comparison. Following the "Show, Don't Tell" mantra, I'll achieve it by building the same API twice, with Drizzle and Prisma, respectively.
+For TypeScript lovers, [Prisma](https://prisma.io) has been the perfect solution for building database-centric applications for quite a while. But recently, a new challenger has emerged. If you've been closely tracking the ORM space, you've probably heard of [Drizzle](https://drizzle.dev/), a new ORM being popularized by its flexibility, performance and better user experience. In this article, I'll quest for a comparison. Following the "Show, Don't Tell" mantra, I'll achieve it by building the same API twice, with Drizzle and Prisma, respectively.
 
 <!--truncate-->
 
@@ -59,7 +59,7 @@ erDiagram
 
 ### Schema
 
-The most significant difference between Drizzle and Prisma lies in how schema is defined. Drizzle is all TypeScript. You know how to write a schema if you know TypeScript. Nothing else is needed. Its schema builder API lets you describe every aspect of your tables, relationships, and constraints. Here's what the schema looks like for our API:
+The most significant difference between Drizzle and Prisma lies in how schema is defined. Drizzle is all TypeScript. If you know typescript, you'd know how to work with Drizzle. Nothing else is needed. Its schema builder API lets you describe every aspect of your tables, relationships, and constraints. Here's what the schema looks like for our API:
 
 ```ts title='/db/schema.ts'
 
@@ -135,7 +135,7 @@ export const posts = pgTable('posts', {
 
 ```
 
-Schema building is a whole different story for Prisma. It uses a DLS (Domain-Specific Language) for the job. You'll have to learn the syntax, but it's fairly intuitive and easy to pick up. Here's how the Prisma version of the schema looks like:
+Schema building is a whole different story for Prisma. It uses a DSL (Domain-Specific Language) for the job. You'll have to learn the syntax, but it's fairly intuitive and easy to pick up. Here's how the Prisma version of the schema looks like:
 
 ```zmodel title='/prisma/schema.prisma'
 generator client {
@@ -213,9 +213,16 @@ While evolving my API's schema, I made several rounds of migration with Drizzle 
 
 ![Drizzle Migration](drizzle-migration.png)
 
-On the contrary, Prisma naively drops the old column and creates a new one. It can cause catastrophic results if you fail to notice and make the necessary manual changes - one of those long-standing unresolved usability issues.
+On the contrary, Prisma directly drops the old column and creates a new one. It detects the potential data loss and generates a helpful warning for it. However, it can cause catastrophic results if you fail to notice and make the necessary manual changes. Renaming columns is a very common task. Some improvements can be made here.
 
 ```sql
+/*
+ Warnings:
+ 
+ - You are about to drop the column `userId` on the `Post` table. All the data in the column will be lost.
+ 
+ */
+
 -- AlterTable
 ALTER TABLE
   "Post" DROP COLUMN "userId",
