@@ -1,0 +1,44 @@
+---
+title: Nuxt
+description: Adapter for integrating with Nuxt
+sidebar_position: 2
+---
+
+import ErrorHandling from './_error-handling.md';
+import AdapterOptions from './_options.mdx';
+import UsingAPI from './_using-api.mdx';
+
+# Nuxt Server Adapter
+
+The `@zenstackhq/server/nuxt` module provides a quick way to install API endpoints onto a [Nuxt](https://nuxt.com/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+### Mounting the API
+
+You can mount the API by creating a Nuxt server event handler like:
+
+```ts title='/server/api/model/[...].ts'
+import { enhance } from '@zenstackhq/runtime';
+import { createEventHandler } from '@zenstackhq/server/nuxt';
+import { getSessionUser } from '~/server/auth';
+import { prisma } from '~/server/prisma';
+
+export default createEventHandler({
+    getPrisma: async (event) => {
+        return enhance(prisma, { user: getSessionUser(event) });
+    },
+});
+```
+
+The Nuxt event handler takes the following options to initialize:
+
+<AdapterOptions getPrisma='(event: H3Event<EventHandlerRequest>) => unknown | Promise<unknown>' />
+
+### Using the API
+
+<UsingAPI />
+
+<ErrorHandling />
+
+### Fully working example
+
+You can find a fully working example [here](https://github.com/zenstackhq/sample-todo-nuxt).
