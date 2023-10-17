@@ -47,9 +47,14 @@ The generated schemas have the following three parts:
 | ------ | ------ | ---------------- | -------- | -------------------------- |
 | output | String | Output directory (relative to the path of ZModel) | No       | node_modules/.zenstack/zod |
 | modelOnly | Boolean | Only generate schemas for the models, but not for the Prisma CRUD input arguments | No | false |
+| generateModels | String, String[] | Array or comma separated string for the models to generate routers for. | No      | All models |
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
 | noUncheckedInput | Boolean | Disables schema generation for Prisma's ["Unchecked"](https://github.com/prisma/prisma/discussions/10121#discussioncomment-1621254) input types | No | false |
+
+:::info
+When the `generateModels` option is used to specify a list of models to generate, the plugin will also recursively traverse and include all models that are referenced by the specified models. This can result in more code being generated than you expect.
+:::
 
 ## Example
 
