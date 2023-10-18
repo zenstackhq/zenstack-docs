@@ -214,16 +214,11 @@ With all the preparation work done, we can build the page for creating and listi
 First, enable "@tanstack/vue-query" in the app by creating a plugin under `/plugins/vue-query.ts`:
 
 ```ts title='/plugins/vue-query.ts'
-import {
-    type VueQueryPluginOptions,
-    VueQueryPlugin,
-    QueryClient,
-} from '@tanstack/vue-query';
+import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 
 export default defineNuxtPlugin((nuxt) => {
     const queryClient = new QueryClient();
-    const options: VueQueryPluginOptions = { queryClient };
-    nuxt.vueApp.use(VueQueryPlugin, options);
+    nuxt.vueApp.use(VueQueryPlugin, { queryClient });
 });
 ```
 
