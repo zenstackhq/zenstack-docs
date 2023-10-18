@@ -59,7 +59,7 @@ The CLI generates a template `schema.zmodel` file containing data schema and acc
 1. Add a `name` field to the `User` model
 1. Make the `User` model readable by all users
 
-```diff title='schema.zmodel'
+```diff title='/schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique @email
@@ -82,16 +82,16 @@ model User {
 
 The sample project already contains the basic structure for authentication APIs and UI, however it's not connected to the database yet. Let's do that now.
 
-First, create a `server/prisma.ts` file to create and export a PrismaClient instance:
+First, create a `/server/prisma.ts` file to create and export a PrismaClient instance:
 
-```ts title='server/prisma.ts'
+```ts title='/server/prisma.ts'
 import { PrismaClient } from '@prisma/client';
 export const prisma = new PrismaClient();
 ```
 
-Then, update the content of `auth/server/utils/db.ts` to the following:
+Then, replace the content of `/auth/server/utils/db.ts` with the following:
 
-```ts title='auth/server/utils/db.ts'
+```ts title='/auth/server/utils/db.ts'
 import type { User } from '@prisma/client';
 import { prisma } from '~/server/prisma';
 
@@ -125,7 +125,7 @@ Finally, restart the dev server, and you should be able to create user account a
 
 Let's take a review of the `Post` model in `schema.zmodel`:
 
-```zmodel title='schema.zmodel'
+```zmodel title='/schema.zmodel'
 model Post {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
@@ -157,9 +157,9 @@ All CRUD calls made via the enhanced client will be subject to the access polici
 npm install @zenstackhq/server
 ```
 
-Then, create a `server/api/model/[...].ts` file with the following content:
+Then, create a `/server/api/model/[...].ts` file with the following content:
 
-```ts
+```ts title='/server/api/model/[...].ts'
 import { enhance } from '@zenstackhq/runtime';
 import { createEventHandler } from '@zenstackhq/server/nuxt';
 import { prisma } from '~/server/prisma';
@@ -191,7 +191,7 @@ The `--force` flag is required due to a misconfigured dependency in `@tanstack/v
 
 Then, add the following snippet to `schema.zmodel`:
 
-```zmodel title='schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin hooks {
     provider = '@zenstackhq/tanstack-query'
     target = 'vue'
@@ -211,9 +211,9 @@ The TanStack Query hooks will be generated under `/lib/hooks` and ready to be us
 
 With all the preparation work done, we can build the page for creating and listing posts now!
 
-First, enable "@tanstack/vue-query" in the app by creating a plugin under `plugins/vue-query.ts`:
+First, enable "@tanstack/vue-query" in the app by creating a plugin under `/plugins/vue-query.ts`:
 
-```ts title='plugins/vue-query.ts'
+```ts title='/plugins/vue-query.ts'
 import {
     type VueQueryPluginOptions,
     VueQueryPlugin,
@@ -228,7 +228,7 @@ export default defineNuxtPlugin((nuxt) => {
 ```
 
 Also, add the following `<script setup>` code to `/app.vue` to configure the API endpoint used by the query hooks:
-```html title='app.vue'
+```html title='/app.vue'
 <script setup lang="ts">
 import { provideHooksContext } from './lib/hooks';
 
@@ -240,9 +240,9 @@ provideHooksContext({
 </script>
 ```
 
-Then, create a reuseable `Post` component under `components/Post.vue`:
+Then, create a reuseable `Post` component under `/components/Post.vue`:
 
-```html title='components/Post.vue'
+```html title='/components/Post.vue'
 <script setup lang="ts">
 import { useDeletePost, useUpdatePost } from '~/lib/hooks';
 
@@ -297,7 +297,7 @@ const onDelete = async () => {
 
 Finally, update the content of `/pages/index.vue` to the following:
 
-```html title='pages/index.vue'
+```html title='/pages/index.vue'
 <script setup lang="ts">
 import { useFindManyPost, useCreatePost } from '~/lib/hooks';
 
