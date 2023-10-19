@@ -22,6 +22,10 @@ This is a more com comprehensive SaaS project with team space and the correspond
 
     [https://github.com/zenstackhq/sample-todo-trpc](https://github.com/zenstackhq/sample-todo-trpc)
 
+- Nuxt + TanStack Query
+
+    [https://github.com/zenstackhq/sample-todo-nuxt](https://github.com/zenstackhq/sample-todo-nuxt)
+
 - SvelteKit + TanStack Query
 
     [https://github.com/zenstackhq/sample-todo-sveltekit](https://github.com/zenstackhq/sample-todo-sveltekit)
