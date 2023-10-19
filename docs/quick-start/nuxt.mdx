@@ -46,7 +46,7 @@ If everything works, you should have a running Nuxt app at [http://localhost:300
 
 ### 2. Initialize the project for ZenStack
 
-Let's run the `zenstack` CLI to prepare your project for using ZenStack. The CLI will also install Prisma dependencies.
+Let's run the `zenstack` CLI to prepare your project for using ZenStack. The CLI will also install Prisma dependencies too.
 
 ```bash
 npx zenstack@latest init
@@ -78,6 +78,13 @@ model User {
 }
 ```
 
+Last, run `zenstack` CLI to regenerate Prisma schema, and sync it to the database:
+
+```bash
+npx zenstack generate
+npx prisma db push
+```
+
 ### 3. Implementing authentication
 
 The sample project already contains the basic structure for authentication APIs and UI, however it's not connected to the database yet. Let's do that now.
@@ -107,13 +114,6 @@ export async function createUser(user: Omit<User, 'id'>) {
 ```
 
 Now when user signs up or logs in, Prisma is used to create and retrive user data from the database.
-
-Next, run `zenstack` CLI to regenerate Prisma schema, and sync it to the database:
-
-```bash
-npx zenstack generate
-npx prisma db push
-```
 
 Finally, restart the dev server, and you should be able to create user account and login now.
 
@@ -151,7 +151,7 @@ import { enhance } from '@zenstackhq/runtime';
 const db = enhance(prisma, { user: ... });
 ```
 
-All CRUD calls made via the enhanced client will be subject to the access policies. Since the ORM is already secured, ZenStack can automatically mount a set of CRUD APIs into your Nuxt app. To achieve it, first install an extra server adapter package:
+All CRUD calls made via the enhanced client will be subject to the access policies. Since the ORM is already secured, ZenStack can automatically mount a set of CRUD APIs onto your Nuxt app. To achieve it, first install an extra server adapter package:
 
 ```bash
 npm install @zenstackhq/server
@@ -174,11 +174,15 @@ export default createEventHandler({
 });
 ```
 
+:::info
+The "[...].ts" file name convention creates a "catch all" event handler that handles all requests sent to the `/api/model` endpoint and its descendants.
+:::
+
 The CRUD APIs for all your models are now mounted to the `/api/model` endpoint.
 
 # 5. Generating client hooks
 
-We can write code to consume the CRUD APIs, but that would be quite boring. Instead, we can use a plugin to generate them for us. First, install the `@zenstackhq/tanstack-query` plugin package:
+We can write frontend code to consume the CRUD APIs, but that would be quite boring. Instead, let's use a plugin to generate them for us. First, install the `@zenstackhq/tanstack-query` plugin package:
 
 ```bash
 npm install @tanstack/vue-query --force
@@ -235,7 +239,7 @@ provideHooksContext({
 </script>
 ```
 
-Then, create a reuseable `Post` component under `/components/Post.vue`:
+Then, create a `Post` component under `/components/Post.vue` for rendering a single post:
 
 ```html title='/components/Post.vue'
 <script setup lang="ts">
@@ -325,6 +329,7 @@ const { data: posts } = useFindManyPost({ include: { author: true } });
                 v-model="title"
                 placeholder="Title"
                 class="w-1/2 mr-4"
+                @keyup.enter="onCreatePost"
             />
             <NButton @click="onCreatePost">Create Post</NButton>
         </div>
@@ -337,7 +342,7 @@ const { data: posts } = useFindManyPost({ include: { author: true } });
 </template>
 ```
 
-### 7. Testing the app
+### 5. Testing the app
 
 Now you can create and manage posts in the home page.
 
