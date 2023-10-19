@@ -41,8 +41,8 @@
     display: inline-block;
 }
 
-#github-text {
-    @media (max-width: 445px) {
+@media screen and (max-width: 445px) {
+    #github-text {
         display: none;
     }
 }
