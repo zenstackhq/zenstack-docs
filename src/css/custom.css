@@ -36,3 +36,13 @@
 .footer {
     @apply px-8 lg:px-16;
 }
+
+.navbar__item:has(> #github-button) {
+    display: inline-block;
+}
+
+#github-text {
+    @media (max-width: 430px) {
+        display: none;
+    }
+}
