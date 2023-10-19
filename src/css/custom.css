@@ -39,9 +39,10 @@
 
 .navbar__item:has(> #github-button) {
     display: inline-block;
-    & #github-text {
-        @media (max-width: 445px) {
-            display: none;
-        }
+}
+
+#github-text {
+    @media (max-width: 445px) {
+        display: none;
     }
 }
