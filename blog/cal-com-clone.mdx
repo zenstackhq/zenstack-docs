@@ -104,7 +104,7 @@ Also, install the [VS Code extension](https://marketplace.visualstudio.com/items
 
 The scaffolded project already contains a sample Todo data model. Let's add our booking-related models to it:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 
 // Booking entity
 model Booking {
@@ -149,7 +149,7 @@ model InvitedUser {
 
 Also, make an update to the `User` model to include references to `Booking` and `InviteUser`, and make it publicly readable.
 
-```prisma {8-12} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 
 model User {
   id    String @id @default(cuid())
@@ -158,11 +158,13 @@ model User {
   updatedAt DateTime @updatedAt
   password Password? @omit
   notes Note[]
+  // highlight-start
   invitations InvitedUser[]
   bookings Booking[]
 
   // user profiles are publicly readable
   @@allow('read', true)
+  // highlight-end
 }
 
 ```
@@ -191,11 +193,11 @@ Let's now add a few server-side utilities that'll be used when building up the U
 First, add a helper for getting an access-policy-aware Prisma client in `/app/db.server.ts`:
 
 ```ts title='/app/db.server.ts'
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 
 export function getEnhancedPrisma(userId: string) {
-    // withPresets configures a regular Prisma client for access policy checks
-    return withPresets(prisma, { user: { id: userId } });
+    // enhance configures a regular Prisma client for access policy checks
+    return enhance(prisma, { user: { id: userId } });
 }
 ```
 

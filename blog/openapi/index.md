@@ -100,7 +100,7 @@ npx zenstack@latest init
 
 The `zenstack` CLI installs Prisma and other dependencies and creates a boilerplate `schema.zmodel` file. Update it with the following content to reflect our requirements:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 datasource db {
     provider = 'sqlite'
     url = 'file:./petstore.db'
@@ -281,7 +281,7 @@ For this simple service, we'll adopt an email/password based authentication and 
 
 Let's first look at the signup part. Since the `User` resource already has a CRUD API, we don't need to implement a separate API for signup, since signup is just creating a `User`. The only thing that we need to take care of is to make sure we store hashed passwords instead of plain text. Achieving this is simple; just add a `@password` attribute to the `password` field. ZenStack will automatically hash the field before storing it in the database. Note that we also added the `@omit` attribute to mark `password` field to be dropped from the response since we don't want it ever to be returned to the client.
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -328,16 +328,16 @@ app.post('/api/login', async (req, res) => {
 });
 ```
 
-Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `withPresets` call so that the `@password` and `@omit` attributes can take effect.
+Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `enhance` call so that the `@password` and `@omit` attributes can take effect.
 
 ```ts title='app.ts'
-import { withPresets } from '@zenstackhq/runtime';
-app.use('/api', ZenStackMiddleware({ getPrisma: () => withPresets(prisma) }));
+import { enhance } from '@zenstackhq/runtime';
+app.use('/api', ZenStackMiddleware({ getPrisma: () => enhance(prisma) }));
 ```
 
 Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. Let's open up the `create` and `read` operations for `User` to support the signup/login flow:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -435,9 +435,9 @@ You can learn more about access policies [here](https://zenstack.dev/docs/guides
 
 By declaratively defining access policies in the schema, you don't need to implement these rules in your API anymore. It's easier to ensure consistency, making the schema a single source of truth for your data's shape and security rules.
 
-There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `withPresets` call as the context.
+There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `enhance` call as the context.
 
-Add a `getUser` helper to decode the user from the token, and pass that to the `withPresets` call:
+Add a `getUser` helper to decode the user from the token, and pass that to the `enhance` call:
 
 ```ts title='app.ts'
 import type { Request } from 'express';
@@ -461,7 +461,7 @@ app.use(
     '/api',
     ZenStackMiddleware({
         getPrisma: (req) => {
-            return withPresets(prisma, { user: getUser(req) });
+            return enhance(prisma, { user: getUser(req) });
         },
     })
 );
@@ -610,7 +610,7 @@ npm install -D @zenstackhq/openapi
 
 Enable the OpenAPI plugin in the `schema.zmodel` file:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 plugin openapi {
     provider = '@zenstackhq/openapi'
     prefix = '/api'

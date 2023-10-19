@@ -40,7 +40,7 @@ ZModel allows to import other ZModel files. This is useful when you want to spli
 
 ### Syntax
 
-```prisma
+```zmodel
 import [File_PATH]
 ```
 
@@ -49,7 +49,7 @@ import [File_PATH]
 
 ### Examples
 
-```prisma
+```zmodel
 // there is a file called "user.zmodel" in the same directory
 import "user"
 ```
@@ -61,7 +61,7 @@ Every model needs to include exactly one `datasource` declaration, providing inf
 
 ### Syntax
 
-```prisma
+```zmodel
 datasource [NAME] {
     provider = [PROVIDER]
     url = [DB_URL]
@@ -88,7 +88,7 @@ datasource [NAME] {
 
 ### Examples
 
-```prisma
+```zmodel
 datasource db {
     provider = "postgresql"
     url = "postgresql://postgres:abc123@localhost:5432/todo?schema=public"
@@ -97,7 +97,7 @@ datasource db {
 
 It's highly recommended that you not commit sensitive database connection strings into source control. Alternatively, you can load it from an environment variable:
 
-```prisma
+```zmodel
 datasource db {
     provider = "postgresql"
     url = env("DATABASE_URL")
@@ -140,7 +140,7 @@ Generators are used for creating assets (usually code) from a Prisma schema. Che
 
 ### Syntax
 
-```prisma
+```zmodel
 generator [GENERATOR_NAME] {
     [OPTION]*
 }
@@ -156,7 +156,7 @@ generator [GENERATOR_NAME] {
 
 ### Example
 
-```prisma
+```zmodel
 generator client {
   provider = "prisma-client-js"
   output   = "./generated/prisma-client-js"
@@ -172,7 +172,7 @@ Plugins are ZenStack's extensibility mechanism. It's usage is similar to [Genera
 
 ### Syntax
 
-```prisma
+```zmodel
 plugin [PLUGIN_NAME] {
     [OPTION]*
 }
@@ -188,9 +188,9 @@ plugin [PLUGIN_NAME] {
 
 ### Example
 
-```prisma
-plugin reactHooks {
-    provider = '@zenstackhq/react'
+```zmodel
+plugin swr {
+    provider = '@zenstackhq/swr'
     output = 'lib/hooks'
 }
 ```
@@ -217,7 +217,7 @@ enum [ENUM_NAME] {
 
 ### Example
 
-```prisma
+```zmodel
 enum UserRole {
     USER
     ADMIN
@@ -229,7 +229,7 @@ enum UserRole {
 Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract model would be eliminated in the generated prisma schema file. 
 
 ### Syntax
-```prisma
+```zmodel
 (abstract)? model [NAME] (extends [ABSTRACT_MODEL_NAME](,[ABSTRACT_MODEL_NAME])*)? {
     [FIELD]*
 }
@@ -257,7 +257,7 @@ See [here](/docs/reference/zmodel-language#attribute) for more details about att
 
 ### Example
 
-```prisma
+```zmodel
 abstract model Basic {
     id String @id
     createdAt DateTime @default(now())
@@ -270,7 +270,7 @@ model User extends Basic {
 ```
 
 The generated prisma file only contains one `User` model:
-```prisma
+```zmodel
 model User {
     id String @id
     createdAt DateTime @default(now())
@@ -290,7 +290,7 @@ Attributes decorate fields and models and attach extra behaviors or constraints 
 
 Field attribute name is prefixed by a single `@`.
 
-```prisma
+```zmodel
 id String @[ATTR_NAME](ARGS)?
 ```
 
@@ -306,7 +306,7 @@ See [attribute arguments](#arguments).
 
 Field attribute name is prefixed double `@@`.
 
-```prisma
+```zmodel
 model Model {
     @@[ATTR_NAME](ARGS)?
 }
@@ -326,17 +326,17 @@ Attribute can be declared with a list of parameters and applied with a comma-sep
 
 Arguments are mapped to parameters by position or by name. For example, for the `@default` attribute declared as:
 
-```prisma
+```zmodel
 attribute @default(_ value: ContextType)
 ```
 
 , the following two ways of applying it are equivalent:
 
-```prisma
+```zmodel
 published Boolean @default(value: false)
 ```
 
-```prisma
+```zmodel
 published Boolean @default(false)
 ```
 
@@ -350,14 +350,14 @@ Attribute parameters are typed. The following types are supported:
 
     E.g., declaration:
 
-    ```prisma
+    ```zmodel
     attribute @password(saltLength: Int?, salt: String?)
 
     ```
 
     application:
 
-    ```prisma
+    ```zmodel
     password String @password(saltLength: 10)
     ```
 
@@ -367,13 +367,13 @@ Attribute parameters are typed. The following types are supported:
 
     E.g., declaration:
 
-    ```prisma
+    ```zmodel
     attribute @id(map: String?)
     ```
 
     application:
 
-    ```prisma
+    ```zmodel
     id String @id(map: "_id")
     ```
 
@@ -383,13 +383,13 @@ Attribute parameters are typed. The following types are supported:
 
     E.g., declaration:
 
-    ```prisma
+    ```zmodel
     attribute @@allow(_ operation: String, _ condition: Boolean)
     ```
 
     application:
 
-    ```prisma
+    ```zmodel
     @@allow("read", true)
     @@allow("update", auth() != null)
     ```
@@ -400,13 +400,13 @@ Attribute parameters are typed. The following types are supported:
 
     E.g., declaration:
 
-    ```prisma
+    ```zmodel
     attribute @default(_ value: ContextType)
     ```
 
     application:
 
-    ```prisma
+    ```zmodel
     f1 String @default("hello")
     f2 Int @default(1)
     ```
@@ -417,7 +417,7 @@ Attribute parameters are typed. The following types are supported:
 
     E.g., declaration:
 
-    ```prisma
+    ```zmodel
     attribute @relation(
         _ name: String?,
         fields: FieldReference[]?,
@@ -429,7 +429,7 @@ Attribute parameters are typed. The following types are supported:
 
     application:
 
-    ```prisma
+    ```zmodel
     model Model {
         ...
         // [ownerId] is a list of FieldReference
@@ -444,7 +444,7 @@ Attribute parameters are typed. The following types are supported:
 
     E.g., declaration:
 
-    ```prisma
+    ```zmodel
     attribute @relation(
         _ name: String?,
         fields: FieldReference[]?,
@@ -457,7 +457,7 @@ Attribute parameters are typed. The following types are supported:
 
     application:
 
-    ```prisma
+    ```zmodel
     model Model {
         // 'Cascade' is a predefined enum value
         owner Owner @relation(..., onDelete: Cascade)
@@ -466,7 +466,7 @@ Attribute parameters are typed. The following types are supported:
 
 An attribute parameter can be typed as any of the types above, a list of the above type, or an optional of the types above.
 
-```prisma
+```zmodel
     model Model {
         ...
         f1 String
@@ -480,7 +480,7 @@ An attribute parameter can be typed as any of the types above, a list of the abo
 
 Attribute functions are used for providing values for attribute arguments, e.g., current `DateTime`, an autoincrement `Int`, etc. They can be used in place of attribute arguments, like:
 
-```prisma
+```zmodel
 model Model {
     ...
     serial Int @default(autoincrement())
@@ -496,7 +496,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@id`
 
-    ```prisma
+    ```zmodel
     attribute @id(map: String?)
     ```
 
@@ -510,7 +510,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@default`
 
-    ```prisma
+    ```zmodel
         attribute @default(_ value: ContextType)
     ```
 
@@ -524,7 +524,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@unique`
 
-    ```prisma
+    ```zmodel
         attribute @unique(map: String?)
     ```
 
@@ -538,7 +538,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@relation`
 
-    ```prisma
+    ```zmodel
         attribute @relation(_ name: String?, fields: FieldReference[]?, references: FieldReference[]?, onDelete: ReferentialAction?, onUpdate: ReferentialAction?, map: String?)
     ```
 
@@ -556,7 +556,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@map`
 
-    ```prisma
+    ```zmodel
         attribute @map(_ name: String)
     ```
 
@@ -570,7 +570,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@updatedAt`
 
-    ```prisma
+    ```zmodel
         attribute @updatedAt()
     ```
 
@@ -578,15 +578,45 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@ignore`
 
-    ```prisma
+    ```zmodel
         attribute @ignore()
     ```
 
     Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
 
+-   `@allow`
+
+    ```zmodel
+        attribute @allow(_ operation: String, _ condition: Boolean)
+    ```
+
+    Defines an access policy that allows the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+
+-   `@deny`
+
+    ```zmodel
+        attribute @deny(_ operation: String, _ condition: Boolean)
+    ```
+
+    Defines an access policy that denies the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be denied       
+
 -   `@password`
 
-    ```prisma
+    ```zmodel
         attribute @password(saltLength: Int?, salt: String?)
     ```
 
@@ -603,7 +633,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@omit`
 
-    ```prisma
+    ```zmodel
         attribute @omit()
     ```
 
@@ -611,7 +641,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@prisma.passthrough`
 
-    ```prisma
+    ```zmodel
         attribute @prisma.passthrough(_ text: String)
     ```
 
@@ -625,7 +655,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     E.g., the following ZModel content:
 
-    ```prisma
+    ```zmodel
         model User {
             id Int @id @default(autoincrement())
             name String @prisma.passthrough("@unique")
@@ -634,7 +664,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     wil be translated to the following Prisma schema:
 
-    ```prisma
+    ```zmodel
         model User {
             id Int @id @default(autoincrement())
             name String @unique
@@ -645,7 +675,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@id`
 
-    ```prisma
+    ```zmodel
         attribute @@id(_ fields: FieldReference[], name: String?, map: String?)
     ```
 
@@ -661,7 +691,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@unique`
 
-    ```prisma
+    ```zmodel
         attribute @@unique(_ fields: FieldReference[], name: String?, map: String?)
     ```
 
@@ -677,7 +707,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@schema`
 
-    ```prisma
+    ```zmodel
         attribute @@schema(_ name: String)
     ```
 
@@ -691,7 +721,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@index`
 
-    ```prisma
+    ```zmodel
         attribute @@index(_ fields: FieldReference[], map: String?)
     ```
 
@@ -706,7 +736,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@map`
 
-    ```prisma
+    ```zmodel
         attribute @@map(_ name: String)
     ```
 
@@ -720,7 +750,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@ignore`
 
-    ```prisma
+    ```zmodel
         attribute @@ignore()
     ```
 
@@ -728,7 +758,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@allow`
 
-    ```prisma
+    ```zmodel
         attribute @@allow(_ operation: String, _ condition: Boolean)
     ```
 
@@ -743,7 +773,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@deny`
 
-    ```prisma
+    ```zmodel
         attribute @@deny(_ operation: String, _ condition: Boolean)
     ```
 
@@ -758,7 +788,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `@@prisma.passthrough`
 
-    ```prisma
+    ```zmodel
         attribute @@prisma.passthrough(_ text: String)
     ```
 
@@ -772,7 +802,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     E.g., the following ZModel content:
 
-    ```prisma
+    ```zmodel
         model User {
             id Int @id @default(autoincrement())
             name String
@@ -782,7 +812,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     wil be translated to the following Prisma schema:
 
-    ```prisma
+    ```zmodel
         model User {
             id Int @id @default(autoincrement())
             name String
@@ -794,7 +824,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `uuid`
 
-    ```prisma
+    ```zmodel
         function uuid(): String {}
     ```
 
@@ -802,7 +832,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `cuid`
 
-    ```prisma
+    ```zmodel
         function cuid(): String {}
     ```
 
@@ -810,7 +840,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `now`
 
-    ```prisma
+    ```zmodel
         function now(): DateTime {}
     ```
 
@@ -818,7 +848,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `autoincrement`
 
-    ```prisma
+    ```zmodel
         function autoincrement(): Int {}
     ```
 
@@ -827,7 +857,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `dbgenerated`
 
-    ```prisma
+    ```zmodel
         function dbgenerated(expr: String): Any {}
     ```
 
@@ -835,7 +865,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `auth`
 
-    ```prisma
+    ```zmodel
         function auth(): User {}
     ```
 
@@ -843,7 +873,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `future`
 
-    ```prisma
+    ```zmodel
         function future(): Any {}
     ```
 
@@ -851,7 +881,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `contains`
 
-    ```prisma
+    ```zmodel
         function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
     ```
 
@@ -861,7 +891,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `search`
 
-    ```prisma
+    ```zmodel
         function search(field: String, search: String): Boolean {}
     ```
 
@@ -871,7 +901,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `startsWith`
 
-    ```prisma
+    ```zmodel
         function startsWith(field: String, search: String): Boolean {}
     ```
 
@@ -881,7 +911,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `endsWith`
 
-    ```prisma
+    ```zmodel
         function endsWith(field: String, search: String): Boolean {}
     ```
 
@@ -891,7 +921,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `has`
 
-    ```prisma
+    ```zmodel
         function has(field: Any[], search: Any): Boolean {}
     ```
 
@@ -901,7 +931,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `hasEvery`
 
-    ```prisma
+    ```zmodel
         function hasEvery(field: Any[], search: Any[]): Boolean {}
     ```
 
@@ -911,7 +941,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `hasSome`
 
-    ```prisma
+    ```zmodel
         function hasSome(field: Any[], search: Any[]): Boolean {}
     ```
 
@@ -921,7 +951,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 -   `isEmpty`
 
-    ```prisma
+    ```zmodel
         function isEmpty(field: Any[]): Boolean {}
     ```
 
@@ -933,7 +963,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 Here're some examples on using field and model attributes:
 
-```prisma
+```zmodel
 model User {
     // unique id field with a default UUID value
     id String @id @default(uuid())
@@ -978,7 +1008,7 @@ Fields are typed members of models.
 
 ### Syntax
 
-```prisma
+```zmodel
 model Model {
     [FIELD_NAME] [FIELD_TYPE] (FIELD_ATTRIBUTES)?
 }
@@ -1012,7 +1042,7 @@ model Model {
 
 ### Example
 
-```prisma
+```zmodel
 model Post {
     // "id" field is a mandatory unique identifier of this model
     id String @id @default(uuid())
@@ -1054,7 +1084,7 @@ The _owner_ side of the relation declares an optional field typed as the model o
 
 On the _owned_ side, a reference field is declared with `@relation` attribute, together with a **foreign key** field storing the id of the owner entity.
 
-```prisma
+```zmodel
 model User {
     id String @id
     profile Profile?
@@ -1073,7 +1103,7 @@ The _owner_ side of the relation declares a list field typed as the model of the
 
 On the _owned_ side, a reference field is declared with `@relation` attribute, together with a **foreign key** field storing the id of the owner entity.
 
-```prisma
+```zmodel
 model User {
     id String @id
     posts Post[]
@@ -1092,7 +1122,7 @@ A _join model_ is declared to connect the two sides of the relation using two on
 
 Each side of the relation then establishes a one-to-many relation with the _join model_.
 
-```prisma
+```zmodel
 model Space {
     id String @id
     // one-to-many with the "join-model"
@@ -1133,11 +1163,13 @@ When defining a relation, you can specify what happens when one side of a relati
 
 ## Access policy
 
-Access policies use `@@allow` and `@@deny` rules to specify the eligibility of an operation over a model entity. The signatures of the attributes are:
+### Model-level policy
+
+Model-level access policies are defined with `@@allow` and `@@deny` attributes. They specify the eligibility of an operation over a model entity. The signatures of the attributes are:
 
 -   `@@allow`
 
-    ```prisma
+    ```zmodel
         attribute @@allow(_ operation: String, _ condition: Boolean)
     ```
 
@@ -1145,12 +1177,12 @@ Access policies use `@@allow` and `@@deny` rules to specify the eligibility of a
 
     | Name      | Description                                                                                                                                                              |
     | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
 -   `@@deny`
 
-    ```prisma
+    ```zmodel
         attribute @@deny(_ operation: String, _ condition: Boolean)
     ```
 
@@ -1158,7 +1190,46 @@ Access policies use `@@allow` and `@@deny` rules to specify the eligibility of a
 
     | Name      | Description                                                                                                                                                              |
     | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
+
+### Field-level policy
+
+:::info
+
+Field-level access policies are in preview stage and its behavior may change in the future. Please let us know your feedback!
+
+:::
+
+
+Field-level access policies are defined with `@allow` and `@deny` attributes. They control whether the annotated field can be read or updated. If a field fails "read" check, it'll be deleted when returned. If a field is set to be updated but fails "update" check, the update operation will be rejected.
+
+The signatures of the attributes are:
+
+-   `@allow`
+
+    ```zmodel
+        attribute @allow(_ operation: String, _ condition: Boolean)
+    ```
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+
+-   `@deny`
+
+    ```zmodel
+        attribute @deny(_ operation: String, _ condition: Boolean)
+    ```
+
+    _Params_:
+
+    | Name      | Description                                                                                                                                                              |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | operation | Comma separated list of operations to control, including ``"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
 
 ### Policy expressions
@@ -1202,19 +1273,19 @@ You can use `auth()` to:
 
 -   Check if a user is logged in
 
-    ```prisma
+    ```zmodel
     @@deny('all', auth() == null)
     ```
 
 -   Access user's fields
 
-    ```prisma
+    ```zmodel
     @@allow('update', auth().role == 'ADMIN')
     ```
 
 -   Compare user identity
 
-    ```prisma
+    ```zmodel
     // owner is a relation field to User model
     @@allow('update', auth() == owner)
     ```
@@ -1223,7 +1294,7 @@ You can use `auth()` to:
 
 As you've seen in the examples above, you can access fields from relations in policy expressions. For example, to express "a user can be read by any user sharing a space" in the `User` model, you can directly read into its `membership` field.
 
-```prisma
+```zmodel
     @@allow('read', membership?[space.members?[user == auth()]])
 ```
 
@@ -1259,7 +1330,7 @@ Collection predicate expressions are boolean expressions used to express conditi
 
 The `condition` expression has direct access to fields defined in the model of `collection`. E.g.:
 
-```prisma
+```zmodel
     @@allow('read', members?[user == auth()])
 ```
 
@@ -1267,7 +1338,7 @@ The `condition` expression has direct access to fields defined in the model of `
 
 Also, collection predicates can be nested to express complex conditions involving multi-level relation lookup. E.g.:
 
-```prisma
+```zmodel
     @@allow('read', membership?[space.members?[user == auth()]])
 ```
 
@@ -1275,11 +1346,20 @@ In this example, `user` refers to `user` field of `Membership` model because `sp
 
 ### Combining multiple rules
 
-A model can contain an arbitrary number of policy rules. The logic of combining them is as follows:
+A model can contain an arbitrary number of policy rules. The logic of combining model-level rules is as follows:
 
--   The operation is rejected if any of the conditions in `@@deny` rules evaluate to `true`
--   Otherwise, the operation is permitted if any of the conditions in `@@allow` rules evaluate to `true`
--   Otherwise, the operation is rejected
+-   The operation is rejected if any of the conditions in `@@deny` rules evaluate to `true`.
+-   Otherwise, the operation is permitted if any of the conditions in `@@allow` rules evaluate to `true`.
+-   Otherwise, the operation is rejected.
+
+A field can also contain an arbitrary number of policy rules. The logic of combining field-level rules is as follows:
+
+-   The operation is rejected if any of the conditions in `@deny` rules evaluate to `true`.
+-   Otherwise, if there exists any `@allow` rule and at least one of them evaluates to `true`, the operation is permitted.
+-   Otherwise, if there exists any `@allow` rule but none one of them evaluates to `true`, the operation is rejected.
+-   Otherwise, the operation is permitted.
+
+Please note the difference between model-level and field-level rules. Model-level access are by-default denied, while field-level access are by-default allowed.
 
 ### Pre-update vs. post-update
 
@@ -1289,7 +1369,7 @@ However, for "update" rules it is ambiguous; both the "pre" and the "post" state
 
 In the following example, the "update" rule uses `future()` to ensure an update cannot alter the post's owner.
 
-```prisma
+```zmodel
 model Post {
     id String @id @default(uuid())
     title String @length(1, 100)
@@ -1301,11 +1381,15 @@ model Post {
 }
 ```
 
+:::info
+The `future()` function is not supported in field-level access policies. To express post-update rules, put them into model-level policies.
+:::
+
 ### Examples
 
 #### A simple example with Post model
 
-```prisma
+```zmodel
 model Post {
     // reject all operations if user's not logged in
     @@deny('all', auth() == null)
@@ -1320,7 +1404,7 @@ model Post {
 
 #### A more complex example with multi-user spaces
 
-```prisma
+```zmodel
 model Space {
     id String @id
     members Membership[]
@@ -1392,71 +1476,136 @@ model User {
 
 ### Overview
 
-Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules are only applied on individual fields and are only checked for 'create' and 'update' operations.
+Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules cannot access the current user with the `auth()` function and are only checked for 'create' and 'update' operations. The main purpose of field validation is to ensure data integrity and consistency, not for access control.
 
-Internally ZenStack uses [zod](https://github.com/colinhacks/zod ':target=blank') for validation.
+The [`@core/zod`](/docs/reference/plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
 
-### Validation attributes
+### Field-level validation attributes
 
-The following attributes can be used to attach field validation rules:
+The following attributes can be used to attach validation rules to individual fields:
 
 #### String
 
--   `@length(_ min: Int?, _ max: Int?)`
+-   `@length(_ min: Int?, _ max: Int?, _ message: String?)`
 
     Validates length of a string field.
 
--   `@startsWith(_ text: String)`
+-   `@startsWith(_ text: String, _ message: String?)`
 
     Validates a string field value starts with the given text.
 
--   `@endsWith(_ text: String)`
+-   `@endsWith(_ text: String, _ message: String?)`
 
     Validates a string field value ends with the given text.
 
--   `@email()`
+-   `@contains(_text: String, _ message: String?)`
+
+    Validates a string field value contains the given text.
+
+-   `@email(_ message: String?)`
 
     Validates a string field value is a valid email address.
 
--   `@url()`
+-   `@url(_ message: String?)`
 
     Validates a string field value is a valid url.
 
--   `@datetime()`
+-   `@datetime(_ message: String?)`
 
     Validates a string field value is a valid ISO datetime.
 
--   `@regex(_ regex: String)`
+-   `@regex(_ regex: String, _ message: String?)`
 
     Validates a string field value matches a regex.
 
 #### Number
 
--   `@gt(_ value: Int)`
+-   `@gt(_ value: Int, _ message: String?)`
 
     Validates a number field is greater than the given value.
 
--   `@gte(_ value: Int)`
+-   `@gte(_ value: Int, _ message: String?)`
 
     Validates a number field is greater than or equal to the given value.
 
--   `@lt(_ value: Int)`
+-   `@lt(_ value: Int, _ message: String?)`
 
     Validates a number field is less than the given value.
 
--   `@lte(_ value: Int)`
+-   `@lte(_ value: Int, _ message: String?)`
 
     Validates a number field is less than or equal to the given value.
 
+### Model-level validation attributes
+
+You can use the `@@validate` attribute to attach validation rules to a model. 
+
+```
+@@validate(_ value: Boolean, _ message: String?)
+```
+
+Model-level rules can reference multiple fields, use relation operators (`==`, `!=`, `>`, `>=`, `<`, `<=`) to compare fields, use boolean operators (`&&`, `||`, and `!`) to compose conditions, and can use the following functions to evaluate conditions for fields:
+
+-   `function length(field: String, min: Int, max: Int?): Boolean`
+
+    Validates length of a string field.
+
+-   `function regex(field: String, regex: String): Boolean`
+
+    Validates a string field value matches a regex.
+
+-   `function email(field: String): Boolean`
+
+    Validates a string field value is a valid email address.
+
+-   `function datetime(field: String): Boolean`
+
+    Validates a string field value is a valid ISO datetime.
+
+-   `function url(field: String)`
+
+    Validates a string field value is a valid url.
+
+-   `function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean`
+
+    Validates a string field contains the search string.
+
+-   `function startsWith(field: String, search: String): Boolean`
+
+    Validates a string field starts with the search string.
+
+-   `function endsWith(field: String, search: String): Boolean`
+
+    Validates a string field ends with the search string.
+
+-   `function has(field: Any[], search: Any): Boolean`
+
+    Validates a list field contains the search value.
+
+-   `function hasEvery(field: Any[], search: Any[]): Boolean`
+
+    Validates a list field contains every element in the search list.
+
+-   `function hasSome(field: Any[], search: Any[]): Boolean`
+
+    Validates a list field contains some elements in the search list.
+
+-   `function isEmpty(field: Any[]): Boolean`
+
+    Validates a list field is null or empty.
+
 ### Example
 
-```prisma
+```zmodel
 model User {
     id String @id
     handle String @regex("^[0-9a-zA-Z]{4,16}$")
-    email String @email @endsWith("@myorg.com")
+    email String? @email @endsWith("@myorg.com", "must be an email from myorg.com")
     profileImage String? @url
-    age Int @gt(0)
+    age Int @gte(18)
+    activated Boolean @default(false)
+
+    @@validate(!activated || email != null, "activated user must have an email")
 }
 ```
 
@@ -1466,7 +1615,7 @@ model User {
 
 When defining a relation, you can use referential action to control what happens when one side of a relation is updated or deleted by setting the `onDelete` and `onUpdate` parameters in the `@relation` attribute.
 
-```prisma
+```zmodel
 attribute @relation(
     _ name: String?,
     fields: FieldReference[]?,
@@ -1478,7 +1627,7 @@ attribute @relation(
 
 The `ReferentialAction` enum is defined as:
 
-```prisma
+```zmodel
 enum ReferentialAction {
     Cascade
     Restrict
@@ -1516,7 +1665,7 @@ enum ReferentialAction {
 
 ### Example
 
-```prisma
+```zmodel
 model User {
     id String @id
     profile Profile?

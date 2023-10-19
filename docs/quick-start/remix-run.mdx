@@ -1,7 +1,7 @@
 ---
 title: Remix.run
 description: Step-by-step guide for building a blogging app with Remix.run.
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import Requirements from './_requirements.md';
@@ -60,22 +60,26 @@ npx zenstack@latest init
 
 The template project already contains a `Note` model. Let's repurpose it to be a `Post` model. Rename it from `Note` to `Post`, and add a `published` field to store if the post is published or not. Also add access control rules with `@@allow` attribute to authorize requests.
 
-```prisma {0,4,10-14} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
+// highlight-next-line
 model Post {
   id String @id @default(cuid())
   title String
   body String
+  // highlight-next-line
   published Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
+  // highlight-start
   // author has full access
   @@allow('all', auth() == user)
 
   // logged-in users can view published posts
   @@allow('read', auth() != null && published)
+  // highlight-end
 }
 ```
 
@@ -83,13 +87,14 @@ model Post {
 
 Also we need to rename the relation in the `User` model from `notes` to `posts`.
 
-```prisma {6} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
   id String @id @default(cuid())
   email String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   password Password?
+  // highlight-next-line
   posts Post[]
 }
 ```
@@ -113,10 +118,10 @@ Remove a few files and folders that are not needed anymore:
 First add a helper method to `/app/db.server.ts` to get an access-policy-enabled prisma client. We'll use this wrapper to manipulate the `Post` model.
 
 ```ts title='/app/db.server.ts'
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 
 export function getEnhancedPrisma(userId: string) {
-    return withPresets(prisma, { user: { id: userId } });
+    return enhance(prisma, { user: { id: userId } });
 }
 ```
 

@@ -1,7 +1,7 @@
 ---
 title: Express.js
 description: Adapter for integrating with Express.js
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import ErrorHandling from './_error-handling.md';
@@ -18,7 +18,7 @@ You can integrate ZenStack into your project with the `ZenStackMiddleware` [expr
 
 ```ts
 import { PrismaClient } from '@prisma/client';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import express from 'express';
 
@@ -32,7 +32,7 @@ app.use(
     ZenStackMiddleware({
         // getSessionUser extracts the current session user from the request, its
         // implementation depends on your auth solution
-        getPrisma: (request) => withPresets(prisma, { user: getSessionUser(request) }),
+        getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
     })
 );
 ```
@@ -40,6 +40,14 @@ app.use(
 The Express.js adapter takes the following options to initialize:
 
 <AdapterOptions getPrisma='(request: Request, response: Response) => unknown | Promise<unknown>' />
+
+- sendResponse (optional)
+
+    <blockquote>boolean</blockquote>
+
+    Controls if the middleware directly sends a response. If set to false, the response is stored in the `res.locals` object and then the middleware calls the `next()` function to pass the control to the next middleware. Subsequent middleware or request handlers need to make sure to send a response.
+    
+    Defaults to `true`.
 
 ### Using the API
 

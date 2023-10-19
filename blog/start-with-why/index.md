@@ -74,4 +74,4 @@ Imagine if people told you that to grow you need cookies, Nutella, celery, fruit
 
 If you're aligned with our beliefs, we'd love for you to take the Celery Test on our behalf! 🤝
 
-Simply visit the [ZenStack website](https://zenstack.dev) and let us know if you spot any inconsistencies by either joining our [discord](https://discord.com/invite/Ykhr738dUe) or creating an issue in [GitHub](https://github.com/zenstackhq/zenstack). Your feedback is invaluable to us and will help ensure that our platform lives up to our mission. Thanks in advance for your help!
+Simply visit the [ZenStack website](https://zenstack.dev) and let us know if you spot any inconsistencies by either joining our [discord](https://discord.gg/Ykhr738dUe) or creating an issue in [GitHub](https://github.com/zenstackhq/zenstack). Your feedback is invaluable to us and will help ensure that our platform lives up to our mission. Thanks in advance for your help!

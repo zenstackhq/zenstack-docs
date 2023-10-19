@@ -34,7 +34,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
     For example, for the following `Post` model:
 
-    ```prisma
+    ```zmodel
     model Post {
         id        String @id @default(cuid())
         createdAt DateTime @default(now())
@@ -60,7 +60,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
         return {
             OR: [
                 user == null
-                    ? { zenstack_guard: false }
+                    ? { OR: [] } // false condition
                     : {
                           author: {
                               is: {
@@ -70,9 +70,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
                       },
                 {
                     AND: [
-                        {
-                            zenstack_guard: user != null,
-                        },
+                        user == null ? { OR: [] } : { AND: [] },
                         {
                             published: true,
                         },
@@ -85,7 +83,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
     function Post_update(context: QueryContext) {
         const user = hasAllFields(context.user, ['id']) ? context.user : null;
         return user == null
-            ? { zenstack_guard: false }
+            ? { OR: [] } // false condition
             : {
                   author: {
                       is: {
@@ -100,20 +98,20 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
 The primary responsibility of ZenStack's runtime is to create _enhanced_ Prisma client instances:
 
+-   `enhance` creates an enhanced client that includes all behaviors below.
+-   `withPolicy` creates an enhanced client that enforces access policies expressed with `@@allow` and `@@deny` attributes.
 -   `withPassword` creates an enhanced client that automatically hashes fields marked with the `@password` attribute before storing them in the database.
 -   `withOmit` creates an enhanced client that automatically strips fields marked with the `@omit` attribute before returning to the caller.
--   `withPolicy` creates an enhanced client that enforces access policies expressed with `@@allow` and `@@deny` attributes.
 
 ### Proxies
 
-Runtime enhancements are achieved by creating transparent proxies around raw Prisma clients. The proxies intercept all Prisma client methods, inject into query arguments, and manipulate the query results returned by the client. The proxies work independently from each other so that they can be freely combined. In fact, the `withPresets` helper is a direct combination of `withPassword`, `withOmit`, and `withPolicy`.
+Runtime enhancements are achieved by creating transparent proxies around raw Prisma clients. The proxies intercept all Prisma client methods, inject into query arguments, and manipulate the query results returned by the client. The proxies work independently from each other so that they can be freely combined. In fact, the `enhance` helper is a direct combination of `withPassword`, `withOmit`, and `withPolicy`.
 
 ```ts
-export function withPresets<DbClient extends object>(
+export function enhance<DbClient extends object>(
     prisma: DbClient,
     context?: WithPolicyContext,
-    policy?: PolicyDef,
-    modelMeta?: ModelMeta
+    options?: EnhancementOptions
 ) {
     return withPolicy(withOmit(withPassword(prisma, modelMeta), modelMeta), context, policy, modelMeta);
 }
@@ -121,7 +119,7 @@ export function withPresets<DbClient extends object>(
 
 ### Access Policies
 
-Access policies, enabled by the `withPolicy` or `withPresets` enhancer, are the most complex parts of the system. Part of the complexity comes from the great flexibility Prisma offers in querying and mutating data. For example, to enforce "read" rules on a `Post` model, we need to consider several possibilities:
+Access policies, enabled by the `withPolicy` enhancer, are the most complex parts of the system. Part of the complexity comes from the great flexibility Prisma offers in querying and mutating data. For example, to enforce "read" rules on a `Post` model, we need to consider several possibilities:
 
 ```ts
 // a direct where condition
@@ -265,7 +263,7 @@ We need the following measures to enforce access policies systematically:
 
 ### The `auth` function
 
-The `auth` function connects authentication with access control. It's typed as the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity from the database after authentication is completed and pass the result to the `withPolicy` or `withPresets` function as context.
+The `auth` function connects authentication with access control. It's typed as the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity from the database after authentication is completed and pass the result to the `enhance` function as context.
 
 Although `auth` resolves to `User` model, since it's provided by the user, there's no way to guarantee its value fully conforms to the `User` model: e.g., non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
 
@@ -285,33 +283,3 @@ Here're a few examples (assuming `auth()` is `null`):
 ### The `future` function
 
 An "update" policy rule is treated as a "post-update" rule if it involves a `future()` function call. `future()` represents the value of the model entity after the update is completed. In a "post-update" policy rule, any member accesses that are not prefixed with `future().` is treated as referencing the entity's value before the update. To support the evaluation of such rules, the entity value before the update is captured and passed as the `preValue` field in the context object passed to the checker function.
-
-### Auxiliary Fields
-
-When ZModel is transpiled to Prisma schema, two auxiliary fields are added to each model:
-
--   `zenstack_guard`: Boolean, defaults to `true`
-
-    This field facilitates the evaluation of boolean expressions that don't involve a model field. E.g.,
-
-    ```ts
-    auth().role == 'admin';
-    ```
-
-    is (conceptually) translated to the following Prisma condition:
-
-    ```ts
-    {
-        where: {
-            zenstack_guard: user.role == 'admin';
-        }
-    }
-    ```
-
--   `zenstack_transaction`: String, nullable
-
-    This field facilitates "create" and "post-update" rule checks. When conducting mutation with Prisma, it's not always straightforward to determine which entities are affected. For example, you can do a deeply nested update from a top-level entity; or an `upsert` with which there's no direct way to tell if an entity is updated or created.
-
-    To support such cases, we use a transaction to wrap the mutation and set the `zenstack_transaction` field to a unique value containing a CUID and the operation (e.g., "create:clg4szzhq000008jf6ppybhb6"). Then, when checking rules, we can query the database (inside the transaction) to find out which entities are affected by the mutation.
-
-The auxiliary fields add some storage and computation overheads to the database, and we can consider optimizing their usage or even removing them in the future.

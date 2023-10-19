@@ -1,20 +1,19 @@
 ---
-title: 'How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code Using ZenStack'
+title: 'How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code'
 description: Use schema as the single source of truth for the SaaS backend
-tags: [zenstack, saas, backend, access-control]
+tags: [zenstack, saas, backend, access-control, nodejs, typescript]
 authors: jiasheng
-date: 2023-06-10
+date: 2023-06-21
 image: ./cover.png
 ---
 
-# How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code Using ZenStack
+# How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code
 
 ![Cover Image](cover.png)
 
 ## It’s hard to build a scalable SaaS system
 
 Having been involved in the development of four commercial SaaS products at my previous company, I've come to realize the multitude of complexities that arise compared to typical consumer products. Among these complexities, one prominent area lies in the intricate realm of permission control and access policies.
-
 <!--truncate-->
 
 In addition to individual user permissions, there is also a need to manage permissions at the organizational level, not to mention the crucial aspect of tenant isolation that goes unnoticed by users. Regardless of whether you opt for RBAC or ABAC access control mechanisms, the system's complexity increases alongside its functionality. Consequently, the time required to add new features gradually slows down, akin to the declining trend depicted by the blue line in Martin Fowler’s [Design Stamina Hypothesis](https://martinfowler.com/bliki/DesignStaminaHypothesis.html):
@@ -29,11 +28,11 @@ One prominent factor contributing to this challenge is the scattered nature of a
 
 Not only must developers be careful not to inadvertently break existing functionality, but they must also identify the optimal location to implement changes without introducing potential issues down the line.
 
-What if there was a way to consolidate all access control logic in a single centralized location?
+**What if there was a way to consolidate all access control logic in a single centralized location?**
 
 ## Single Source of Truth
 
-Here comes the ZenStack: a Typescirpt toolkit builds on top of Prisma. It uses the declarative data model on top of Prisma, adding access policy and validation rules, from which it will automatically generate RESTful or tRPC API for you.
+Here comes the ZenStack: a Typescirpt toolkit builds on top of [Prisma](https://www.prisma.io/). It uses the declarative data model on top of Prisma, adding access policy and validation rules, from which it will automatically generate RESTful or tRPC API for you.
 
 ![show me the code](https://github.com/jiashengguo/my-blog-app/assets/16688722/6377f109-47d4-412f-ba72-b078aa7fc7af)
 
@@ -52,16 +51,7 @@ Here is the SaaS backend project you can start with:
 ### Data Model
 
 In `schema.zmodel,` there are 4 models, and their relationships are as below:
-
-```mermaid
-erDiagram
-    Orgnazation }|--|| Post : contains
-    Post ||--|{ User : contains
-    Post }o--o{ Group : m-n
-    User }o--o{ Team : m-n
-    Group ||--|{ Orgnazation : contains
-    User }o--o{ Group: m-n
-```
+![data model](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8dx12h1fiumotwhhxr7z.png)
 
 -   Organization is the top-level tenant. Any instance of User, post, and group belong to an organization.
 -   One user could belong to multiple organizations and groups
@@ -71,30 +61,45 @@ erDiagram
 
 Let’s take a look at all the permissions of the Post and how they could be expressed using ZenStack’s access policies.
 
-<aside>
-💡 You can find the detailed reference of access policies syntax below:
-[https://zenstack.dev/docs/reference/zmodel-language#access-policy](https://zenstack.dev/docs/reference/zmodel-language#access-policy?utm_campaign=devto&utm_medium=organic&utm_content=saas_backend)
+💡 _You can find the detailed reference of access policies syntax below:
+[https://zenstack.dev/docs/reference/zmodel-language#access-policy](https://zenstack.dev/docs/reference/zmodel-language#access-policy)_
 
-</aside>
 
 -   Create
-    the owner must be set to the current user, and the organization must be set to one that the current user belongs to.
-    `@@allow('create', owner == auth() && org.members?[this == auth()])`
+    
+the owner must be set to the current user, and the organization must be set to one that the current user belongs to.
+```tsx
+@@allow('create', owner == auth() && org.members?[this == auth()])
+```
 -   Update
+
     only the owner can update it and is not allowed to change the organization or owner
-    `@@allow('update', owner == auth() && org.future().members?[this == auth()] && future().owner == owner)`
+
+    ```tsx
+    @@allow('update', owner == auth() && org.future().members?[this == auth()] && future().owner == owner)
+    ```
 -   Read
+
     -   allow the owner to read
-        `@@allow('read', owner == auth())`
+        ```tsx
+        @@allow('read', owner == auth())
+        ```
     -   allow the member of the organization to read it if it’s public
-        `@@allow('read', isPublic && org.members?[this == auth()])`
+        ```tsx
+        @@allow('read', isPublic && org.members?[this == auth()])
+        ```
     -   allow the group members to read it
-        `@@allow('read', groups?[users?[id == auth().id]])`
+        ```tsx
+        @@allow('read', groups?[users?[id == auth().id]])
+        ```
 -   Delete
+
     -   don’t allow delete
         The operation is not allowed by default if no rule is specified for it.
     -   The record is treated as deleted if `isDeleted` is true, aka soft delete.
-        `@@deny('all', isDeleted == true)`
+        ```tsx
+        @@deny('all', isDeleted == true)
+        ```
 
 You can see the complete data model together with the above access policies defined in the
 
@@ -154,9 +159,11 @@ All the multi-tenant, soft delete and sharing features will just work automatica
 
 So you already have the schema as the single source of the truth for your business model and your access control. You probably expect to see the Typescript/Javascript code you need to write next. Here is the exciting part:
 
-**That’s all. You'll hardly need to write any TS/JS code. The access control will be seamlessly handled behind the scenes by the code generated from the access policies we discussed earlier.**
+**That’s all. You'll hardly need to write any TS/JS code at all. ZenStack automatically generates API for you with access control seamlessly injected at runtime..**
 
-While you may observe several lines of code in **`index.ts`**, it is primarily for installing the automatically generated RESTful APIs into Express.js (which seamlessly integrates with all major Node.js frameworks) and starting the application.
+While you may observe several lines of code in **`index.ts`**, it is primarily for installing the automatically generated RESTful APIs into Express.js and starting the application.
+
+💡 _It supports the majority of Node.js frameworks like Next.js, Sveletkit, Fastify, etc._
 
 ## Let’s play around
 
@@ -182,10 +189,7 @@ You could simply call the Post endpoint to see the result simulate different use
 curl -H "X-USER-ID: robin@prisma.io" localhost:3000/api/post
 ```
 
-<aside>
-💡 It uses the plain text of the user id just for test convenience. In the real world, you should use a more secure way to pass IDs like JWT tokens.
-
-</aside>
+💡 _It uses the plain text of the user id just for test convenience. In the real world, you should use a more secure way to pass IDs like JWT tokens._
 
 Based on the sample data, each user should see a different count of posts from 0 to 3.
 
@@ -202,8 +206,8 @@ localhost:3000/api/post/slack
 
 After that, if you try to access the Post endpoint again, the result won’t contain the “Join Slack” post anymore. If you are interested in how it works under the hook, check out another post for it:
 
-[Soft delete: Implementation issues in Prisma and solution in ZenStack](https://dev.to/zenstack/soft-delete-implementation-issues-in-prisma-and-solution-in-zenstack-23fl)
+[Soft Delete: Implementation Issues in Prisma and Solution in Zenstack](https://zenstack.dev/blog/soft-delete)
 
 ## Last
 
-The SaaS product [MermaidChart](https://www.mermaidchart.com/) has recently launched its Teams feature powered by ZenStack. If you want to know about their experience of adopting ZenStack, you are welcome to join our [Discord](https://go.zenstack.dev/chat). For other information and examples, check out our [official website](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=saas_backend).
+The SaaS product [MermaidChart](https://www.mermaidchart.com/) has recently launched its Teams feature powered by ZenStack. If you want to know about their experience of adopting ZenStack, you are welcome to join our [Discord](https://go.zenstack.dev/chat). For other information and examples, check out our [official website](https://zenstack.dev/).

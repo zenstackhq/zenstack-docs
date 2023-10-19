@@ -19,7 +19,7 @@ My co-founder and I are building the full-stack toolkit [ZenStack](https://zenst
 
 -   He: There is a scenario user can’t express for now. Let’s say a user is building a pet store, the pet could only be added to an order if it has not been added to any order yet. The policy he needs to write in `Order` model should be as below:
 
-    ```prisma
+    ```zmodel
     model Order
     {
       pets Pet[]
@@ -33,7 +33,7 @@ My co-founder and I are building the full-stack toolkit [ZenStack](https://zenst
 
 -   **Me: Wait a minute. We could support it, he just needs to define it in `Pet` model like the below:**
 
-    ```prisma
+    ```zmodel
     model Pet
     {
       orderId String

@@ -35,7 +35,7 @@ The beauty of the open-source community is as long as there is a requirement, th
 
 -   [zod-prisma](https://github.com/CarterGrimmeisen/zod-prisma)
 
-```prisma
+```zmodel
 model Post {
   id String @id @default(uuid()) /// @zod.uuid()
   /// @zod.max(255, { message: "The title must be shorter than 256 characters" })
@@ -46,7 +46,7 @@ model Post {
 
 -   [prisma-nestjs-graphql](https://github.com/unlight/prisma-nestjs-graphql)
 
-```prisma
+```zmodel
 model User {
     id String @id @default(cuid())
     /// @HideField()
@@ -145,7 +145,7 @@ Let’s assume we would like to have some custom attributes:
 -   An attribute @email to make the field validation for email.
 -   Attributes @password and @omit on the password field to encrypt and ignore it by normal read.
 
-```prisma
+```zmodel
 // everyone can signup, and user profile is also publicly readable
 /// @@allow('create,read', true)
 model User {
@@ -200,7 +200,7 @@ So as Dan Abramov said in the [React Documentary](https://youtu.be/8pDqJVdNa44?t
 
 Regardless of ZenStack, the above Prisma file is supposed to be looks like below ideally:
 
-```prisma
+```zmodel
 model User {
     id        String @id
     email     String @email
@@ -305,7 +305,7 @@ password field attribute: @password
 
 Actually, if you check out your `schema.prisma` file generated from ZModel you will get it:
 
-```prisma
+```zmodel
 /// @@allow('create,read', true)
 model User {
     id String @id() @default(cuid())
@@ -315,9 +315,6 @@ model User {
     /// @password
     /// @omit
     password String?
-    zenstack_guard Boolean @default(true)
-    zenstack_transaction String?
-    @@index([zenstack_transaction])
 }
 ```
 

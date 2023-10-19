@@ -56,22 +56,25 @@ npx zenstack@latest init
 
 First, in `schema.zmodel`, make a few changes to the `User` model:
 
-```prisma {5,10-14} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  // highlight-next-line
   password      String @password @omit
   image         String?
   accounts      Account[]
   sessions      Session[]
 
+  // highlight-start
   // everyone can signup, and user profile is also publicly readable
   @@allow('create,read', true)
 
   // only the user can update or delete their own profile
   @@allow('update,delete', auth() == this)
+  // highlight-end
 }
 ```
 
@@ -206,7 +209,7 @@ file and fill in the content below:
 
 ```ts title='/src/pages/api/model/[...path].ts'
 import { NextRequestHandler } from '@zenstackhq/server/next';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerAuthSession } from '../../../server/auth';
 import { prisma } from '../../../server/db';
@@ -215,7 +218,7 @@ async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
     const session = await getServerAuthSession({ req, res });
     // create a wrapper of Prisma client that enforces access policy,
     // data validation, and @password, @omit behaviors
-    return withPresets(prisma, { user: session?.user });
+    return enhance(prisma, { user: session?.user });
 }
 
 export default NextRequestHandler({ getPrisma });
@@ -227,7 +230,7 @@ automatically generate React hooks for you.
 
 Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
 
-```prisma
+```zmodel
 plugin hooks {
   provider = '@zenstackhq/swr'
   output = "./src/lib/hooks"
@@ -413,7 +416,7 @@ export default Signin;
 
 Now let's create a `Blog` model. We'll use it to store blog posts.
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model Post {
   id        String @id @default(cuid())
   createdAt DateTime @default(now())
@@ -435,13 +438,14 @@ model Post {
 `User` and `Post` model has a one-to-many relation. We can establish it by adding
 a `posts` relation field to the `User` model.
 
-```prisma {6} title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id            String    @id @default(cuid())
     name          String?
     email         String?   @unique
     emailVerified DateTime?
     password      String @password @omit
+    // highlight-next-line
     posts         Post[]
     image         String?
     accounts      Account[]

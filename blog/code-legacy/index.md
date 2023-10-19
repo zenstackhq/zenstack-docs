@@ -103,9 +103,9 @@ pnpm-lock.yaml
   ...
 ```
 
-It should work if it’s an npm project but not for pnpm. You probably already know the reason from the directory tree. It is because in pnpm `@zenstack/runtime` under `common/node_modules` is just a symbolic link to the `@zenstackhq+runtime@1.0.0-alpha.62_@prisma+client@4.11.0` under `.pnpm`. So the actual code running is under there, it can’t find `.zenstack` in its node_modules.
+It should work if it’s an npm project but not for pnpm. You probably already know the reason from the directory tree. It is because in pnpm `@zenstackhq/runtime` under `common/node_modules` is just a symbolic link to the `@zenstackhq+runtime@1.0.0-alpha.62_@prisma+client@4.11.0` under `.pnpm`. So the actual code running is under there, it can’t find `.zenstack` in its node_modules.
 
-The fix is not hard, and we need to find the real path of `@zenstack/runtime` module and generate the `.zenstack` there, which will then work for both npm and pnpm.
+The fix is not hard, and we need to find the real path of `@zenstackhq/runtime` module and generate the `.zenstack` there, which will then work for both npm and pnpm.
 
 To be candid, in my opinion, pnpm has actually improved the robustness of our codebase in this particular case. Furthermore, this kind of layout actually prevents some potential silly bugs in the npm world:
 

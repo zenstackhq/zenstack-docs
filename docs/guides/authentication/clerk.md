@@ -20,7 +20,7 @@ You can include any field you want in the `User` model, as long as you provide t
 
 The following code shows an example blog post schema:
 
-```prisma
+```zmodel
 model User {
     id String @id
     @@ignore
@@ -48,11 +48,11 @@ If you choose to [synchronize user data to your database](https://clerk.com/docs
 
 You can create an enhanced Prisma client that automatically validates access policies, field validation rules, etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
 
-To create such a client with a standard setup, call the `withPresets` API with a regular Prisma client and the current user (fetched from Clerk). Here's an example:
+To create such a client with a standard setup, call the `enhance` API with a regular Prisma client and the current user (fetched from Clerk). Here's an example:
 
 ```ts
 import type { NextApiRequest } from 'next';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { getAuth } from '@clerk/nextjs/server';
 import { prisma } from '../lib/db';
 
@@ -60,7 +60,7 @@ async function getPrisma(req: NextApiRequest) {
     const auth = getAuth(req);
     // create a wrapper of Prisma client that enforces access policy,
     // data validation, and @password, @omit behaviors
-    return withPresets(prisma, { user: auth ? { id: auth.userId } : undefined });
+    return enhance(prisma, { user: auth ? { id: auth.userId } : undefined });
 }
 ```
 

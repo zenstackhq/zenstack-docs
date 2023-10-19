@@ -14,7 +14,7 @@ To get access policies to work, ZenStack needs to be connected to the authentica
 
 NextAuth is agnostic about the underlying database type, but it requires specific table structures, depending on how you configure it. Therefore, your ZModel definitions should reflect these requirements. A sample `User` model is shown here (to be used with `CredentialsProvider`):
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique @email
@@ -37,13 +37,14 @@ You can find the detailed database model requirements [here](https://next-auth.j
 
 Adapter is a NextAuth mechanism for hooking in custom persistence of auth-related entities, like User, Account, etc. Since ZenStack is based on Prisma, you can use PrismaAdapter for the job:
 
-```ts {6} title='/src/pages/api/auth/[...nextauth].ts'
+```ts title='/src/pages/api/auth/[...nextauth].ts'
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
     // install Prisma adapter
+    // highlight-next-line
     adapter: PrismaAdapter(prisma),
     ...
 };
@@ -107,12 +108,12 @@ function authorize(prisma: PrismaClient) {
 
 You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
 
-To create such a client with a standard setup, call the `withPresets` API with a regular Prisma client and the current user (fetched with NextAuth API). Here's an example:
+To create such a client with a standard setup, call the `enhance` API with a regular Prisma client and the current user (fetched with NextAuth API). Here's an example:
 
 ```ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { authOptions } from '../../pages/api/auth/[...nextauth]';
 import { prisma } from '../../../server/db/client';
 
@@ -120,7 +121,7 @@ async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
     const session = await getServerSession(req, res, authOptions);
     // create a wrapper of Prisma client that enforces access policy,
     // data validation, and @password, @omit behaviors
-    return withPresets(prisma, { user: session?.user });
+    return enhance(prisma, { user: session?.user });
 }
 ```
 

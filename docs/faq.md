@@ -17,6 +17,10 @@ No, it is not implemented with Postgres RLS. Instead, ZenStack applies access co
 1. A significantly simpler syntax for access control rules compared to SQL RLS.
 1. Colocating access control rules with the data model.
 
+### Does using ZenStack introduce more connections to my databases?
+
+No. It's common to create enhanced PrismaClient wrappers per request (for binding to different user identity). Under the hood all such wrappers share the same PrismaClient instance and thus the same database connection.
+
 ### Is ZenStack framework-agnostic?
 
 Yes, ZenStack is framework-agnostic. The core of ZenStack's runtime is a transparent proxy wrapping a PrismaClient, so it can be used in any framework that can run Prisma. ZenStack already provides adapters for popular frameworks like [Next.js](/docs/reference/server-adapters/next) and [Fastify](/docs/reference/server-adapters/fastify), and more are being made. It's also easy to write your own adapters.
@@ -40,8 +44,12 @@ We will continue improving the parity between ZModel and Prisma Schema regarding
 
 ### Does ZenStack require a specific Prisma version?
 
-No. ZenStack references Prisma as a peer dependency and should work with Prisma 4.0 and above.
+No. ZenStack references Prisma as a peer dependency and should work with Prisma 4.8.0 and above.
 
 ### Does ZenStack work with Prisma migration?
 
 Yes. When you run `zenstack generate` it generates a standard Prisma schema file that can be used with Prisma migration.
+
+### Are there any other IDE integrations besides VSCode?
+
+Unfortunately for the time being, VSCode is the only officially supported IDE. There have been many asks about JetBrains. ZenStack's language tooling is built with [Langium](https://github.com/langium/langium), and we'll need to wait for the resolution of [this issue](https://github.com/langium/langium/issues/999) to evaluate JetBrains support.

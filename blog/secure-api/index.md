@@ -111,7 +111,7 @@ The increasing popularity of ORM offers a new opportunity for implementing secur
 
 I will illustrate this approach with the [ZenStack](https://zenstack.dev) OSS project we're building. ZenStack is built above the [Prisma ORM](https://prisma.io), and one of its focuses is to add access control capability. Here's an example schema for the same "chat" scenario that we've seen previously:
 
-```prisma
+```zmodel
 // auth() function returns the current user
 // future() function returns the post-update entity value
 

@@ -1,7 +1,7 @@
 ---
 title: SvelteKit
 description: Adapter for integrating with SvelteKit
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 import ErrorHandling from './_error-handling.md';
@@ -18,14 +18,14 @@ You can mount the API by creating a SvelteKit server hooks like:
 
 ```ts title='/src/hooks.server.ts'
 import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { getSessionUser } from '$lib/auth.ts';
 
 // create an enhanced Prisma client with user context
 function getPrisma(event: RequestEvent) {
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
-    return withPresets({ user: getSessionUser(event) });
+    return enhance({ user: getSessionUser(event) });
 }
 
 // create the hooks handler with the `getPrisma` hook

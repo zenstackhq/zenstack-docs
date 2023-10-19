@@ -121,42 +121,41 @@ npx zenstack@latest init
 
 The `zenstack` CLI installs Prisma and other dependencies and creates a boilerplate `schema.zmodel` file. Update it with the following content to reflect our requirements:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 datasource db {
-    provider = "postgresql"
-    url = env("POSTGRES_PRISMA_URL")
-    directUrl = env("POSTGRES_URL_NON_POOLING")
-    shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model User {
-    id String @id @default(cuid())
-    email String @unique
-    password String
-    orders Order[]
+  id       String  @id @default(cuid())
+  email    String  @unique
+  password String
+  orders   Order[]
 }
 
 model Pet {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    name String
-    category String
-    order Order? @relation(fields: [orderId], references: [id])
-    orderId String?
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  category  String
+  order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   String?
 }
 
 model Order {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    pets Pet[]
-    user User @relation(fields: [userId], references: [id])
-    userId String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pets      Pet[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 ```
 
@@ -356,7 +355,7 @@ Let's first look at the signup part. Since the `User` resource already has a CRU
 
 Replace the `User` model in `schema.zmodel` with the following content:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -403,17 +402,17 @@ app.post('/api/login', async (req, res) => {
 });
 ```
 
-Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `withPresets` call so that the `@password` and `@omit` attributes can take effect.
+Finally, change the `getPrisma` callback in the `ZenStackMiddleware` to an enhanced Prisma client returned by the `enhance` call so that the `@password` and `@omit` attributes can take effect.
 
 Replace the corresponding part of the code in `/api/app.ts` with the following:
 
 ```ts title='/api/app.ts' {5}
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 
 app.use(
     '/api',
     ZenStackMiddleware({
-        getPrisma: () => withPresets(prisma),
+        getPrisma: () => enhance(prisma),
         handler: apiHandler,
     })
 );
@@ -421,7 +420,7 @@ app.use(
 
 Beware that with the enhanced Prisma client, all CRUD operations are denied by default unless you open them up explicitly. Let's open up the `create` and `read` operations for `User` to support the signup/login flow:
 
-```prisma title='/schema.zmodel' {6-10}
+```zmodel title='/schema.zmodel' {6-10}
 model User {
     id String @id @default(cuid())
     email String @unique
@@ -499,7 +498,7 @@ curl -X POST localhost:3000/api/login \
 
 Now that we have authentication in place, we can add access control rules to our schema to secure our CRUD service. Make the following changes to the `Pet` and `Order` models:
 
-```prisma title='/schema.zmodel' {9-13,24-25}
+```zmodel title='/schema.zmodel' {9-13,24-25}
 model Pet {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
@@ -539,9 +538,9 @@ You can learn more about access policies [here](https://zenstack.dev/docs/guides
 
 By declaratively defining access policies in the schema, you no longer need to implement these rules in your API. It's easier to ensure consistency, making the schema a single source of truth for your data's shape and security rules.
 
-There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `withPresets` call as the context.
+There's one piece still missing, though: we need to hook the authenticated user identity into the system so that the `auth()` function works. To do that, we require the API callers to carry the JWT token as a bearer token in the `Authorization` header. Then, on the server side, we extract it from the current request and pass it to the `enhance` call as the context.
 
-Add a `getUser` helper to decode the user from the token, and pass that to the `withPresets` call:
+Add a `getUser` helper to decode the user from the token, and pass that to the `enhance` call:
 
 ```ts title='/api/index.ts' {0-15,23}
 import type { Request } from 'express';
@@ -567,7 +566,7 @@ app.use(
     '/api',
     ZenStackMiddleware({
         getPrisma: (req) => {
-            return withPresets(prisma, { user: getUser(req) });
+            return enhance(prisma, { user: getUser(req) });
         },
         handler: apiHandler
     })
@@ -745,7 +744,7 @@ npm install -D @zenstackhq/openapi
 
 Then enable the OpenAPI plugin in the `schema.zmodel` file:
 
-```prisma title='/schema.zmodel'
+```zmodel title='/schema.zmodel'
 plugin openapi {
     provider = '@zenstackhq/openapi'
     prefix = '/api'

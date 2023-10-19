@@ -92,16 +92,16 @@ export default withIronSessionApiRoute(userRoute, sessionOptions);
 
 You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
 
-To create such a client with a standard setup, call the `withPresets` API with a regular Prisma client and the current user (fetched from iron-session). Here's an example:
+To create such a client with a standard setup, call the `enhance` API with a regular Prisma client and the current user (fetched from iron-session). Here's an example:
 
 ```ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { withPresets } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime';
 import { prisma } from '../lib/db';
 
 async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
     // create a wrapper of Prisma client that enforces access policy,
     // data validation, and @password, @omit behaviors
-    return withPresets(prisma, { user: req.session?.user });
+    return enhance(prisma, { user: req.session?.user });
 }
 ```

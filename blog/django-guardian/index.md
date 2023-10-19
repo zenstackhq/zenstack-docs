@@ -51,7 +51,7 @@ assign_perm('change_post', group1, post1)
 
 Contrary to Django, Next.js + Prisma + ZenStack is an unopinionated framework and doesn’t have built-in models for `User` and `Group`. You need to model them explicitly with ZenStack schema:
 
-```prisma
+```zmodel
 model User {
   id Int @id @default(autoincrement())
   username String
@@ -67,7 +67,7 @@ model Group {
 
 The schema not only models data types and relations but also allows you to express permissions in it. Let's see how to model `User` and `Group`'s permissions on `Post`:
 
-```prisma
+```zmodel
 model User {
   id Int @id @default(autoincrement())
   username String
@@ -156,7 +156,7 @@ export function updatePost(request: Request, slug: string, data: PostUpdateInput
     // get an access-control enabled Prisma wrapper
     // the "user" context value supports the `auth()`
     // function in the permission rules
-    const db = withPresets(prisma, { user });
+    const db = enhance(prisma, { user });
 
     // error will be thrown if the current user doesn't
     // have permission

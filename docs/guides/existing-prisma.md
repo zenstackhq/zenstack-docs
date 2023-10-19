@@ -37,7 +37,7 @@ One major limitation of Prisma schema is the lack of support for custom attribut
 
 Here's an example from [TypeGraphQL Prisma](https://prisma.typegraphql.com/). The comment on the "password" field marks it to be omitted from both the GraphQL input and output types. The generator parses its text and acts accordingly.
 
-```prisma title='schema.prisma'
+```zmodel title='schema.prisma'
 model User {
   id Int @default(autoincrement()) @id
   email String  @unique
@@ -51,7 +51,7 @@ To make this scenario continue working, ZenStack preserves all triple-slash comm
 
 The hack works but is error-prone because comments have no protection from the compiler. Fortunately, with ZModel, you can implement it in a much nicer way, thanks to its custom attributes support:
 
-```prisma title='schema.zmodel'
+```zmodel title='schema.zmodel'
 
 attribute @TypeGraphQL.omit(output: Boolean?, input: Boolean?)
 

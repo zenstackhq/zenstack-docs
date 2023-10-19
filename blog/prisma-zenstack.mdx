@@ -75,7 +75,7 @@ Prisma and ZenStack make a perfect match for building up a secure backend with a
 
 Use the **ZModel** language (a superset of Prisma schema) to define your models, relations, and access policies. Optionally, if you use Next.js as your full-stack framework, enable the react plugin to generate data access client hooks.
 
-```prisma title="schema.zmodel"
+```zmodel title="schema.zmodel"
 
 model Post {
   id        String @id @default(cuid())
@@ -93,9 +93,9 @@ model Post {
   @@allow('read', auth() != null && published)
 }
 
-// generate react hooks under ./src/lib/hook
+// generate swr hooks under ./src/lib/hook
 plugin reactHooks {
-  provider = '@zenstackhq/react'
+  provider = '@zenstackhq/swr'
   output = "./src/lib/hook
 }
 
@@ -137,7 +137,7 @@ export default requestHandler({
         const user = await getSessionUser(req, res);
 
         // return an enhanced Prisma client that enforces access policies
-        return withPresets(prisma, { user });
+        return enhance(prisma, { user });
     },
 });
 ```

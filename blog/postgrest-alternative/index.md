@@ -54,7 +54,7 @@ Prisma is a modern Typescript ORM that takes a schema-first approach and generat
 
 A simple blogging app's schema looks like the following:
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String
@@ -87,7 +87,7 @@ ZenStack supercharges Prisma and turns it into a powerful full-stack development
 
 Still using our blogging app as an example, the access policies can be added as the following (which is equivalent to the PostgREST example above):
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String
@@ -133,7 +133,7 @@ CREATE POLICY "public_readable_to_all" ON Post
 
 ZenStack:
 
-```prisma
+```zmodel
 model Post {
   ...
   @@allow('read', true)
@@ -157,7 +157,7 @@ CREATE POLICY post_admin_update_policy
 
 ZenStack:
 
-```prisma
+```zmodel
 model Post {
   ...
   @@allow('update', auth().role == 'ADMIN')
@@ -186,7 +186,7 @@ CREATE POLICY post_group_admin_update_policy
 
 ZenStack:
 
-```prisma
+```zmodel
 model Post {
   ...
   @@allow('update', author.groups?[group.users?[userId == auth().id && role == 'ADMIN']])
@@ -198,7 +198,7 @@ model Post {
 At runtime, ZenStack creates a transparent proxy around a regular Prisma client and injects proper filtering and checks to enforce access policies. For example, when you run the following code:
 
 ```ts
-const posts = await withPolicy(prisma, {user: session.user}).post.findMany();
+const posts = await enhance(prisma, {user: session.user}).post.findMany();
 ```
 
 , only posts readable to the current user are returned.
@@ -209,7 +209,7 @@ Furthermore, it provides server adapters to install an automatic CRUD service to
 app.use(
     '/api/data',
     ZenStackMiddleware({
-        getPrisma: (request) => withPolicy(prisma, { user: getSessionUser(request) }),
+        getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
     })
 );
 ```
@@ -220,4 +220,4 @@ The `/api/data` endpoint will then provide a full set of Prisma operations for e
 
 ## Wrap Up
 
-I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/category/quick-start) and [Guides](/docs/category/guides) pages for more details, and join our [Discord](https://discord.com/invite/Ykhr738dUe) for questions and updates!
+I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/category/quick-start) and [Guides](/docs/category/guides) pages for more details, and join our [Discord](https://discord.gg/Ykhr738dUe) for questions and updates!

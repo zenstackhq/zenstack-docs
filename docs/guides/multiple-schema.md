@@ -41,7 +41,7 @@ model ToDo extends Base
 
 The generated `schema.prisma` file would be:
 
-```prisma
+```zmodel
 /// @@allow('all', auth() != null && published)
 model User {
     name String
@@ -49,9 +49,6 @@ model User {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
     published Boolean @default(true)
-    zenstack_guard Boolean @default(true)
-    zenstack_transaction String?
-    @@index([zenstack_transaction])
 }
 
 /// @@allow('all', auth() != null && published)
@@ -64,9 +61,6 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
     published Boolean @default(true)
-    zenstack_guard Boolean @default(true)
-    zenstack_transaction String?
-    @@index([zenstack_transaction])
 }
 
 /// @@allow('all', auth() != null && published)
@@ -78,9 +72,6 @@ model Comment {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
     published Boolean @default(true)
-    zenstack_guard Boolean @default(true)
-    zenstack_transaction String?
-    @@index([zenstack_transaction])
 }
 ```
 

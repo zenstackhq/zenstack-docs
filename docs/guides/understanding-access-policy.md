@@ -11,34 +11,56 @@ This document introduces the access policy enforcement behavior regarding differ
 
 :::tip
 
-Access policies are only effective when you call Prisma methods enhanced with [`withPolicy`](/docs/reference/runtime-api#withpolicy) or [`withPresets`](/docs/reference/runtime-api#withpresets).
+Access policies are only effective when you call Prisma methods enhanced with [`enhance`](/docs/reference/runtime-api#enhance) or [`withPolicy`](/docs/reference/runtime-api#withpolicy).
 
 :::
 
 ## General rules
 
-Access policies are expressed with the `@@allow` and `@@deny` model attributes. The attributes take two parameters. The first is the operation: create/read/update/delete. You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
+:::info
 
-```prisma
+Field-level access policies are in preview stage and its behavior may change in the future. Please let us know your feedback!
+
+:::
+
+Access policies are expressed with the `@@allow`/`@@deny` model attributes or `@allow`/`@deny` field attributes. The attributes take two parameters. The first is the operation: create/read/update/delete (only read/update for field-level policies). You can use a comma-separated string to pass multiple operations or use 'all' to abbreviate all operations. The second parameter is a boolean expression indicating if the rule should be activated.
+
+```zmodel
 attribute @@allow(_ operation: String, _ condition: Boolean)
 
+attribute @allow(_ operation: String, _ condition: Boolean)
+
 attribute @@deny(_ operation: String, _ condition: Boolean)
+
+attribute @deny(_ operation: String, _ condition: Boolean)
 ```
 
-`@@allow` opens up permissions while `@@deny` turns them off. You can use them multiple times and combine them in a model. Whether an operation is permitted is determined as follows:
+`@@allow`/`@allow` opens up permissions while `@@deny`/`@deny` turns them off. You can use them multiple times and combine them in a model. Whether an operation is permitted is determined as follows:
+
+For model-level policies:
 
 1. If any `@@deny` rule evaluates to true, it's denied.
 1. If any `@@allow` rule evaluates to true, it's allowed.
 1. Otherwise, it's denied.
 
+For field-level policies:
+
+1. If any `@deny` rule evaluates to true, it's denied.
+1. If there exists `@allow` rules and at least one of them evaluates to true, it's allowed.
+1. If there exists `@allow` rules but none of them evaluates to true, it's denied.
+1. Otherwise, it's allowed.
+
+Please note the difference between model-level and field-level rules. Model-level access are by-default denied, while field-level access are by-default allowed. E.g., if you don't specify any "read" rule for a model, the model is not readable. However, if you don't specify any "read" rule for a field, the field is readable.
+
+
 ## Accessing user data
 
-When using `withPresets` or `withPolicy` to wrap a Prisma client for authorization, you pass in a context object containing the data about the current user (verified by authentication). This user
+When using `enhance` to wrap a Prisma client for authorization, you pass in a context object containing the data about the current user (verified by authentication). This user
 data can be accessed with the special `auth()` function in access policy rules. Note that `auth()` function's return value is typed as the `User` model in your schema, so only fields defined in the `User` model are accessible.
 
 You can access its field to implement RBAC like:
 
-```prisma
+```zmodel
 model Post {
     // full access for admins
     // "role" field must be defined in the "User" model
@@ -48,7 +70,7 @@ model Post {
 
 , or you can use it to check the user's identity directly.
 
-```prisma
+```zmodel
 model Post {
     ...
     author User @relation(fields: [authorId], references: [id])
@@ -82,7 +104,7 @@ When a create operation is rejected, a [`PrismaClientKnownRequestError`](https:/
 
 "Read" operations are filtered by _**read**_ rules. For `findMany`, entities failing policy checks are silently dropped. For `findUnique` and `findFirst`, `null` is returned if the requested entity exists but fails policy checks. For `findUniqueOrThrow` and `findFirstOrThrow`, an error is thrown if the requested entity exists but fails policy checks.
 
-```prisma
+```zmodel
 model Foo {
     id String @id
     value Int
@@ -91,7 +113,7 @@ model Foo {
 ```
 
 ```ts
-// given there's a single Foo { id: "1", value: "0" } in the database
+// given there's a single Foo { id: "1", value: 0 } in the database
 
 db.foo.findUnique({ where: { id: '1' } }); // => null
 db.foo.findUniqueOrThrow({ where: { id: '1' } }); // => throws
@@ -102,7 +124,7 @@ db.foo.findMany(); // => []
 
 The _**read**_ rules also determine if the result of a mutation - create, update or delete can be read back. Therefore, even if a mutation succeeds (and is persisted), the call can still result in a [`PrismaClientKnownRequestError`](https://www.prisma.io/docs/reference/api-reference/error-reference#prismaclientknownrequesterror) because the entity being returned doesn't satisfy _**read**_ rules.
 
-```prisma
+```zmodel
 model Foo {
     id String @id
     value Int
@@ -111,8 +133,22 @@ model Foo {
 ```
 
 ```ts
-// an entity is created in the database, but the call eventually throws
+// an entity is created in the database, but the call eventually throws because the result cannot be read back
 const created = await db.foo.create({ data: { value: 0 } });
+```
+
+Field-level read rules don't affect the readability of model entities as a whole, however the annotated field is omitted from the result if it fails the checks.
+
+```zmodel
+model Foo {
+    id String @id
+    value Int @allow('read', value > 0)
+}
+```
+
+```ts
+// given there's a single Foo { id: "1", value: 0 } in the database
+db.foo.findUnique({ where: { id: '1' } }); // => { id: '1' }
 ```
 
 ### Update
@@ -125,7 +161,7 @@ const created = await db.foo.create({ data: { value: 0 } });
 
 "Update" operations are governed by the _**update**_ rules. An entity has a "pre-update" and "post-update" state. Fields used in _**update**_ rules implicitly refer to the "pre-update" state, and you can use the `future()` function to refer to the "post-update" state. [Field validation](/docs/reference/zmodel-language#field-validation) is also considered a part of _**update**_ rules.
 
-```prisma
+```zmodel
 model Post {
     id String @id
     title String @length(1, 100)
@@ -139,7 +175,7 @@ model Post {
 
 For top-level or nested `updateMany`, access policies are used to "trim" the scope of the update (by merging with the "where" clause provided by the user). This can end up with fewer entities being updated than without policies. For unique update, either with a top-level `update` or a nested `update` to "to-one" relation, the update will be rejected if it fails policy checks. When an update operation is rejected, a [`PrismaClientKnownRequestError`](https://www.prisma.io/docs/reference/api-reference/error-reference#prismaclientknownrequesterror) is thrown with code [`P2004`](https://www.prisma.io/docs/reference/api-reference/error-reference#p2004).
 
-```prisma
+```zmodel
 model Foo {
     id String @id
     value Int
@@ -162,7 +198,7 @@ await db.foo.update({ where: { id: '1' }, data: { value: 1 } });
 
 Update operations can contain nested writes - creates, updates or deletes, and if a nested-written model has corresponding rules, they're also enforced. The entire update happens in a transaction.
 
-```prisma
+```zmodel
 model User {
     id String @id
     email String
@@ -196,6 +232,8 @@ await db.user.update({
     },
 });
 ```
+
+The handling of field-level update rules is the same as model-level ones. The only difference is that the rules are only activated when the annotated field is part of the update operation. In another word, when a field is set to be updated, its update rules are merged with model-level rules.
 
 ### Delete
 
