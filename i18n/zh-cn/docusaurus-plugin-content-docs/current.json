@@ -1,0 +1,70 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.mySidebar.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category Introduction in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Quick Start": {
+    "message": "Quick Start",
+    "description": "The label for category Quick Start in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Quick Start.link.generated-index.title": {
+    "message": "Quick Start",
+    "description": "The generated-index page title for category Quick Start in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Guides": {
+    "message": "Guides",
+    "description": "The label for category Guides in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Guides.link.generated-index.title": {
+    "message": "Guides",
+    "description": "The generated-index page title for category Guides in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Integrating With Authentication": {
+    "message": "Integrating With Authentication",
+    "description": "The label for category Integrating With Authentication in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Integrating With Authentication.link.generated-index.title": {
+    "message": "Integrating With Authentication",
+    "description": "The generated-index page title for category Integrating With Authentication in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Reference": {
+    "message": "Reference",
+    "description": "The label for category Reference in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Reference.link.generated-index.title": {
+    "message": "Reference",
+    "description": "The generated-index page title for category Reference in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Plugins": {
+    "message": "Plugins",
+    "description": "The label for category Plugins in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Plugins.link.generated-index.title": {
+    "message": "Plugins",
+    "description": "The generated-index page title for category Plugins in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Server Adapters": {
+    "message": "Server Adapters",
+    "description": "The label for category Server Adapters in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Server Adapters.link.generated-index.title": {
+    "message": "Server Adapters",
+    "description": "The generated-index page title for category Server Adapters in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.API Handlers": {
+    "message": "API Handlers",
+    "description": "The label for category API Handlers in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Advanced": {
+    "message": "Advanced",
+    "description": "The label for category Advanced in sidebar mySidebar"
+  },
+  "sidebar.mySidebar.category.Advanced.link.generated-index.title": {
+    "message": "Advanced",
+    "description": "The generated-index page title for category Advanced in sidebar mySidebar"
+  }
+}

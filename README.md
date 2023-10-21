@@ -10,8 +10,11 @@ $ pnpm install
 
 ### Local Development
 
-```
+```shell
 $ pnpm start
+
+# for locale
+$ pnpm run start --locale zh-cn
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
