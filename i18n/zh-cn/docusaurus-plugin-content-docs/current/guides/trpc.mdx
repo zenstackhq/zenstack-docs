@@ -1,0 +1,86 @@
+---
+description: Guide for using ZenStack with tRPC.
+sidebar_position: 7
+---
+
+import InitTips from '../quick-start/_zenstack-init-tips.md';
+
+# Using With tRPC
+
+[tRPC](https://trpc.io) is a fantastic library that magically turns server-side procedures into client-callable functions without requiring you to provide any formal contract. The popular [T3 stack](https://create.t3.gg/) promotes the combo of Prisma + tRPC for achieving type safety from your frontend all the way down to the database.
+
+ZenStack makes things even easier by automatically generating tRPC routers from the ZModel schema. You can use the generated routers together with an enhanced Prisma client; since the Prisma client has the ability to enforce access policies, there is no need to implement authorization code anymore.
+
+## Details
+
+### 1. Initializing the project
+
+If you haven't initialized your tRPC project with ZenStack, run the following command to do it:
+
+```bash
+npx zenstack@latest init
+```
+
+<InitTips />
+
+### 2. Installing the tRPC plugin
+
+You can enable tRPC router generation with the `@zenstackhq/trpc` plugin.
+
+First install the trpc package:
+
+```bash
+npm install -D @zenstackhq/trpc@latest
+```
+
+```zmodel title='/schema.zmodel'
+
+plugin trpc {
+    provider = '@zenstackhq/trpc'
+    output = 'src/server/routers/generated'
+}
+
+```
+
+### 3. Setting up the tRPC context
+
+Usually in your tRPC project, you have a function to create a tRPC context. You need to make sure the context contains a `prisma` field that is an instance of Prisma client. The generated tRPC routers use that to talk to the database.
+
+For most of the cases you should use a Prisma client that's "enhanced" by ZenStack so that the CRUD operations are guarded by the access policies defined in the ZModel schema. Here's a quick example with Next.js:
+
+```ts title='/src/server/context.ts'
+
+import { enhance } from '@zenstackhq/runtime';
+import { prisma } from './db';
+import { getSessionUser } from './auth';
+
+export const createContext = async ({ req, res }: CreateNextContextOptions) => {
+    return {
+        ...,
+        // use access-control-enabled Prisma client
+        prisma: await enhance(prisma, { user: getSessionUser(req, res) }),
+    };
+};
+```
+
+### 4. Using the generated routers
+
+Now run the `zenstack` CLI to generate artifacts:
+
+```bash
+npx zenstack generate
+```
+
+You should find a bunch of tRPC routers generated in the output folder, one per each data model. A `createRouter` helper function is also generated, which returns a router instance for all models. You can use it as your top-level tRPC router, or merge it with other routers to form a more complex setup.
+
+```ts title='/src/server/routers/_app.ts'
+import { createRouter } from './generated/routers';
+
+const t = initTRPC.context<Context>().create();
+
+export const appRouter = createRouter(t.router, t.procedure);
+
+export type AppRouter = typeof appRouter;
+```
+
+_NOTE_: The ZenStack trpc plugin is based on the awesome work by [Omar Dulaimi](https://github.com/omar-dulaimi/prisma-trpc-generator).

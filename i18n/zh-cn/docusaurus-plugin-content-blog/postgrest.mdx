@@ -1,0 +1,212 @@
+---
+description: How PostgREST helps you achieve a modern web architecture without implementing a backend.
+tags: [webdev, fullstack, postgres, database]
+authors: yiming
+image: https://user-images.githubusercontent.com/104139426/217680954-2b302921-766f-4711-b949-2b608630ddbb.png
+date: 2023-01-13
+---
+
+# Modern Web Architecture Without a Backend — Using PostgREST
+
+![Cover Image](https://user-images.githubusercontent.com/104139426/217680954-2b302921-766f-4711-b949-2b608630ddbb.png)
+
+No, you didn’t read it wrong. It’s [PostgREST](https://postgrest.org/en/stable/), not Postgres 😄. Although the naming is prone to misreading and not friendly to search engines, it perfectly reflects what the project does - it adds a RESTful API layer to PostgreSQL. This post is a quick introduction to what it is, how it works, and what kind of scenarios it fits best.
+
+<!--truncate-->
+
+---
+
+This post is part of a series about libraries and services that simplifies the construction of the backend of web apps. You can find the full series here:
+
+-   [PostgREST](/blog/postgrest) (this post)
+-   [Supabase](/blog/supabase)
+-   [Prisma + ZenStack](/blog/prisma-zenstack)
+
+---
+
+## Why a RESTful Layer?
+
+Most web apps are just conversations between the browser and the database. However, that rarely happens directly; there’re intermediaries: the load balancer, the API gateway, the backend service, etc. So a natural question would be: can I cut these middlemen and let my browser talk to the database directly?
+
+![Frontend-Backend-Database](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/sa65xjkwl4961exojixs.jpg)
+
+Yes, you can! That’s precisely what PostgREST offers. But obviously, it can’t naively expose database operations to the wild without solving two minor issues first:
+
+1. Users need to be authenticated and authorized. These used to be the job of the backend.
+
+1. Connections from lots of clients can quickly exhaust Postgres’s connection pool. Some additional pooling is needed.
+
+## How Does It Work?
+
+To use PostgREST, you set up a config file, specify the connection string to the actual Postgres database, and then launch its server process. It introspects your database schema and starts responding to HTTP requests right away.
+
+Strictly speaking, PostgREST doesn’t follow RESTful conventions, as it doesn’t use nested routes. Say, if you have a resource User in REST, by convention, a single user should be accessed via:
+
+```ts
+GET /user/1;
+```
+
+, while in PostgREST, you fetch it like:
+
+```ts
+GET /user?id=1
+```
+
+Its API looks like a mixture of RESTful and GraphQL. It utilizes HTTP verbs as REST does and allows highly flexible client-oriented queries (e.g., fetching related entities in a single call) similar to GraphQL.
+
+Here’re a few quick examples:
+
+-   Selecting and filtering
+
+```ts
+// Get all paid users who're at least 18-year-old
+GET /user?age=gte.18&paid=is.true
+```
+
+-   Paging and limiting
+
+```ts
+// Get 15 users starting at offset 30
+GET /user?limit=15&offset=30
+```
+
+-   Embedding (fetching related entities)
+
+```ts
+// Get users, selecting their last names
+// together with titles of their blog posts
+GET /user?select=last_name,post(title)
+```
+
+-   Inserting
+
+```ts
+POST /user
+{ "name": "J Doe", "age": 23 }
+```
+
+Its query syntax is quite versatile. In case you’re limited by the expressiveness of the syntax, there’s always an escape hatch - create a database view (where you can do arbitrary join/filter/…), and PostgREST automatically maps it as a RESTful resource too.
+
+## What About Security?
+
+![Security](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tqvryzyl4i0hf4t7r79r.png)
+
+Without proper access control mechanisms, this thing is barely useful. Fortunately, PostgREST is designed to keep the database at the center of API security.
+
+Let's dissect it and understand it piece by piece. Here we use a simple blogging system as an example.
+
+### 1. Signup Flow
+
+When a user signs up, an Auth system makes a new user record. At the same time, it creates a "role" on the database side. A "role" in Postgres is similar to a user or user group concept. It's used for granting access to database resources and assigning row-level permissions. We'll get back to this in a bit.
+
+![Signup Flow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3kyo2znapk41iqvcysm3.png)
+
+The Auth service can be a backend service, a 3rd party (like [Auth0](https://auth0.com)), or even our PostgREST itself. Its only job is to create and authenticate users.
+
+### 2. Row-level Permissions
+
+Our security requirement is that a post's owner can do everything to a post, and a user can read all posts that have been published (i.e., not in draft status).
+
+![Security Requirements](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wo2lxojwp6l3bkec404x.png)
+
+We can express the rules with Postgres's row-level security (RLS) like:
+
+```sql
+CREATE POLICY post_owner_policy ON post
+    USING (owner = current_user);
+
+CREATE POLICY post_read_policy ON post FOR SELECT
+    USING (published = true);
+```
+
+You can think of the RLS as automatically inserted WHERE clauses during query and mutation. The `current_user` is a built-in variable representing the current database role. Don't worry; you'll soon see where it comes from.
+
+### 3. JWT Token
+
+Now that we have permission rules in place, the only missing piece is the link between a user's account and its corresponding database role.
+
+PostgREST allows you to carry a JWT token in the Authorization HTTP header when making requests. The token is usually created and signed by the Auth service mentioned in step #1. The PostgREST server shares the secret used for signing, so it can validate that the token is not forged.
+
+When a user logs in, the Auth service issues the JWT token:
+
+![Login Flow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/murfxmqvwq4vievd9dyk.png)
+
+, and inside the token payload, there should at least be a "role" field providing the user's corresponding database role:
+
+```json
+{
+    ...
+    "role": "user123"
+}
+```
+
+### 4. Switching Role
+
+Finally, when the user makes a RESTful call, she sends over the JWT token she got during login, together with the CRUD request, to PostgREST.
+
+PostgREST validates the token, extracts the role information from the payload, and then switches to the role in the current session with the database (like doing a `su` in Linux). Finally, the CRUD operation is sent to the database.
+
+Thanks to the "role switching", the database operation is conducted with the correct "current_user", so the row-level security we set up in step #2 can kick in and reject invalid requests.
+
+![API Request Flow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ce4mpreoraed4jjgp1ba.png)
+
+💦 Phew, we've finally got a secure system! It has some twists, but I hope you get a general idea.
+
+## More Than CRUD
+
+What's fascinating about PostgREST is that not only tables and views but also **stored procedures** are mapped to the APIs. If stored procedure is alien to you, think of it as a custom function inside the database.
+
+For example, a stored procedure like:
+
+```sql
+  ; A stored procedure to add two integers
+
+  CREATE FUNCTION add_them(a integer, b integer)
+  RETURNS integer AS $$
+    SELECT a + b;
+  $$ LANGUAGE SQL IMMUTABLE;
+```
+
+is mapped to:
+
+```ts
+// mapped to an endpoint under /rpc
+POST /rpc/add_them
+{ "a": 1, "b": 2 }
+
+=> 3
+```
+
+This opens up many possibilities because store procedures can do other things besides CRUD, with transaction guarantee. It effectively means you can use it to implement backend APIs that are not just DB manipulations. E.g., the [pgsql-http](https://github.com/pramsey/pgsql-http) extension allows you to make HTTP requests. Shall we build an API gateway with PostgREST, then 🤣?
+
+## Do I Still Need a Backend?
+
+Good question. Yes and no.
+
+If your app is mostly CRUD, likely, you can solely use PostgREST as your backend. Set up a bunch of PostgREST nodes with Nginx in front of them, and you get a neat architecture.
+
+![Nginx-PostgREST-Postgres](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0s2in6mpsd79r1igixax.png)
+
+But many apps go a bit beyond just CRUD. Yes, you can make some magic happen with stored procedures, but sometimes it's too much - for example, doing video transcoding with a stored procedure?
+
+Calling PostgREST from backend services is also a valid scenario if your backend runs on edge. Many edge environments, like [Vercel's edge runtime](https://vercel.com/docs/concepts/functions/edge-functions), only support HTTP protocol. That means you can't directly make a connection to your Postgres database. For another reason, you shouldn't do this anyway: edge nodes are frequently created and destroyed, which will keep churning your database's connection pool. PostgREST can be used as a data proxy and connection pooler then.
+
+![Calling From Edge](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/54xacfl03ldwuxx9zpki.png)
+
+## Is It a Good Choice For Me?
+
+It mainly depends on two essential factors:
+
+### 1. Are you OK with being locked into Postgres database?
+
+A backend service using ORM allows you to switch to other databases in the future without many (even any) code changes. With PostgREST, you use Postgres.
+
+### 2. Are you comfortable with working with SQL a lot?
+
+True with the RESTful API, you don't need to write any SQL in your code; however, configuring permissions, creating views, adding row-level security, and writing stored procedures are non-trivial SQL work.
+
+## Wrap Up
+
+PostgREST is an excellent tool that fulfills one single mission and does it well. It makes it possible to have a simpler architecture and avoid the burden of coding boring CURD APIs.
+
+Something worth considering in your next project.

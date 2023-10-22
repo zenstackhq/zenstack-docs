@@ -1,0 +1,243 @@
+---
+description: Soft delete is a common requirement for SaaS products. But the current solution in Prisma has certain issues. Let's see how ZenStack solves it.
+tags: [prisma, zenstack, database, saas]
+image: https://user-images.githubusercontent.com/16688722/219857194-ab990547-3d9b-466a-baf6-8d53f30b10e8.png
+authors: jiasheng
+date: 2023-02-18
+---
+
+# Soft Delete: Implementation Issues in Prisma and Solution in Zenstack
+
+![Cover Image](https://user-images.githubusercontent.com/16688722/219857601-3bb070ab-2117-4334-896b-98039455b2bb.jpg)
+
+Soft delete is a common requirement for SaaS products. But the current solution in Prisma has certain issues. Let's see how ZenStack solves it.
+
+<!--truncate-->
+
+## What is soft delete
+
+Normally when you run a DELETE statement in a database, the data is gone. Instead of permanently deleting the record, Soft delete updates a column in the record, typically named "deleted_at" or "is_deleted," to indicate that the record has been marked for deletion.
+
+## Pros of soft delete
+
+Soft delete has been almost the MUST for me when building commercial SaaS products for the last 6 years. I will show you why based on my own experience.
+
+### Recoverability
+
+I bet you have ever regret of deleting something and trying to recover it back because it’s common for humans to make a mistake. That’s why lots of applications, including operating systems, also adopt Soft delete by introducing Recycle/Trash bins.
+
+As a service provider, even providing the Archive functionality and showing users countless warnings and troubles before they delete the record from your database like below:
+
+![warning](https://user-images.githubusercontent.com/16688722/219856431-40993842-af3f-4415-ba60-8d0876a0062f.png)
+
+Tragedy still happens. You could comfort yourself by saying I have done all I can do. But when a customer comes to you almost crying to ask for help, how can you bear to give him a refusal?
+
+<p align="center">
+    <img
+        src="https://user-images.githubusercontent.com/16688722/219856428-97570b54-ab32-4a1b-bf48-380380b632db.png"
+        width="400"
+    />
+</p>
+
+According to Muphy’s law:
+
+> Anything that can go wrong will go wrong.
+
+Therefore, the most effective approach is to avoid granting the user the opportunity to delete data from the database entirely— **to do soft delete**.
+
+#### Data Integrity
+
+You can see this one has been brought up a lot. I think it is from the database point of view to maintain referential integrity. From the practical point of view, the benefit is still for recovery.
+
+For example, Let's say you have two tables User and Post in your database:
+
+![post-user-model](https://user-images.githubusercontent.com/16688722/219856430-374f93c8-a862-4cfc-b2d7-b5e927a0bf4b.png)
+
+If a user is accidentally deleted, all the posts belonging to this user are either deleted too for Cascade or become orphaned for SetNull. Even if you could find a way to restore the user, the posts are gone.
+
+### Analytics
+
+Whether you are a product-led or marketing-led growth model, data analytics of your product is the basic thing for online business nowadays.
+
+Let’s say you are building a Notion-like product. If you want to know how many pages the user actually created last month, you can easily write the SQL like this:
+
+```tsx
+SELECT COUNT(*) FROM pages
+WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1' MONTH)
+AND created_at < DATE_TRUNC('month', CURRENT_DATE)
+```
+
+Wait a minute, does it include the page that the user created and then deleted last month?
+
+Some people suggest that this kind of requirement should be done by logging. The problem is like you never know what kind of analytics requirement you will meet. What if the next day, the product manager wants to see how many posts containing a table or video were created last month? You might end up logging everything that appears in the database to meet the requirements. And even you could do so, the analytics process becomes more complicated as you have to collect and merge data from both your database and the logging system.
+
+### Diagnosis
+
+The non-consistent reproduced bug is always the hardest one to deal with. There are a couple of times users sent a video or screenshot saying something weird happened. When you want to investigate more, you see that weird data has been deleted by the user. It’s understandable as no one wants to leave some defect there.
+
+Luckily as we were using soft delete, we could still find the data to try to reconstruct the crime scene to find the bug in our code finally.
+
+## Cons of soft delete
+
+The most important reason why people don’t use Soft delete is the implementation challenge. Besides the query update, there are other issues that need to be considered, like index, unique constraint, etc., which is definitely not an easy task and will definitely increase the complexity of your system.
+
+## Soft Delete in Prisma
+
+The good thing is that fewer people are working directly on the SQL anymore, and most ORMs have the solution for it.
+
+You can see how Prisma uses middleware to perform a soft delete below:
+
+[Middleware sample: soft delete (Reference)](https://www.prisma.io/docs/concepts/components/prisma-client/middleware/soft-delete-middleware)
+
+Although the page is long, the solution is quite straightforward. It mainly does two things:
+
+1. For `delete` operation, change it to `update` operation
+
+    ```tsx
+    if (params.action == 'delete') {
+            // Delete queries
+            // Change action to an update
+            params.action = 'update'
+            params.args['data'] = { deleted: true }
+          }
+          if (params.action == 'deleteMany') {
+            // Delete many queries
+            params.action = 'updateMany'
+            if (params.args.data != undefined) {
+              params.args.data['deleted'] = true
+            } else {
+              params.args['data'] = { deleted: true }
+            }
+          }
+    }
+
+    ```
+
+2. For `find` operation, add a filter to filter out soft deleted records:
+
+    ```tsx
+    if (params.action === 'findUnique' || params.action === 'findFirst') {
+        // Change to findFirst - you cannot filter
+        // by anything except ID / unique with findUnique
+        params.action = 'findFirst';
+        // Add 'deleted' filter
+        // ID filter maintained
+        params.args.where['deleted'] = false;
+    }
+    if (params.action === 'findMany') {
+        // Find many queries
+        if (params.args.where) {
+            if (params.args.where.deleted == undefined) {
+                // Exclude deleted records if they have not been explicitly requested
+                params.args.where['deleted'] = false;
+            }
+        } else {
+            params.args['where'] = { deleted: false };
+        }
+    }
+    ```
+
+However, there are some issues with this approach which I think is also the reason why the issue in GitHub is still open:
+
+[https://github.com/prisma/prisma/issues/3398](https://github.com/prisma/prisma/issues/3398)
+
+TLDR, the biggest problem is that it would fall short when the relation field is involved in the filter. There are two major cases:
+
+1. Can’t handle `include`
+
+    ```tsx
+    const user = await prisma.user.findMany({
+        where: {
+            id: 1,
+        },
+        include: {
+            posts: true,
+        },
+    });
+    ```
+
+    The deleted posts would also be included in the result.
+
+2. Can’t handle relation filter
+
+    ```tsx
+    const us1 = await prisma.user.findMany({
+        where: {
+            posts: {
+                some: {
+                    title: { contains: 'Prisma' },
+                },
+            },
+        },
+    });
+    ```
+
+    If only any title of deleted posts of the user contains “Prisma”, that user would also be returned.
+
+You might think it doesn’t seem to be hard to fix it for both by adding the deleted filter. It might be true for the above examples, but how about this one:
+
+```tsx
+const user = await prisma.user.findMany({
+    where: {
+        posts: {
+            every: {
+                title: { contains: 'Prisma' },
+            },
+        },
+    },
+});
+```
+
+Why not think about how to add the filter before reading down? 🤔
+
+You have to change it to the below query:
+
+```tsx
+const user = await prisma.user.findMany({
+    where: {
+        posts: {
+            none: {
+                AND: [{ deleted: true }, { title: { not: { contains: 'Prisma' } } }],
+            },
+        },
+    },
+});
+```
+
+As Prisma provides a quite flexible filter with several operators like `AND`, `OR`, `NOT`, `some`, `every`, `none`, etc, it would also take quite an effort to consider each individually. I guess that’s probably why the issue has not been fixed yet. 😂
+
+## Soft delete in ZenStack
+
+[ZenStack](https://zenstack.dev/?utm_campaign=devto&utm_medium=organic&utm_content=custom_attribute) is the toolkit that supercharges Prisma with a powerful access control layer and unleashes its full potential for full-stack development.
+
+As an enhancement of Prisma, after supporting Custom attributes issues below:
+
+[How to add custom attributes in Prisma](https://zenstack.dev/blog/custom-attributes)
+
+This one looks like a good next for us. For the `delete` operation, I think you can still use the middleware approach above or the new client extension to implement it. That should not be a problem.
+
+For the most complicated query logic, as ZenStack supports access control policy, it is natural to support it. Because technically filtering out ‘soft deleted’ records is also a kind of access policy.
+
+So for any model, if you want to do the soft delete, you just need to add the below access policy:
+
+```tsx
+model Post {
+  ...
+  deleted Boolean @default(false) @omit
+  @@deny(‘read’, deleted)
+  ...
+}
+
+```
+
+Then when using ZenStack to do a query, it will automatically exclude soft-deleted records. If you want to also include the soft deleted records, you can simply use the original Prisma client instead.
+
+To be honest, we were not aware that ZenStack had problem of supporting it either until a customer reported an issue on our Discord platform. Upon fixing the issue, we gained insight into its complexity and why Prisma had not supported it, given the existing code and usage. Fortunately, as ZenStack has less legacy, we were able to resolve the issue quickly.
+
+Conversely, we had fewer real-world use cases. So if you guys meet any case that we missed, we would appreciate it if you could create an issue in [Github](https://github.com/zenstackhq/zenstack/issues) or directly throw it to our [Discord](https://go.zenstack.dev/chat). Let’s make ZenStack better together!
+
+---
+
+**Reminder**: Thanks to the real-world use case of our users, we have identified the gap for adopting this solution into real-world practice. Please see the updated real-world solution below:
+
+[Soft Delete: Dealing With Unique Constraint in Real-World](/blog/soft-delete-real)
