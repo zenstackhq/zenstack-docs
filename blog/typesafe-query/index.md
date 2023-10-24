@@ -1,5 +1,5 @@
 ---
-title: How To Get Type-Safety Frontend Queries Like Graphql Without Graphql Using Typescript
+title: How To Get Type-Safety Frontend Queries Like GraphQL Without GraphQL Using Typescript
 description: Obtain the exact type you request without executing the code utilizing the powerful type inference of TypeScript
 tags: [frontend, type-safety, graphql, api, typescript]
 authors: jiasheng
@@ -7,7 +7,7 @@ date: 2023-10-24
 image: ./cover.jpg
 ---
 
-# How To Get Type-Safety Frontend Queries Like Graphql Without Graphql Using Typescript
+# How To Get Type-Safety Frontend Queries Like GraphQL Without GraphQL Using Typescript
 ![Cover Image](cover.jpg)
 
 ## Fading of API
@@ -37,7 +37,7 @@ If you have ever worked with a REST API, you may have encountered a runtime erro
 **<p style={{textAlign: 'center'}}>Fail fast, Fail often</p>**
  
 
-## Can I implement it myself using tRPC?
+## Can I Implement It Myself Using tRPC?
 
 Unfortunately, no. While you can make it work locally, the dynamicity of the return type is lost when exposed to tRPC due to its implementation details. If you are interested in more technical details about this, you can check out the post below:
 
@@ -55,9 +55,9 @@ If you haven't read the post about tRPC limitations, you might be wondering why 
 
 If Prisma could achieve that in the backend, it should technically be able to do the same thing in the frontend as well.
 
-## Here comes ZenStack
+## Here Comes ZenStack
 
-ZenStack supercharges Prisma schema with an access control and validation policy. This additional layer enables the auto-generation of secure frontend query hooks.  We should not miss the opportunity to bring the best part to the frontend. The generated hooks are mirros of the Prisma client. Here is the same Todo query that you use in the frontend:
+ZenStack supercharges Prisma schema with an access control and validation policy. This additional layer enables the auto-generation of secure frontend query hooks.  We should not miss the opportunity to bring the best part to the frontend. The generated hooks are mirrors of the Prisma client. Here is the same Todo query that you use in the frontend:
 
 ![hook](https://github.com/zenstackhq/zenstack/assets/16688722/93eaf485-33d1-4512-9c12-58197dedd691)
 
