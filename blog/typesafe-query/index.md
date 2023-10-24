@@ -18,6 +18,8 @@ I previously wrote a post about the history of APIs:
 
 I still believe that GraphQL is the most efficient solution for a big project with separate or multiple front-end and back-end teams. However, after my partner and I left our last company, it was mainly just the two of us working on the full-stack project. Therefore, we prefer to leverage the "integrated" APIs of full-stack frameworks like `getServerSideProps`, `loader`, and `load` functions (I bet at least you know one of them 😄). When necessary, we will use tRPC as a complementary. The overall experience is quite neat as you almost forget about API design and implementation.
 
+<!--truncate-->
+
 ## Miss the Benefit of GraphQL
 
 However, there is one feature listed on the front page of [GraphQL's official website](https://graphql.org/) that I miss very much:
