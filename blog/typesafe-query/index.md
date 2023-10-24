@@ -1,5 +1,5 @@
 ---
-title: How To Get Type-Safety Frontend Queries Like GraphQL Without GraphQL Using Typescript
+title: How To Get Type-Safe Frontend Queries Like GraphQL Without GraphQL Using Typescript
 description: Obtain the exact type you request without executing the code utilizing the powerful type inference of TypeScript
 tags: [frontend, type-safety, graphql, api, typescript]
 authors: jiasheng
@@ -7,7 +7,7 @@ date: 2023-10-24
 image: ./cover.jpg
 ---
 
-# How To Get Type-Safety Frontend Queries Like GraphQL Without GraphQL Using Typescript
+# How To Get Type-Safe Frontend Queries Like GraphQL Without GraphQL Using Typescript
 ![Cover Image](cover.jpg)
 
 ## Fading of API
