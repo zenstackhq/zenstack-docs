@@ -226,7 +226,7 @@ enum UserRole {
 
 ## Model
 
-Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract model would be eliminated in the generated prisma schema file. 
+Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract modeld are eliminated in the generated prisma schema file. 
 
 ### Syntax
 ```zmodel
