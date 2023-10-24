@@ -16,7 +16,7 @@ I previously wrote a post about the history of APIs:
 
 **[A Brief History of API: RPC, REST, GraphQL, tRPC](https://dev.to/zenstack/a-brief-history-of-api-rpc-rest-graphql-trpc-fme)**
 
-I still believe that GraphQL is the most efficient solution for a big project with separate or multiple front-end and back-end teams. However, after my partner and I left our last company, it was mainly just the two of us working on the full-stack project. Therefore, we prefer to leverage the "integrated" APIs of full-stack frameworks like `getServerSideProps`, `loader`, and `load` functions (I bet at least you know one of them 😄). When necessary, we will use tRPC as a complementary. The overall experience is quite neat as you almost forget about API design and implementation.
+I still believe that GraphQL is the most efficient solution for a big project with separate or multiple front-end and back-end teams. However, after my partner and I left our last company, it was mainly just the two of us working on the full-stack project. Therefore, we prefer to leverage the "integrated" APIs of full-stack frameworks like `getServerSideProps`, `loader`, and `load` functions (I bet at least you know one of them 😄). When necessary, we will use [tRPC](https://trpc.io/) as a complementary. The overall experience is quite neat as you almost forget about API design and implementation.
 
 <!--truncate-->
 
@@ -45,7 +45,7 @@ Unfortunately, no. While you can make it work locally, the dynamicity of the ret
 
 ## Enlightened by Prisma
 
-After using TypeORM for many years, I switched to Prisma because of the excellent developer experience (DX) it provides, especially in terms of type safety. I'm thrilled to see that this capability has been incorporated into the Prisma client API.
+After using TypeORM for many years, I switched to [Prisma](https://www.prisma.io/) because of the excellent developer experience (DX) it provides, especially in terms of type safety. I'm thrilled to see that this capability has been incorporated into the Prisma client API.
 
 ![prisma](https://github.com/zenstackhq/zenstack/assets/16688722/23b3d1c5-1368-41dc-86d4-f38bace34eae)
 
@@ -63,7 +63,7 @@ ZenStack supercharges Prisma schema with an access control and validation policy
 
 Not only can you obtain type-safe frontend queries like GraphQL, but you also get the same coding experience in both the frontend and backend. This aligns with the trend of blurring boundaries between them in modern full-stack development frameworks.
 
-ZenStack generates queries that target either SWR or TanStack, making it compatible with a wide range of full-stack frameworks such as Next.js, Remix, SvelteKit, Nuxt, and more.
+ZenStack generates queries that target either SWR or TanStack, making it compatible with a wide range of full-stack frameworks such as [Next.js](https://nextjs.org/), [Remix](https://remix.run/), [SvelteKit](https://kit.svelte.dev/), [Nuxt](https://nuxt.com/), and more.
 
 ## Easter Egg
 
