@@ -41,7 +41,7 @@ If you have ever worked with a REST API, you may have encountered a runtime erro
 
 Unfortunately, no. While you can make it work locally, the dynamicity of the return type is lost when exposed to tRPC due to its implementation details. If you are interested in more technical details about this, you can check out the post below:
 
-**[Limitation of TRPC's Type Inference and How We Improved It](https://www.notion.so/ZenStack-Cloud-YC-Application-1eaa8b0199ba49269b232a7f7d35869d?pvs=21)**
+**[Limitation of TRPC's Type Inference and How We Improved It](https://dev.to/zenstack/limitation-of-trpcs-type-inference-and-how-we-improved-it-47fl)**
 
 ## Enlightened by Prisma
 
