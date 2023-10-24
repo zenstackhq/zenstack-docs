@@ -18,11 +18,11 @@ model User {
 }
 ```
 
-However, since Prisma doesn't support custom attributes, it's not possible. There have been community efforts to workaround this limitation by smuggling information into code comments in the schema file, but it's brittle, not scalable, and looking ugly.
+However, since Prisma doesn't support custom attributes, it's not possible. There have been community efforts to workaround this limitation by smuggling information into code comments in the schema file, but it's brittle, not scalable, and looks ugly.
 
 ### The ZModel Language
 
-ZenStack made a bold decision to fully replicate the Prisma schema language and then add what's needed above that, so as to have infinite extensibility in the future. The "ZModel" languages introduced by ZenStack is a superset of Prisma schema. Among all the extensions, the most important one is the support for custom attributes, with which you can add new semantics to the schema, e.g.,
+ZenStack made a bold decision to fully replicate the Prisma schema language and then add what's needed above that, so as to have infinite extensibility in the future. The "ZModel" language introduced by ZenStack is a superset of Prisma schema. Among all the extensions, the most important one is the support for custom attributes, with which you can add new semantics to the schema, e.g.,
 
 ```zmodel
 
