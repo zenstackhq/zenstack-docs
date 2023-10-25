@@ -17,27 +17,6 @@ As a workaround, use [interactive transactions](https://www.prisma.io/docs/conce
 
 Right now, the focus of this project is SQL databases, and there's no plan to support MongoDB in the near future.
 
-### Comparison between fields in access policies
+### Edge runtime is not supported
 
-Currently, it's not possible to compare fields in access policies expressions. For example, the following usages are not allowed yet, but will be supported in the future:
-
-```zmodel
-model A {
-    x Int
-    y Int
-    @@allow('read', x > y)
-}
-
-model B {
-    x String
-    y String
-    @@allow('read', contains(x, y))
-}
-
-model C {
-    x String
-    y String[]
-    @@allow('read', x in y)
-}
-```
-
+Prisma by default doesn't support running in edge runtime environments (e.g. [Vercel Edge Runtime]https://edge-runtime.vercel.app/). Its [Accelerate](https://www.prisma.io/data-platform/accelerate) commercial service does support edge, but ZenStack is not compatible with it yet. We plan to support it in the near future.
