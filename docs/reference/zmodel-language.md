@@ -226,7 +226,7 @@ enum UserRole {
 
 ## Model
 
-Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract model would be eliminated in the generated prisma schema file. 
+Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract models are eliminated in the generated prisma schema file. 
 
 ### Syntax
 ```zmodel
@@ -1116,7 +1116,7 @@ model Post {
 }
 ```
 
-### Many-to-one relation
+### Many-to-many relation
 
 A _join model_ is declared to connect the two sides of the relation using two one-to-one relations.
 
