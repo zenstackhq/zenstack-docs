@@ -343,8 +343,8 @@ const Posts = async () => {
 A few quick notes:
 
 1. `Posts` is a server component. Its code executes on the server side and can directly access server-side resources like the database.
-1. The `enhance` API (from ZenStack) creates a wrapped `PrismaClient` that automatically enforces the access policies we saw previously (with respect to the current user's identity). Without any filtering, `the db.post.findMany` call only returns posts readable to the current user. Similarly, mutations will be rejected if the current user is not allowed to do so.
-1. After mutation, you need to call revalidatePath or revalidateTag to invalidate cached data and trigger refetching.
+1. The `enhance` API (from ZenStack) creates a wrapped `PrismaClient` that automatically enforces the access policies we saw previously (with respect to the current user's identity). Without any filtering, the `db.post.findMany` call only returns posts readable to the current user. Similarly, mutations will be rejected if the current user is not allowed to do so.
+1. After mutation, you need to call `revalidatePath` or `revalidateTag` to invalidate cached data and trigger refetching.
 
 ## Takeaways
 
