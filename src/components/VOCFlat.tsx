@@ -81,6 +81,27 @@ export default function VOC(): JSX.Element {
         <div className="flex flex-col items-start lg:items-center w-full">
             <h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 mx-auto">
+                <Quote author="Sid" company="MermaidChart" avatar="/img/logo/sid.jpg">
+                    <div className="text-lg">
+                        We've launched{' '}
+                        <a href="https://www.mermaidchart.com/" target="_blank">
+                            MermaidChart
+                        </a>
+                        's team feature using ZenStack.
+                        <br />
+                        <br />
+                        Thanks for creating such a wonderful product! It was a breeze to adopt, and everyone in the team
+                        loves how easy writing the policies are.
+                    </div>
+                </Quote>
+                <Quote
+                    author="Søren Bramer Schmidt"
+                    company="Prisma"
+                    avatar="https://pbs.twimg.com/profile_images/710410251401629696/UB1dgaWi_400x400.jpg"
+                    link="https://twitter.com/sorenbs/status/1709924686635892917"
+                >
+                    ZenStack is an excellent example in what we have in mind when we talk about Data DX 🎉
+                </Quote>
                 <Quote
                     author="Nikolas Burk"
                     company="Prisma"
@@ -95,20 +116,6 @@ export default function VOC(): JSX.Element {
                             <div>✅ Fullstack with E2E type-safety</div>
                         </div>
                         <div className="mt-4">👉 zenstack.dev</div>
-                    </div>
-                </Quote>
-
-                <Quote author="Sid" company="MermaidChart" avatar="/img/logo/sid.jpg">
-                    <div className="text-lg">
-                        We've launched{' '}
-                        <a href="https://www.mermaidchart.com/" target="_blank">
-                            MermaidChart
-                        </a>
-                        's team feature using ZenStack.
-                        <br />
-                        <br />
-                        Thanks for creating such a wonderful product! It was a breeze to adopt, and everyone in the team
-                        loves how easy writing the policies are.
                     </div>
                 </Quote>
 
@@ -141,11 +148,6 @@ export default function VOC(): JSX.Element {
                 <Quote author="Leevis" company="Cofounder Ptmind" avatar="/img/logo/leevis.png">
                     We have a fairly complex authorization model, and I'm really impressed that ZenStack has the
                     flexibility to support it!
-                </Quote>
-
-                <Quote author="Augustin" company="" avatar="/img/logo/augustin.jpg">
-                    Thank you @ymc9 and @jiasheng for all the hard work 👏. It's great to have so many features already
-                    for a beta. Can't wait for version 1.0 😄.
                 </Quote>
             </div>
         </div>
