@@ -1,16 +1,19 @@
 ---
-title: Riding The New Wave - Full-Stack Development Using React Server Components With Minimum Code
+title: How About Building a Next.js App Without Any Client-Side Javascript Code?
+description: My experiences of building a pure server-side Next.js 13 app using React Server Components.
 tags: [nextjs, react, fullstack]
 authors: yiming
 date: 2023-10-25
 image: ./cover.png
 ---
 
-# Riding The New Wave - Full-Stack Development Using React Server Components With Minimum Code
+# How About Building a Next.js App Without Any Client-Side Javascript Code?
 
 ![Cover Image](cover.png)
 
-Next.js 13 ignited the first wave of attention to React Server Components (RSC) around the end of last year. Over time, other frameworks, like Remix and RedwoodJS, have also started to put RSC into their future roadmaps. Although it’s not a mainstream technology that developers use widely in production, I’m curious how it feels to build a “complete” app fully leveraging RSC - including component-level SSR and server actions for mutation. So, I set out to gain first-hand experience by rebuilding my favorite blogging app.
+Next.js 13 ignited the first wave of attention to React Server Components (RSC) around the end of last year. Over time, other frameworks, like Remix and RedwoodJS, have also started to put RSC into their future road maps. However, the entire "moving computation to the server-side" direction of React/Next.js is highly controversial from the very beginning.
+
+With RSC and the (still experimental) server actions, it should be possible to build a full-stack app without any client-side Javascript code. How well does it really work? I set out to gain first-hand experience by rebuilding my favorite blogging app. Yes, it's a very simple app, but it could serve as a tangible way to understand the new patterns. At least part of it.
 
 <!--truncate-->
 
@@ -188,7 +191,7 @@ export default Signup;
 
 A few quick notes:
 
-1. The `use server` directive marks an async function as a server action. You can call it from client code (here as a form action), and the input and output data will be automatically marshaled across the network boundary.
+1. The `use server` directive marks an async function as a server action. You can call it from client code (here as a form action), and the input and output data will be automatically marshaled across the network boundary. It's pretty neat that you don't need to define any API for handling forms anymore.
 1. Since the server action is exposed to the public network, even though it resides inside the component and serves only this component, we still need to validate its input (using "zod" here).
 
 The sign-in part is handled by NextAuth and doesn't involve server components or actions. I'm skipping it now since it's not directly related to the goal of this post, but you can find the implementation in the repository shared at the end of the post.
@@ -199,7 +202,7 @@ The post-management part was built by combining the following things:
 
 1. Server components for loading posts
 1. Server actions for mutation
-1. ZenStack for automatic enforcement of access control
+2. [ZenStack](https://github.com/zenstackhq/zenstack) for automatic enforcement of access control. ZenStack is a toolkit that extends Prisma ORM to allow you to model access policies and data schema in one place.
 
 The first step is to initialize the project for ZenStack:
 
@@ -348,12 +351,13 @@ A few quick notes:
 
 ## Takeaways
 
-Here are my thoughts about the benefits and challenges from a retrospection on how I built this toy app.
+Here are my thoughts about the benefits and challenges from a retrospection on how I built this toy app (compared to how it was implemented [with the traditional "pages" route](https://github.com/zenstackhq/docs-tutorial-nextjs)).
 
 #### The Gains
 
 - RSC allows you to load data more naturally without requiring a separate function like `getServerSideProps`. The data-fetching code sits right inside the component.
 - Data fetching at the component level makes the loading logic better colocated where it's used.
+- There's no need to use data fetching libraries like SWR or TanStack Query anymore.
 - Server actions eliminate the need to define mutation APIs. Client code calls directly to the server side, and the framework handles all the RPC details.
 - The combination of RSC + Server Actions + ZenStack reduces the boilerplate code to a minimum.
 
