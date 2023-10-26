@@ -1,6 +1,6 @@
 ---
 title: How About Building a Next.js App Without Any Client-Side Javascript Code?
-description: My experiences of building a pure server-side Next.js 13 app using React Server Components.
+description: My experience of building a pure server-side Next.js 13 app using React Server Components.
 tags: [nextjs, react, fullstack]
 authors: yiming
 date: 2023-10-25
