@@ -1,17 +1,17 @@
 ---
-title: How About Building a Next.js App Without Any Client-Side Javascript Code?
-description: My experience of building a pure server-side Next.js 13 app using React Server Components.
+title: Is Next.js 13 + RSC a Good Choice? I Built an App Without Client-Side Javascript to Find Out
+description: My experience of building a pure server-side Next.js 13 app using React Server Components and Server Actions.
 tags: [nextjs, react, fullstack]
 authors: yiming
 date: 2023-10-25
 image: ./cover.png
 ---
 
-# How About Building a Next.js App Without Any Client-Side Javascript Code?
+# Is Next.js 13 + RSC a Good Choice? I Built an App Without Client-Side Javascript to Find Out
 
 ![Cover Image](cover.png)
 
-Next.js 13 ignited the first wave of attention to React Server Components (RSC) around the end of last year. Over time, other frameworks, like Remix and RedwoodJS, have also started to put RSC into their future road maps. However, the entire "moving computation to the server-side" direction of React/Next.js is highly controversial from the very beginning.
+Next.js 13 ignited the first wave of attention to React Server Components (RSC) around the end of last year. Over time, other frameworks, like [Remix](https://remix.run/) and [RedwoodJS](https://redwoodjs.com/), have also started to put RSC into their future road maps. However, the entire "moving computation to the server-side" direction of React/Next.js has been highly controversial from the very beginning.
 
 With RSC and the (still experimental) server actions, it should be possible to build a full-stack app without any client-side Javascript code. How well does it really work? I set out to gain first-hand experience by rebuilding my favorite blogging app. Yes, it's a very simple app, but it could serve as a tangible way to understand the new patterns. At least part of it.
 
@@ -30,13 +30,13 @@ If you've read some of my previous posts, you probably know the app's requiremen
 The app will be built with the following stack:
 
 - Next.js 13 "app" routes, using RSC wherever possible
-- NextAuth for authentication
-- Prisma + ZenStack for data access and authorization
+- [NextAuth](https://next-auth.js.org/) for authentication
+- [Prisma](https://prisma.io) + [ZenStack](https://github.com/zenstackhq/zenstack) for data access and authorization
 - SQLite for storage
 
 ## Scaffolding
 
-My favorite way of creating a new Next.js app has always been using `create-t3-app`.
+My favorite way of creating a new Next.js app has always been using [create-t3-app](https://create.t3.gg/).
 
 ```bash
 npm create t3-app@latest
@@ -112,7 +112,7 @@ async function authorize(
 
 ### Signup and Sign-in
 
-The first step is to implement the signup and sign-in UI. Building signup UI is easy thanks to the experimental server actions feature. But to use that, we have to turn on that experimental flag:
+The first step is to implement the signup and sign-in UI. Building signup UI is easy thanks to the *Server Actions* feature. But to use that, we have to turn on that experimental flag:
 
 ```ts title='/next.config.mjs'
 
@@ -192,7 +192,7 @@ export default Signup;
 A few quick notes:
 
 1. The `use server` directive marks an async function as a server action. You can call it from client code (here as a form action), and the input and output data will be automatically marshaled across the network boundary. It's pretty neat that you don't need to define any API for handling forms anymore.
-1. Since the server action is exposed to the public network, even though it resides inside the component and serves only this component, we still need to validate its input (using "zod" here).
+2. Since the server action is exposed to the public network, even though it resides inside the component and serves only this component, we still need to validate its input (using "zod" here).
 
 The sign-in part is handled by NextAuth and doesn't involve server components or actions. I'm skipping it now since it's not directly related to the goal of this post, but you can find the implementation in the repository shared at the end of the post.
 
