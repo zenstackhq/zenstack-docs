@@ -1,14 +1,14 @@
 ---
-description: Enhanced Prisma Client
-sidebar_label: 3. Enhanced Prisma Client
+description: 增强型Prisma客户端
+sidebar_label: 3. 增强型Prisma客户端
 sidebar_position: 3
 ---
 
-# Enhanced Prisma Client
+# 增强型Prisma客户端
 
-The ZModel language allows us to enrich our data models with semantics that couldn't be done with Prisma. Similarly, at runtime, ZenStack provides APIs that ***enhance*** Prisma Client instances. These enhancements are transparent proxies, so they have exactly the same APIs as the regular Prisma Client but add additional behaviors.
+ZModel语言允许我们使用Prisma无法实现的语义来丰富我们的数据模型。 类似地，在运行时中，ZenStack提供了***增强***Prisma客户端实例的API。 这些增强是透明代理，因此它们具有与常规Prisma客户端完全相同的API，但添加了额外的行为。
 
-The most interesting enhancement is the enforcement of access policies. Let's say we have the following ZModel:
+最令人感兴趣的增强是访问策略的执行。 假设我们有以下ZModel：
 
 ```zmodel
 model User {
@@ -34,7 +34,7 @@ model Post {
 }
 ```
 
-You can see how the enhancement works in the following code snippet:
+您可以在下面的代码片段中看到增强的工作原理：
 
 ```ts
 
@@ -86,12 +86,12 @@ await enhanced.post.create({
 
 ```
 
-When building a backend service, you can centralize authorization concerns into the schema using access policies and then use the enhanced Prisma Client across your service code. This practice can bring three clear benefits:
+在构建后端服务时，您可以使用访问策略将授权问题集中到模式中，然后在整个服务代码中使用增强的Prisma Client。 这种做法可以带来三个明显的好处：
 
-- A smaller code base.
-- A more secure and reliable result compared to manually writing authorization logic.
-- Better maintainability since when authorization rules evolve, the schema is the only place where you need to make changes.
+- 更小的代码库。
+- 与手动编写授权逻辑相比，这是一个更安全、更可靠的结果。
+- 更好的可维护性，因为当授权规则发展时，模式是唯一需要进行更改的地方。
 
-You can find more information about access policies [here](/docs/guides/understanding-access-policy).
+您可以[在此处](/docs/guides/understanding-access-policy)找到有关访问策略的更多信息。
 
-In fact, you may not need to implement a backend service at all if the service is mainly CRUD. With an access-control-enhanced Prisma Client, a full-fledged CRUD service can be generated automatically. Let's see how it works in the next section.
+事实上，如果服务主要是CRUD，那么您可能根本不需要实现后端服务。 使用访问控制增强的Prisma客户端，可以自动生成成熟的CRUD服务。 让我们在下一节中看看它是如何工作的。

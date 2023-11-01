@@ -1,16 +1,16 @@
 ---
-description: Automatic CRUD API
-sidebar_label: 4. Automatic CRUD API
+描述: 自动增查改删 API
+sidebar_label: 4. 自动CRUD API
 sidebar_position: 4
 ---
 
-# Automatic CRUD API
+# 自动增查改删 API
 
-Many backend services have big chunks of code wrapping around the database and providing access-controlled CRUD APIs. These boring boilerplate codes are both tedious to write and error-prone to maintain.
+许多后端服务都有大块的代码围绕数据库，并提供访问控制的增查改删 API。 这些枯燥的样板代码编写起来很乏味，维护起来也容易出错。
 
-With the access-policy-enhanced Prisma Client, ZenStack can automatically provide a full-fledged CRUD API for your data models through a set of framework-specific server adapters. Currently, we have adapters for [Next.js](https://nextjs.org), [SvelteKit](https://kit.svelte.dev/), [Express](https://expressjs.com/), and [Fastify](https://www.fastify.io/).
+通过“访问策略增强”的 Prisma 客户端，ZenStack 可以通过一组特定于框架的服务器适配器为您的数据模型自动提供一个成熟的增查改删 API。 目前，我们有[Next.js](https://nextjs.org)、[SvelteKit](https://kit.svelte.dev/)、[Express](https://expressjs.com/)和[Fastify](https://www.fastify.io/)的适配器。
 
-Let's see how it works using Express as an example.
+让我们以Express为例来看看它是如何工作的。
 
 ```ts title='app.ts'
 
@@ -47,11 +47,11 @@ app.use(
 
 :::info
 
-There's no hard requirement to use an enhanced Prisma Client with the API, but you should always do it to ensure the APIs are protected when exposed to the Internet.
+对API使用增强的Prisma客户端没有硬性要求，但您应该始终这样做，以确保API在暴露于Internet时受到保护。
 
 :::
 
-With the code above, CRUD APIs are mounted at route "/api/model". By default, the APIs provide "RPC" style endpoints that mirror the Prisma Client APIs. For example, you can consume it like the following:
+通过上面的代码，CRUD API被挂载在路由“/api/model”。 默认情况下，API提供镜像Prisma客户端API的“RPC”样式端点。 例如，您可以像下面这样使用它：
 
 ```ts
 // Create a post for user#1
@@ -67,7 +67,7 @@ POST /api/model/post
 GET /api/model/post/findMany?q={"where":{"published":true},"include":{"author":true}}
 ```
 
-You can also choose to provide a more "REST" style API by initializing the middleware with a RESTful API handler:
+您还可以选择通过使用RESTful API处理程序初始化中间件来提供更“REST”风格的API：
 
 ```ts title='app.ts'
 import RestApiHandler from '@zenstackhq/server/api/rest';
@@ -85,7 +85,7 @@ app.use(
 );
 ```
 
-Now the API endpoints follow the RESTful conventions (using [JSON:API](https://jsonapi.org/) as transport):
+现在API端点遵循RESTful约定（使用[JSON:API](https://jsonapi.org/)传输）：
 
 ```ts
 // Create a post for user#1
@@ -104,9 +104,9 @@ POST /api/model/post
     }
 }
 
-// List all published posts with their authors
+// 列出所有公开贴文和他们的作者
 GET /api/model/post?filter[published]=true&include=author
 ```
-As you can see, with a few lines of code, you can get a full-fledged CRUD API for your data models. See [here](/docs/category/server-adapters) for details on using the server adapter specific to your framework. You may also be interested in generating an [OpenAPI](https://www.openapis.org/) specification using the [`@zenstackhq/openapi`](/docs/reference/plugins/openapi) plugin.
+正如您所看到的，只需几行代码，就可以为您的数据模型获得一个成熟的CRUD API。 有关使用特定于您的框架的服务器适配器的详细信息，请参阅[此处](/docs/category/server-adapters)。 您可能还对使用[`@zenstackhq/openapi`](/docs/reference/plugins/openapi)插件生成[OpenAPI](https://www.openapis.org/)规范感兴趣。
 
-With the APIs in place, you can now use them to build the user interface. In the next section, let's see how ZenStack simplifies this part by generating data-access hooks for the frontend.
+有了这些API，您现在可以使用它们来构建用户界面。 在下一节中，让我们看看ZenStack如何通过为前端生成数据访问钩子来简化这一部分。

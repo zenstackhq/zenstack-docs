@@ -1,12 +1,12 @@
 ---
-description: Frontend Data Access
-sidebar_label: 5. Frontend Data Access
+description: 前端数据访问
+sidebar_label: 5. 前端数据访问
 sidebar_position: 5
 ---
 
-# Frontend Data Access
+# 前端数据访问
 
-ZenStack has a small core, and many of its functionalities are implemented as plugins. Generating a frontend data access library is an excellent example of such a plugin. For example, you can enable the generation of TanStack Query hooks (for React) as follows:
+ZenStack有一个小的核心，它的许多功能都是作为插件实现的。生成前端数据访问库就是这种插件的一个很好的例子。例如，您可以启用TanStack Query钩子的生成（对于React），如下所示：
 
 ```zmodel
 
@@ -18,7 +18,7 @@ plugin hooks {
 
 ```
 
-The generated hooks provide a set of APIs that closely mirror that of Prisma Client and call into the automatic CRUD API introduced in the previous section. Here're a few examples of using them:
+生成的钩子提供了一组API，这些API与Prisma Client的API非常相似，并调用了上一节中介绍的自动增查改删 API。 这里有一些使用它们的例子：
 
 ```tsx
 
@@ -60,4 +60,4 @@ const Posts = ({ userId }: { userId: string }) => {
 
 ```
 
-ZenStack currently provides plugins for generating client hooks targeting [TanStack Query](/docs/reference/plugins/tanstack-query) (which supports React and Vue) and [SWR](/docs/reference/plugins/swr) (React only).
+ZenStack目前提供插件，用于生成针对[TanStack Query](/docs/reference/plugins/tanstack-query)（支持React和Vue）和[SWR](/docs/reference/plugins/swr)（仅支持React）的客户端钩子。

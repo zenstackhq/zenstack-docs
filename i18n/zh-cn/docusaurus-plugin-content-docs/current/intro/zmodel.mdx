@@ -1,15 +1,15 @@
 ---
-description: ZModel - An Extended Prisma Schema
-sidebar_label: 2. ZModel - An Extended Prisma Schema
+description: ZModel - 一个扩展的Prisma模式
+sidebar_label: 2. ZModel - 一个扩展的Prisma模式
 sidebar_position: 2
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ThemedImage from '@theme/ThemedImage';
 
-# ZModel - An Extended Prisma Schema
+# ZModel - 一个扩展的Prisma模式
 
-Prisma is awesome, but its potential is limited by the fact that its schema language is not open to extension. For example, it'd be nice to attach field annotations for data validation, like:
+Prisma很棒，但它的潜力受到其模式语言不开放扩展这一事实的限制。 例如，最好附加字段注释以进行数据验证，例如：
 
 ```zmodel
 model User {
@@ -18,11 +18,11 @@ model User {
 }
 ```
 
-However, since Prisma doesn't support custom attributes, it's not possible. There have been community efforts to workaround this limitation by smuggling information into code comments in the schema file, but it's brittle, not scalable, and looking ugly.
+但是，由于Prisma不支持自定义属性，因此这是不可能的。 社区一直在努力解决这个限制，方法是将信息偷偷放入模式文件的代码注释中，但它很脆弱，不可伸缩，而且看起来很难看。
 
-### The ZModel Language
+### ZModel语言
 
-ZenStack made a bold decision to fully replicate the Prisma schema language and then add what's needed above that, so as to have infinite extensibility in the future. The "ZModel" languages introduced by ZenStack is a superset of Prisma schema. Among all the extensions, the most important one is the support for custom attributes, with which you can add new semantics to the schema, e.g.,
+ZenStack做出了一个大胆的决定，完全复制Prisma模式语言，然后在上面添加所需的内容，以便在未来具有无限的可扩展性。 ZenStack引入的“ZModel”语言是Prisma模式的超集。 在所有的扩展中，最重要的一个是对自定义属性的支持，通过这些属性，您可以向模式添加新的语义，例如，
 
 ```zmodel
 
@@ -34,9 +34,9 @@ model User {
 }
 ```
 
-### Access Control & Data Validation
+### 访问控制和数据验证
 
-Based on the custom attributes support, ZModel offers a set of built-in attributes and functions for tackling two very important aspects of a data model: access control and data validation. Here're some quick show cases:
+基于自定义属性支持，ZModel提供了一组内置属性和函数，用于处理数据模型的两个非常重要的方面：访问控制和数据验证。 以下是一些快速展示案例：
 
 ```zmodel
 
@@ -69,25 +69,25 @@ model Post {
 ```
 
 :::info
-- `@email` and `@length` are built-in attributes for data validation.
-- `@@allow` is a built-in attribute for attaching access control policies.
-- `auth()` is a built-in function for accessing the current user.
+- `@email`和`@length`是用于数据验证的内置属性。
+- `@@allow`是用于附加访问控制策略的内置属性。
+- `auth()`是用于访问当前用户的内置函数。
 
-If you're familar with PostgreSQL's [row-level security](https://www.postgresql.org/docs/15/ddl-rowsecurity.html), you'll find the ideas similar. However, ZenStack's access control
- is implemented at the ORM layer, so it's not limited to PostgreSQL, and it's also a lot easier to write than SQL.
+如果您熟悉PostgreSQL的[行级安全性](https://www.postgresql.org/docs/15/ddl-rowsecurity.html)，您会发现这些想法是相似的。 然而，ZenStack的访问控制
+ 是在ORM层实现的，所以它不仅限于PostgreSQL，而且它比SQL更容易编写。
 :::
 
-Being able to attach access policies and data validation to the data model is cool, but it's useless unless it has a runtime effect. Don't worry, we'll get to that in the next section.
+能够将访问策略和数据验证附加到数据模型中是很酷的，但是除非它具有运行时效果，否则它是无用的。 别担心，我们会在下一节讨论这个问题。
 
 :::info
 
-The ZModel language makes other extensions to Prisma schema besides access policies, such as [multi-file schema and model inheritance](/docs/guides/multiple-schema). More will be added in the future. Sometimes people simply use ZenStack as a better version of Prisma.
+ZModel语言对Prisma模式进行了除访问策略外的其他扩展，如[多文件模式和模型继承](/docs/guides/multiple-schema)。 今后将增加更多。 有时人们只是简单地使用ZenStack作为Prisma的更好版本。
 
 :::
 
-### Transpiling to Prisma Schema
+### 转换到Prisma Schema
 
-The `zenstack` CLI compiles the ZModel schema and generates a standard Prisma schema file out of it, along with other artifacts. You can use it in your regular Prisma development workflows, like Prisma Client generation, schema migration, etc.
+`zenstack`CLI编译ZModel模式并从中生成标准Prisma模式文件以及其他工件。 您可以在常规的Prisma开发工作流中使用它，如Prisma客户端生成，模式迁移等。
 
 <ThemedImage
     alt="ZModel Generation"

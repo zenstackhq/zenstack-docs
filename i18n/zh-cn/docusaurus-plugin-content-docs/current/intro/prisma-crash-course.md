@@ -1,23 +1,23 @@
 ---
-description: A Crash Course of Prisma ORM
-sidebar_label: 1. Prisma Crash Course
+description: Prisma ORM速成班
+sidebar_label: 1. Prisma速成班
 sidebar_position: 1
 ---
-# Prisma Crash Course
+# Prisma速成班
 
 :::info
-Feel free to skip to the [next section](/docs/intro/zmodel) if you are already familiar with Prisma.
+如果您已经熟悉Prisma，可直接跳到[下一节](/docs/intro/zmodel)。
 :::
 
-ZenStack is built above Prisma ORM, so it'll be important to have a basic understanding of it.
+ZenStack是建立在Prisma ORM之上的，所以对它有一个基本的了解是很重要的。
 
-Prisma is a so-called "schema-first" ORM that simplifies database access for Node.js and TypeScript applications. It provides an intuitive and concise DSL (Domain-Specific Language) for defining data models and generates a type-safe client for accessing the database.
+Prisma是一个所谓的“模式优先”ORM，它简化了Node.js和TypeScript应用程序的数据库访问。 它为定义数据模型提供了一种直观而简洁的DSL（领域特定语言），并为访问数据库生成了一个类型安全的客户端。
 
-This guide is by no means a comprehensive introduction to Prisma, but it covers the most essential parts of understanding and using it.
+本指南绝不是对Prisma的全面介绍，但它涵盖了理解和使用它的最基本部分。
 
-### Prisma Schema
+### Prisma架构
 
-You can define your data models in a file called `schema.prisma`. Here's an example:
+您可以在名为`schema.prisma`的文件中定义数据模型。 下面是一个例子：
 
 ```zmodel
 
@@ -29,9 +29,9 @@ model User {
 
 ```
 
-The `User` model contains a primary key `id` (indicated by the `@id` attribute), a unique `email` field, and an optional `name` field. The `@default` attribute specifies the field's default value, and the `autoincrement` function instructs the database to generate incrementing values automatically.
+`User`模型包含一个主键`id`（由`@id`属性表示）、一个唯一`email`字段和一个可选的`name`字段。 `@default`属性指定字段的默认值，`autoincrement`函数指示数据库自动生成递增值。
 
-Modeling relationships is also easy. The following example shows a `Post` model with a one-to-many relationship with the `User` model. The `@relation` attribute is the key for connecting the two models by associating them with a foreign key.
+建立关系也很容易。 下面的示例显示了与`User`模型具有一对多关系的`Post`模型。 `@relation`属性是通过将两个模型与一个外键相关联来连接这两个模型的键。
 
 ```zmodel
 
@@ -50,15 +50,15 @@ model Post {
 
 ```
 
-### Prisma Client
+### Prisma客户端
 
-You can run the Prisma CLI to generate a type-safe client for accessing the database.
+您可以运行Prisma CLI生成一个类型安全的客户端来访问数据库。
 
 ```bash
 npx prisma generate
 ```
 
-The client is generated into the `@prisma/client` package and can be used as the following:
+客户端被生成到`@prisma/client`包中，并可用于以下用途：
 
 ```ts
 import { PrismaClient } from '@prisma/client'
@@ -93,16 +93,16 @@ const posts = prisma.post.findMany({
 console.log(posts[0].author.email);
 ```
 
-### Prisma Migrate
+### Prisma迁移
 
-To synchronize your schema to the database tables and fields, run the "migrate" command:
+要将模式与数据库表和字段同步，请运行“migrate”命令：
 
 ```bash
 npx prisma migrate dev
 ```
 
-It synchronizes the local database with the schema and generates a migration record (used for reconstructing database's schema when your app deploys).
+它将本地数据库转换为模式并生成迁移记录（用于在部署应用程序时重建数据库的模式）。
 
 ---
 
-Prisma has a rich set of other features not covered here, like schema migration, data browsing, etc., but we've got enough knowledge to understand and use ZenStack.
+Prisma还有一组丰富的其他特性，这里没有介绍，比如模式迁移、数据浏览等， 但我们已经有足够的知识来理解和使用ZenStack。
