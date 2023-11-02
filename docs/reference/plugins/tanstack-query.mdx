@@ -5,6 +5,7 @@ sidebar_position: 6
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Invalidation from './_invalidation.md';
 
 # @zenstackhq/tanstack-query
 
@@ -562,3 +563,37 @@ See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/svelte/exa
 
 </TabItem>
 </Tabs>
+
+## Advanced
+
+### Query Invalidation
+
+<Invalidation />
+
+:::info
+
+The generated mutation hooks include a `invalidateQueries` boolean parameter. You can use it to disable automatic invalidation.
+
+:::
+
+### Query Key
+
+Query keys serve as unique identifiers for organizing the query cache. The generated hooks use the following query key scheme:
+
+```ts
+['zenstack', model, operation, args]
+```
+
+For example, the query key for
+
+```ts
+useFindUniqueUser({ where: { id: '1' } })
+```
+
+will be:
+
+```ts
+['zenstack', 'User', 'findUnique', { where: { id: '1' } }]
+```
+
+You can use the generated `getQueryKey` function to compute it.

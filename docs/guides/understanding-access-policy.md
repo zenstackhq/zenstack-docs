@@ -56,7 +56,21 @@ Please note the difference between model-level and field-level rules. Model-leve
 ## Accessing user data
 
 When using `enhance` to wrap a Prisma client for authorization, you pass in a context object containing the data about the current user (verified by authentication). This user
-data can be accessed with the special `auth()` function in access policy rules. Note that `auth()` function's return value is typed as the `User` model in your schema, so only fields defined in the `User` model are accessible.
+data can be accessed with the special `auth()` function in access policy rules.
+
+:::info
+
+ZModel compiler resolves the `auth()` function call to a model identified as "auth model". By default, the model named "User" is used, but you can override it using the `@@auth` model-level attribute. Here's an example:
+
+```zmodel
+model MyUser {
+    ...
+    @@auth
+}
+```
+
+Only fields defined in the auth model are accessible from the `auth()` expression.
+:::
 
 You can access its field to implement RBAC like:
 

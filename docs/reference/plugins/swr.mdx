@@ -3,6 +3,8 @@ description: Plugin for generating SWR query and mutation hooks
 sidebar_position: 5
 ---
 
+import Invalidation from './_invalidation.md';
+
 # @zenstackhq/swr
 
 :::info
@@ -190,3 +192,32 @@ const Posts = ({ userId }: { userId: string }) => {
     );
 };
 ```
+
+
+## Advanced
+
+### Query Invalidation
+
+<Invalidation />
+
+### Query Key
+
+Query keys serve as unique identifiers for organizing the query cache. The generated hooks use the following query key scheme:
+
+```ts
+JSON.stringify({ prefix: 'zenstack', model, operation, args })
+```
+
+For example, the query key for
+
+```ts
+useFindUniqueUser({ where: { id: '1' } })
+```
+
+will be:
+
+```ts
+JSON.stringify({ prefix: 'zenstack', model: 'User', 'findUnique', args: { where: { id: '1' } } })
+```
+
+You can use the generated `getQueryKey` function to compute it.
