@@ -1,5 +1,5 @@
 ---
-sidebar_label: 3. Customization
+sidebar_label: 4. Customization
 ---
 
 # Customizing the Generated Hooks

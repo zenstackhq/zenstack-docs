@@ -41,7 +41,11 @@ The generated schemas have the following three parts:
 
     The schema for objects and enums used by the `zod/input` schemas. You usually won't use them directly.
 
-## Options
+### Installation
+
+This plugin is built-in to ZenStack and does not need to be installed separately.
+
+### Options
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
@@ -51,7 +55,7 @@ The generated schemas have the following three parts:
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
 | noUncheckedInput | Boolean | Disables schema generation for Prisma's ["Unchecked"](https://github.com/prisma/prisma/discussions/10121#discussioncomment-1621254) input types | No | false |
 
-## Example
+### Example
 
 Declare the plugin in your ZModel file:
 

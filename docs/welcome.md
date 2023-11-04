@@ -40,8 +40,8 @@ If you're the kind of inpatient developer who wants to gets one's hand dirty ASA
 
 ## Other Resources
 
-- [Recipes](/docs/recipes) - Mini guides for completing specific tasks using ZenStack
-- [Reference](/docs/reference) - Detailed documentation for the DSL, CLI, APIs, and plugins
+- [Recipes](/docs/category/recipes/) - Mini guides for completing specific tasks using ZenStack
+- [Reference](/docs/category/reference/) - Detailed documentation for the DSL, CLI, APIs, and plugins
 - [FAQ](/docs/faq) - Frequently asked questions
   
 Ready to roll? Let's get started 🚀

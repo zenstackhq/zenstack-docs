@@ -11,7 +11,11 @@ The `@core/prisma` plugin generates a Prisma schema from ZModel.
 This plugin is always automatically included when `zenstack generate` is run. You only need to add it to your ZModel if you want to customize its options.
 :::
 
-## Options
+### Installation
+
+This plugin is built-in to ZenStack and does not need to be installed separately.
+
+### Options
 
 | Name           | Type    | Description                                       | Required | Default                |
 | -------------- | ------- | ------------------------------------------------- | -------- | ---------------------- |
@@ -19,7 +23,7 @@ This plugin is always automatically included when `zenstack generate` is run. Yo
 | generateClient | Boolean | Whether to run `prisma generate` after generation | No       | true                   |
 | format         | Boolean | Whether to run `prisma format` after generation   | No       | false                  |
 
-## Example
+### Example
 
 ```zmodel title='/schema.zmodel'
 plugin prisma {

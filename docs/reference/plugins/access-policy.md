@@ -11,7 +11,11 @@ The `@core/access-policy` plugin generates access policy guard objects from [pol
 This plugin is always automatically included when `zenstack generate` is run. You only need to add it to your ZModel if you want to customize its options.
 :::
 
-## Options
+### Installation
+
+This plugin is built-in to ZenStack and does not need to be installed separately.
+
+### Options
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
@@ -19,7 +23,7 @@ This plugin is always automatically included when `zenstack generate` is run. Yo
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
 
-## Example
+### Example
 
 ```zmodel title='/schema.zmodel'
 plugin zod {

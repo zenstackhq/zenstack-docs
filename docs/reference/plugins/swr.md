@@ -15,7 +15,13 @@ The hooks syntactically mirror the APIs of a standard Prisma client, including t
 
 To use the generated hooks, you need to install "swr" version 2.0.0 or above.
 
-## Context Provider
+### Installation
+
+```bash
+npm install --save-dev @zenstackhq/swr
+```
+
+### Context Provider
 
 The plugin generates a React context provider which you can use to configure the behavior of the hooks. The following options are available on the provider:
 
@@ -54,18 +60,18 @@ export default MyApp;
 
 ```
 
-## Options
+### Options
 
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
 | output  | String | Output directory (relative to the path of ZModel)                                        | Yes      |         |
 | useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization                                        | No      | false        |
 
-## Example
+### Example
 
 Here's a quick example with a blogging app. You can find a fully functional Todo app example [here](https://github.com/zenstackhq/sample-todo-nextjs).
 
-### Schema
+#### Schema
 
 ```zmodel title='/schema.zmodel'
 plugin hooks {
@@ -97,7 +103,7 @@ model Post {
 }
 ```
 
-### Using Query and Mutation Hooks
+#### Using Query and Mutation Hooks
 
 ```tsx title='/src/components/posts.tsx'
 import type { Post } from '@prisma/client';
@@ -137,7 +143,7 @@ const Posts = ({ userId }: { userId: string }) => {
 };
 ```
 
-### Using Infinite Query
+#### Using Infinite Query
 
 See [SWR's documentation](https://swr.vercel.app/docs/pagination) for more details.
 

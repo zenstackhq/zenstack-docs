@@ -13,7 +13,13 @@ The `@zenstackhq/trpc` plugin depends on the [`@core/zod`](/docs/reference/plugi
 
 This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/prisma-trpc-generator). Thanks to [Omar Dulaimi](https://github.com/omar-dulaimi) for making this happen!
 
-## Options
+### Installation
+
+```bash
+npm install --save-dev @zenstackhq/trpc
+```
+
+### Options
 
 | Name   | Type   | Description      | Required | Default |
 | ------ | ------ | ---------------- | -------- | ------- |
@@ -22,13 +28,13 @@ This plugin is based on [prisma-trpc-generator](https://github.com/omar-dulaimi/
 | generateClientHelpers | String, String[] | Array or comma separated string for the types of client helpers to generate. Supported values: "react" or "next". See [here](#client-helpers) for more details. | No      | |
 | zodSchemasImport | String | Import path for the generated zod schemas. The trpc plugin relies on the `@core/zod` plugin to generate zod schemas for input validation. If you set a custom output location for the zod schemas, you can use this option to override the import path. | No      | @zenstackhq/runtime/zod |
 
-## Dependencies
+### Dependencies
 
 - [`@core/zod`](/docs/reference/plugins/zod)
 
-## Details
+### Details
 
-### Preparing tRPC Context
+#### Preparing tRPC Context
 
 The generated tRPC routers require a `prisma` field in the context and you need to make sure to include it when creating the context. You can use any PrismaClient instance for it, but most likely you want to use one created with [`enhance`](/docs/reference/runtime-api#enhance) so that the client enforces access control policies.
 
@@ -43,7 +49,7 @@ export const createContext = async ({ req, res }: CreateNextContextOptions) => {
 };
 ```
 
-### Client Helpers
+#### Client Helpers
 
 TRPC relies on TypeScript's type inference to provide the client-side API call signatures. This is very neat and powerful, but it has some limitations regarding generic APIs. For example, one of the best features of Prisma's API is its output type automatically adapts to the input's shape. e.g.:
 
@@ -88,7 +94,7 @@ export const trpc = createTRPCNext<AppRouter>({
 });
 ```
 
-## Example
+### Example
 
 Here's an example with a blogging app:
 
