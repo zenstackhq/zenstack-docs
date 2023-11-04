@@ -226,7 +226,7 @@ enum UserRole {
 
 ## Model
 
-Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract model would be eliminated in the generated prisma schema file. 
+Models represent the business entities of your application. A model inherits all fields and attributes from extended abstract models. Abstract models are eliminated in the generated prisma schema file. 
 
 ### Syntax
 ```zmodel
@@ -786,6 +786,14 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
 
+-   `@@auth`
+
+    ```zmodel
+        attribute @@auth()
+    ```
+
+    Specify the model for resolving `auth()` function call in access policies. By default, the model named "User" is used. You can use this attribute to override the default behavior. A Zmodel can have at most one model with this attribute. 
+
 -   `@@prisma.passthrough`
 
     ```zmodel
@@ -1092,7 +1100,7 @@ model User {
 
 model Profile {
     id String @id
-    user @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id])
     userId String @unique
 }
 ```
@@ -1116,7 +1124,7 @@ model Post {
 }
 ```
 
-### Many-to-one relation
+### Many-to-many relation
 
 A _join model_ is declared to connect the two sides of the relation using two one-to-one relations.
 

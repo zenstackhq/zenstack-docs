@@ -4,7 +4,7 @@ sidebar_position: 6
 ---
 # Managing Large Schema
 
-As your business expands, your schema file grows with it. ZenStack offers increased flexibility in managing your schema file through through multiple schema files and model inheritance. An example project is provided below for your reference:
+As your business expands, your schema file grows with it. ZenStack offers increased flexibility in managing your schema file through multiple schema files and model inheritance. An example project is provided below for your reference:
 
 [https://github.com/zenstackhq/sample-multiple-schema](https://github.com/zenstackhq/sample-multiple-schema) 
 

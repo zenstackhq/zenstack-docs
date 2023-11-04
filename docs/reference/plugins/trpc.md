@@ -24,11 +24,16 @@ npm install --save-dev @zenstackhq/trpc
 | Name   | Type   | Description      | Required | Default |
 | ------ | ------ | ---------------- | -------- | ------- |
 | output | String | Output directory (relative to the path of ZModel) | Yes      | |
+| generateModels | String, String[] | Array or comma separated string for the models to generate routers for. | No      | All models |
 | generateModelActions | String, String[] | Array or comma separated string for actions to generate for each model: `create`, `findUnique`, `update`, etc. | No      | All supported Prisma actions |
 | generateClientHelpers | String, String[] | Array or comma separated string for the types of client helpers to generate. Supported values: "react" or "next". See [here](#client-helpers) for more details. | No      | |
 | zodSchemasImport | String | Import path for the generated zod schemas. The trpc plugin relies on the `@core/zod` plugin to generate zod schemas for input validation. If you set a custom output location for the zod schemas, you can use this option to override the import path. | No      | @zenstackhq/runtime/zod |
 
-### Dependencies
+:::info
+When `@core/zod` plugin is automatically enabled by the `@zenstackhq/trpc` plugin, if the `@zenstackhq/trpc` plugin has a `generateModels` option specified, it'll be carried over to the `@core/zod` plugin as well.
+:::
+
+## Dependencies
 
 - [`@core/zod`](/docs/reference/plugins/zod)
 
