@@ -355,6 +355,7 @@ view OrderItemDetail {
 A few quick notes:
 - The data modeling is exactly the same as with the Prisma Schema Language
 - The `@@allow` attribute is used for defining access control policies
+- All access is denied by default unless explicitly allowed
 - The `auth()` function returns the current user in session
 
 At runtime, when we need to query data with Prisma, we can substitute PrismaClient with an enhanced version provided by ZenStack, which will automatically inject access control conditions into the query object.
