@@ -1,0 +1,643 @@
+---
+title: Next.js
+description: Step-by-step guide for building a blogging app with Next.js.
+sidebar_position: 1
+---
+
+import Requirements from './_requirements.md';
+import Prerequisite from './_prerequisite.md';
+import InitTips from './_zenstack-init-tips.md';
+import PasswordOmit from './_password-omit.md';
+import AccessPolicy from './_access-policy.md';
+
+# Get Started With Next.js
+
+Let's have some fun by creating a simple blogging app. You'll see how effortless it is to have a secure backend service without actually coding it.
+
+You can find the final build result [here](https://github.com/zenstackhq/docs-tutorial-nextjs).
+
+## Requirements
+
+<Requirements />
+
+## Prerequisite
+
+<Prerequisite />
+
+## Building the app
+
+### 1. Create a new project
+
+The easiest way to create a Next.js project with boilerplates is with `create-t3-app`. Run the following command to create a new project with Prisma, NextAuth and TailwindCSS.
+
+```bash
+npx create-t3-app@latest --prisma --nextAuth --tailwind --CI my-blog-app
+cd my-blog-app
+npm run dev
+```
+
+If everything works, you should have a running Next.js app at [http://localhost:3000](http://localhost:3000).
+
+<div align="center">
+    <img src="/img/t3app.png" width="800" />
+</div>
+
+### 2. Initialize the project for ZenStack
+
+Let's run the `zenstack` CLI to prepare your project for using ZenStack.
+
+```bash
+npx zenstack@latest init
+```
+
+<InitTips />
+
+### 3. Preparing the User model for authentication
+
+First, in `schema.zmodel`, make a few changes to the `User` model:
+
+```zmodel title='/schema.zmodel'
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  // highlight-next-line
+  password      String @password @omit
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  // highlight-start
+  // everyone can signup, and user profile is also publicly readable
+  @@allow('create,read', true)
+
+  // only the user can update or delete their own profile
+  @@allow('update,delete', auth() == this)
+  // highlight-end
+}
+```
+
+For simplicity, we'll use username/password-based authentication in this project. In the code above,
+we added a `password` field to support it, together with two access policy rules to control the
+permissions of this model.
+
+<PasswordOmit />
+
+<AccessPolicy />
+
+Now run `zenstack generate` and `prisma db push` to flush the changes to the Prisma schema and database:
+
+```bash
+npx zenstack generate && npx prisma db push
+```
+
+### 4. Configure NextAuth to use credential-based auth
+
+Now let's update `/src/server/auth.ts` to the content below to
+use credentials auth and JWT-based session:
+
+```ts title='/src/server/auth.ts'
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import type { PrismaClient } from '@prisma/client';
+import { compare } from 'bcryptjs';
+import type { GetServerSidePropsContext } from 'next';
+import NextAuth, { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { prisma } from './db';
+/**
+ * Module augmentation for `next-auth` types.
+ * Allows us to add custom properties to the `session` object and keep type
+ * safety.
+ *
+ * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
+ **/
+declare module 'next-auth' {
+    interface Session extends DefaultSession {
+        user: {
+            id: string;
+        } & DefaultSession['user'];
+    }
+}
+
+/**
+ * Options for NextAuth.js used to configure adapters, providers, callbacks,
+ * etc.
+ *
+ * @see https://next-auth.js.org/configuration/options
+ **/
+export const authOptions: NextAuthOptions = {
+    session: {
+        strategy: 'jwt',
+    },
+    // Include user.id on session
+    callbacks: {
+        session({ session, token }) {
+            if (session.user) {
+                session.user.id = token.sub!;
+            }
+            return session;
+        },
+    },
+    // Configure one or more authentication providers
+    adapter: PrismaAdapter(prisma),
+    providers: [
+        CredentialsProvider({
+            credentials: {
+                email: { type: 'email' },
+                password: { type: 'password' },
+            },
+            authorize: authorize(prisma),
+        }),
+    ],
+};
+
+function authorize(prisma: PrismaClient) {
+    return async (credentials: Record<'email' | 'password', string> | undefined) => {
+        if (!credentials) throw new Error('Missing credentials');
+        if (!credentials.email) throw new Error('"email" is required in credentials');
+        if (!credentials.password) throw new Error('"password" is required in credentials');
+        const maybeUser = await prisma.user.findFirst({
+            where: { email: credentials.email },
+            select: { id: true, email: true, password: true },
+        });
+        if (!maybeUser || !maybeUser.password) return null;
+        // verify the input password with stored hash
+        const isValid = await compare(credentials.password, maybeUser.password);
+        if (!isValid) return null;
+        return { id: maybeUser.id, email: maybeUser.email };
+    };
+}
+
+/**
+ * Wrapper for `getServerSession` so that you don't need to import the
+ * `authOptions` in every file.
+ *
+ * @see https://next-auth.js.org/configuration/nextjs
+ **/
+export const getServerAuthSession = (ctx: {
+    req: GetServerSidePropsContext['req'];
+    res: GetServerSidePropsContext['res'];
+}) => {
+    return getServerSession(ctx.req, ctx.res, authOptions);
+};
+
+export default NextAuth(authOptions);
+```
+
+Finally, add a `NEXTAUTH_SECRET` environment variable in .env file and set it to an arbitrary
+value (use a complex secret in production and don't check it into git):
+
+```plain title='/.env'
+  NEXTAUTH_SECRET=abc123
+```
+
+### 5. Mount CRUD service & generate hooks
+
+ZenStack has built-in support for Next.js and can provide database CRUD services
+automagically, so you don't need to write it yourself.
+
+First install the `@zenstackhq/server` and `@zenstackhq/swr` packages:
+
+```bash
+npm install @zenstackhq/server swr
+npm install -D  @zenstackhq/swr
+```
+
+Let's mount it to the `/api/model/[...path]` endpoint. Create a `/src/pages/api/model/[...path].ts`
+file and fill in the content below:
+
+```ts title='/src/pages/api/model/[...path].ts'
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import { enhance } from '@zenstackhq/runtime';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getServerAuthSession } from '../../../server/auth';
+import { prisma } from '../../../server/db';
+
+async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
+    const session = await getServerAuthSession({ req, res });
+    // create a wrapper of Prisma client that enforces access policy,
+    // data validation, and @password, @omit behaviors
+    return enhance(prisma, { user: session?.user });
+}
+
+export default NextRequestHandler({ getPrisma });
+```
+
+The `/api/model` route is now ready to access database query and mutation requests.
+However, manually calling the service will be tedious. Fortunately, ZenStack can
+automatically generate React hooks for you.
+
+Let's enable it by adding the following snippet at the top level to `schema.zmodel`:
+
+```zmodel
+plugin hooks {
+  provider = '@zenstackhq/swr'
+  output = "./src/lib/hooks"
+}
+```
+
+Now run `zenstack generate` again; you'll find the hooks generated under `/src/lib/hooks` folder:
+
+```bash
+npx zenstack generate
+```
+
+Now we're ready to implement the signup/signin flow.
+
+### 6. Implement Signup/Signin
+
+Now let's implement the signup/signin pages. First, create a new page `/src/pages/signup.tsx`:
+
+```tsx title='/src/pages/signup.tsx'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
+import Router from 'next/router';
+import { useState, type FormEvent } from 'react';
+import { useMutateUser } from '../lib/hooks';
+
+const Signup: NextPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { createUser: signup } = useMutateUser();
+
+    async function onSignup(e: FormEvent) {
+        e.preventDefault();
+        try {
+            await signup({ data: { email, password } });
+        } catch (err: any) {
+            console.error(err);
+            if (err.info?.prisma && err.info?.code === 'P2002') {
+                // P2002 is Prisma's error code for unique constraint violations
+                alert('User alread exists');
+            } else {
+                alert('An unknown error occurred');
+            }
+            return;
+        }
+
+        // signin to create a session
+        await signIn('credentials', { redirect: false, email, password });
+        await Router.push('/');
+    }
+
+    return (
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
+            <form className="mt-16 flex flex-col gap-8 text-2xl" onSubmit={(e) => void onSignup(e)}>
+                <div>
+                    <label htmlFor="email" className="inline-block w-32 text-white">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.currentTarget.value)}
+                        className="ml-4 w-72 rounded border p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="inline-block w-32 text-white ">
+                        Password
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.currentTarget.value)}
+                        className="ml-4 w-72 rounded border p-2"
+                    />
+                </div>
+                <input
+                    type="submit"
+                    value="Create account"
+                    className="cursor-pointer rounded border border-gray-500 py-4 text-white"
+                />
+            </form>
+        </div>
+    );
+};
+
+export default Signup;
+```
+
+In the code above, we used the auto-generated `useMutateUser` hooks to create new `User` entities.
+
+:::tip
+
+1. The services backing the hooks are governed by the access policies we defined. Here the `create`
+   call can succeed because we explicitly allowed it in the `User` model. By default, all operations
+   are forbidden.
+1. The `password` field is automatically hashed. You can confirm it using a sqlite inspection tool
+   to browse the `prisma/db.sqlite` database file.
+
+:::
+
+Try visiting [http://localhost:3000/signup](http://localhost:3000/signup) and creating a new user.
+It should look like this:
+
+<div align="center">
+    <img src="/img/tutorial-signup-form.png" width="800" />
+</div>
+
+Similarly, create the signin page `/src/pages/signin.tsx`:
+
+```tsx title='/src/pages/signin.tsx'
+import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
+import Router from 'next/router';
+import { useState, type FormEvent } from 'react';
+
+const Signin: NextPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    async function onSignin(e: FormEvent) {
+        e.preventDefault();
+
+        const result = await signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+        });
+
+        if (result?.ok) {
+            await Router.push('/');
+        } else {
+            alert('Signin failed');
+        }
+    }
+
+    return (
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <h1 className="text-5xl font-extrabold text-white">Login</h1>
+            <form className="mt-16 flex flex-col gap-8 text-2xl" onSubmit={(e) => void onSignin(e)}>
+                <div>
+                    <label htmlFor="email" className="inline-block w-32  text-white">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.currentTarget.value)}
+                        className="ml-4 w-72 rounded border p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="inline-block w-32  text-white">
+                        Password
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.currentTarget.value)}
+                        className="ml-4 w-72 rounded border p-2"
+                    />
+                </div>
+                <input
+                    type="submit"
+                    value="Sign me in"
+                    className="cursor-pointer rounded border border-gray-500 py-4 text-white"
+                />
+            </form>
+        </div>
+    );
+};
+
+export default Signin;
+```
+
+### 7. Prepare the Blog model
+
+Now let's create a `Blog` model. We'll use it to store blog posts.
+
+```zmodel title='/schema.zmodel'
+model Post {
+  id        String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  published Boolean @default(false)
+  author    User @relation(fields: [authorId], references: [id])
+  authorId  String
+
+
+  // author has full access
+  @@allow('all', auth() == author)
+
+  // logged-in users can view published posts
+  @@allow('read', auth() != null && published)
+}
+```
+
+`User` and `Post` model has a one-to-many relation. We can establish it by adding
+a `posts` relation field to the `User` model.
+
+```zmodel title='/schema.zmodel'
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    password      String @password @omit
+    // highlight-next-line
+    posts         Post[]
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+
+    // everyone can signup, and user profile is also publicly readable
+    @@allow('create,read', true)
+
+    // only the user can update or delete their own profile
+    @@allow('update,delete', auth() == this)
+}
+```
+
+Don't forget to regenerate and push schema changes to the database:
+
+```bash
+npx zenstack generate && npx prisma db push
+```
+
+### 8. Build up the home page
+
+Now let's replace `/src/pages/index.tsx` with the content below and use it for viewing and managing posts.
+
+```tsx title='/src/pages/index.tsx'
+import type { Post } from '@prisma/client';
+import { type NextPage } from 'next';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import Router from 'next/router';
+import { useFindManyPost, useMutatePost } from '../lib/hooks';
+
+type AuthUser = { id: string; email?: string | null };
+
+const Welcome = ({ user }: { user: AuthUser }) => {
+    async function onSignout() {
+        await signOut({ redirect: false });
+        await Router.push('/signin');
+    }
+    return (
+        <div className="flex gap-4">
+            <h3 className="text-lg">Welcome back, {user?.email}</h3>
+            <button className="text-gray-300 underline" onClick={() => void onSignout()}>
+                Signout
+            </button>
+        </div>
+    );
+};
+
+const SigninSignup = () => {
+    return (
+        <div className="flex gap-4 text-2xl">
+            <Link href="/signin" className="rounded-lg border px-4 py-2">
+                Signin
+            </Link>
+            <Link href="/signup" className="rounded-lg border px-4 py-2">
+                Signup
+            </Link>
+        </div>
+    );
+};
+
+const Posts = ({ user }: { user: AuthUser }) => {
+    // Post crud hooks
+    const { createPost, updatePost, deletePost } = useMutatePost();
+
+    // list all posts that're visible to the current user, together with their authors
+    const { data: posts } = useFindManyPost({
+        include: { author: true },
+        orderBy: { createdAt: 'desc' },
+    });
+
+    async function onCreatePost() {
+        const title = prompt('Enter post title');
+        if (title) {
+            await createPost({ data: { title, authorId: user.id } });
+        }
+    }
+
+    async function onTogglePublished(post: Post) {
+        await updatePost({
+            where: { id: post.id },
+            data: { published: !post.published },
+        });
+    }
+
+    async function onDelete(post: Post) {
+        await deletePost({ where: { id: post.id } });
+    }
+
+    return (
+        <div className="container flex flex-col text-white">
+            <button className="rounded border border-white p-2 text-lg" onClick={() => void onCreatePost()}>
+                + Create Post
+            </button>
+
+            <ul className="container mt-8 flex flex-col gap-2">
+                {posts?.map((post) => (
+                    <li key={post.id} className="flex items-end justify-between gap-4">
+                        <p className={`text-2xl ${!post.published ? 'text-gray-400' : ''}`}>
+                            {post.title}
+                            <span className="text-lg"> by {post.author.email}</span>
+                        </p>
+                        <div className="flex w-32 justify-end gap-1 text-left">
+                            <button className="underline" onClick={() => void onTogglePublished(post)}>
+                                {post.published ? 'Unpublish' : 'Publish'}
+                            </button>
+                            <button className="underline" onClick={() => void onDelete(post)}>
+                                Delete
+                            </button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+const Home: NextPage = () => {
+    const { data: session, status } = useSession();
+
+    if (status === 'loading') return <p>Loading ...</p>;
+
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 text-white">
+                <h1 className="text-5xl font-extrabold">My Awesome Blog</h1>
+
+                {session?.user ? (
+                    // welcome & blog posts
+                    <div className="flex flex-col">
+                        <Welcome user={session.user} />
+                        <section className="mt-10">
+                            <Posts user={session.user} />
+                        </section>
+                    </div>
+                ) : (
+                    // if not logged in
+                    <SigninSignup />
+                )}
+            </div>
+        </main>
+    );
+};
+
+export default Home;
+```
+
+## Verifying the result
+
+Restart the dev server and try creating a few posts. You should see something like the following:
+
+<div align="center">
+    <img src="/img/tutorial-blog-posts.png" width="800" />
+</div>
+
+The code looks a bit long because we tucked all UI components directly into the page.
+As you can see, querying and mutating `Post` entities are fairly straightforward,
+the generated hooks. When mutation happens, e.g. a new post is created, data refetching
+is also triggered automatically.
+
+Try opening an incognito browser window and signing up for a separate account. You should
+find that the published posts are visible, as we specified with access policies.
+
+<div align="center">
+    <img src="/img/tutorial-blog-posts-readable.png" width="800" />
+</div>
+
+Since we haven't hidden "Unpublish" and "Delete" buttons for posts not owned by the current
+user, you can still click them even for posts not owned to you, but it will end up with a
+403 error:
+
+![network error](/img/tutorial-post-update-denied.png)
+
+```json
+{
+    "prisma": true,
+    "rejectedByPolicy": true,
+    "code": "P2004",
+    "message": "denied by policy: post entities failed 'update' check, 1 entities failed policy check"
+}
+```
+
+You can catch the error and render a nice message to the user.
+
+## Wrap up
+
+🎉 Congratulations! You've made a simple blogging app without writing a single line of
+backend code. Pretty cool, isn't it?
+
+If you have trouble following the building process, you can find the final result
+[here](https://github.com/zenstackhq/docs-tutorial-nextjs). For more details about ZenStack,
+please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/recipes)
+parts of the documentation.
+
+Have fun building cool stuff 🚀!
