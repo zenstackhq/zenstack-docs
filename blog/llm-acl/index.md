@@ -1,6 +1,6 @@
 ---
 title: Using LLM For SQL Query Is Cool. But What About Access Control?
-description: An experiment on applying access control to LLM generated data queries.
+description: An experiment on applying access control to LLM-generated data queries.
 tags: [ai, llm, authorization]
 authors: yiming
 date: 2023-11-06
@@ -11,15 +11,15 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-Large Language Models have shown the world its incredible versatility. One of its greatest powers is to turn fuzzy human language into executable code. This not only helps engineers improve their productivity but also enables non-technical people to achieve what used to require help from developers.
+Large Language Models have shown the world its incredible versatility. One of its most remarkable powers is to turn fuzzy human language into executable code. This not only helps engineers improve their productivity but also enables non-technical people to achieve what used to require help from developers.
 
-Generating analytical data queries is one of the most popular use cases of LLM-based code generation. What can be cooler for business analysts than to ask a question in plain human language and get a visualization in seconds? In this post, I'll demonstrate a simple implementation, and will also cover an important but often overlooked topic: access control.
+Generating analytical data queries is one of the most popular use cases of LLM-based code generation. What can be cooler for business analysts than to ask a question in plain human language and get a visualization in seconds? In this post, I'll demonstrate a simple implementation and will also cover an important but often overlooked topic: access control.
 
 <!--truncate-->
 
 ## Requirements
 
-Suppose we have an e-commerce store selling electronics, furniture, and outdoor gears. The store has the following (greatly simplified) data model:
+Suppose we have an e-commerce store selling electronics, furniture, and outdoor gear. The store has the following (greatly simplified) data model:
 
 ```mermaid
 erDiagram
@@ -41,7 +41,7 @@ erDiagram
     Order ||--o{ OrderItem: contains
 ```
 
-Our imaginary scenario is that the business analyst wants to ask analytical questions about the store's data in plain English, and get back charts. An example question could be: "Show me the total sales of products by category".
+Our imaginary scenario is that the business analyst wants to ask analytical questions about the store's data in plain English and get back charts. An example question could be: "Show me the total sales of products by category".
 
 To add one more twist, we also want to make sure that the analyst can only access data that they are authorized to see. Each analyst user has an assigned "region", and they can only see data from that region.
 
@@ -81,15 +81,15 @@ sequenceDiagram
   Remix->>Analyst: 8. Chart
 ```
 
-One key difference between this demo and other AI-based data query projects is that we chose to generate Prisma query instead of raw SQL. This choice has both upsides and downsides:
+One key difference between this demo and other AI-based data query projects is that we chose to generate Prisma queries instead of raw SQL. This choice has both upsides and downsides:
 
 - ⬆️ Prisma query is more portable. We don't need to deal with SQL dialects.
 - ⬆️ It's safer as we can easily exclude write operations without complex SQL parsing and validation.
-- ⬆️ Prisma query is a lot less flexible than SQL, which tends to reduce the complexity of reasoning.
-- ⬇️ LLMs obvious has a lot more SQL training data compared to Prisma query code. This probably largely cancels the previous upside.
+- ⬆️ Prisma query is much less flexible than SQL, which tends to reduce the complexity of reasoning.
+- ⬇️ LLMs obviously have a lot more SQL training data compared to Prisma query code. This probably largely cancels the previous upside.
 - ⬇️ Prisma query is a lot less expressive than SQL for analytical tasks.
 
-There's one more reason why we chose to do that, and you'll see it in the next section where we talk about access control.
+There's one more reason why we chose to do that, and you'll see it in the next section, where we talk about access control.
 
 ### Data Modeling
 
@@ -152,9 +152,11 @@ view OrderItemDetail {
 
 ### Prompt Engineering
 
-As pretty much all applications involving LLM, the most challenging part is to come up with the right prompts. In our demo, we need to devise two prompts, one for turning human language into Prisma query, and another for turning query result dataset into Charts.js configuration. The model of choice is OpenAI's "gpt-4".
+As with all applications involving LLM, the most challenging part is to come up with the right prompts. In our demo, we need to devise two prompts, one for turning human language into Prisma queries and another for turning query result datasets into Charts.js configuration. The model of choice is OpenAI's "gpt-4".
 
 #### Prompt for Prisma Query Generation
+
+The first interaction with LLM is to turn a natural language question into a Prisma query.
 
 *System message:*
 ```
@@ -209,7 +211,7 @@ The LLM gives output like:
 }
 ```
 
-We can translate it into Prisma query like:
+We can then translate it into Prisma query like:
 
 ```ts
 prisma.orderItemDetail.groupBy({
@@ -220,7 +222,34 @@ prisma.orderItemDetail.groupBy({
 });
 ```
 
+, and get back a result dataset like:
+
+```json
+[
+  {
+    "_sum": {
+      "subtotal": 1099
+    },
+    "category": "Electronics"
+  },
+  {
+    "_sum": {
+      "subtotal": 2199
+    },
+    "category": "Furniture"
+  },
+  {
+    "_sum": {
+      "subtotal": 307
+    },
+    "category": "Outdoor"
+  }
+]
+```
+
 #### Prompt for Charts.js Configuration Generation
+
+The goal of the second interaction with LLM is to turn the query result dataset into a Charts.js configuration object.
 
 *System message:*
 ```
@@ -239,7 +268,7 @@ Make sure keys and string values are double quoted.
 Don't call Charts.js constructor. Don't output anything else.
 ```
 
-The LLM gives output like:
+The LLM gives output like the following, which we can directly pass to Charts.js:
 
 ```json
 {
@@ -278,20 +307,20 @@ It's quite slow because of OpenAI API latency (the recording is fast-forwarded),
 
 ## What About Access Control?
 
-Looking back at our requirements, there's a big missing part: access control. An analyst should only see data from their assigned region. How can we make sure that the generated Prisma query only returns data from the right region? Our current implementation included all data in the query result.
+Looking back at our requirements, we'll find a significant part still missing: access control. An analyst should only see data from their assigned region. How can we ensure that the generated Prisma queries only return data from the right region? Our current implementation included all data in the query result.
 
-In general, if you want to impose access control into LLM-based query generation, there're several possible solutions:
+In general, if you want to impose access control into LLM-based query generation, there are several possible solutions:
 
-1. If you use PostgreSQL, you can set up [row-level-security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html) and hook it up with your user system, but it's [non-trivial to do so](https://www.2ndquadrant.com/en/blog/application-users-vs-row-level-security/).
+1. If you use PostgreSQL, you can set up [row-level-security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html) and hook it up with your user system, but it's [non-trivial](https://www.2ndquadrant.com/en/blog/application-users-vs-row-level-security/).
 2. If you do SQL generation, you can use a SQL parser to post-process the generated query and inject extra filtering conditions.
-3. If you generate Prisma queries as we do here, you can inject extra filtering conditions into the generated query object. Here's the nice thing, [ZenStack](https://github.com/zenstackhq/zenstack) can do it automatically for you.
+3. If you generate Prisma queries as we do here, you can inject extra filtering conditions into the generated query object. Here's the nice thing: [ZenStack](https://github.com/zenstackhq/zenstack) can do it automatically for you.
 
 ZenStack is a toolkit built above Prisma. It makes many powerful extensions to Prisma, and those relevant to our discussion are:
 
 - Schema extensions that allow you to define access control policies
-- Runtime extensions that enforces access control automatically
+- Runtime extensions that enforce access control automatically
 
-To leverage ZenStack, we'll use the modeling language called ZModel (instead of Prisma schema) to define both data model and access policies in one place. Here's how it looks like:
+To leverage ZenStack, we'll use the modeling language called ZModel (instead of Prisma schema) to define data models and access policies in one place. Here's what it looks like:
 
 ```zmodel title='schema.zmodel'
 model Product {
@@ -324,7 +353,7 @@ view OrderItemDetail {
 ```
 
 A few quick notes:
-- The data modeling is exactly the same as Prisma schema
+- The data modeling is exactly the same as with the Prisma Schema Language
 - The `@@allow` attribute is used for defining access control policies
 - The `auth()` function returns the current user in session
 
@@ -359,11 +388,11 @@ You can find the finished project code at [https://github.com/ymc9/llm-data-quer
 
 ## Challenges
 
-By combining the right set of tools and the power of LLM, we've built a nice little Business Intelligence system with surprisingly little effort. This was unimaginable before the dawn of Generative AI. However, there're still many challenges to overcome to make it a production-ready system:
+By combining the right set of tools and the power of LLM, we've built a nice little Business Intelligence system with surprisingly little effort. It was unimaginable before the dawn of Generative AI. However, there are still many challenges to overcome to make it a production-ready system:
 
 1. GPT-4's generation speed is too low, and GPT-3.5's generation quality is not good enough. Fine-tuning is likely needed to improve both speed and quality.
-2. Hallucination is a major problem. The model can invent query syntax that's not supported by Prisma. Again, fine-tuning (or more prompt engineering) can improve it.
-3. Prisma's query syntax is too limited for analytical tasks. There're already several related GitHub issues but it's not clear when they'll be implemented.
-4. Finally, LLM's inherent nondeterminism makes it hard to get consistent results when repeating the same question, which can be confusing for users.
+2. Hallucination is a major problem. The LLM can invent query syntax that Prisma does not support. Again, fine-tuning (or more prompt engineering) can improve it.
+3. Prisma's query syntax is too limited for analytical tasks. There are already various related GitHub issues but it's not clear when they'll be implemented.
+4. Finally, LLM's inherent nondeterminism makes it hard to get consistent results when repeating the same question, which can confuse users.
 
 Building real-world products with LLM is still a challenging journey that requires us to invent patterns and tricks that didn't exist before.
