@@ -1,5 +1,5 @@
 ---
-title: Using LLM For SQL Query Is Cool. But What About Access Control?
+title: Using AI to Generate Database Query Is Cool. But What About Access Control?
 description: An experiment on applying access control to LLM-generated data queries.
 tags: [ai, llm, authorization]
 authors: yiming
@@ -7,7 +7,7 @@ date: 2023-11-06
 image: ./cover.png
 ---
 
-# Using LLM For SQL Query Is Cool. But What About Access Control?
+# Using AI to Generate Database Query Is Cool. But What About Access Control?
 
 ![Cover Image](cover.png)
 
