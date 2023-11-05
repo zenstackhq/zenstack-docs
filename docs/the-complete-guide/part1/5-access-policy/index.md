@@ -4,18 +4,17 @@ sidebar_label: 5. Access Policy
 
 # Access Policy
 
-Among the enhancements that ZenStack made to Prisma, access policy is the mode important one. It is also the main pillar that supports all the other features in upper layers.
+Among the enhancements that ZenStack made to Prisma, access policy is the most important one. It is also the main pillar that supports all the other features in upper layers.
 
 The features that ZenStack's access policy provides include:
 
 - Row-level and field-level access control
-- Access current user in rules
+- Accessing current user in rules
 - Accessing relations in rules
 - Pre and post update rules
 - Functions that help you write advanced rules
 
 :::info Secure By Default
-
 
 When using an enhanced Prisma Client, the first thing that may strike you surprised is that you can't read or write any data. For example, given the following model:
 
