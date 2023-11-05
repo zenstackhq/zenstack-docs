@@ -13,7 +13,7 @@ image: ./cover.png
 
 Large Language Models have shown the world its incredible versatility. One of its most remarkable powers is to turn fuzzy human language into executable code. This not only helps engineers improve their productivity but also enables non-technical people to achieve what used to require help from developers.
 
-Generating analytical data queries is one of the most popular use cases of LLM-based code generation. What can be cooler for business analysts than to ask a question in plain human language and get a visualization in seconds? In this post, I'll demonstrate a simple implementation and will also cover an important but often overlooked topic: access control.
+Generating analytical data queries is one of the most popular use cases of LLM-based code generation. What can be cooler for business analysts than to ask a question in plain human language and get a visualization in seconds? Traditionally, only big boys like PowerBI and Google Sheets could offer features like that, but now LLM has democratized AI capabilities and lowered the bar. In this post, I'll demonstrate a simple implementation and will also cover an important but often overlooked topic: access control.
 
 <!--truncate-->
 
@@ -246,6 +246,14 @@ prisma.orderItemDetail.groupBy({
   }
 ]
 ```
+
+:::tip
+
+**Why not just generate the entire Prisma call directly?**
+
+You've noticed that we forced the LLM to generate a structured JSON for the Prisma query instead of the query function call itself. The reason is that you should never trust and execute code coming from an external source, and AI is no exception. By generating JSON instead of code, we can further inspect it, filter it (e.g., only allow "read" method calls), and restrain the code executed.
+
+:::
 
 #### Prompt for Charts.js Configuration Generation
 
