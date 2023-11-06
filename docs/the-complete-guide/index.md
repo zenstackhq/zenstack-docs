@@ -27,7 +27,7 @@ The app is not too complex, but it covers many important aspects of a modern mul
 
 ## Organization
 
-ZenStack consists of several layers of functionalities, each depends on the previous one. These layers are explained in details in the following three parts.
+ZenStack consists of several layers of functionalities, each depends on the previous one. These layers are explained in details in the following four parts. In each part, we'll add more functionalities to our Todo app, and eventually finish it by the end of the guide.
 
 ### Part I: Supercharged Prisma ORM
 
