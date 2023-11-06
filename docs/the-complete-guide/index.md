@@ -5,15 +5,29 @@ title: "ZenStack: The Complete Guide"
 description: The Complete Guide of ZenStack
 ---
 
+import Requirements from '../_components/_todo-requirements.md';
+
 # ZenStack: The Complete Guide
 
 ## Introduction
 
 Welcome to *The Complete Guide of ZenStack*. This guide is designed to systematically introduce the key concepts in ZenStack, and guide you through how to use the essential features of it.
 
+## Sample Project
+
+Throughout the guide, we'll learn the key concepts and features by gradually building up a sample project. The project is a multi-tenant Todo app, which allows users to create and join "Spaces", and collaborate with users in the same space by creating and managing Todo Lists.
+
+Here're the detailed requirements:
+
+<Requirements />
+
+The app is not too complex, but it covers many important aspects of a modern multi-tenant web application. You can have a preview of a deployed version of it below:
+
+[![Sample Todo App](../assets/todo-app-splash.png)](https://zenstack-todo.vercel.app/)
+
 ## Organization
 
-ZenStack consists of three layers of functionalities, each depends on the previous one. These layers are explained in details in the following three parts.
+ZenStack consists of several layers of functionalities, each depends on the previous one. These layers are explained in details in the following three parts.
 
 ### Part I: Supercharged Prisma ORM
 
@@ -21,20 +35,34 @@ The first layer works as an extension to Prisma ORM - both for the schema langua
 
 The extension to Prisma ORM is the foundation of ZenStack and enables all other features above it. These features are also agnostic to the framework you use for the backend. It's simply a drop-in replacement to Prisma.
 
+In this part of the guide, we'll finish building the schema of the sample project - including the data models, access policies, and data validation rules. There's no API or UI yet, but the business logic will be mostly complete.
+
 [Go to Part I](/docs/the-complete-guide/part1)
 
-### Part II: Automatic CRUD APIs
+### Part II: Plugin System
+
+ZenStack adopts a plugin-based architecture for great extensibility. The plugin system allows you to add new features to ZenStack without modifying the core codebase. In fact, most built-in features of ZenStack are implemented as plugins.
+
+In this part of the guide, you'll see how to use plugins to achieve various goals, and we'll also build a simple plugin for our Todo app from scratch.
+
+[Go to Part II](/docs/the-complete-guide/part2)
+
+### Part III: Automatic CRUD APIs
 
 Developers build APIs to support the client-side of their applications. One of the most common types of APIs is the CRUD - Create, Read, Update, and Delete. Building CRUD APIs is a tedious task but error-prone at the same time.
 
 Since ZenStack already secures data access at the ORM layer as we learnt from the previous part, it can automatically generate CRUD APIs for you. You'll learn about the details in this part of the guide.
 
-[Go to Part II](/docs/the-complete-guide/part2)
+In this part of the guide, we'll add a CRUD API layer to our Todo app, and turn it into a fully functional backend service.
 
-### Part III: Frontend Data Query
+[Go to Part III](/docs/the-complete-guide/part3)
+
+### Part IV: Frontend Data Query
 
 Modern web apps often use data query libraries (like [TanStack Query](https://tanstack.com/query) and [SWR](https://swr.vercel.app/)) to fetch data from the backend. These libraries help you build reactive data binding UI with ease.
 
-ZenStack can generate hooks code that talk to the automatic CRUD API introduced in the previous part, targeting these libraries. The hooks help you implement front-end data query with minimum code and full type safety. Part III focuses on topic.
+ZenStack can generate hooks code that talk to the automatic CRUD API introduced in the previous part, targeting these libraries. The hooks help you implement front-end data query with minimum code and full type safety. Part IV focuses on topic.
 
-[Go to Part III](/docs/the-complete-guide/part3)
+In this part of the guide, we'll use the generated data query hooks to build a frontend UI for our Todo app. We'll finally complete our full-stack Todo application!
+
+[Go to Part IV](/docs/the-complete-guide/part4)
