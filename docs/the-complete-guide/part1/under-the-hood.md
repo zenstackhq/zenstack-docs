@@ -32,8 +32,8 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
     The policy plugin converts access policy rules (expressed with `@@allow` and `@@deny` attributes) into checker functions. The functions take a context object as input and return partial Prisma query objects, which will be injected into Prisma query arguments at runtime. The context object contains the following properties:
 
-    -   `user`: the current user, which serves as the return value of [`auth()`](/docs/guides/understanding-access-policy#accessing-user-data) in the policy rules.
-    -   `preValue`: the previous value of an entity before update (for supporting the [`future()`](/docs/guides/understanding-access-policy#update) function in the policy rules).
+    -   `user`: the current user, which serves as the return value of [`auth()`](/docs/the-complete-guide/part1/access-policy/current-user) in the policy rules.
+    -   `preValue`: the previous value of an entity before update (for supporting the [`future()`](/docs/the-complete-guide/part1/access-policy/post-update) function in the policy rules).
 
     The default output location is `node_modules/.zenstack/policy.ts`.
 
