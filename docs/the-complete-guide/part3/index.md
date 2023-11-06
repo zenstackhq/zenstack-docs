@@ -1,6 +1,7 @@
 ---
-sidebar_label: "Part III: Frontend Data Query"
+sidebar_label: "Part III: Automatic CRUD APIs"
 sidebar_position: 3
 ---
 
-# Part III: Frontend Data Query
+# Part III: Automatic CRUD APIs
+

@@ -494,7 +494,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 #### Field attributes
 
--   `@id`
+##### `@id`
 
     ```zmodel
     attribute @id(map: String?)
@@ -508,7 +508,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ---- | ----------------------------------------------------------------- |
     | map  | The name of the underlying primary key constraint in the database |
 
--   `@default`
+##### `@default`
 
     ```zmodel
         attribute @default(_ value: ContextType)
@@ -522,7 +522,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ----- | ---------------------------- |
     | value | The default value expression |
 
--   `@unique`
+##### `@unique`
 
     ```zmodel
         attribute @unique(map: String?)
@@ -536,7 +536,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ---- | ----------------------------------------------------------------- |
     | map  | The name of the underlying primary key constraint in the database |
 
--   `@relation`
+##### `@relation`
 
     ```zmodel
         attribute @relation(_ name: String?, fields: FieldReference[]?, references: FieldReference[]?, onDelete: ReferentialAction?, onUpdate: ReferentialAction?, map: String?)
@@ -554,7 +554,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | onDelete   | Referential action to take on delete. See details [here](#referential-action). |
     | onUpdate   | Referential action to take on update. See details [here](#referential-action). |
 
--   `@map`
+##### `@map`
 
     ```zmodel
         attribute @map(_ name: String)
@@ -568,7 +568,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ---- | ------------------------------------------------- |
     | map  | The name of the underlying column in the database |
 
--   `@updatedAt`
+##### `@updatedAt`
 
     ```zmodel
         attribute @updatedAt()
@@ -576,7 +576,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Automatically stores the time when a record was last updated.
 
--   `@ignore`
+##### `@ignore`
 
     ```zmodel
         attribute @ignore()
@@ -584,7 +584,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
 
--   `@allow`
+##### `@allow`
 
     ```zmodel
         attribute @allow(_ operation: String, _ condition: Boolean)
@@ -599,7 +599,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
--   `@deny`
+##### `@deny`
 
     ```zmodel
         attribute @deny(_ operation: String, _ condition: Boolean)
@@ -614,7 +614,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be denied       
 
--   `@password`
+##### `@password`
 
     ```zmodel
         attribute @password(saltLength: Int?, salt: String?)
@@ -631,7 +631,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | saltLength | The length of salt to use (cost factor for the hash function) |
     | salt       | The salt to use (a pregenerated valid salt)                   |
 
--   `@omit`
+##### `@omit`
 
     ```zmodel
         attribute @omit()
@@ -639,7 +639,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Indicates that the field should be omitted when read from the generated services. Commonly used together with `@password` attribute.
 
--   `@prisma.passthrough`
+##### `@prisma.passthrough`
 
     ```zmodel
         attribute @prisma.passthrough(_ text: String)
@@ -673,7 +673,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 #### Model attributes
 
--   `@@id`
+##### `@@id`
 
     ```zmodel
         attribute @@id(_ fields: FieldReference[], name: String?, map: String?)
@@ -689,7 +689,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | name   | The name that the Client API will expose for the argument covering all fields |
     | map    | The name of the underlying primary key constraint in the database             |
 
--   `@@unique`
+##### `@@unique`
 
     ```zmodel
         attribute @@unique(_ fields: FieldReference[], name: String?, map: String?)
@@ -705,7 +705,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | name   | The name of the unique combination of fields                 |
     | map    | The name of the underlying unique constraint in the database |
 
--   `@@schema`
+##### `@@schema`
 
     ```zmodel
         attribute @@schema(_ name: String)
@@ -719,7 +719,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ---- | ------------------------------- |
     | name | The name of the database schema |
 
--   `@@index`
+##### `@@index`
 
     ```zmodel
         attribute @@index(_ fields: FieldReference[], map: String?)
@@ -734,7 +734,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | fields | A list of fields defined in the current model    |
     | map    | The name of the underlying index in the database |
 
--   `@@map`
+##### `@@map`
 
     ```zmodel
         attribute @@map(_ name: String)
@@ -748,7 +748,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | ---- | -------------------------------------------------------- |
     | name | The name of the underlying table or enum in the database |
 
--   `@@ignore`
+##### `@@ignore`
 
     ```zmodel
         attribute @@ignore()
@@ -756,7 +756,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Exclude a model from the Prisma Client (for example, a model that you do not want Prisma users to update).
 
--   `@@allow`
+##### `@@allow`
 
     ```zmodel
         attribute @@allow(_ operation: String, _ condition: Boolean)
@@ -771,7 +771,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
--   `@@deny`
+##### `@@deny`
 
     ```zmodel
         attribute @@deny(_ operation: String, _ condition: Boolean)
@@ -786,7 +786,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
     | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
 
--   `@@auth`
+##### `@@auth`
 
     ```zmodel
         attribute @@auth()
@@ -794,7 +794,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Specify the model for resolving `auth()` function call in access policies. By default, the model named "User" is used. You can use this attribute to override the default behavior. A Zmodel can have at most one model with this attribute. 
 
--   `@@prisma.passthrough`
+##### `@@prisma.passthrough`
 
     ```zmodel
         attribute @@prisma.passthrough(_ text: String)
@@ -830,7 +830,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 ### Predefined attribute functions
 
--   `uuid`
+##### `uuid`
 
     ```zmodel
         function uuid(): String {}
@@ -838,7 +838,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Generates a globally unique identifier based on the UUID spec.
 
--   `cuid`
+##### `cuid`
 
     ```zmodel
         function cuid(): String {}
@@ -846,7 +846,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Generates a globally unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec.
 
--   `now`
+##### `now`
 
     ```zmodel
         function now(): DateTime {}
@@ -854,7 +854,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Gets current date-time.
 
--   `autoincrement`
+##### `autoincrement`
 
     ```zmodel
         function autoincrement(): Int {}
@@ -863,7 +863,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
     Creates a sequence of integers in the underlying database and assign the incremented
     values to the ID values of the created records based on the sequence.
 
--   `dbgenerated`
+##### `dbgenerated`
 
     ```zmodel
         function dbgenerated(expr: String): Any {}
@@ -871,7 +871,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Represents default values that cannot be expressed in the Prisma schema (such as random()).
 
--   `auth`
+##### `auth`
 
     ```zmodel
         function auth(): User {}
@@ -879,7 +879,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Gets the current login user. The return type of the function is the `User` model defined in the current ZModel.
 
--   `future`
+##### `future`
 
     ```zmodel
         function future(): Any {}
@@ -887,7 +887,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Gets the "post-update" state of an entity. Only valid when used in a "update" access policy. Read more about access policies [here](#access-policy).
 
--   `contains`
+##### `contains`
 
     ```zmodel
         function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
@@ -897,7 +897,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [contains](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#contains) operator.
 
--   `search`
+##### `search`
 
     ```zmodel
         function search(field: String, search: String): Boolean {}
@@ -907,7 +907,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [search](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#search) operator.
 
--   `startsWith`
+##### `startsWith`
 
     ```zmodel
         function startsWith(field: String, search: String): Boolean {}
@@ -917,7 +917,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [startsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#startswith) operator.
 
--   `endsWith`
+##### `endsWith`
 
     ```zmodel
         function endsWith(field: String, search: String): Boolean {}
@@ -927,7 +927,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [endsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#endswith) operator.
 
--   `has`
+##### `has`
 
     ```zmodel
         function has(field: Any[], search: Any): Boolean {}
@@ -937,7 +937,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [has](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#has) operator.
 
--   `hasEvery`
+##### `hasEvery`
 
     ```zmodel
         function hasEvery(field: Any[], search: Any[]): Boolean {}
@@ -947,7 +947,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [hasEvery](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hasevery) operator.
 
--   `hasSome`
+##### `hasSome`
 
     ```zmodel
         function hasSome(field: Any[], search: Any[]): Boolean {}
@@ -957,7 +957,7 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
     Equivalent to Prisma's [hasSome](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hassome) operator.
 
--   `isEmpty`
+##### `isEmpty`
 
     ```zmodel
         function isEmpty(field: Any[]): Boolean {}
@@ -1246,7 +1246,7 @@ Policy rules use boolean expressions to make verdicts. ZModel provides a set of 
 
 ```
 
-Expression ::= Literal | Array | This | Null | Reference | MemberAccess | Binary | Unary | CollectionPredicate
+Expression ::= Literal | Array | This | Null | Reference | MemberAccess | Invocation | Binary | Unary | CollectionPredicate
 
 Literal ::= String | Number | Boolean
 
@@ -1480,11 +1480,11 @@ model User {
 
 ```
 
-## Field validation
+## Data validation
 
 ### Overview
 
-Field validation is used for attaching constraints to field values. Unlike access policies, field validation rules cannot access the current user with the `auth()` function and are only checked for 'create' and 'update' operations. The main purpose of field validation is to ensure data integrity and consistency, not for access control.
+Data validation is used for attaching constraints to field values. Unlike access policies, field validation rules cannot access the current user with the `auth()` function and are only checked for 'create' and 'update' operations. The main purpose of field validation is to ensure data integrity and consistency, not for access control.
 
 The [`@core/zod`](/docs/reference/plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
 

@@ -1,9 +1,9 @@
 ---
-sidebar_label: "Part I: Supercharged Prisma ORM"
+sidebar_label: "Part I: Supercharged ORM"
 sidebar_position: 1
 ---
 
-# Part I: Supercharged Prisma ORM
+# Part I: Supercharged ORM
 
 Welcome to the first part of *ZenStack: The Complete Guide*!
 

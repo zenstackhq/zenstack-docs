@@ -37,4 +37,13 @@ The reason is that, with enhanced client, all CRUD operations are denied by defa
 
 :::
 
+### How Access Policies Change Prisma Client's Behavior
+
+The enforcement of access policies causes an enhanced Prisma Client to behave differently from the original one.
+
+- Read operations can return fewer rows than with a raw Prisma Client.
+- Write operations can fail with an error if policies are violated. See [Error Handling](/docs/reference/error-handling) for more details.
+
+---
+
 Following this part of the guide, you'll build an in-depth understanding of how access policy works in ZenStack, and how to use it to secure your data.
