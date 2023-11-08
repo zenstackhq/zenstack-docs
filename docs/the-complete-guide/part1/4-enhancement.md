@@ -45,38 +45,61 @@ We'll get to that in detail in the next chapter.
 
 A few extra notes about enhanced Prisma Client:
 
-- Creating enhanced client is cheap
+- **Creating enhanced client is cheap**
   
   It doesn't cause new database connections to be made. It's very common to create a new enhanced Prisma Client per request.
 
-- Using Prisma Client Extensions with enhanced client
+- **Using Prisma Client Extensions with enhanced client**
   
   Enhanced Prisma Client is a transparent proxy, so it has the same API as the original Prisma Client. You can enhance a Prisma Client that has Client Extensions installed, or install Client Extensions on an enhanced Prisma Client. Both work.
 
-- Using the original client and an enhanced one together
+- **Using the original client and an enhanced one together**
   
   You can use both in your application. For example, you may want to use an enhanced client in part of the logic where you want to have access policy enforcement, while use the original client where you need an unrestricted access to the database.
 
-### Limitations
+:::warning Limitations
 
 We try to make enhanced Prisma Client as compatible as possible with the original Prisma Client, but there are still some limitations:
 
-#### 1. No Sequential Operations Transaction
+1. No Sequential Operations Transaction
 
-Enhanced Prisma CLient doesn't support [sequential operations transaction](https://www.prisma.io/docs/concepts/components/prisma-client/transactions#sequential-prisma-client-operations). Use [interactive transaction](https://www.prisma.io/docs/concepts/components/prisma-client/transactions#interactive-transactions) instead, or simply use the original Prisma Client.
+  Enhanced Prisma CLient doesn't support [sequential operations transaction](https://www.prisma.io/docs/concepts/components/prisma-client/transactions#sequential-prisma-client-operations). Use [interactive transaction](https://www.prisma.io/docs/concepts/components/prisma-client/transactions#interactive-transactions) instead, or simply use the original Prisma Client.
 
-#### 2. Raw SQL APIs Are Not Enhanced
+1. Raw SQL APIs Are Not Enhanced
 
-Although your can call raw sql APIs like `$queryRaw` or `$executeRaw`, these APIs are not enhanced, so their behavior is exactly the same as the original Prisma Client. It means that, for example, if you uses `@omit` to mark a field to be dropped on return:
+  Although your can call raw sql APIs like `$queryRaw` or `$executeRaw`, these APIs are not enhanced, so their behavior is exactly the same as the original Prisma Client. It means that, for example, if you uses `@omit` to mark a field to be dropped on return:
 
-```zmodel
-model User {
-    ...
-    password String @omit
-}
+  ```zmodel
+  model User {
+      ...
+      password String @omit
+  }
+  ```
+
+  If you query via `$queryRaw`, the `password` field will still be returned.
+
+You should fall back to using the original Prisma Client in such cases.
+:::
+
+### Using Enhanced Prisma Client In REPL
+
+We saw in the previous chapter that in the REPL environment, you can use the built-in `prisma` variable to access Prisma Client directly. There's another variable named `db` that gives you access to an enhanced Prisma Client.
+
+Let's try it out:
+
+```bash
+npx zenstack repl
 ```
 
-If you query via `$queryRaw`, the `password` field will still be returned.
+```js
+db.user.findMany();
+```
+
+```js
+[]
+```
+
+It works, but gives an empty array. Why? It's because with an enhanced Prisma Client, all operations are denied by default, unless you explicitly open them up with access policies. Let's see how to do that in the next chapter.
 
 ### Inner Workings
 

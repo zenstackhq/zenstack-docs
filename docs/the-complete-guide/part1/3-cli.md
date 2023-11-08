@@ -9,34 +9,127 @@ import ThemedImage from '@theme/ThemedImage';
 
 The `zenstack` CLI is the main tool for using ZenStack in a project. The CLI is intentionally designed to have some similar commands to the `prisma` CLI.
 
-Let's see how to accomplish some common tasks with it. You can find the full documentation in the [CLI reference guide](/docs/reference/cli).
+In this chapter, we'll use the CLI to scaffold our Todo sample project. You can find the full documentation in the [CLI reference guide](/docs/reference/cli).
 
 ### Initializing a Project
 
-You can initialize an existing Prisma project using the `zenstack init` command:
+:::info Prerequisites
+- Node.js 18 or above installed.
+- VSCode
+- [ZenStack VSCode Extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack)
+:::
+
+You can initialize an existing TypeScript project using the `zenstack init` command. To save some typing, we'll use the "try-prisma" utility to create a simple TypeScript CLI project first.
+
+```bash
+npx try-prisma@latest -p . -n my-todo-app -t typescript/script --install npm
+cd my-todo-app
+```
+
+Then initialize the project for ZenStack:
 
 ```bash
 npx zenstack@latest init
 ```
 
-It does the following things for you:
-1. Installs the `zenstack` CLI package as a dev dependency
-2. Installs the `@zenstackhq/runtime` package
-3. Copies the `prisma/schema.prisma` file to `schema.zmodel` if it exists
+The "init" command does the following things for you:
+1. Install Prisma if it's not already installed
+1. Install the `zenstack` CLI package as a dev dependency
+1. Install the `@zenstackhq/runtime` package
+1. Copy the `prisma/schema.prisma` file to `schema.zmodel` if it exists; otherwise create a new template `schema.zmodel` file
 
 If you have a special project setup that the "init" command doesn't work with, you can always manually complete the steps above.
 
 After the initialization, please remember that moving forward you should edit the `schema.zmodel`. The `prisma/schema.prisma` file will be automatically regenerated when you run `zenstack generate`.
 
-The easiest way to scaffold a simple ZenStack project from scratch is by chaining the `try-prisma` and the `zenstack init` command:
+### Preparing The Schema
 
-```bash
-npx try-prisma@latest -p . -n my-zenstack -t typescript/script --install npm
-cd my-zenstack
-npx zenstack@latest init
+Replace the content of `schema.zmodel` with the following:
+
+```zmodel title='schema.zmodel'
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator js {
+  provider = "prisma-client-js"
+}
+
+// where users can collaborate on todo lists and items
+model Space {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  slug String @unique
+  members SpaceUser[]
+  lists List[]
+}
+
+// a join table for many-to-many relation between `Space` and `User`
+model SpaceUser {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  space Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  spaceId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  role String @default("USER")
+
+  @@unique([userId, spaceId])
+}
+
+// user
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email String @unique
+  name String?
+  spaces SpaceUser[]
+  lists List[]
+  todos Todo[]
+}
+
+// todo list
+model List {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  space Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  spaceId Int
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId Int
+  title String
+  private Boolean @default(false)
+  todos Todo[]
+}
+
+// todo item
+model Todo {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId Int
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId Int
+  title String
+  completedAt DateTime?
+}
 ```
 
-Give it a try. It should create a new ZenStack project under "my-zenstack" folder, including a simple `schema.zmodel` in it. We'll use the project to try out other commands later.
+:::info
+
+Our sample project uses a SQLite database. You can use any other database supported by Prisma. Please refer to the [Prisma docs](https://www.prisma.io/docs/concepts/database-connectors) for more details.
+
+:::
+
+Take some time to familiarize yourself with the entities and their relations.
+
+![Todo App ERD](../../assets/todo-app-erd.svg)
 
 ### Generating Artifacts
 
@@ -48,30 +141,7 @@ npx zenstack generate
 
 The most important artifact is the Prisma schema. It's generated by the built-in `@core/prisma` plugin, by default into the `prisma/schema.prisma` file. The plugin also runs `prisma generate` automatically to regenerate the Prisma Client.
 
-In the project that we created in the previous section, make the following changes to `schema.zmodel`:
-
-```diff title='schema.zmodel'
-model User {
-    id Int @id @default(autoincrement())
-    email String @unique
-    name String?
-    posts Post[]
-+   profile Profile?
-}
-
-+ model Profile {
-+     id Int @id @default(autoincrement())
-+     bio String?
-+     user User @relation(fields: [userId], references: [id])
-+     userId Int @unique
-+ }
-```
-
-Then run:
-
-```bash
-npx zenstack generate
-```
+You should see output like the following in your terminal:
 
 ```
 ⌛️ ZenStack CLI vx.y.z, running plugins
@@ -83,7 +153,200 @@ npx zenstack generate
 Don't forget to restart your dev server to let the changes take effect.
 ```
 
-You should see that a bunch of plugins are run. When it completes, the `prisma/schema.prisma` file should be updated with the new `Profile` model. You can also use the `Profile` model in your TS code now since the Prisma Client code is also regenerated.
+A bunch of plugins are run. When it completes, the `prisma/schema.prisma` file should be updated to contain the new models we added. You can also use the models in your TS code now since the Prisma Client code is also regenerated.
+
+Finally, push the schema to the database:
+
+```bash
+npx prisma db push
+```
+
+### Seeding The Database
+
+Let's create a seed script to populate some test data into our database. Create a new file `prisma/seed.ts` with the following content:
+
+```ts title='prisma/seed.ts'
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+async function main() {
+    // clean up
+    await prisma.user.deleteMany();
+    await prisma.space.deleteMany();
+
+    const joey = await prisma.user.create({
+        data: {
+            email: 'joey@zenstack.dev',
+            name: 'Joey'
+        }
+    });
+    console.log('User created:', joey);
+
+    const rachel = await prisma.user.create({
+        data: {
+            email: 'rachel@zenstack.dev',
+            name: 'Rachel'
+        }
+    });
+    console.log('User created:', rachel);
+
+    const centralPerk = await prisma.space.create({
+        data: {
+            name: 'Central Perk',
+            slug: 'central-perk',
+            members: {
+                create: [
+                    {
+                        user: { connect: { id: joey.id } },
+                        role: 'USER'
+                    },
+                    {
+                        user: { connect: { id: rachel.id } },
+                        role: 'ADMIN'
+                    }
+                ]
+            }
+        }
+    });
+    console.log('Space created:', centralPerk);
+
+    const rachelPersonal = await prisma.space.create({
+        data: {
+            name: "Rachel's Personal Space",
+            slug: 'rachel',
+            members: {
+                create: [
+                    {
+                        user: { connect: { id: rachel.id } },
+                        role: 'ADMIN'
+                    }
+                ]
+            }
+        }
+    });
+    console.log('Space created:', rachelPersonal);
+}
+
+main()
+    .then(async () => {
+        await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+    });
+```
+
+Then add the seed script into "package.json":
+
+```json title='package.json'
+{
+    ...
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
+    }
+}
+```
+
+Finally, run the seed command to load the data into the database:
+
+```bash
+npx prisma db seed
+```
+
+```js
+Running seed command `ts-node prisma/seed.ts` ...
+User created: {
+  id: 1,
+  createdAt: 2023-11-07T21:37:22.506Z,
+  updatedAt: 2023-11-07T21:37:22.506Z,
+  email: 'joey@zenstack.dev',
+  name: 'Joey'
+}
+User created: {
+  id: 2,
+  createdAt: 2023-11-07T21:37:22.509Z,
+  updatedAt: 2023-11-07T21:37:22.509Z,
+  email: 'rachel@zenstack.dev',
+  name: null
+}
+Space created: {
+  id: 1,
+  createdAt: 2023-11-07T21:37:22.510Z,
+  updatedAt: 2023-11-07T21:37:22.510Z,
+  name: 'Central Perk',
+  slug: 'central-perk'
+}
+Space created: {
+  id: 2,
+  createdAt: 2023-11-07T21:37:22.512Z,
+  updatedAt: 2023-11-07T21:37:22.512Z,
+  name: "Rachel's Personal Space",
+  slug: 'rachel'
+}
+
+🌱  The seed command has been executed.
+```
+
+### Querying Data With REPL
+
+ZenStack CLI comes with a convenient REPL mode that you can use to query data interactively. We'll use it to demonstrate ZenStack's features throughout the guide. Let's try a few commands here:
+
+Enter the REPL mode:
+
+```bash
+npx zenstack repl
+```
+
+The REPL provides a global `prisma` instance that you can use directly. Execute a few queries (the REPL automatically awaits the result Promises):
+
+```js
+prisma.user.findFirst()
+```
+
+```js
+{
+  id: 1,
+  createdAt: 2023-11-07T21:37:22.506Z,
+  updatedAt: 2023-11-07T21:37:22.506Z,
+  email: 'joey@zenstack.dev',
+  name: 'Joey'
+}
+```
+
+```js
+prisma.space.findFirst({ include: { members: true } })
+```
+
+```js
+{
+  id: 1,
+  createdAt: 2023-11-07T21:37:22.510Z,
+  updatedAt: 2023-11-07T21:37:22.510Z,
+  name: 'Central Perk',
+  slug: 'central-perk',
+  members: [
+    {
+      id: 1,
+      createdAt: 2023-11-07T21:37:22.510Z,
+      updatedAt: 2023-11-07T21:37:22.510Z,
+      spaceId: 1,
+      userId: 2,
+      role: 'ADMIN'
+    },
+    {
+      id: 2,
+      createdAt: 2023-11-07T21:37:22.510Z,
+      updatedAt: 2023-11-07T21:37:22.510Z,
+      spaceId: 1,
+      userId: 1,
+      role: 'USER'
+    }
+  ]
+}
+```
 
 ### Listing Installed ZenStack Packages
 

@@ -32,7 +32,7 @@ Some of the most common use cases of ZenStack include:
 
 ## Find the Learning Path That Fits You
 
-ZenStack is a comprehensive toolkit that touches a wide range of topics. For most developers, we'd recommend you to start with the [The Complete Guide](/docs/the-complete-guide) to build a solid understanding of each layer of ZenStack's functionalities. The guide is designed to layout concepts gradually and lead you through the learning journey from using ZenStack just as a better ORM, to leveraging its total power in full-stack development.
+ZenStack is a comprehensive toolkit that touches a wide range of topics. For most developers, we'd highly recommend you to start with the [The Complete Guide](/docs/the-complete-guide) to build a solid understanding of each layer of ZenStack's functionalities. The guide is designed to layout concepts gradually and lead you through the learning journey from using ZenStack just as a better ORM, to leveraging its total power in full-stack development. The guid is pretty long, but trust me you'll enjoy the reading 😉.
 
 If you're the kind of inpatient developer who wants to gets one's hand dirty ASAP, you can also jump straight to the [Quick Start](/docs/category/quick-start) guide. It shows how to quickly set up a ZenStack project targeting the framework of your choice.
 
