@@ -29,7 +29,7 @@ The app is not too complex, but it covers many important aspects of a modern mul
 
 ZenStack consists of several layers of functionalities, each depends on the previous one. These layers are explained in details in the following four parts. In each part, we'll add more functionalities to our Todo app, and eventually finish it by the end of the guide.
 
-### Part I: Supercharged Prisma ORM
+### Part I: Supercharged ORM
 
 The first layer works as an extension to Prisma ORM - both for the schema language and the runtime PrismaClient. We made several extensions to the Prisma Schema Language to make it possible to expression more than just the database schema. For example, you can attach access policies to the data models. At runtime, ZenStack creates a transparent proxy around PrismaClient to add extra behavior ot it - one of the best example of which is the automatic access control enforcement.
 
