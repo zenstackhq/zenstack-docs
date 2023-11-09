@@ -4,6 +4,8 @@ sidebar_label: 5. Access Policy
 
 # Access Policy
 
+### Introduction
+
 Among the enhancements that ZenStack made to Prisma, access policy is the most important one. It is also the main pillar that supports all the other features in upper layers.
 
 The features that ZenStack's access policy provides include:

@@ -20,7 +20,7 @@ const prisma = new PrismaClient({ log: ['info'] });
 
 After setting these up, you should be able to see all Prisma queries ZenStack makes in the console.
 
-### Debugging In REPL
+### 🛠️ Debugging In REPL
 
 The REPL environment provides a ".debug" command for you to quickly turn on/off debugging output.
 

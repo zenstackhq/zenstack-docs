@@ -53,9 +53,9 @@ model User {
 }
 ```
 
-### Adding Data Validation To Our Todo App
+### 🛠️ Adding Data Validation To Our Todo App
 
-We can use data validation to improve our app's robustness in many places:
+We can use data validation to improve our app's robustness in many places. Here are two examples:
 
 1. Make sure `User`'s email is a valid email address.
 
