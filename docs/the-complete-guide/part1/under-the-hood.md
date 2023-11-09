@@ -266,11 +266,11 @@ We need the following measures to enforce access policies systematically:
     })
     ```
 
-### The `auth` function
+### The `auth()` function
 
-The `auth` function connects authentication with access control. It's typed as the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity from the database after authentication is completed and pass the result to the `enhance` function as context.
+The `auth()` function connects authentication with access control. It's typed as the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity from the database after authentication is completed and pass the result to the `enhance` function as context.
 
-Although `auth` resolves to `User` model, since it's provided by the user, there's no way to guarantee its value fully conforms to the `User` model: e.g., non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
+Although `auth()` resolves to `User` model, since it's provided by the user, there's no way to guarantee its value fully conforms to the `User` model: e.g., non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
 
 -   If `auth()` is `undefined`, it's normalized to `null` when evaluating access policies.
 -   If `auth()` itself is `null`, any member access (or chained member access) is `null`.
@@ -285,6 +285,6 @@ Here're a few examples (assuming `auth()` is `null`):
 1. `auth().age > 0` -> `false`
 1. `auth().age < 0` -> `false`
 
-### The `future` function
+### The `future()` function
 
 An "update" policy rule is treated as a "post-update" rule if it involves a `future()` function call. `future()` represents the value of the model entity after the update is completed. In a "post-update" policy rule, any member accesses that are not prefixed with `future().` is treated as referencing the entity's value before the update. To support the evaluation of such rules, the entity value before the update is captured and passed as the `preValue` field in the context object passed to the checker function.

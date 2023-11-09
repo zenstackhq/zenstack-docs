@@ -52,3 +52,49 @@ model User {
     @@validate(!activated || email != null, "activated user must have an email")
 }
 ```
+
+### Adding Data Validation To Our Todo App
+
+We can use data validation to improve our app's robustness in many places:
+
+1. Make sure `User`'s email is a valid email address.
+
+    ```zmodel
+    model User {
+        ...
+        email String @unique @email
+    }
+    ```
+
+2. Limit the format of `Space`'s slug.
+   
+   ```zmodel
+    model Space {
+         ...
+         slug String @unique @regex('^[0-9a-zA-Z]{4,16}$')
+    }
+    ```
+
+Rerun generation and start REPL:
+
+```bash
+npx zenstack generate
+npx zenstack repl
+```
+
+Try to create a user with an invalid email address:
+
+```js
+db.user.create({ data: { email: 'xyz.abc' } })
+```
+
+Observe the validation error:
+
+```js
+denied by policy: user entities failed 'create' check, input failed validation: Validation error: Invalid email at "email"
+Code: P2004
+Meta: {
+  reason: 'DATA_VALIDATION_VIOLATION',
+  zodErrors: ZodError: [...]
+}
+```

@@ -20,21 +20,38 @@ const prisma = new PrismaClient({ log: ['info'] });
 
 After setting these up, you should be able to see all Prisma queries ZenStack makes in the console.
 
+### Debugging In REPL
+
+The REPL environment provides a ".debug" command for you to quickly turn on/off debugging output.
+
+```js
+.auth { id: 1 }
+.debug
+db.list.findMany()
 ```
-prisma:info [policy] `findMany` space:
+
+You should see the Prisma queries injected by ZenStack printed in the console.
+
+```js
+prisma:info [policy] `findMany` list:
 {
   where: {
-    slug: 'YtAQSP47',
     AND: [
+      { NOT: { OR: [] } },
       {
-        AND: [
-          { NOT: { OR: [] } },
+        OR: [
+          { owner: { is: { id: 1 } } },
           {
-            members: {
-              some: {
-                user: { is: { id: '7aa301d2-7a29-4e1e-a041-822913a3ea78' } }
-              }
-            }
+            AND: [
+              {
+                space: {
+                  members: {
+                    some: { user: { is: { id: 1 } } }
+                  }
+                }
+              },
+              { NOT: { private: true } }
+            ]
           }
         ]
       }
