@@ -494,478 +494,484 @@ You can find a list of predefined attribute functions [here](#predefined-attribu
 
 #### Field attributes
 
-##### `@id`
+##### @id
 
-    ```zmodel
-    attribute @id(map: String?)
-    ```
+```zmodel
+attribute @id(map: String?)
+```
 
-    Defines an ID on the model.
+Defines an ID on the model.
 
-    _Params_:
+_Params_:
 
-    | Name | Description                                                       |
-    | ---- | ----------------------------------------------------------------- |
-    | map  | The name of the underlying primary key constraint in the database |
+| Name | Description                                                       |
+| ---- | ----------------------------------------------------------------- |
+| map  | The name of the underlying primary key constraint in the database |
 
-##### `@default`
+##### @default
 
-    ```zmodel
-        attribute @default(_ value: ContextType)
-    ```
+```zmodel
+attribute @default(_ value: ContextType)
+```
 
-    Defines a default value for a field.
+Defines a default value for a field.
 
-    _Params_:
+_Params_:
 
-    | Name  | Description                  |
-    | ----- | ---------------------------- |
-    | value | The default value expression |
+| Name  | Description                  |
+| ----- | ---------------------------- |
+| value | The default value expression |
 
-##### `@unique`
+##### @unique
 
-    ```zmodel
-        attribute @unique(map: String?)
-    ```
+```zmodel
+attribute @unique(map: String?)
+```
 
-    Defines a unique constraint for this field.
+Defines a unique constraint for this field.
 
-    _Params_:
+_Params_:
 
-    | Name | Description                                                       |
-    | ---- | ----------------------------------------------------------------- |
-    | map  | The name of the underlying primary key constraint in the database |
+| Name | Description                                                       |
+| ---- | ----------------------------------------------------------------- |
+| map  | The name of the underlying primary key constraint in the database |
 
-##### `@relation`
+##### @relation
 
-    ```zmodel
-        attribute @relation(_ name: String?, fields: FieldReference[]?, references: FieldReference[]?, onDelete: ReferentialAction?, onUpdate: ReferentialAction?, map: String?)
-    ```
+```zmodel
+attribute @relation(
+    _ name: String?,
+    fields: FieldReference[]?, 
+    references: FieldReference[]?, 
+    onDelete: ReferentialAction?,
+    onUpdate: ReferentialAction?,
+    map: String?)
+```
 
-    Defines meta information about a relation.
+Defines meta information about a relation.
 
-    _Params_:
+_Params_:
 
-    | Name       | Description                                                                    |
-    | ---------- | ------------------------------------------------------------------------------ |
-    | name       | The name of the relationship                                                   |
-    | fields     | A list of fields defined in the current model                                  |
-    | references | A list of fields of the model on the other side of the relation                |
-    | onDelete   | Referential action to take on delete. See details [here](#referential-action). |
-    | onUpdate   | Referential action to take on update. See details [here](#referential-action). |
+| Name       | Description                                                                    |
+| ---------- | ------------------------------------------------------------------------------ |
+| name       | The name of the relationship                                                   |
+| fields     | A list of fields defined in the current model                                  |
+| references | A list of fields of the model on the other side of the relation                |
+| onDelete   | Referential action to take on delete. See details [here](#referential-action). |
+| onUpdate   | Referential action to take on update. See details [here](#referential-action). |
 
-##### `@map`
+##### @map
 
-    ```zmodel
-        attribute @map(_ name: String)
-    ```
+```zmodel
+attribute @map(_ name: String)
+```
 
-    Maps a field name or enum value from the schema to a column with a different name in the database.
+Maps a field name or enum value from the schema to a column with a different name in the database.
 
-    _Params_:
+_Params_:
 
-    | Name | Description                                       |
-    | ---- | ------------------------------------------------- |
-    | map  | The name of the underlying column in the database |
+| Name | Description                                       |
+| ---- | ------------------------------------------------- |
+| map  | The name of the underlying column in the database |
 
-##### `@updatedAt`
+##### @updatedAt
 
-    ```zmodel
-        attribute @updatedAt()
-    ```
+```zmodel
+attribute @updatedAt()
+```
 
-    Automatically stores the time when a record was last updated.
+Automatically stores the time when a record was last updated.
 
-##### `@ignore`
+##### @ignore
 
-    ```zmodel
-        attribute @ignore()
-    ```
+```zmodel
+attribute @ignore()
+```
 
-    Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
+Exclude a field from the Prisma Client (for example, a field that you do not want Prisma users to update).
 
-##### `@allow`
+##### @allow
 
-    ```zmodel
-        attribute @allow(_ operation: String, _ condition: Boolean)
-    ```
+```zmodel
+attribute @allow(_ operation: String, _ condition: Boolean)
+```
 
-    Defines an access policy that allows the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+Defines an access policy that allows the annotated field to be read or updated. Read more about access policies [here](#access-policy).
 
-    _Params_:
+_Params_:
 
-    | Name      | Description                                                                                                                                                              |
-    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
-    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+| Name      | Description                                                                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+| condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
-##### `@deny`
+##### @deny
 
-    ```zmodel
-        attribute @deny(_ operation: String, _ condition: Boolean)
-    ```
+```zmodel
+attribute @deny(_ operation: String, _ condition: Boolean)
+```
 
-    Defines an access policy that denies the annotated field to be read or updated. Read more about access policies [here](#access-policy).
+Defines an access policy that denies the annotated field to be read or updated. Read more about access policies [here](#access-policy).
 
-    _Params_:
+_Params_:
 
-    | Name      | Description                                                                                                                                                              |
-    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
-    | condition | Boolean expression indicating if the operations should be denied       
+| Name      | Description                                                                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
+| condition | Boolean expression indicating if the operations should be denied       
 
-##### `@password`
+##### @password
 
-    ```zmodel
-        attribute @password(saltLength: Int?, salt: String?)
-    ```
+```zmodel
+attribute @password(saltLength: Int?, salt: String?)
+```
 
-    Indicates that the field is a password field and needs to be hashed before persistence.
+Indicates that the field is a password field and needs to be hashed before persistence.
 
-    _NOTE_: ZenStack uses the "bcryptjs" library to hash passwords. You can use the `saltLength` parameter to configure the cost of hashing or use `salt` parameter to provide an explicit salt. By default, a salt length of 12 is used. See [here](https://www.npmjs.com/package/bcryptjs ':target=blank') for more details.
+_NOTE_: ZenStack uses the "bcryptjs" library to hash passwords. You can use the `saltLength` parameter to configure the cost of hashing or use `salt` parameter to provide an explicit salt. By default, a salt length of 12 is used. See [here](https://www.npmjs.com/package/bcryptjs ':target=blank') for more details.
 
-    _Params_:
+_Params_:
 
-    | Name       | Description                                                   |
-    | ---------- | ------------------------------------------------------------- |
-    | saltLength | The length of salt to use (cost factor for the hash function) |
-    | salt       | The salt to use (a pregenerated valid salt)                   |
+| Name       | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| saltLength | The length of salt to use (cost factor for the hash function) |
+| salt       | The salt to use (a pregenerated valid salt)                   |
 
-##### `@omit`
+##### @omit
 
-    ```zmodel
-        attribute @omit()
-    ```
+```zmodel
+attribute @omit()
+```
 
-    Indicates that the field should be omitted when read from the generated services. Commonly used together with `@password` attribute.
+Indicates that the field should be omitted when read from the generated services. Commonly used together with `@password` attribute.
 
-##### `@prisma.passthrough`
+##### @prisma.passthrough
 
-    ```zmodel
-        attribute @prisma.passthrough(_ text: String)
-    ```
+```zmodel
+attribute @prisma.passthrough(_ text: String)
+```
 
-    A utility attribute for passing arbitrary text to the generated Prisma schema. This is useful as a workaround for dealing with discrepancies between Prisma schema and ZModel.
+A utility attribute for passing arbitrary text to the generated Prisma schema. This is useful as a workaround for dealing with discrepancies between Prisma schema and ZModel.
 
-    _Params_:
+_Params_:
 
-    | Name | Description                          |
-    | ---- | ------------------------------------ |
-    | text | Text to passthrough to Prisma schema |
+| Name | Description                          |
+| ---- | ------------------------------------ |
+| text | Text to passthrough to Prisma schema |
 
-    E.g., the following ZModel content:
+E.g., the following ZModel content:
 
-    ```zmodel
-        model User {
-            id Int @id @default(autoincrement())
-            name String @prisma.passthrough("@unique")
-        }
-    ```
+```zmodel
+model User {
+    id Int @id @default(autoincrement())
+    name String @prisma.passthrough("@unique")
+}
+```
 
-    wil be translated to the following Prisma schema:
+wil be translated to the following Prisma schema:
 
-    ```zmodel
-        model User {
-            id Int @id @default(autoincrement())
-            name String @unique
-        }
-    ```
+```zmodel
+model User {
+    id Int @id @default(autoincrement())
+    name String @unique
+}
+```
 
 #### Model attributes
 
-##### `@@id`
+##### @@id
 
-    ```zmodel
-        attribute @@id(_ fields: FieldReference[], name: String?, map: String?)
-    ```
+```zmodel
+attribute @@id(_ fields: FieldReference[], name: String?, map: String?)
+```
 
-    Defines a multi-field ID (composite ID) on the model.
+Defines a multi-field ID (composite ID) on the model.
 
-    _Params_:
+_Params_:
 
-    | Name   | Description                                                                   |
-    | ------ | ----------------------------------------------------------------------------- |
-    | fields | A list of fields defined in the current model                                 |
-    | name   | The name that the Client API will expose for the argument covering all fields |
-    | map    | The name of the underlying primary key constraint in the database             |
+| Name   | Description                                                                   |
+| ------ | ----------------------------------------------------------------------------- |
+| fields | A list of fields defined in the current model                                 |
+| name   | The name that the Client API will expose for the argument covering all fields |
+| map    | The name of the underlying primary key constraint in the database             |
 
-##### `@@unique`
+##### @@unique
 
-    ```zmodel
-        attribute @@unique(_ fields: FieldReference[], name: String?, map: String?)
-    ```
+```zmodel
+attribute @@unique(_ fields: FieldReference[], name: String?, map: String?)
+```
 
-    Defines a compound unique constraint for the specified fields.
+Defines a compound unique constraint for the specified fields.
 
-    _Params_:
+_Params_:
 
-    | Name   | Description                                                  |
-    | ------ | ------------------------------------------------------------ |
-    | fields | A list of fields defined in the current model                |
-    | name   | The name of the unique combination of fields                 |
-    | map    | The name of the underlying unique constraint in the database |
+| Name   | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| fields | A list of fields defined in the current model                |
+| name   | The name of the unique combination of fields                 |
+| map    | The name of the underlying unique constraint in the database |
 
-##### `@@schema`
+##### @@schema
 
-    ```zmodel
-        attribute @@schema(_ name: String)
-    ```
+```zmodel
+attribute @@schema(_ name: String)
+```
 
-    Specifies the database schema to use in a [multi-schema setup](https://www.prisma.io/docs/guides/database/multi-schema).
+Specifies the database schema to use in a [multi-schema setup](https://www.prisma.io/docs/guides/database/multi-schema).
 
-    _Params_:
+_Params_:
 
-    | Name | Description                     |
-    | ---- | ------------------------------- |
-    | name | The name of the database schema |
+| Name | Description                     |
+| ---- | ------------------------------- |
+| name | The name of the database schema |
 
-##### `@@index`
+##### @@index
 
-    ```zmodel
-        attribute @@index(_ fields: FieldReference[], map: String?)
-    ```
+```zmodel
+attribute @@index(_ fields: FieldReference[], map: String?)
+```
 
-    Defines an index in the database.
+Defines an index in the database.
 
-    _Params_:
+_Params_:
 
-    | Name   | Description                                      |
-    | ------ | ------------------------------------------------ |
-    | fields | A list of fields defined in the current model    |
-    | map    | The name of the underlying index in the database |
+| Name   | Description                                      |
+| ------ | ------------------------------------------------ |
+| fields | A list of fields defined in the current model    |
+| map    | The name of the underlying index in the database |
 
-##### `@@map`
+##### @@map
 
-    ```zmodel
-        attribute @@map(_ name: String)
-    ```
+```zmodel
+attribute @@map(_ name: String)
+```
 
-    Maps the schema model name to a table with a different name, or an enum name to a different underlying enum in the database.
+Maps the schema model name to a table with a different name, or an enum name to a different underlying enum in the database.
 
-    _Params_:
+_Params_:
 
-    | Name | Description                                              |
-    | ---- | -------------------------------------------------------- |
-    | name | The name of the underlying table or enum in the database |
+| Name | Description                                              |
+| ---- | -------------------------------------------------------- |
+| name | The name of the underlying table or enum in the database |
 
-##### `@@ignore`
+##### @@ignore
 
-    ```zmodel
-        attribute @@ignore()
-    ```
+```zmodel
+attribute @@ignore()
+```
 
-    Exclude a model from the Prisma Client (for example, a model that you do not want Prisma users to update).
+Exclude a model from the Prisma Client (for example, a model that you do not want Prisma users to update).
 
-##### `@@allow`
+##### @@allow
 
-    ```zmodel
-        attribute @@allow(_ operation: String, _ condition: Boolean)
-    ```
+```zmodel
+attribute @@allow(_ operation: String, _ condition: Boolean)
+```
 
-    Defines an access policy that allows a set of operations when the given condition is true. Read more about access policies [here](#access-policy).
+Defines an access policy that allows a set of operations when the given condition is true. Read more about access policies [here](#access-policy).
 
-    _Params_:
+_Params_:
 
-    | Name      | Description                                                                                                                                                              |
-    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
-    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+| Name      | Description                                                                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+| condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
 
-##### `@@deny`
+##### @@deny
 
-    ```zmodel
-        attribute @@deny(_ operation: String, _ condition: Boolean)
-    ```
+```zmodel
+attribute @@deny(_ operation: String, _ condition: Boolean)
+```
 
-    Defines an access policy that denies a set of operations when the given condition is true. Read more about access policies [here](#access-policy).
+Defines an access policy that denies a set of operations when the given condition is true. Read more about access policies [here](#access-policy).
 
-    _Params_:
+_Params_:
 
-    | Name      | Description                                                                                                                                                              |
-    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
-    | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
+| Name      | Description                                                                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+| condition | Boolean expression indicating if the operations should be denied                                                                                                         |
 
-##### `@@auth`
+##### @@auth
 
-    ```zmodel
-        attribute @@auth()
-    ```
+```zmodel
+attribute @@auth()
+```
 
-    Specify the model for resolving `auth()` function call in access policies. By default, the model named "User" is used. You can use this attribute to override the default behavior. A Zmodel can have at most one model with this attribute. 
+Specify the model for resolving `auth()` function call in access policies. By default, the model named "User" is used. You can use this attribute to override the default behavior. A Zmodel can have at most one model with this attribute. 
 
-##### `@@prisma.passthrough`
+##### @@prisma.passthrough
 
-    ```zmodel
-        attribute @@prisma.passthrough(_ text: String)
-    ```
+```zmodel
+attribute @@prisma.passthrough(_ text: String)
+```
 
-    A utility attribute for passing arbitrary text to the generated Prisma schema. This is useful as a workaround for dealing with discrepancies between Prisma schema and ZModel.
+A utility attribute for passing arbitrary text to the generated Prisma schema. This is useful as a workaround for dealing with discrepancies between Prisma schema and ZModel.
 
-    _Params_:
+_Params_:
 
-    | Name | Description                          |
-    | ---- | ------------------------------------ |
-    | text | Text to passthrough to Prisma schema |
+| Name | Description                          |
+| ---- | ------------------------------------ |
+| text | Text to passthrough to Prisma schema |
 
-    E.g., the following ZModel content:
+E.g., the following ZModel content:
 
-    ```zmodel
-        model User {
-            id Int @id @default(autoincrement())
-            name String
-            @@prisma.passthrough("@@unique([name])")
-        }
-    ```
+```zmodel
+model User {
+    id Int @id @default(autoincrement())
+    name String
+    @@prisma.passthrough("@@unique([name])")
+}
+```
 
-    wil be translated to the following Prisma schema:
+wil be translated to the following Prisma schema:
 
-    ```zmodel
-        model User {
-            id Int @id @default(autoincrement())
-            name String
-            @@unique([name])
-        }
-    ```
+```zmodel
+model User {
+    id Int @id @default(autoincrement())
+    name String
+    @@unique([name])
+}
+```
 
 ### Predefined attribute functions
 
-##### `uuid`
+##### uuid()
 
-    ```zmodel
-        function uuid(): String {}
-    ```
+```zmodel
+function uuid(): String {}
+```
 
-    Generates a globally unique identifier based on the UUID spec.
+Generates a globally unique identifier based on the UUID spec.
 
-##### `cuid`
+##### cuid()
 
-    ```zmodel
-        function cuid(): String {}
-    ```
+```zmodel
+function cuid(): String {}
+```
 
-    Generates a globally unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec.
+Generates a globally unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec.
 
-##### `now`
+##### now()
 
-    ```zmodel
-        function now(): DateTime {}
-    ```
+```zmodel
+function now(): DateTime {}
+```
 
-    Gets current date-time.
+Gets current date-time.
 
-##### `autoincrement`
+##### autoincrement()
 
-    ```zmodel
-        function autoincrement(): Int {}
-    ```
+```zmodel
+function autoincrement(): Int {}
+```
 
-    Creates a sequence of integers in the underlying database and assign the incremented
-    values to the ID values of the created records based on the sequence.
+Creates a sequence of integers in the underlying database and assign the incremented
+values to the ID values of the created records based on the sequence.
 
-##### `dbgenerated`
+##### dbgenerated()
 
-    ```zmodel
-        function dbgenerated(expr: String): Any {}
-    ```
+```zmodel
+function dbgenerated(expr: String): Any {}
+```
 
-    Represents default values that cannot be expressed in the Prisma schema (such as random()).
+Represents default values that cannot be expressed in the Prisma schema (such as random()).
 
-##### `auth`
+##### auth()
 
-    ```zmodel
-        function auth(): User {}
-    ```
+```zmodel
+function auth(): User {}
+```
 
-    Gets the current login user. The return type of the function is the `User` model defined in the current ZModel.
+Gets the current login user. The return type of the function is the `User` model defined in the current ZModel.
 
-##### `future`
+##### future()
 
-    ```zmodel
-        function future(): Any {}
-    ```
+```zmodel
+function future(): Any {}
+```
 
-    Gets the "post-update" state of an entity. Only valid when used in a "update" access policy. Read more about access policies [here](#access-policy).
+Gets the "post-update" state of an entity. Only valid when used in a "update" access policy. Read more about access policies [here](#access-policy).
 
-##### `contains`
+##### contains()
 
-    ```zmodel
-        function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
-    ```
+```zmodel
+    function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
+```
 
-    Checks if the given field contains the search string. The search string is case-sensitive by default. Use `caseInSensitive` to toggle the case sensitivity.
+Checks if the given field contains the search string. The search string is case-sensitive by default. Use `caseInSensitive` to toggle the case sensitivity.
 
-    Equivalent to Prisma's [contains](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#contains) operator.
+Equivalent to Prisma's [contains](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#contains) operator.
 
-##### `search`
+##### search()
 
-    ```zmodel
-        function search(field: String, search: String): Boolean {}
-    ```
+```zmodel
+function search(field: String, search: String): Boolean {}
+```
 
-    Checks if the given field contains the search string using [full-text-search](https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search).
+Checks if the given field contains the search string using [full-text-search](https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search).
 
-    Equivalent to Prisma's [search](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#search) operator.
+Equivalent to Prisma's [search](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#search) operator.
 
-##### `startsWith`
+##### startsWith()
 
-    ```zmodel
-        function startsWith(field: String, search: String): Boolean {}
-    ```
+```zmodel
+function startsWith(field: String, search: String): Boolean {}
+```
 
-    Checks if the given field starts with the search string.
+Checks if the given field starts with the search string.
 
-    Equivalent to Prisma's [startsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#startswith) operator.
+Equivalent to Prisma's [startsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#startswith) operator.
 
-##### `endsWith`
+##### endsWith()
 
-    ```zmodel
-        function endsWith(field: String, search: String): Boolean {}
-    ```
+```zmodel
+function endsWith(field: String, search: String): Boolean {}
+```
 
-    Checks if the given field ends with the search string.
+Checks if the given field ends with the search string.
 
-    Equivalent to Prisma's [endsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#endswith) operator.
+Equivalent to Prisma's [endsWith](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#endswith) operator.
 
-##### `has`
+##### has()
 
-    ```zmodel
-        function has(field: Any[], search: Any): Boolean {}
-    ```
+```zmodel
+function has(field: Any[], search: Any): Boolean {}
+```
 
-    Check if the given field (list) contains the search value.
+Check if the given field (list) contains the search value.
 
-    Equivalent to Prisma's [has](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#has) operator.
+Equivalent to Prisma's [has](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#has) operator.
 
-##### `hasEvery`
+##### hasEvery()
 
-    ```zmodel
-        function hasEvery(field: Any[], search: Any[]): Boolean {}
-    ```
+```zmodel
+function hasEvery(field: Any[], search: Any[]): Boolean {}
+```
 
-    Check if the given field (list) contains every element of the search list.
+Check if the given field (list) contains every element of the search list.
 
-    Equivalent to Prisma's [hasEvery](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hasevery) operator.
+Equivalent to Prisma's [hasEvery](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hasevery) operator.
 
-##### `hasSome`
+##### hasSome
 
-    ```zmodel
-        function hasSome(field: Any[], search: Any[]): Boolean {}
-    ```
+```zmodel
+function hasSome(field: Any[], search: Any[]): Boolean {}
+```
 
-    Check if the given field (list) contains at least one element of the search list.
+Check if the given field (list) contains at least one element of the search list.
 
-    Equivalent to Prisma's [hasSome](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hassome) operator.
+Equivalent to Prisma's [hasSome](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hassome) operator.
 
-##### `isEmpty`
+##### isEmpty
 
-    ```zmodel
-        function isEmpty(field: Any[]): Boolean {}
-    ```
+```zmodel
+function isEmpty(field: Any[]): Boolean {}
+```
 
-    Check if the given field (list) is empty.
+Check if the given field (list) is empty.
 
-    Equivalent to Prisma's [isEmpty](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#isempty) operator.
+Equivalent to Prisma's [isEmpty](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#isempty) operator.
 
 ### Examples
 
