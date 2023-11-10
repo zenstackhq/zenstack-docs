@@ -7,9 +7,9 @@ import ThemedImage from '@theme/ThemedImage';
 
 # The "zenstack" CLI
 
-The `zenstack` CLI is the main tool for using ZenStack in a project. The CLI is intentionally designed to have some similar commands to the `prisma` CLI.
+The `zenstack` CLI is the primary tool for using ZenStack in a project. The CLI is intentionally designed to have similar commands to the `prisma` CLI.
 
-In this chapter, we'll use the CLI to scaffold our Todo sample project. You can find the full documentation in the [CLI reference guide](/docs/reference/cli).
+In this chapter, we'll use the CLI to scaffold our Todo sample project. You can find the complete documentation in the [CLI reference guide](/docs/reference/cli).
 
 ### Initializing a Project
 
@@ -19,7 +19,7 @@ In this chapter, we'll use the CLI to scaffold our Todo sample project. You can 
 - [ZenStack VSCode Extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack)
 :::
 
-You can initialize an existing TypeScript project using the `zenstack init` command. To save some typing, we'll use the "try-prisma" utility to create a simple TypeScript CLI project first.
+You can initialize an existing TypeScript project using the `zenstack init` command. To save some typing, we'll first use the "try-prisma" utility to create a simple TypeScript CLI project.
 
 ```bash
 npx try-prisma@latest -p . -n my-todo-app -t typescript/script --install npm
@@ -36,11 +36,11 @@ The "init" command does the following things for you:
 1. Install Prisma if it's not already installed
 1. Install the `zenstack` CLI package as a dev dependency
 1. Install the `@zenstackhq/runtime` package
-1. Copy the `prisma/schema.prisma` file to `schema.zmodel` if it exists; otherwise create a new template `schema.zmodel` file
+1. Copy the `prisma/schema.prisma` file to `schema.zmodel` if it exists; otherwise, create a new template `schema.zmodel` file
 
-If you have a special project setup that the "init" command doesn't work with, you can always manually complete the steps above.
+You can always manually complete the steps above if you have a special project setup that the "init" command doesn't work with.
 
-After the initialization, please remember that moving forward you should edit the `schema.zmodel`. The `prisma/schema.prisma` file will be automatically regenerated when you run `zenstack generate`.
+After the initialization, please remember that you should edit the `schema.zmodel` moving forward. The `prisma/schema.prisma` file will be automatically regenerated when you run `zenstack generate`.
 
 ### Preparing The Schema
 
@@ -153,7 +153,7 @@ You should see output like the following in your terminal:
 Don't forget to restart your dev server to let the changes take effect.
 ```
 
-A bunch of plugins are run. When it completes, the `prisma/schema.prisma` file should be updated to contain the new models we added. You can also use the models in your TS code now since the Prisma Client code is also regenerated.
+A bunch of plugins are run. When it is complete, the `prisma/schema.prisma` file should be updated to contain the new models we added. You can also use the models in your TS code now since the Prisma Client code has also been regenerated.
 
 Finally, push the schema to the database:
 
@@ -350,9 +350,9 @@ prisma.space.findFirst({ include: { members: true } })
 
 ### Listing Installed ZenStack Packages
 
-ZenStack provides multiple NPM packages that implement either plugins or runtime functionalities. The `zenstack` and `@zenstackhq/runtime` packages are almost always needed. The other packages are optional and can be installed based on your needs.
+ZenStack provides multiple npm packages that implement either plugins or runtime functionalities. The `zenstack` and `@zenstackhq/runtime` packages are almost always needed. The other packages are optional and can be installed based on your needs.
 
-When you upgrade ZenStack, it's important to keep all package versions in sync to avoid unexpected results. The `zenstack info` command can help you list all installed ZenStack packages and their versions. It also checks and prompts if there're newer versions available.
+When you upgrade ZenStack, it's important to keep all package versions in sync to avoid unexpected results. The `zenstack info` command can help you list all installed ZenStack packages and their versions. It also checks and prompts if there are newer versions available.
 
 Try running it in our project:
 
