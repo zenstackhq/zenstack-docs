@@ -16,7 +16,7 @@ This document explains how these extensions work so that you can make a more inf
 
 ## ZModel Language
 
-ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCode extension, using the fantastic language toolkit [Langium](https://langium.org/). The DLS includes a plugin system, allowing a modular and extensible way to generate different artifacts from the schema. The core functionality of the toolkit is supported by the following three built-in plugins:
+ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCode extension, using the fantastic language toolkit [Langium](https://langium.org/). The DLS includes a plugin system, allowing a modular and extensible way to generate different artifacts from the schema. The core functionality of the toolkit is supported by the following three core plugins:
 
 -   Prisma: `@core/prisma`
 
@@ -24,13 +24,13 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
 -   Model-meta: `@core/model-meta`
 
-    The model-meta plugin generates the model metadata, which provides basic information about models and fields at runtime. The metadata is much more lightweighted than the full ZModel AST and is much cheaper to load.
+    The model-meta plugin generates the model metadata, which provides basic information about models and fields at runtime. The metadata is much more light-weighted than the whole ZModel AST and is much cheaper to load.
 
     The default output location is `node_modules/.zenstack/model-meta.ts`.
 
--   Policy: `@core/policy`
+-   Policy: `@core/access-policy`
 
-    The policy plugin converts access policy rules (expressed with `@@allow` and `@@deny` attributes) into checker functions. The functions take a context object as input and return partial Prisma query objects, which will be injected into Prisma query arguments at runtime. The context object contains the following properties:
+    The access policy plugin converts access policy rules (expressed with `@@allow` and `@@deny` attributes) into checker functions. The functions take a context object as input and return partial Prisma query objects, which will be injected into Prisma query arguments at runtime. The context object contains the following properties:
 
     -   `user`: the current user, which serves as the return value of [`auth()`](/docs/the-complete-guide/part1/access-policy/current-user) in the policy rules.
     -   `preValue`: the previous value of an entity before update (for supporting the [`future()`](/docs/the-complete-guide/part1/access-policy/post-update) function in the policy rules).
@@ -152,7 +152,7 @@ We need the following measures to enforce access policies systematically:
 
 1. **Inject filter conditions into the "where" clause in the context of "find many"**
 
-    This covers cases like a direct `findMany`/`findUnique`/`findFirst`/... calls:
+    This covers cases like direct `findMany`/`findUnique`/`findFirst`/... calls:
 
     ```ts
     prisma.user.findMany({ where: { ... } });
@@ -234,7 +234,7 @@ We need the following measures to enforce access policies systematically:
 
 1. **Post-read check for entities fetched as a to-one relation**
 
-    To-one relation is a special case for reading because there's no way to do filtering at the read time: you either include it or not. So we need to do a post-read check to ensure the fetched entity can be read.
+    To-one relation is a special case for reading because there's no way to do filtering at the read time: you either include it or not. So, we need to do a post-read check to ensure the fetched entity can be read.
 
     ```ts
     const user = prisma.user.findUnique({ where: { id: ... }, include: { profile: true } });
@@ -249,9 +249,9 @@ We need the following measures to enforce access policies systematically:
 
 1. **Transaction-protected mutations**
 
-    Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling [`future()`](#the-future-function) function) rules, are protected by a transaction. The mutation is conducted first, and then post-mutation checks are performed. If any of the checks fail, the transaction is rolled back.
+    Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling [`future()`](#the-future-function) function) rules, are protected by a transaction. The mutation is conducted first, and then post-mutation checks are performed. If any of the checks fail, the transaction rolls back.
 
-    Although, for simple cases, we can enforce policies by checking the mutation input, there're many cases where we can't safely rely on that. Instead, employing a transaction is the most reliable way to achieve a consistent result. In the future, we may add input checking as an optimization where possible.
+    Although, for simple cases, we can enforce policies by checking the mutation input, there are many cases where we can't safely rely on that. Instead, employing a transaction is the most reliable way to achieve a consistent result. In the future, we may add input checking as an optimization where possible.
 
     ```ts
     prisma.user.create({ data: { ... } });
@@ -268,22 +268,22 @@ We need the following measures to enforce access policies systematically:
 
 ### The `auth()` function
 
-The `auth()` function connects authentication with access control. It's typed as the `User` model in ZModel and represents the current authenticated user. The most common way of setup is to read the `User` entity from the database after authentication is completed and pass the result to the `enhance` function as context.
+The `auth()` function connects authentication with access control. It's typed as the auth model (the model named "User" by default) in ZModel and represents the current authenticated user. The most common way of setup is to read the auth model entity from the database after authentication is completed and pass the result to the `enhance` function as context.
 
-Although `auth()` resolves to `User` model, since it's provided by the user, there's no way to guarantee its value fully conforms to the `User` model: e.g., non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
+Although `auth()` resolves to the auth model, since it's provided by the user, there's no way to guarantee its value fully conforms to the model' typing: e.g., non-nullable fields can be passed as `null` or `undefined`. We employ some simple rules to deal with such cases:
 
 -   If `auth()` is `undefined`, it's normalized to `null` when evaluating access policies.
 -   If `auth()` itself is `null`, any member access (or chained member access) is `null`.
 -   `expression == null` evaluates to `true` if `expression` is `null`.
 -   Otherwise, a boolean expression evaluates to `false` if a `null` value is involved.
 
-Here're a few examples (assuming `auth()` is `null`):
+Here are a few examples (assuming `auth()` is `null`):
 
 1. `auth() == null` -> `true`
-1. `auth() != null` -> `false`
-1. `auth().name == null` -> `true`
-1. `auth().age > 0` -> `false`
-1. `auth().age < 0` -> `false`
+2. `auth() != null` -> `false`
+3. `auth().name == null` -> `true`
+4. `auth().age > 0` -> `false`
+5. `auth().age < 0` -> `false`
 
 ### The `future()` function
 

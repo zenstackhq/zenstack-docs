@@ -6,7 +6,7 @@ sidebar_label: 6. Data Validation
 
 ### Overview
 
-Besides permission control, an application often also have a notion of data validity: what form data is allowed to be stored in the database. Database schema provides a preliminary for defining that, many rules need to be enforced outside the database. A few quick examples:
+Besides permission control, an application often also has a notion of data validity: what form of data is allowed to be stored in the database? Database schema provides a preliminary mechanism for defining that, but many rules still need to be enforced outside of it. Here are a few quick examples:
 
 - `email` field must be a valid email address.
 - `password` field must be at least 8 characters long.
@@ -14,15 +14,15 @@ Besides permission control, an application often also have a notion of data vali
 - `price` field must be a positive number.
 - `password` field is only allowed to have value if `identityProvider` field is set to `credentials`.
 
-Traditionally developers either write imperative code to validate data, or use a declarative validation library like [Zod](https://zod.dev). ZenStack allows you to define such rules right inside the ZModel file and automatically enforces them with the enhanced Prisma Client. When validation rules are violated during a "create" or "update" operation, the operation is rejected with an error.
+Traditionally, developers either write imperative code to validate data or use a declarative validation library like [Zod](https://zod.dev). ZenStack allows you to define such rules right inside the ZModel schema and automatically enforces them with the enhanced Prisma Client. When validation rules are violated during a "create" or "update" operation, the operation is rejected with an error.
 
 :::info
 
-Data validation and access policy may have some similarities, but they are some fundamental differences:
+Data validation and access policy may have some similarities, but there are some fundamental differences:
 
-1. Access policies are usually defined in terms of the current user, while validation rules are defined against the data itself.
+1. Access policies are usually defined regarding the current user, while validation rules are defined against the data itself.
 2. Access policies are mostly evaluated on the database side (through injection into Prisma queries), while data validation is evaluated entirely on the application side.
-3. Access policies governs CRUD operations, while data validation is only evaluated for "create" and "update" operations.
+3. Access policies govern CRUD operations, while data validation only covers "create" and "update" actions.
 
 :::
 
@@ -42,7 +42,7 @@ model User {
 
 ### Model-Level Validation
 
-You can use the model-level `@@validate` attribute to define validation rules that involve multiple fields. A set of helper functions are provided for building complex validation expressions. You can find the full list of such functions [here](/docs/reference/zmodel-language#model-level-validation-attributes). Here are a few usage examples:
+You can use the model-level `@@validate` attribute to define validation rules that involve multiple fields. A set of helper functions are provided for building complex validation expressions. You can find the full list of such functions [here](/docs/reference/zmodel-language#model-level-validation-attributes). Here's an example:
 
 ```zmodel
 model User {
@@ -55,7 +55,7 @@ model User {
 
 ### 🛠️ Adding Data Validation To Our Todo App
 
-We can use data validation to improve our app's robustness in many places. Here are two examples:
+We can use data validation to improve our app's robustness in many places. Two such examples are shown here:
 
 1. Make sure `User`'s email is a valid email address.
 

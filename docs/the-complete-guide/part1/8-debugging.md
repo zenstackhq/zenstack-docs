@@ -4,7 +4,7 @@ sidebar_label: 8. Debugging
 
 #  Debugging
 
-ZenStack provides you with a set of powerful tools to model the authorization aspects of your application. However, it is not always easy to understand why an operation is rejected, or why a query gives in seemingly incorrect results.
+ZenStack provides you with a set of powerful tools to model the authorization aspects of your application. However, it can be challenging to understand why an operation is rejected or why a query gives seemingly incorrect results.
 
 You can let ZenStack log all queries sent to the wrapped Prisma Client and use it to inspect the effect of your policy rules. To enable the logging, pass an extra `logPrismaQuery` option when calling the `enhance` function:
 
@@ -22,7 +22,7 @@ After setting these up, you should be able to see all Prisma queries ZenStack ma
 
 ### 🛠️ Debugging In REPL
 
-The REPL environment provides a ".debug" command for you to quickly turn on/off debugging output.
+The REPL environment provides a ".debug" command to turn on/off debugging output on the fly.
 
 ```js
 .auth { id: 1 }
