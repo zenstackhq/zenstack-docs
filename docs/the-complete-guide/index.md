@@ -11,29 +11,29 @@ import Requirements from '../_components/_todo-requirements.md';
 
 ## Introduction
 
-Welcome to *The Complete Guide of ZenStack*. This guide is designed to systematically introduce the key concepts in ZenStack, and guide you through how to use the essential features of it.
+Welcome to *The Complete Guide of ZenStack*. This guide is designed to systematically introduce the key concepts in ZenStack and guide you through how to use its essential features.
 
 ## Sample Project
 
-Throughout the guide, we'll learn the key concepts and features by gradually building up a sample project. The project is a multi-tenant Todo app, which allows users to create and join "Spaces", and collaborate with users in the same space by creating and managing Todo Lists.
+Throughout the guide, we'll learn the key concepts and features by gradually building a sample project. The project is a multi-tenant Todo app, which allows users to create and join "Spaces", and collaborate with users in the same space by creating and managing Todo Lists.
 
-Here're the detailed requirements:
+Here are the detailed requirements:
 
 <Requirements />
 
-The app is not too complex, but it covers many important aspects of a modern multi-tenant web application. You can have a preview of a deployed version of it below:
+The app is not too complex but covers many important aspects of a modern multi-tenant web application. You can have a preview of a deployed version of it below:
 
 [![Sample Todo App](../assets/todo-app-splash.png)](https://zenstack-todo.vercel.app/)
 
 ## Organization
 
-ZenStack consists of several layers of functionalities, each depends on the previous one. These layers are explained in details in the following four parts. In each part, we'll add more functionalities to our Todo app, and eventually finish it by the end of the guide.
+ZenStack consists of several layers of functionalities, each depends on the previous one. These layers are explained in detail in the following four parts. In each part, we'll add more functionalities to our Todo app and eventually finish it by the end of the guide.
 
 ### Part I: Supercharged ORM
 
-The first layer works as an extension to Prisma ORM - both for the schema language and the runtime PrismaClient. We made several extensions to the Prisma Schema Language to make it possible to expression more than just the database schema. For example, you can attach access policies to the data models. At runtime, ZenStack creates a transparent proxy around PrismaClient to add extra behavior ot it - one of the best example of which is the automatic access control enforcement.
+The first layer works as an extension to Prisma ORM - both for the schema language and the runtime PrismaClient. We made several extensions to the Prisma Schema Language to make it possible to express more than just the database schema. For example, you can attach access policies to the data models. At runtime, ZenStack creates a transparent proxy around PrismaClient to add extra behavior to it - one of the best examples is the automatic access control enforcement.
 
-The extension to Prisma ORM is the foundation of ZenStack and enables all other features above it. These features are also agnostic to the framework you use for the backend. It's simply a drop-in replacement to Prisma.
+The extension to Prisma ORM is the foundation of ZenStack and enables all other features above it. These features are also agnostic to the framework you use for the backend. It's simply a drop-in replacement for Prisma.
 
 In this part of the guide, we'll finish building the schema of the sample project - including the data models, access policies, and data validation rules. There's no API or UI yet, but the business logic will be mostly complete.
 
@@ -49,11 +49,11 @@ In this part of the guide, you'll see how to use plugins to achieve various goal
 
 ### Part III: Automatic CRUD APIs
 
-Developers build APIs to support the client-side of their applications. One of the most common types of APIs is the CRUD - Create, Read, Update, and Delete. Building CRUD APIs is a tedious task but error-prone at the same time.
+Developers build APIs to support the client side of their applications. One of the most common type of APIs is CRUD - Create, Read, Update, and Delete. Building CRUD APIs is a tedious task but error-prone at the same time.
 
-Since ZenStack already secures data access at the ORM layer as we learnt from the previous part, it can automatically generate CRUD APIs for you. You'll learn about the details in this part of the guide.
+Since ZenStack already secures data access at the ORM layer, as we learned from the previous part, it can automatically generate CRUD APIs for you. You'll learn about the details in this part of the guide.
 
-In this part of the guide, we'll add a CRUD API layer to our Todo app, and turn it into a fully functional backend service.
+In this part of the guide, we'll add a CRUD API layer to our Todo app and turn it into a fully functional backend service.
 
 [Go to Part III](/docs/the-complete-guide/part3)
 
@@ -61,7 +61,7 @@ In this part of the guide, we'll add a CRUD API layer to our Todo app, and turn 
 
 Modern web apps often use data query libraries (like [TanStack Query](https://tanstack.com/query) and [SWR](https://swr.vercel.app/)) to fetch data from the backend. These libraries help you build reactive data binding UI with ease.
 
-ZenStack can generate hooks code that talk to the automatic CRUD API introduced in the previous part, targeting these libraries. The hooks help you implement front-end data query with minimum code and full type safety. Part IV focuses on topic.
+ZenStack can generate hooks code that talks to the automatic CRUD API introduced in the previous part, targeting these libraries. The hooks help you implement front-end data queries with minimum code and complete type safety. Part IV focuses on this topic.
 
 In this part of the guide, we'll use the generated data query hooks to build a frontend UI for our Todo app. We'll finally complete our full-stack Todo application!
 

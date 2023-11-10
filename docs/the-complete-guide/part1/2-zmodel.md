@@ -4,7 +4,7 @@ sidebar_label: 2. The ZModel Language
 
 # The ZModel Language
 
-The first thing that ZenStack may strike you surprised is, unlike other Prisma tools, we created a new schema language called *ZModel*. It's a superset of the Prisma Schema Language with syntax additions to support other features. The `zenstack` CLI takes a ZModel file as input and generates a Prisma Schema file out of it - which in turn can be fed to the standard `prisma` CLI for generating a Prisma Client or migrating the database.
+The first thing that ZenStack may surprise you is that, unlike other Prisma tools, we created a new schema language called *ZModel*. It's a superset of the Prisma Schema Language (PSL) with syntax elements to support additional features. The `zenstack` CLI takes a ZModel file as input and generates a Prisma Schema file out of it - which in turn can be fed to the standard `prisma` CLI for generating a Prisma Client or migrating the database.
 
 Why did we invent a new schema language?
 
@@ -12,7 +12,7 @@ Why did we invent a new schema language?
 
 #### Custom Attributes
 
-While Prisma Schema Language provides a terse and intuitive way to define data models, it has a major extensibility limitation: you can't add custom attributes. Prisma provides a set of pre-defined attributes for you to control detailed aspects of your tables and fields, but you're stuck when you need custom ones for your own modeling purposes. Traditionally, Prisma community tools have been hacking around this limitation by smuggling custom information in code comments, like the following example with 
+While Prisma Schema Language provides a terse and intuitive way to define data models, it has a major extensibility limitation: you can't add custom attributes. Prisma provides a set of pre-defined attributes to control detailed aspects of your tables and fields, but you're stuck when you need custom ones for your special modeling purposes. Traditionally, Prisma community tools have been hacking around this limitation by smuggling custom information in code comments, like the following example with 
 [TypeGraphQL Prisma](https://prisma.typegraphql.com/):
 
 ```zmodel
@@ -24,7 +24,7 @@ model User {
 }
 ```
 
-It works, but it's ugly and gets no protection from the compiler. The model can become really messy if it's littered with such hacks everyone. One of the biggest reason of introducing the ZModel language is to systematically remove this obstacle so that we have a solid foundation for adding custom semantics into the schema down the road.
+It works, but it's ugly and gets no protection from the compiler. The model can become messy if it's littered with such hacks everyone. One of the biggest reasons for introducing the ZModel language is to systematically remove this obstacle so that we have a solid foundation for adding custom semantics into the schema down the road.
 
 Here's a quick example of the custom `@password` and `@omit` attributes ZModel added for automatically hashing passwords upon saving and omitting them from query results:
 
@@ -36,16 +36,16 @@ model User {
 }
 ```
 
-The access policies and data validation rules are also implemented with custom attributes. Don't worry, we'll cover them in detail in the following chapters.
+The access policies and data validation rules are also implemented with custom attributes. Don't worry. We'll cover them in detail in the following chapters.
 
 #### Other Language Features
 
-The additional benefit of having a custom schema language is to make other syntactic extensions other than custom attributes. For example:
+A custom schema language also allows us to add new language features besides custom attributes. For example:
 
 1. The `import` syntax for breaking down a large schema into multiple files
 2. The `extends` syntax for inheriting fields from a base model
 
-Here's an example of how to use them to more effectively manage large schemas:
+Here's an example of how to use them to manage large schemas more effectively:
 
 ```zmodel title='base.zmodel'
 abstract model Base {
@@ -81,7 +81,7 @@ model Comment extends Base {
 
 #### A Better Plugin System
 
-Prisma allows you to write custom generators. However, the generator development API is not documented and not easy to understand and use. ZenStack provides a plugin system that allows you to generate custom artifacts with a simple API and object model. In fact, almost all the features of ZenStack itself are implemented as plugins.
+Prisma allows you to write custom generators. However, the generator development API is undocumented and difficult to understand. ZenStack provides a plugin system that enables you to generate custom artifacts with a simple API and object model. In fact, almost all the features of ZenStack itself are implemented as plugins.
 
 ### ZModel Structure
 
@@ -113,11 +113,11 @@ model Post {
 }
 ```
 
-When the `zenstack` CLI compiles an input schema, it merges the content of all imported files into a single schema before doing further processing.
+When the `zenstack` CLI compiles an input schema, it merges the content of all imported files into a single schema before further processing.
 
 #### Data Source
 
-The `datasource` declaration of ZModel is exactly the same as PSL. ZenStack doesn't do any processing on it and simply passes it along to the generated PSL.
+The `datasource` declaration of ZModel is exactly the same as PSL. ZenStack passes it to the generated Prisma schema without modification.
 
 ```zmodel
 datasource db {
@@ -128,7 +128,7 @@ datasource db {
 
 #### Prisma Generators
 
-The `generator` declarations of ZModel are exactly the same as PSL. ZenStack doesn't do any processing on them and simply passes them along to the generated PSL.
+The `generator` declarations of ZModel are exactly the same as PSL. ZenStack passes it to the generated Prisma schema without modification.
 
 ```zmodel
 generator client {
@@ -147,22 +147,7 @@ plugin trpc {
 }
 ```
 
-ZenStack has a set of built-in plugins that are automatically enabled without requiring you to declare them:
-
-- `@core/prisma`: transforms ZModel to Prisma schema
-- `@core/model-meta`: transforms ZModel to light-weighted Javascript objects that can be loaded at runtime
-- `@core/access-policy`: transforms access policy expressions to partial Prisma query objects
-
-You can also explicitly declare the built-in plugins to customize their behavior. E.g., use the following code to customize the output location of the generated Prisma schema.
-
-```zmodel
-plugin prisma {
-    provider = "@core/prisma"
-    output   = "src/db"
-}
-```
-
-A plugin may also depend on other plugins which may implicitly loads a plugin with its default settings. For example, the `@zenstackhq/trpc` plugin depends on the `@core/zod` plugin for generation Zod schemas for input validation in the generated tRPC routers.
+[Part II](/docs/the-complete-guide/part2) of this guide will cover the plugin system in detail.
 
 #### Models
 
@@ -188,10 +173,8 @@ model User {
 
 ### IDE Support
 
-ZenStack offers a VSCode extension to support authoring ZModel files - syntax highlighting, auto completion, and error checking. You can install it from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack). It still lacks some of the nice features that the Prisma VSCode extension has, but we're actively improving it.
-
-We're also actively looking to support JetBrains IDEs. Please follow [this discussion](https://github.com/zenstackhq/zenstack/discussions/414) for updates.
+ZenStack offers a VSCode extension to support authoring ZModel files - syntax highlighting, auto-completion, and error checking. You can install it from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack). Although it still lacks some features, the goal is to make it on par with the Prisma VSCode extension. We're also actively looking to support JetBrains IDEs. Please follow [this discussion](https://github.com/zenstackhq/zenstack/discussions/414) for updates.
 
 ### Full Documentation
 
-Check out the [ZModel Language](/docs/reference/zmodel-language) reference documentation for a full description of the language.
+Check out the [ZModel Language](/docs/reference/zmodel-language) reference documentation for a complete language description.
