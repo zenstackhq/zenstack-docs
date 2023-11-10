@@ -4,6 +4,7 @@ sidebar_label: 3. The ZenStack CLI
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ThemedImage from '@theme/ThemedImage';
+import ZenStackInit from '../../_components/_zenstack-init.md';
 
 # The "zenstack" CLI
 
@@ -32,15 +33,7 @@ Then initialize the project for ZenStack:
 npx zenstack@latest init
 ```
 
-The "init" command does the following things for you:
-1. Install Prisma if it's not already installed
-1. Install the `zenstack` CLI package as a dev dependency
-1. Install the `@zenstackhq/runtime` package
-1. Copy the `prisma/schema.prisma` file to `schema.zmodel` if it exists; otherwise, create a new template `schema.zmodel` file
-
-You can always manually complete the steps above if you have a special project setup that the "init" command doesn't work with.
-
-After the initialization, please remember that you should edit the `schema.zmodel` moving forward. The `prisma/schema.prisma` file will be automatically regenerated when you run `zenstack generate`.
+<ZenStackInit />
 
 ### Preparing The Schema
 
