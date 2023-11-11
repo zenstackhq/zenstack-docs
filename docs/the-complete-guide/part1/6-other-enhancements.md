@@ -1,9 +1,12 @@
 ---
-sidebar_label: 6.1 Hashing Passwords
-slug: password
+sidebar_label: 6. Other Enhancements
 ---
 
-# Hashing Passwords
+# Other Enhancements
+
+Besides core enhancements like access policies, ZenStack also provides a few other lightweight enhancements targeting specific use cases.
+
+### Hashing Passwords
 
 When using a credential-based authentication system, it's important never to store the password in plain text. ZenStack provides a simple way to automatically hash passwords before storing them in the database. To enable it, simply mark the password field with the `@password` attribute.
 
@@ -19,7 +22,7 @@ Under the hood, ZenStack uses [bcryptjs](https://github.com/dcodeIO/bcrypt.js/tr
 
 See [here](/docs/reference/zmodel-language#password) for more details about the `@password` attribute.
 
-### 🛠️ Adding User Password To Our Todo App
+#### 🛠️ Adding User Password
 
 Let's add a `password` field to our `User` model, so we can implement credential-based authentication in the future.
 
@@ -79,3 +82,63 @@ Or alternatively, you can use the raw Prisma Client in the authentication part o
 
 :::
 
+### Omitting Fields
+
+Some database fields can be sensitive and should not be exposed to the client. Password is a good example (even when it's hashed). You can use the `@omit` attribute to mark a field, and it'll be automatically omitted when queried from an enhanced Prisma Client.
+
+```zmodel
+model User {
+    ...
+    password String @password @omit
+}
+```
+
+:::info
+
+You can use a field-level access policy to achieve the same goal:
+
+```zmodel
+model User {
+    ...
+    password String @password @allow('read', false)
+}
+```
+
+However, using `@omit` is more appropriate since conceptually omitting sensitive field is not a permission issue.
+:::
+
+#### 🛠️ Omitting Password Field
+
+Let's mark the `password` field with `@omit`:
+
+```zmodel
+model User {
+    ...
+    password String? @password @omit
+}
+```
+
+Rerun generation, push database schema, and start REPL:
+
+```bash
+npx zenstack generate
+npx prisma db push
+npx zenstack repl
+```
+
+Query users, and you'll find the `password` field is omitted:
+
+```js
+.auth { id: 1 }
+db.user.findFirst();
+```
+
+```js
+{
+  id: 1,
+  createdAt: 2023-11-07T21:37:22.506Z,
+  updatedAt: 2023-11-07T21:37:22.506Z,
+  email: 'joey@zenstack.dev',
+  name: 'Joey'
+}
+```

@@ -31,7 +31,7 @@ As mentioned in the previous chapter, server adapters handle framework-specific 
 
     A callback function for getting a PrismaClient instance used for handling a CRUD request. The function is passed with a framework-specific request object. Although you can return a vanilla Prisma Client, you most likely should use an enhanced one to enforce access policies.
 
-### 🛠️ Adding CRUD API To Our Todo App
+### 🛠️ Serving CRUD API
 
 Let's see how we can automagically turn our ZModel schema into a web API without really coding it 🚀! We'll use Express for simplicity for now, but working with another framework is essentially the same.
 

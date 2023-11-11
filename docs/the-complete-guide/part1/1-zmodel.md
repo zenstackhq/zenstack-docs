@@ -1,8 +1,8 @@
 ---
-sidebar_label: 1. The ZModel Language
+sidebar_label: 1. ZModel Language
 ---
 
-# The ZModel Language
+# ZModel Language
 
 The first thing that ZenStack may surprise you is that, unlike other Prisma tools, we created a new schema language called *ZModel*. It's a superset of the Prisma Schema Language (PSL) with syntax elements to support additional features. The `zenstack` CLI takes a ZModel file as input and generates a Prisma Schema file out of it - which in turn can be fed to the standard `prisma` CLI for generating a Prisma Client or migrating the database.
 

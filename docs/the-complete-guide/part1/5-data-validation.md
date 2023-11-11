@@ -63,7 +63,7 @@ model User {
 }
 ```
 
-### 🛠️ Adding Data Validation To Our Todo App
+### 🛠️ Adding Data Validation
 
 We can use data validation to improve our app's robustness in many places. Two such examples are shown here:
 

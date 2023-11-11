@@ -82,7 +82,7 @@ We try to make the enhanced Prisma Client as compatible as possible with the ori
 You should fall back to using the original Prisma Client in such cases.
 :::
 
-### Using Enhanced Prisma Client In REPL
+### 🛠️ Using Enhanced Prisma Client In REPL
 
 We saw in the previous chapter that in the REPL environment, you can use the built-in `prisma` variable to access Prisma Client directly. Another variable named `db` gives you access to an enhanced Prisma Client.
 
@@ -134,7 +134,7 @@ The `enhance` API, by default, loads the generated code from the `node_modules/.
 const db = enhance(prisma, { user: getSessionUser() }, { loadPath: 'lib/zenstack' });
 ```
 
----
+### Next
 
 This chapter gave an abstract overview of the enhanced Prisma Client. In the following chapters, you'll see how each kind of enhancement helps simplify your development work.
 

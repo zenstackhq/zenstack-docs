@@ -10,7 +10,7 @@ In [Part II](/docs/the-complete-guide/part2/) of the guide, we've learned how to
 
 Once the documentation is generated, it's easy to render it using tools like [Swagger UI](https://swagger.io/tools/swagger-ui/) and [Redocly](https://redocly.com/).
 
-### 🛠️ Serving Documentation For Our Todo API
+### 🛠️ Serving API Documentation
 
 Let's generate an OpenAPI spec for our Todo API and serve it using Swagger UI.
 

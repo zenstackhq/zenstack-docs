@@ -1,18 +1,20 @@
 ---
-sidebar_label: 2. The ZenStack CLI
+sidebar_label: 2. ZenStack CLI
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ThemedImage from '@theme/ThemedImage';
 import ZenStackInit from '../../_components/_zenstack-init.md';
 
-# The "zenstack" CLI
+# ZenStack CLI
 
 The `zenstack` CLI is the primary tool for using ZenStack in a project. The CLI is intentionally designed to have similar commands to the `prisma` CLI.
 
 In this chapter, we'll use the CLI to scaffold our Todo sample project. You can find the complete documentation in the [CLI reference guide](/docs/reference/cli).
 
-### Initializing a Project
+### 🛠️ Creating Our Sample Project
+
+#### 1. Initializing a Project
 
 :::info Prerequisites
 - Node.js 18 or above installed.
@@ -35,7 +37,7 @@ npx zenstack@latest init
 
 <ZenStackInit />
 
-### Preparing The Schema
+#### 2. Preparing The Schema
 
 Replace the content of `schema.zmodel` with the following:
 
@@ -124,7 +126,7 @@ Take some time to familiarize yourself with the entities and their relations.
 
 ![Todo App ERD](../../assets/todo-app-erd.svg)
 
-### Generating Artifacts
+#### 3. Generating Artifacts
 
 The CLI command you'll most often use is `zenstack generate`. It runs the plugins (including the built-in ones that are automatically enabled and the ones you explicitly put into ZModel) to generate various artifacts.
 
@@ -154,7 +156,7 @@ Finally, push the schema to the database:
 npx prisma db push
 ```
 
-### Seeding The Database
+#### 4. Seeding The Database
 
 Let's create a seed script to populate some test data into our database. Create a new file `prisma/seed.ts` with the following content:
 
@@ -283,7 +285,7 @@ Space created: {
 🌱  The seed command has been executed.
 ```
 
-### Querying Data With REPL
+#### 5. Querying Data With REPL
 
 ZenStack CLI comes with a convenient REPL mode that you can use to query data interactively. We'll use it to demonstrate ZenStack's features throughout the guide. Let's try a few commands here:
 
@@ -341,7 +343,7 @@ prisma.space.findFirst({ include: { members: true } })
 }
 ```
 
-### Listing Installed ZenStack Packages
+#### 6. Listing Installed ZenStack Packages
 
 ZenStack provides multiple npm packages that implement either plugins or runtime functionalities. The `zenstack` and `@zenstackhq/runtime` packages are almost always needed. The other packages are optional and can be installed based on your needs.
 
@@ -361,7 +363,7 @@ Installed ZenStack Packages:
 You are using the latest version of Zenstack.
 ```
 
-### What About Migration?
+### ZenStack CLI & Prisma CLI
 
 The ZenStack CLI is not meant for replacing the Prisma CLI. After `zenstack generate` generates the Prisma schema, you can use the Prisma CLI as you normally do to complete tasks like:
 
@@ -370,7 +372,7 @@ The ZenStack CLI is not meant for replacing the Prisma CLI. After `zenstack gene
 - Launching Prisma Studio with `prisma studio`
 - ...
 
-The Prisma development workflow that you're already familiar with should work seamlessly with ZenStack.
+The Prisma development workflow that you're already familiar with should work seamlessly with ZenStack. See [here](/docs/guides/dev-workflow) for a detailed explanation of the development workflow.
 
 <ThemedImage
     alt="ZModel Generation"
