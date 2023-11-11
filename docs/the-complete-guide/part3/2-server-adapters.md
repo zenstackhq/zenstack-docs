@@ -8,7 +8,7 @@ sidebar_label: 2. Server Adapters
 
 ZenStack is a toolkit but not a framework. It doesn't come with its own web server. Instead, it provides a set of server adapters that "mount" APIs to the server of your choice.
 
-Server adapters are framework-specific. ZenStack provides a `@zenstackhq/server` package that contains adapters for the most popular backend and full-stack frameworks:
+Server adapters are framework-specific. ZenStack ships a `@zenstackhq/server` package that contains adapters for the most popular backend and full-stack frameworks:
 
 - [Express](/docs/reference/server-adapters/express)
 - [Fastify](/docs/reference/server-adapters/fastify)
@@ -18,7 +18,7 @@ Server adapters are framework-specific. ZenStack provides a `@zenstackhq/server`
   
 Check out their respective documentation to learn more details.
 
-As mentioned in the previous chapter, server adapters are responsible for handling framework-specific request/response formats and transforming them to the canonical format that the underlying API handlers understand. All server adapters share the following two common initialization options:
+As mentioned in the previous chapter, server adapters handle framework-specific request/response formats and transform them to the canonical form that the underlying API handlers understand. All server adapters share the following two initialization options:
 
 - `handler`
 
@@ -29,11 +29,11 @@ As mentioned in the previous chapter, server adapters are responsible for handli
 
 - `getPrisma`
 
-    A callback function for getting a PrismaClient instance used for handling a CRUD request. The function is passed with a framework-specific request object. Although you can return a vanilla Prisma Client, mostly likely you should give an enhanced one so that access policies can be enforced.
+    A callback function for getting a PrismaClient instance used for handling a CRUD request. The function is passed with a framework-specific request object. Although you can return a vanilla Prisma Client, you most likely should use an enhanced one to enforce access policies.
 
 ### 🛠️ Adding CRUD API To Our Todo App
 
-Let's see how we can automagically turn our ZModel schema into a web API without really coding it 🚀! For simplicity, we'll use Express for now, but the process of working with another framework is largely the same.
+Let's see how we can automagically turn our ZModel schema into a web API without really coding it 🚀! We'll use Express for simplicity for now, but working with another framework is essentially the same.
 
 #### 1. Installing dependencies
 
@@ -78,7 +78,7 @@ curl http://localhost:3000
 
 #### 3. Adding ZenStack server adapter (RPC flavor)
 
-Now let's create an express middleware and mount the CRUD API to the `/api/rpc` path. Replace `main.ts` with the following content:
+Let's create an express middleware and mount the CRUD API to the `/api/rpc` path. Replace `main.ts` with the following content:
 
 ```ts
 import { PrismaClient } from '@prisma/client';
@@ -100,7 +100,7 @@ The `ZenStackMiddleware` server adapter uses RPC-flavor API by default.
 
 :::
 
-We've configured the server adapter to use a vanilla Prisma Client for now for quick testing. By default, the server adapter uses RPC-style API. We can hit the endpoint to do a few test now:
+We've configured the server adapter to use a vanilla Prisma Client for now for quick testing. By default, the server adapter uses RPC-style API. We can hit the endpoint to do a few tests now:
 
 - Find a `List`
 
@@ -119,32 +119,16 @@ We've configured the server adapter to use a vanilla Prisma Client for now for q
             "title" : "Grocery",
             "updatedAt" : "2023-11-09T04:52:57.987Z"
         },
-        "meta" : {
-            "serialization" : {
-                "values" : {
-                    "createdAt" : [ "Date" ],
-                    "updatedAt" : [ "Date" ]
-                }
-            }
-        }
+        "meta" : { ... }
     }
     ```
-
-:::info Metadata
-
-The `meta` field contains additional information about the response. In this case, it tells us that the `createdAt` and `updatedAt` fields are serialized from `Date` values. You'll learn more about it in the next chapter.
-
-:::
 
 - Find a private `List`
 
     ```bash
+    # Parameter `q` is url-encoded `{"where":{"private":true}}`.
     curl "http://localhost:3000/api/rpc/list/findFirst?q=%7B%22where%22%3A%7B%22private%22%3Atrue%7D%7D"
     ```
-
-    :::info
-    Parameter `q` is url-encoded `{"where":{"private":true}}`.
-    :::
 
     ```json
     {
@@ -186,7 +170,7 @@ The `meta` field contains additional information about the response. In this cas
 
 #### 4. Making access policies work
 
-To make access policies work, we need to create an enhance Prisma Client, and to do that, we need to be able to get the current user from the request. Since we haven't implemented authentication yet, we'll simply use a special `x-user-id` header to pass user id for now. It's definitely not a secure implementation, but it's sufficient for demonstration purposes. We'll hook up a real authentication system in [Part IV](/docs/the-complete-guide/part4/).
+To make access policies work, we need to create an enhanced Prisma Client, and to do that, we need to be able to get the current user from the request. Since we haven't implemented authentication yet, we'll use a special `x-user-id` header to simulate and pass the requesting user's ID. It's definitely not a secure implementation, but it's sufficient for demonstration. We'll hook up a real authentication system in [Part IV](/docs/the-complete-guide/part4/).
 
 Change the line of creating `ZenStackMiddleware` to the following:
 
@@ -209,7 +193,7 @@ app.use('/api/rpc',
 );
 ```
 
-Now, if we hit the endpoint again without the `x-user-id` header, we'll get null response:
+Now, if we hit the endpoint again without the `x-user-id` header, we'll get a null response:
 
 ```bash
 curl "http://localhost:3000/api/rpc/list/findFirst"
@@ -219,7 +203,7 @@ curl "http://localhost:3000/api/rpc/list/findFirst"
 { "data" : null }
 ```
 
-Add the header and request again, we should get back a result then:
+Add the header and request again. We should get back a result then:
 
 ```bash
 curl "http://localhost:3000/api/rpc/list/findFirst" -H "x-user-id: 1"
@@ -242,9 +226,9 @@ curl "http://localhost:3000/api/rpc/list/findFirst" -H "x-user-id: 1"
 
 You can try other operations with different user identities. The service's behavior should be consistent with what we've seen in the REPL with the enhanced Prisma in [Part I](/docs/the-complete-guide/part1/access-policy/current-user#%EF%B8%8F-adding-user-based-access-control-to-our-todo-app).
 
-#### 5. Adding ZenStack server adapter (RESTful flavor)
+#### 5. Trying Out The RESTful API Flavor
 
-Let's try to mount a RESTful-flavor API under another path `/api/rest`. Add the following code to `main.ts`:
+Let's mount a RESTful-flavor API under another path `/api/rest`. Add the following code to `main.ts`:
 
 ```ts
 import RESTHandler from '@zenstackhq/server/api/rest';
@@ -257,17 +241,12 @@ app.use('/api/rest',
 );
 ```
 
-Now we can fetch the first `List` item by making a RESTful-style request:
+As you've seen above, we're using the same server adapter implementation and swapped the API handler. Now we can fetch the first `List` item by making a RESTful-style request:
 
 ```bash
+# The "-g" parameter passed to curl is for allowing square brackets in the URL
 curl -g 'http://localhost:3000/api/rest/list?page[limit]=1' -H "x-user-id: 1"
 ```
-
-:::info
-
-The `-g` parameter passed to `curl` is for allowing square brackets in the URL.
-
-:::
 
 ```json
 {

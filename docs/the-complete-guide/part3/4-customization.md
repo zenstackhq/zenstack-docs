@@ -2,9 +2,9 @@
 sidebar_label: 4. Customization
 ---
 
-# Customizing The Generated APIs
+# Customizing The Generated API
 
-Having APIs derived from the schema is great, but sometimes you want to customize the them to fit your needs. Some of the common use cases are:
+Having APIs derived from the schema is great, but sometimes, you want to customize them to fit your needs. Some of the common use cases are:
 
 - Disallowing specific operations
 - Transforming the result data into a different format
@@ -12,7 +12,7 @@ Having APIs derived from the schema is great, but sometimes you want to customiz
 
 In this chapter, let's explore a few options to do that.
 
-### Framework Middlewares
+### Framework Middleware
 
 Most server frameworks provide some kind of "middleware" mechanism for developers to intercept requests and responses. For example, you can use a separate Express middleware to add custom a custom header to the response before it's sent to the client:
 
@@ -34,11 +34,11 @@ app.use('/api/rpc',
 );
 ```
 
-### Custom Server Adapters
+### Custom Server Adapter
 
-Since server adapters are just wrappers around API handlers, you can also implement a custom adapter by using the API handler directly. This way, you have full control over how the API handler's result data is processed and sent back to the client as a framework response.
+Since server adapters are just lightweighted wrappers around API handlers, you can also implement a custom adapter to interact with the API handler directly. This way, you have complete control over how the API handler's result data is processed and sent back to the client as a framework response.
 
-The following code demonstrate how to add the 'x-requested-by' header with this approach:
+The following code demonstrates how to add the 'x-requested-by' header with this approach:
 
 ```ts
 import RESTHandler from '@zenstackhq/server/api/rest';
@@ -63,6 +63,6 @@ app.use('/api/rpc-custom', async (req: Request, res: Response) => {
 });
 ```
 
-### Custom APIs
+### Custom API
 
-Using the automatic CRUD API doesn't mean you can't implement your own APIs. You can always build fully customized APIs from scratch leveraging the enhanced Prisma Client.
+Using the automatic CRUD API doesn't mean you can't implement your own APIs. You can always build fully customized APIs from scratch and leverage the enhanced Prisma Client.

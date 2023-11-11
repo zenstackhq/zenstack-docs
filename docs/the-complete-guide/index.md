@@ -21,7 +21,9 @@ Here are the detailed requirements:
 
 <Requirements />
 
-The app is not too complex but covers many important aspects of a modern multi-tenant web application. You can have a preview of a deployed version of it below:
+The app is not too complex but covers many important aspects of a modern multi-tenant web application. You can find the complete source code of the project at [https://github.com/zenstackhq/the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample). It contains several branches, each corresponding to the end state of a part of the guide. For example, you can use branch "part1" as the starting point of your study of Part II.
+
+You can have a preview of the fully completed version below:
 
 [![Sample Todo App](../assets/todo-app-splash.png)](https://zenstack-todo.vercel.app/)
 

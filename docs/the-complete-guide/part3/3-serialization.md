@@ -6,20 +6,20 @@ sidebar_label: 3. Data Serialization
 
 One problem with passing Prisma requests and responses across the network is that the data is not always serializable. The following Prisma types are problematic:
 
-- `Date`: Javascript's `Date` object is serializable but its type is lost
+- `Date`: Javascript's `Date` object is serializable, but its type is lost
 - `Bytes`: not serializable
 - `BigInt`: not serializable
 - `Decimal`: not serializable
 
-ZenStack solves this problem by using [superjson](https://github.com/blitz-js/superjson) to deserialize input and serialize output. Since most of the time data is still JSON-serializable, ZenStack adopts superjson in a non-intrusive way. The serialized data is directly put inside the request or response data. When there is extra serialization information (superjson generates it when it encounters data that's not JSON-serializable), it's put inside the `meta` field in the request or response.
+ZenStack solves this problem by using [superjson](https://github.com/blitz-js/superjson) to deserialize input and serialize output. Since data is still JSON-serializable most of the time, ZenStack adopts superjson in a non-intrusive way. The serialized data is directly put inside the request or response data. When there is extra serialization information (superjson generates it when it encounters data that's not JSON-serializable), it's put inside the `meta` field in the request or response.
 
-The benefit of this design is that, if the data is fully JSON-serializable (not involving the types mentioned above), the wire-format is just plain JSON-serialization without any pollution.
+The benefit of this design is that if the data is fully JSON-serializable (not involving the types mentioned above), the wire format is just plain JSON serialization without any pollution.
 
 You can find more details about serialization in the [RPC API Handler](/docs/reference/server-adapters/api-handlers/rpc#serialization) and [RESTful API Handler](/docs/reference/server-adapters/api-handlers/rest#serialization) documentation.
 
 ### 🛠️ Observing Serialization Behavior
 
-To illustrate this, let's try out a few requests to observe the serialization behavior.
+To illustrate this, let's try a few requests to observe the serialization behavior.
 
 Make the following request:
 
@@ -28,7 +28,7 @@ Make the following request:
 curl "http://localhost:3000/api/rpc/list/findFirst?q=%7B%22select%22%3A%7B%22id%22%3Atrue%2C%22title%22%3Atrue%7D%7D" -H "x-user-id: 1"
 ```
 
-You should get a simple response. Since the result data is fully JSON-serializable, there's no extra serialization metadata in the response.
+You should get a simple response. Since the result data is fully JSON-serializable, the response has no extra serialization metadata.
 
 ```json
 {
@@ -69,4 +69,38 @@ We get back a richer response. The `createdAt` and `updatedAt` fields are not di
 }
 ```
 
-The consumer of the API should pass the data and the serialization metadata to the superjson API to get back data with full fidelity.
+The API consumer should pass the data and the serialization metadata to the superjson API to get back data with full fidelity. The following code shows how to deserialize and restore the proper `Date` type for the `createdAt` and `updatedAt` fields.
+
+```ts
+import SuperJSON from 'superjson';
+
+SuperJSON.deserialize({
+    json: {
+        "createdAt" : "2023-11-08T04:38:53.385Z",
+        "id" : 1,
+        "ownerId" : 1,
+        "private" : false,
+        "spaceId" : 1,
+        "title" : "Grocery",
+        "updatedAt" : "2023-11-09T04:52:57.987Z"
+   },
+   meta: {
+        "values" : {
+            "createdAt" : [ "Date" ],
+            "updatedAt" : [ "Date" ]
+        }
+    }
+});
+```
+
+```js
+{
+    createdAt: 2023-11-08T04:38:53.385Z,
+    id: 1,
+    ownerId: 1,
+    private: false,
+    spaceId: 1,
+    title: 'Grocery',
+    updatedAt: 2023-11-09T04:52:57.987Z
+}
+```

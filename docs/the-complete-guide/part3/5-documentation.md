@@ -4,15 +4,15 @@ sidebar_label: 5. API Documentation
 
 # Generating API Documentation
 
-An API is only complete when it's documented. Similar to the API itself, the documentation can also be derived from the ZModel.
+An API is only complete when documented. Similar to the API itself, the documentation can also be derived from the ZModel.
 
-In [Part II](/docs/the-complete-guide/part2/) of the guide, we've learned how to use plugins. ZenStack ships the [@zenstackhq/openapi](/docs/reference/plugins/openapi) plugin to generate [OpenAPI](https://www.openapis.org/) specs from the ZModel schema. Similar to the API handlers, the openapi plugin also supports two flavors: "rpc" and "rest".
+In [Part II](/docs/the-complete-guide/part2/) of the guide, we've learned how to use plugins. ZenStack ships the [@zenstackhq/openapi](/docs/reference/plugins/openapi) plugin to generate [OpenAPI](https://www.openapis.org/) specs from the ZModel schema. Like the API handlers, the openapi plugin also supports two flavors: "rpc" and "rest".
 
 Once the documentation is generated, it's easy to render it using tools like [Swagger UI](https://swagger.io/tools/swagger-ui/) and [Redocly](https://redocly.com/).
 
 ### 🛠️ Serving Documentation For Our Todo API
 
-Let's generate an OpenAPI spec for our Todo API, and serve it using Swagger UI.
+Let's generate an OpenAPI spec for our Todo API and serve it using Swagger UI.
 
 #### 1. Installing Dependencies
 
@@ -55,6 +55,6 @@ app.use(
 );
 ```
 
-Now you can visit the documentation at [http://localhost:3000/api/docs](http://localhost:3000/api/docs) in a browser.
+Now, you can visit the documentation at [http://localhost:3000/api/docs](http://localhost:3000/api/docs) in a browser.
 
 ![Swagger UI](../../assets/todo-app-openapi.png)
