@@ -47,7 +47,7 @@ In this part of the guide, you'll see how to use plugins to achieve various goal
 
 [Go to Part II](/docs/the-complete-guide/part2)
 
-### Part III: Automatic CRUD APIs
+### Part III: Automatic CRUD API
 
 Developers build APIs to support the client side of their applications. One of the most common type of APIs is CRUD - Create, Read, Update, and Delete. Building CRUD APIs is a tedious task but error-prone at the same time.
 

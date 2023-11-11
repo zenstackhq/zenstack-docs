@@ -216,10 +216,13 @@ const config = {
                 // Optional: path for search page that enabled by default (`false` to disable it)
                 searchPagePath: 'search',
             },
+
+            tableOfContents: {
+                maxHeadingLevel: 4,
+            },
         },
 
     plugins: [
-        // require.resolve('docusaurus-plugin-image-zoom'),
         async function myPlugin(context, options) {
             return {
                 name: 'docusaurus-tailwindcss',
