@@ -18,11 +18,11 @@ Here's a quick overview of them:
 
 - [@core/model-meta](/docs/reference/plugins/model-meta)
 
-    Transforms ZModel to light-weighted Javascript to be used at runtime.
+    Transforms ZModel to lightweight Javascript to be used at runtime.
 
 - [@core/access-policy](/docs/reference/plugins/access-policy)
 
-    Transforms access policies into partial Prisma query objects used for injecting Prisma queries at runtime.
+    Transforms access policies into partial Prisma query objects for injecting Prisma queries at runtime.
 
 - [@core/zod](/docs/reference/plugins/zod)
 
@@ -39,15 +39,15 @@ plugin prisma {
 
 ### Maintained Plugins
 
-Besides core plugins, the ZenStack team also maintains a set of useful but non-essential plugins. They are implemented in separate npm packages under the `@zenstackhq` organization.
+Besides core plugins, the ZenStack team maintains a set of useful but non-essential plugins. They are implemented in separate npm packages under the `@zenstackhq` organization.
 
 - [@zenstackhq/tanstack-query](/docs/reference/plugins/tanstack-query)
 
-    Generates frontend data query hooks for targeting [Tanstack Query](https://tanstack.com/query). You'll learn more about using ZenStack for full-stack development in [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of this guide.
+    Generates frontend data query hooks for targeting [Tanstack Query](https://tanstack.com/query). In [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of this guide, you'll learn more about using ZenStack for full-stack development.
 
 - [@zenstackhq/swr](/docs/reference/plugins/swr)
 
-    Generates frontend data query hooks for targeting [SWR](https://swr.vercel.app/). You'll learn more about using ZenStack for full-stack development in [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of this guide.
+    Generates frontend data query hooks for targeting [SWR](https://swr.vercel.app/). In [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of this guide, you'll learn more about using ZenStack for full-stack development.
 
 - [@zenstackhq/trpc](/docs/reference/plugins/trpc)
 

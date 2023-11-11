@@ -36,7 +36,7 @@ app.use('/api/rpc',
 
 ### Custom Server Adapter
 
-Since server adapters are just lightweighted wrappers around API handlers, you can also implement a custom adapter to interact with the API handler directly. This way, you have complete control over how the API handler's result data is processed and sent back to the client as a framework response.
+Since server adapters are just lightweight wrappers around API handlers, you can also implement a custom adapter to interact with the API handler directly. This way, you have complete control over how the API handler's result data is processed and sent back to the client as a framework response.
 
 The following code demonstrates how to add the 'x-requested-by' header with this approach:
 

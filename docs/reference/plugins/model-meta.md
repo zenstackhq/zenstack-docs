@@ -1,11 +1,11 @@
 ---
-description: Built-in plugin for generating light-weighted metadata for introspecting schema at runtime
+description: Built-in plugin for generating lightweight metadata for introspecting schema at runtime
 sidebar_position: 2
 ---
 
 # @core/model-meta
 
-The `@core/model-meta` plugin generates light-weighted metadata for introspecting schema at runtime.
+The `@core/model-meta` plugin generates lightweight metadata for introspecting schema at runtime.
 
 :::info
 This plugin is always automatically included when `zenstack generate` is run. You only need to add it to your ZModel if you want to customize its options.

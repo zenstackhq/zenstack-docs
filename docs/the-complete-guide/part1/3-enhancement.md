@@ -112,7 +112,7 @@ If you know the inner workings of Prisma Client, you'll find ZenStack shares som
 
 - `model-meta.js`
 
-    Light-weighted representation of ZModel's AST.
+    Lightweight representation of ZModel's AST.
 
 - `policy.js`
   

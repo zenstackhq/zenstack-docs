@@ -24,7 +24,7 @@ ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCo
 
 -   Model-meta: `@core/model-meta`
 
-    The model-meta plugin generates the model metadata, which provides basic information about models and fields at runtime. The metadata is much more light-weighted than the whole ZModel AST and is much cheaper to load.
+    The model-meta plugin generates the model metadata, which provides basic information about models and fields at runtime. The metadata is much more lightweight than the whole ZModel AST and is much cheaper to load.
 
     The default output location is `node_modules/.zenstack/model-meta.ts`.
 

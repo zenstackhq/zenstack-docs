@@ -6,7 +6,7 @@ sidebar_label: iron-session
 
 # Integrating With iron-session
 
-[Iron-session](https://www.npmjs.com/package/iron-session) is a lightweighted authentication toolkit. It works with Next.js, Express, and Node.js HTTP servers.
+[Iron-session](https://www.npmjs.com/package/iron-session) is a lightweight authentication toolkit. It works with Next.js, Express, and Node.js HTTP servers.
 
 ### Implement auth endpoints
 

@@ -13,7 +13,7 @@ A plugin can consist of one or more of the following:
 
 - A generator function that transforms the ZModel schema into other artifacts
 
-    The [@core/prisma](/docs/reference/plugins/prisma) built-in plugin is a good example. It strips out all ZenStack-specific syntax from the ZModel schema and generates a standard Prisma schema file that can be used with Prisma's tool chain.
+    The [@core/prisma](/docs/reference/plugins/prisma) built-in plugin is a good example. It strips out all ZenStack-specific syntax from the ZModel schema and generates a standard Prisma schema file that can be used with Prisma's toolchain.
 
 - Custom attributes and functions to extend the ZModel language
 
@@ -29,13 +29,13 @@ If you're experienced with Prisma, you've probably used some generators, like [p
 
 - Ease of programming
 
-    Prisma's generator API uses the internal [DMMF format](https://github.com/prisma/prisma/blob/main/ARCHITECTURE.md#the-dmmf-or-data-model-meta-format) that's undocumented and not very friendly to work with. ZenStack's plugin API uses the ZModel AST, which is a much more intuitive. The ZenStack plugin still receives a DMMF object as input in case you need it.
+    Prisma's generator API uses the internal [DMMF format](https://github.com/prisma/prisma/blob/main/ARCHITECTURE.md#the-dmmf-or-data-model-meta-format) that's undocumented and not very friendly to work with. ZenStack's plugin API uses the ZModel AST, which is much more intuitive. The ZenStack plugin still receives a DMMF object as input in case you need it.
 
 - Extending the schema language
 
-    Prisma's schema language is not open to extension, and the community have been using the [triple slash hack](/docs/guides/existing-prisma#prisma-generators-triple-slash-hack) to inject custom attributes. ZenStack allows plugins to directly introduce custom attributes and functions, and also type-checks them at generation time.
+    Prisma's schema language is not open to extension, and the community has been using the [triple slash hack](/docs/guides/existing-prisma#prisma-generators-triple-slash-hack) to inject custom attributes. ZenStack allows plugins to introduce custom attributes and functions directly and type-check their usage at generation time.
 
-Plugins and generators are not mutually exclusive. ZenStack fully supports Prisma generators and you can use them alongside plugins.
+Plugins and generators are not mutually exclusive. ZenStack fully supports Prisma generators, and you can use them alongside plugins.
 
 :::
 
@@ -45,6 +45,6 @@ In this part of the guide, we'll explore the following topics:
 2. An overview of the built-in plugins
 3. How to write your own plugins
 
-As with Part I, we'll continue evolving our Todo App project, and see how plugins help us get various things done fast. If you're not familiar with the project, please check out the [Sample Project](/docs/the-complete-guide/#sample-project) part first. You can use the "part1" branch of [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1) as a starting point.
+As with Part I, we'll continue evolving our Todo project and see how to create a helpful custom plugin. If you're unfamiliar with the project, please first revisit the [Sample Project](/docs/the-complete-guide/#sample-project) part first. You can use the "part1" branch of [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1) as a starting point.
 
 Let's roll on.
