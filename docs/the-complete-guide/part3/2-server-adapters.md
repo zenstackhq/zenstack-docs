@@ -76,9 +76,9 @@ curl http://localhost:3000
 
 > { "greet": "Hello World!" }
 
-#### 3. Adding ZenStack server adapter
+#### 3. Adding ZenStack server adapter (RPC flavor)
 
-Now let's create an express middleware and mount the CRUD API to the `/api/model` path. Replace `main.ts` with the following content:
+Now let's create an express middleware and mount the CRUD API to the `/api/rpc` path. Replace `main.ts` with the following content:
 
 ```ts
 import { PrismaClient } from '@prisma/client';
@@ -89,17 +89,23 @@ const app = express();
 app.use(express.json());
 
 const prisma = new PrismaClient();
-app.use('/api/model', ZenStackMiddleware({ getPrisma: () => prisma }));
+app.use('/api/rpc', ZenStackMiddleware({ getPrisma: () => prisma }));
 
 app.listen(3000, () => console.log('🚀 Server ready at: http://localhost:3000'));
 ```
+
+:::info
+
+The `ZenStackMiddleware` server adapter uses RPC-flavor API by default.
+
+:::
 
 We've configured the server adapter to use a vanilla Prisma Client for now for quick testing. By default, the server adapter uses RPC-style API. We can hit the endpoint to do a few test now:
 
 - Find a `List`
 
     ```bash
-    curl "http://localhost:3000/api/model/list/findFirst"
+    curl "http://localhost:3000/api/rpc/list/findFirst"
     ```
 
     ```json
@@ -124,16 +130,16 @@ We've configured the server adapter to use a vanilla Prisma Client for now for q
     }
     ```
 
-    :::info Metadata
+:::info Metadata
 
-    The `meta` field contains additional information about the response. In this case, it tells us that the `createdAt` and `updatedAt` fields are serialized from `Date` values. You'll learn more about it in the next chapter.
+The `meta` field contains additional information about the response. In this case, it tells us that the `createdAt` and `updatedAt` fields are serialized from `Date` values. You'll learn more about it in the next chapter.
 
-    :::
+:::
 
 - Find a private `List`
 
     ```bash
-    curl "http://localhost:3000/api/model/list/findFirst?q=%7B%22where%22%3A%7B%22private%22%3Atrue%7D%7D"
+    curl "http://localhost:3000/api/rpc/list/findFirst?q=%7B%22where%22%3A%7B%22private%22%3Atrue%7D%7D"
     ```
 
     :::info
@@ -158,7 +164,7 @@ We've configured the server adapter to use a vanilla Prisma Client for now for q
 - Create a `List`
 
     ```bash
-    curl -XPOST "http://localhost:3000/api/model/list/create" \
+    curl -XPOST "http://localhost:3000/api/rpc/list/create" \
         -d '{"data":{"title":"Jobs to be done","owner":{"connect":{"id":2}},"space":{"connect":{"id":1}}}}' \
         -H 'Content-Type: application/json'
     ```
@@ -196,7 +202,7 @@ function getUser(req: Request) {
     }
 }
 
-app.use('/api/model', 
+app.use('/api/rpc', 
     ZenStackMiddleware({ 
         getPrisma: (req) => enhance(prisma, { user: getUser(req) })
     })
@@ -206,7 +212,7 @@ app.use('/api/model',
 Now, if we hit the endpoint again without the `x-user-id` header, we'll get null response:
 
 ```bash
-curl "http://localhost:3000/api/model/list/findFirst"
+curl "http://localhost:3000/api/rpc/list/findFirst"
 ```
 
 ```json
@@ -216,7 +222,7 @@ curl "http://localhost:3000/api/model/list/findFirst"
 Add the header and request again, we should get back a result then:
 
 ```bash
-curl "http://localhost:3000/api/model/list/findFirst" -H "x-user-id: 1"
+curl "http://localhost:3000/api/rpc/list/findFirst" -H "x-user-id: 1"
 ```
 
 ```json
@@ -235,3 +241,56 @@ curl "http://localhost:3000/api/model/list/findFirst" -H "x-user-id: 1"
 ```
 
 You can try other operations with different user identities. The service's behavior should be consistent with what we've seen in the REPL with the enhanced Prisma in [Part I](/docs/the-complete-guide/part1/access-policy/current-user#%EF%B8%8F-adding-user-based-access-control-to-our-todo-app).
+
+#### 5. Adding ZenStack server adapter (RESTful flavor)
+
+Let's try to mount a RESTful-flavor API under another path `/api/rest`. Add the following code to `main.ts`:
+
+```ts
+import RESTHandler from '@zenstackhq/server/api/rest';
+
+app.use('/api/rest', 
+    ZenStackMiddleware({ 
+        handler: RESTHandler({ endpoint: 'http://localhost:3000/api/rest' }),
+        getPrisma: (req) => enhance(prisma, { user: getUser(req) })
+    })
+);
+```
+
+Now we can fetch the first `List` item by making a RESTful-style request:
+
+```bash
+curl -g 'http://localhost:3000/api/rest/list?page[limit]=1' -H "x-user-id: 1"
+```
+
+:::info
+
+The `-g` parameter passed to `curl` is for allowing square brackets in the URL.
+
+:::
+
+```json
+{
+   "data" : [
+      {
+         "attributes" : {
+            "createdAt" : "2023-11-08T04:38:53.385Z",
+            "ownerId" : 1,
+            "private" : false,
+            "spaceId" : 1,
+            "title" : "Grocery",
+            "updatedAt" : "2023-11-09T04:52:57.987Z"
+         },
+         "id" : 1,
+         "links" : { ... },
+         "relationships" : { ... },
+         "type" : "list"
+      }
+   ],
+   "jsonapi" : {
+      "version" : "1.1"
+   },
+   "links" : { ... },
+   "meta" : { ... }
+}
+```
