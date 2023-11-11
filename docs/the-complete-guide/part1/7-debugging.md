@@ -1,5 +1,5 @@
 ---
-sidebar_label: 8. Debugging
+sidebar_label: 7. Debugging
 ---
 
 #  Debugging

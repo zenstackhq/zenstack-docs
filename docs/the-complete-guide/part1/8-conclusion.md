@@ -1,10 +1,10 @@
 ---
-sidebar_label: 9. Conclusion
+sidebar_label: 8. Conclusion
 ---
 
 import Requirements from '../../_components/_todo-requirements.md';
 
-#  Part I Conclusion
+#  Conclusion
 
 In this part of the guide, we've focused on the core layer of ZenStack - an enhanced Prisma Client. The enhanced Prisma Client essentially turns the ORM into a fully secured data access layer, enabling the upper layer features like the automatic CRUD APIs and the generation of frontend data query libraries.
 

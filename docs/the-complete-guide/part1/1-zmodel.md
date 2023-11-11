@@ -1,5 +1,5 @@
 ---
-sidebar_label: 2. The ZModel Language
+sidebar_label: 1. The ZModel Language
 ---
 
 # The ZModel Language

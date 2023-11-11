@@ -1,5 +1,5 @@
 ---
-sidebar_label: 1. Prisma Crash Course
+sidebar_label: 0. Prisma Crash Course
 ---
 
 # Prisma Crash Course

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 5. Access Policy
+sidebar_label: 4. Access Policy
 ---
 
 # Access Policy

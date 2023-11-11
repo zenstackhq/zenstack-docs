@@ -1,5 +1,5 @@
 ---
-sidebar_label: 6. Data Validation
+sidebar_label: 5. Data Validation
 ---
 
 #  Data Validation
@@ -37,6 +37,16 @@ model User {
     imgUrl String? @url
     password String @length(min: 8, max: 32)
     age Int @gt(0) @lt(120)
+}
+```
+
+All validation attributes also accept an extra parameter `message` for specifying a custom error message. For example:
+
+```zmodel
+model User {
+    ...
+    email String @unique @email('must be a valid email')
+    password String @length(min: 8, max: 32, message: 'must be between 8 and 32 characters long')
 }
 ```
 
@@ -91,7 +101,8 @@ db.user.create({ data: { email: 'xyz.abc' } })
 Observe the validation error:
 
 ```js
-denied by policy: user entities failed 'create' check, input failed validation: Validation error: Invalid email at "email"
+denied by policy: user entities failed 'create' check, input failed validation: Validation error:
+Invalid email at "email"
 Code: P2004
 Meta: {
   reason: 'DATA_VALIDATION_VIOLATION',

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 3. The ZenStack CLI
+sidebar_label: 2. The ZenStack CLI
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';

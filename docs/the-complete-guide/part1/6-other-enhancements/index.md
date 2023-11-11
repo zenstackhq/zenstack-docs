@@ -1,5 +1,5 @@
 ---
-sidebar_label: 7. Other Enhancements
+sidebar_label: 6. Other Enhancements
 ---
 
 # Other Enhancements

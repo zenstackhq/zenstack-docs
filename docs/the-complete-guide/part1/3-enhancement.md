@@ -1,5 +1,5 @@
 ---
-sidebar_label: 4. Enhanced Prisma Client
+sidebar_label: 3. Enhanced Prisma Client
 ---
 
 # Enhanced Prisma Client
