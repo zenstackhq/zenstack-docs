@@ -404,6 +404,48 @@ const onCreate = () => {
 </TabItem>
 </Tabs>
 
+### Automatic Optimistic Update (Preview)
+
+Optimistic update is a technique that allows you to update the data cache immediately when a mutation executes while waiting for the server response. It helps achieve a more responsive UI. TanStack Query provides the [infrastructure for implementing it](https://tanstack.com/query/v5/docs/react/guides/optimistic-updates).
+
+The ZenStack-generated mutation hooks allow you to opt-in to "automatic optimistic update" by passing an extra `optimisticUpdate` argument when calling the hook. When the mutation executes, it analyzes the current queries in the cache and tries to find the ones that need to be updated. When the mutation settles (either succeeded or failed), the queries are invalidated to trigger a re-fetch.
+
+Here's an example:
+
+```ts
+// arguments are mutation options, invalidate, and optimisticUpdate
+const create = useCreatePost(undefined, true, true);
+
+function onCreatePost() {
+    create.mutate({ ... })
+}
+```
+
+When `mutate` executes, if there are active queries like `useFindManyPost()`, the data of the mutation call will be optimistically inserted into the head of the query result.
+
+#### Details of the optimistic behavior
+
+- `create` mutation inserts item to the head of the query results of the corresponding `useFindMany` queries.
+- `update` mutation updates the item in the query results of `useFindXXX` queries and their nested reads by matching the item's ID.
+- `delete` mutation removes the item from the query results of the corresponding `useFindMany` queries and sets `null` to `useFindUnique` and `useFindFirst` query results, by matching the item's ID.
+
+#### Limitations
+
+- The automatic optimistic update relies on ID matching. It only works for queries that select the ID field(s).
+- Non-entity-fetching queries like `count`, `aggregate`, and `groupBy` are not affected.
+- It doesn't respect filter conditions or access policies that potentially affect the queries under update. For example, for query `useFindManyPost({ where: { published: true }})`, when a non-published `Post` is created, it'll still be inserted into the query result.
+
+#### Opt-out
+
+By default, all queries opt into automatic optimistic update. You can opt-out on a per-query basis by passing `false` to the `optimisticUpdate` argument.
+
+```ts
+// arguments are query args, query options, and optimisticUpdate
+const { data } = useFindManyPost({ where: { published: true } }, undefined, false);
+```
+
+When a query opts out, it won't be updated by a mutation, even if the mutation is set to update optimistically.
+
 #### Using Infinite Query
 
 <Tabs>
