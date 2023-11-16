@@ -1275,7 +1275,7 @@ Collection predicate expressions are used for reaching into relation fields. You
 
 ### Using authentication in policy rules
 
-It's very common to use the current login user to verdict if an operation should be permitted. Therefore, ZenStack provides a built-in `auth()` attribute function that evaluates to the `User` entity corresponding to the current user. To use the function, your ZModel file must define a `User` model.
+It's very common to use the current login user to verdict if an operation should be permitted. Therefore, ZenStack provides a built-in `auth()` attribute function that evaluates to the `User` entity corresponding to the current user. To use the function, your ZModel file must define a `User` model or a model marked with the `@@auth` attribute.
 
 You can use `auth()` to:
 
