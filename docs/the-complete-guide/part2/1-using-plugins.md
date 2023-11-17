@@ -27,6 +27,6 @@ plugin openapi {
 }
 ```
 
-A plugin declaration requires a mandatory `provider` field that specifies the package name of the plugin (which the `zenstack` CLI imports directly with `require()`). It can also contain other mandatory and optional fields specific to the plugin.
+A plugin declaration requires a mandatory `provider` field that specifies the package name or Javascript module path of the plugin (which the `zenstack` CLI imports directly with `require()`). It can also contain other mandatory and optional fields specific to the plugin.
 
 When you run `zenstack generate`, the plugin will be executed and generate the output files.

@@ -8,7 +8,7 @@ ZenStack ships with a set of built-in plugins. They fall into the following two 
 
 ### Core Plugins
 
-Most of the core functionalities of ZenStack are implemented as or supported by a few core plugins. They're vital to the operation of ZenStack and are enabled automatically. Core plugins are implemented inside the `zenstack` npm package and have names starting with `@core/`.
+Most of the core functionalities of ZenStack are implemented as or supported by a few core plugins. They're vital to the operation of ZenStack and are enabled automatically as needed. Core plugins are implemented inside the `zenstack` npm package and have names starting with `@core/`.
 
 Here's a quick overview of them:
 

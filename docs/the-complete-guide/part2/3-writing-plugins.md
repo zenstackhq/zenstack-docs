@@ -88,17 +88,27 @@ For ZenStack plugins, the DMMF is provided as an auxiliary input. If you only ne
 
 ### Adding Custom Attributes
 
-A plugin can contribute custom attributes and functions to the ZModel language. To do that, simply include a `plugin.zmodel` file in the plugin package, and declare the attributes and functions there. Check [here](https://github.com/zenstackhq/zenstack/blob/main/packages/plugins/openapi/src/plugin.zmodel) for an example. As a convention for conflict avoidance, please qualify the declaration names with your plugin name. E.g.:
+A plugin can contribute custom attributes and functions to the ZModel language. To do that, simply include a `plugin.zmodel` file in the same directory as the plugin's entry point, and declare the attributes and functions there. Check [here](https://github.com/zenstackhq/zenstack/blob/main/packages/plugins/openapi/src/plugin.zmodel) for an example. As a convention for conflict avoidance, please qualify the declaration names with your plugin name. E.g.:
 
 ```zmodel
-attribute myplugin.include()
+attribute @@myplugin.include()
+```
+
+And you can use it in the ZModel when the plugin is enabled:
+
+```zmodel
+model Foo {
+    ...
+
+    @@myplugin.include()
+}
 ```
 
 ### Publishing a Plugin
 
 If your plugin is specific to your project, you can implement it inside the project and load it with a relative path in the ZModel. No publishing is needed. We'll see how to do that in the next section.
 
-If you're building something reusable, please publish it as an NPM package and [tweet us](https://twitter.com/intent/tweet?text=I've%20published%20a%20%40zenstackhq%20plugin%3A&url=). We'll share it with the community.
+If you're building something reusable, please publish it as an NPM package and [tweet us](https://twitter.com/intent/tweet?text=I've%20published%20a%20%40zenstackhq%20plugin%3A&url=) or reach us on [Discord](https://discord.gg/Ykhr738dUe). We'll be happy to share your work with the community.
 
 ### 🛠️ Building a Markdown Generator Plugin
 

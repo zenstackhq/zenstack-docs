@@ -9,15 +9,15 @@ Welcome to the second part of *ZenStack: The Complete Guide*!
 
 Like many wonderful tools in the web development world, ZenStack adopts a plugin-based architecture. At the core of the system is the ZModel schema, around which features are implemented as plugins.
 
-A plugin can consist of one or more of the following:
+A plugin can include the following parts:
 
-- A generator function that transforms the ZModel schema into other artifacts
+- A function that takes the ZModel AST as input and executes custom logic
 
-    The [@core/prisma](/docs/reference/plugins/prisma) built-in plugin is a good example. It strips out all ZenStack-specific syntax from the ZModel schema and generates a standard Prisma schema file that can be used with Prisma's toolchain.
+    The function usually transforms the AST to another format. The [@core/prisma](/docs/reference/plugins/prisma) built-in plugin is a good example. It strips out all ZenStack-specific syntax from the ZModel schema and generates a standard Prisma schema file that can be used with Prisma's toolchain.
 
 - Custom attributes and functions to extend the ZModel language
 
-    The [@zenstackhq/openapi](/docs/reference/plugins/openapi) plugin provides attributes for controlling how an OpenAPI spec is generated from the ZModel schema. The attributes are commonly interpreted by the generator function.
+    For example, the [@zenstackhq/openapi](/docs/reference/plugins/openapi) plugin provides attributes for controlling how an OpenAPI spec is generated from the ZModel schema. The attributes are commonly interpreted by the generator function.
 
 - Runtime modules that are shipped with the app during deployment
 
