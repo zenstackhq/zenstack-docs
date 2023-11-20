@@ -58,6 +58,8 @@ model Space {
   updatedAt DateTime @updatedAt
   name String
   slug String @unique
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
   members SpaceUser[]
   lists List[]
 }
@@ -83,9 +85,10 @@ model User {
   updatedAt DateTime @updatedAt
   email String @unique
   name String?
-  spaces SpaceUser[]
+  spaces SpaceUser[] // user's space membership
   lists List[]
   todos Todo[]
+  ownedSpaces Space[] // spaces owned by the user
 }
 
 // todo list
