@@ -17,11 +17,12 @@ For ease of demonstration, we'll use the [Next.js](https://nextjs.org/) framewor
 Create a new Next.js project using `create-t3-app`:
 
 ```bash
-npx create-t3-app@latest --prisma --nextAuth --tailwind --CI my-blog-app
+npx create-t3-app@latest --tailwind --nextAuth --prisma --appRouter --CI my-blog-app
 ```
 
 It sets up a project with the following features:
 
+- [Next.js](https://nextjs.org) with app router
 - TypeScript
 - Prisma for ORM
 - [NextAuth.js](https://next-auth.js.org/) for authentication
@@ -70,103 +71,107 @@ Run generation and push the schema to the database:
 npx zenstack generate && npx prisma db push
 ```
 
-### 3. Implementing Credential-Based Authentication
+### 3. Implementing Authentication
+
+#### 3.1 NextAuth Session Provider
+
+To use NextAuth, we'll need to install a session provider at the root of our app. First, create a file `src/components/SessionProvider.tsx` with the following content:
+
+```tsx title="src/components/SessionProvider.tsx"
+'use client';
+
+import { SessionProvider } from 'next-auth/react';
+import React from 'react';
+
+type Props = {
+    children: React.ReactNode;
+};
+function NextAuthSessionProvider({ children }: Props) {
+    return <SessionProvider>{children}</SessionProvider>;
+}
+
+export default NextAuthSessionProvider;
+```
+
+Then, update the `src/app/layout.tsx` file to use it
+
+```tsx title="src/app/layout.tsx"
+import NextAuthSessionProvider from '~/components/SessionProvider';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="en">
+            <body className={`font-sans ${inter.variable}`}>
+                <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+            </body>
+        </html>
+    );
+}
+```
+
+#### 3.2 Credential-Based Auth
 
 The default project created by `create-t3-app` uses Discord OAuth for authentication. We'll replace it with credential-based authentication for simplicity.
 
 Replace the content of `/src/server/auth.ts` with the following:
 
 ```ts
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { PrismaClient } from "@prisma/client";
-import { compare } from "bcryptjs";
-import type { GetServerSidePropsContext } from "next";
-import NextAuth, {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "./db";
-/**
- * Module augmentation for `next-auth` types.
- * Allows us to add custom properties to the `session` object and keep type
- * safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- **/
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import type { PrismaClient } from '@prisma/client';
+import { compare } from 'bcryptjs';
+import NextAuth, { type DefaultSession, type NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { db } from './db';
+
+declare module 'next-auth' {
+    interface Session extends DefaultSession {
+        user: {
+            id: string;
+        } & DefaultSession['user'];
+    }
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks,
- * etc.
- *
- * @see https://next-auth.js.org/configuration/options
- **/
 export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
-  // Include user.id on session
-  callbacks: {
-    session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub!;
-      }
-      return session;
+    session: {
+        strategy: 'jwt',
     },
-  },
-  // Configure one or more authentication providers
-  adapter: PrismaAdapter(db),
-  providers: [
-    CredentialsProvider({
-      credentials: {
-        email: { type: "email" },
-        password: { type: "password" },
-      },
-      authorize: authorize(db),
-    }),
-  ],
+    // Include user.id on session
+    callbacks: {
+        session({ session, token }) {
+            if (session.user) {
+                session.user.id = token.sub!;
+            }
+            return session;
+        },
+    },
+    // Configure one or more authentication providers
+    adapter: PrismaAdapter(db),
+    providers: [
+        CredentialsProvider({
+            credentials: {
+                email: { type: 'email' },
+                password: { type: 'password' },
+            },
+            authorize: authorize(db),
+        }),
+    ],
 };
 
 function authorize(prisma: PrismaClient) {
-  return async (
-    credentials: Record<"email" | "password", string> | undefined,
-  ) => {
-    if (!credentials?.email)
-      throw new Error('"email" is required in credentials');
-    if (!credentials?.password)
-      throw new Error('"password" is required in credentials');
-    const maybeUser = await prisma.user.findFirst({
-      where: { email: credentials.email },
-      select: { id: true, email: true, password: true },
-    });
-    if (!maybeUser?.password) return null;
-    // verify the input password with stored hash
-    const isValid = await compare(credentials.password, maybeUser.password);
-    if (!isValid) return null;
-    return { id: maybeUser.id, email: maybeUser.email };
-  };
+    return async (credentials: Record<'email' | 'password', string> | undefined) => {
+        if (!credentials?.email) throw new Error('"email" is required in credentials');
+        if (!credentials?.password) throw new Error('"password" is required in credentials');
+        const maybeUser = await prisma.user.findFirst({
+            where: { email: credentials.email },
+            select: { id: true, email: true, password: true },
+        });
+        if (!maybeUser?.password) return null;
+        // verify the input password with stored hash
+        const isValid = await compare(credentials.password, maybeUser.password);
+        if (!isValid) return null;
+        return { id: maybeUser.id, email: maybeUser.email };
+    };
 }
-
-/**
- * Wrapper for `getServerSession` so that you don't need to import the
- * `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- **/
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
 
 export default NextAuth(authOptions);
 ```
@@ -192,23 +197,23 @@ ZenStack uses server adapters to mount CRUD APIs to frameworks, and it this seve
 npm install @zenstackhq/server
 ```
 
-Then, create a file `src/pages/api/model/[...path].ts` with the following content:
+Then, create a file `src/app/api/model/[...path]/route.ts` with the following content:
 
-```ts
-import { NextRequestHandler } from '@zenstackhq/server/next';
+```ts title='src/app/api/model/[...path]/route.ts'
 import { enhance } from '@zenstackhq/runtime';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerAuthSession } from '../../../server/auth';
-import { db } from '../../../server/db';
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '~/server/auth';
+import { db } from '~/server/db';
 
-async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
-    const session = await getServerAuthSession({ req, res });
-    // create a wrapper of Prisma client that enforces access policy,
-    // data validation, and @password, @omit behaviors
+async function getPrisma() {
+    const session = await getServerSession(authOptions);
     return enhance(db, { user: session?.user });
 }
 
-export default NextRequestHandler({ getPrisma });
+const handler = NextRequestHandler({ getPrisma, useAppDir: true });
+
+export { handler as DELETE, handler as GET, handler as PATCH, handler as POST, handler as PUT };
 ```
 
 :::info
@@ -218,6 +223,16 @@ The important part here is that we use an enhanced PrismaClient with the server 
 :::
 
 By default, the server adapter uses the RPC flavor of the API. In the next chapter, we'll learn how to use a plugin to generate frontend data query hooks that help up consume it.
+
+Finally, make a change to the `next.config.mjs` file to exclude `@zenstackhq/runtime` package from the server component bundler:
+
+```js title="next.config.mjs"
+const config = {
+  experimental: {
+    serverComponentsExternalPackages: ['@zenstackhq/runtime']
+  }
+};
+```
 
 ### 5. Compile the Project
 

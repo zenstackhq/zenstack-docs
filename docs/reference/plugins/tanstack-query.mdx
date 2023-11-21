@@ -629,7 +629,7 @@ The generated mutation hooks include a `invalidateQueries` boolean parameter. Yo
 Query keys serve as unique identifiers for organizing the query cache. The generated hooks use the following query key scheme:
 
 ```ts
-['zenstack', model, operation, args]
+['zenstack', model, operation, args, flags]
 ```
 
 For example, the query key for
@@ -641,7 +641,7 @@ useFindUniqueUser({ where: { id: '1' } })
 will be:
 
 ```ts
-['zenstack', 'User', 'findUnique', { where: { id: '1' } }]
+['zenstack', 'User', 'findUnique', { where: { id: '1' } }, { infinite: false }]
 ```
 
 You can use the generated `getQueryKey` function to compute it.

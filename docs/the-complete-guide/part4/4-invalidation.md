@@ -42,87 +42,86 @@ In this chapter, we'll add a `Space` and a `List` management UI to our Todo app,
 
 ### 🛠️ Adding Space Management
 
-We'll use the homepage to manage spaces. Replace the content of `src/pages/index.tsx` with the following:
+We'll use the homepage to manage spaces. Replace the content of `src/app/page.tsx` with the following:
 
-```tsx
-import { nanoid } from "nanoid";
-import type { NextPage } from "next";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useCreateSpace, useFindManySpace } from "~/lib/hooks";
+```tsx title="src/app/page.tsx"
+'use client';
+
+import { nanoid } from 'nanoid';
+import type { NextPage } from 'next';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useCreateSpace, useFindManySpace } from '~/lib/hooks';
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  const { mutate: createSpace } = useCreateSpace();
-  const { data: spaces } = useFindManySpace();
+    const { data: session } = useSession();
+    const { mutate: createSpace } = useCreateSpace();
+    const { data: spaces } = useFindManySpace({ orderBy: { createdAt: 'desc' } });
 
-  function onCreateSpace() {
-    const name = prompt("Enter a name for your space");
-    if (name) {
-      createSpace({
-        data: {
-          name,
-          slug: nanoid(6),
-          owner: { connect: { id: session?.user.id } },
-          // add the creating user as an admin member
-          members: {
-            create: {
-              user: { connect: { id: session?.user.id } },
-              role: "ADMIN",
-            },
-          },
-        },
-      });
+    function onCreateSpace() {
+        const name = prompt('Enter a name for your space');
+        if (name) {
+            createSpace({
+                data: {
+                    name,
+                    slug: nanoid(6),
+                    owner: { connect: { id: session?.user.id } },
+                    // add the creating user as an admin member
+                    members: {
+                        create: {
+                            user: { connect: { id: session?.user.id } },
+                            role: 'ADMIN',
+                        },
+                    },
+                },
+            });
+        }
     }
-  }
 
-  return (
-    <div className="container mx-auto flex justify-center">
-      {session?.user ? (
-        <div className="mt-8 flex w-full flex-col items-center">
-          <h1 className="text-center text-2xl">
-            Welcome {session.user.email}{" "}
-            <button
-              className="btn btn-ghost btn-xs mt-4"
-              onClick={() => signOut({ callbackUrl: "/signin" })}
-            >
-              Logout
-            </button>
-          </h1>
+    return (
+        <div className="container mx-auto flex justify-center">
+            {session?.user ? (
+                <div className="mt-8 flex w-full flex-col items-center">
+                    <h1 className="text-center text-2xl">
+                        Welcome {session.user.email}{' '}
+                        <button
+                            className="btn btn-ghost btn-xs mt-4"
+                            onClick={() => signOut({ callbackUrl: '/signin' })}
+                        >
+                            Logout
+                        </button>
+                    </h1>
 
-          <div className="w-full p-8">
-            <h2 className="mb-8 text-xl">
-              Choose a space to start, or{" "}
-              <button
-                className="btn btn-link p-0 text-xl"
-                onClick={onCreateSpace}
-              >
-                create a new one.
-              </button>
-            </h2>
+                    <div className="w-full p-8">
+                        <h2 className="mb-8 text-xl">
+                            Choose a space to start, or{' '}
+                            <button className="btn btn-link p-0 text-xl" onClick={onCreateSpace}>
+                                create a new one.
+                            </button>
+                        </h2>
 
-            <ul className="flex gap-4">
-              {spaces?.map((space) => (
-                <Link href={`/spaces/${space.slug}`} key={space.id}>
-                  <li className="flex h-32 w-72 items-center justify-center rounded-lg border text-2xl">
-                    {space.name}
-                  </li>
-                </Link>
-              ))}
-            </ul>
-          </div>
+                        <ul className="flex gap-4">
+                            {spaces?.map((space) => (
+                                <Link href={`/spaces/${space.slug}`} key={space.id}>
+                                    <li className="flex h-32 w-72 items-center justify-center rounded-lg border text-2xl">
+                                        {space.name}
+                                    </li>
+                                </Link>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            ) : (
+                <div>
+                    Please{' '}
+                    <Link href="/signin">
+                        <button className="btn btn-link p-0">login</button>
+                    </Link>{' '}
+                    to get started
+                </div>
+            )}
         </div>
-      ) : (
-        <div>
-          Please{" "}
-          <Link href="/signin">
-            <button className="btn btn-link p-0">login</button>
-          </Link>{" "}
-          to get started
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Home;
@@ -153,3 +152,76 @@ With this change, the created space won't show up in the list until you refresh 
 :::
 
 ### 🛠️ Adding List Management
+
+List management is essentially the same as space's, so we'll skip the code walkthrough. Here's the content of `src/app/spaces/[slug]/page.tsx`:
+
+```tsx title="src/app/spaces/[slug]/page.tsx"
+'use client';
+
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useCreateList, useFindManyList, useFindUniqueSpace } from '~/lib/hooks';
+
+export default function SpaceHome() {
+    const { slug } = useParams<{ slug: string }>();
+    console.log('slug', slug);
+
+    const { data: session } = useSession();
+
+    const { data: space } = useFindUniqueSpace({ where: { slug } }, { enabled: !!session?.user });
+
+    const { data: lists } = useFindManyList(
+        {
+            where: { space: { slug } },
+            include: { owner: true },
+            orderBy: { updatedAt: 'desc' },
+        },
+        { enabled: !!session?.user },
+    );
+
+    const { mutate: createList } = useCreateList();
+
+    function onCreateList() {
+        const title = prompt('Enter a title for your list');
+        if (title) {
+            createList({
+                data: {
+                    title,
+                    space: { connect: { id: space?.id } },
+                    owner: { connect: { id: session?.user.id } },
+                },
+            });
+        }
+    }
+
+    if (!session?.user || !space || !lists) return null;
+
+    return (
+        <div className="container mx-auto mt-16">
+            <h1 className="text-center text-3xl">
+                Welcome to Space <span className="italic">{space.name}</span>
+            </h1>
+            <div className="p-8">
+                <button className="btn btn-primary btn-wide" onClick={onCreateList}>
+                    Create a list
+                </button>
+
+                <ul className="mt-8 flex flex-wrap gap-6">
+                    {lists?.map((list) => (
+                        <Link href={`/spaces/${slug}/${list.id}`} key={list.id}>
+                            <li className="flex h-32 w-72 items-center justify-center rounded-lg border text-2xl">
+                                {list.title}
+                            </li>
+                        </Link>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}
+```
+
+The result should look like this:
+
+![List management](list-mgmt.png)

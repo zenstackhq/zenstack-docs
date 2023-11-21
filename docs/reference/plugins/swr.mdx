@@ -211,7 +211,7 @@ const Posts = ({ userId }: { userId: string }) => {
 Query keys serve as unique identifiers for organizing the query cache. The generated hooks use the following query key scheme:
 
 ```ts
-JSON.stringify({ prefix: 'zenstack', model, operation, args })
+JSON.stringify({ prefix: 'zenstack', model, operation, args, flags })
 ```
 
 For example, the query key for
@@ -223,7 +223,13 @@ useFindUniqueUser({ where: { id: '1' } })
 will be:
 
 ```ts
-JSON.stringify({ prefix: 'zenstack', model: 'User', 'findUnique', args: { where: { id: '1' } } })
+JSON.stringify({ 
+    prefix: 'zenstack',
+    model: 'User', 
+    operation: 'findUnique', 
+    args: { where: { id: '1' } }, 
+    flags: { infinite: false } 
+})
 ```
 
 You can use the generated `getQueryKey` function to compute it.
