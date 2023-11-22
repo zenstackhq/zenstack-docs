@@ -1,6 +1,6 @@
 ---
 sidebar_label: "The Complete Guide"
-sidebar_position: 3
+sidebar_position: 4
 title: "ZenStack: The Complete Guide"
 description: The Complete Guide of ZenStack
 ---
