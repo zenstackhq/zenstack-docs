@@ -4,15 +4,15 @@ sidebar_label: 4. Automatic Invalidation
 
 # Automatic Invalidation
 
-Data query libraries, like TanStack Query and SWR, are essentially cache managers. They cache the data fetched from the server, let you bind it to the UI, and allows you to invalidate the query cache when the data is updated.
+Data query libraries like TanStack Query and SWR are essentially cache managers. They cache the data fetched from the server, let you bind it to the UI, and allow you to invalidate the query cache when the data is updated.
 
-In application development, query invalidation is developers' job. After making a mutation, a developer should know what query are impacted, compute the keys of the queries, and trigger invalidation. For example, after creating a `Todo`, you'll need to remember to invalidate the queries directly or indirectly fetch a list of Todos. This can be hard to manage when your app gets more complex.
+In application development, query invalidation is the developers' job. After making a mutation, a developer should know what queries are impacted, compute their keys, and trigger invalidation. For example, after creating a `Todo`, you'll need to remember to invalidate the queries that directly or indirectly fetch a list of Todos. This can be hard to manage when your app gets more complex.
 
-Fortunately, ZenStack can fully automate it for you, by exploiting an important fact:
+Fortunately, ZenStack can fully automate it for you by exploiting an important fact:
 
-> It knows what mutations impact what kind of queries for the hooks it generated.
+> It knows what mutations impact what kind of queries for the hooks it generates.
 
-For example, when you use `useCreateTodo()` to create a `Todo`, ZenStack can go through the query cache, and identify all queries that are potentially directly or indirectly impacted by the mutation, and invalidate them. For example, a query made with:
+For example, when you use `useCreateTodo()` to create a `Todo`, ZenStack can go through the query cache, identify all queries potentially impacted by the mutation, and invalidate them. For example, a query made with:
 
 ```ts
 useFindManyList({ include: { todos: true } });
@@ -22,7 +22,7 @@ will be invalidated because it fetches a list of Todos with nested reading.
 
 :::info How ZenStack uses query keys
 
-ZenStack uses a quintuple to for a query key:
+ZenStack uses a quintuple to form a query key:
 
 ```ts
 ['zenstack', model, operation, args, flags]
@@ -38,7 +38,7 @@ You usually don't need to use query keys directly, but the generated hooks provi
 
 :::
 
-In this chapter, we'll add a `Space` and a `List` management UI to our Todo app, and see how the automatic invalidation works in action.
+In this chapter, we'll add a `Space` and a `List` management UI to our Todo app and see how the automatic invalidation works in action.
 
 ### 🛠️ Adding Space Management
 
@@ -54,106 +54,106 @@ import Link from 'next/link';
 import { useCreateSpace, useFindManySpace } from '~/lib/hooks';
 
 const Home: NextPage = () => {
-    const { data: session } = useSession();
-    const { mutate: createSpace } = useCreateSpace();
-    const { data: spaces } = useFindManySpace({ orderBy: { createdAt: 'desc' } });
+  const { data: session } = useSession();
+  const { mutate: createSpace } = useCreateSpace();
+  const { data: spaces } = useFindManySpace({ orderBy: { createdAt: 'desc' } });
 
-    function onCreateSpace() {
-        const name = prompt('Enter a name for your space');
-        if (name) {
-            createSpace({
-                data: {
-                    name,
-                    slug: nanoid(6),
-                    owner: { connect: { id: session?.user.id } },
-                    // add the creating user as an admin member
-                    members: {
-                        create: {
-                            user: { connect: { id: session?.user.id } },
-                            role: 'ADMIN',
-                        },
-                    },
-                },
-            });
-        }
+  function onCreateSpace() {
+    const name = prompt('Enter a name for your space');
+    if (name) {
+      createSpace({
+        data: {
+          name,
+          slug: nanoid(6),
+          owner: { connect: { id: session?.user.id } },
+          // add the creating user as an admin member
+          members: {
+            create: {
+              user: { connect: { id: session?.user.id } },
+              role: 'ADMIN',
+            },
+          },
+        },
+      });
     }
+  }
 
-    return (
-        <div className="container mx-auto flex justify-center">
-            {session?.user ? (
-                <div className="mt-8 flex w-full flex-col items-center">
-                    <h1 className="text-center text-2xl">
-                        Welcome {session.user.email}{' '}
-                        <button
-                            className="btn btn-ghost btn-xs mt-4"
-                            onClick={() => signOut({ callbackUrl: '/signin' })}
-                        >
-                            Logout
-                        </button>
-                    </h1>
+  return (
+    <div className="container mx-auto flex justify-center">
+      {session?.user ? (
+        <div className="mt-8 flex w-full flex-col items-center">
+          <h1 className="text-center text-2xl">
+            Welcome {session.user.email}{' '}
+            <button
+                className="btn btn-ghost btn-xs mt-4"
+                onClick={() => signOut({ callbackUrl: '/signin' })}
+            >
+              Logout
+            </button>
+          </h1>
 
-                    <div className="w-full p-8">
-                        <h2 className="mb-8 text-xl">
-                            Choose a space to start, or{' '}
-                            <button className="btn btn-link p-0 text-xl" onClick={onCreateSpace}>
-                                create a new one.
-                            </button>
-                        </h2>
+          <div className="w-full p-8">
+            <h2 className="mb-8 text-xl">
+              Choose a space to start, or{' '}
+              <button className="btn btn-link p-0 text-xl" onClick={onCreateSpace}>
+                create a new one.
+              </button>
+            </h2>
 
-                        <ul className="flex gap-4">
-                            {spaces?.map((space) => (
-                                <Link href={`/spaces/${space.slug}`} key={space.id}>
-                                    <li className="flex h-32 w-72 items-center justify-center rounded-lg border text-2xl">
-                                        {space.name}
-                                    </li>
-                                </Link>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    Please{' '}
-                    <Link href="/signin">
-                        <button className="btn btn-link p-0">login</button>
-                    </Link>{' '}
-                    to get started
-                </div>
-            )}
+            <ul className="flex gap-4">
+              {spaces?.map((space) => (
+                <Link href={`/spaces/${space.slug}`} key={space.id}>
+                  <li className="flex h-32 w-72 items-center justify-center rounded-lg border text-2xl">
+                    {space.name}
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </div>
         </div>
-    );
+      ) : (
+        <div>
+          Please{' '}
+          <Link href="/signin">
+            <button className="btn btn-link p-0">login</button>
+          </Link>{' '}
+          to get started
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Home;
 ```
 
-The key part of the code is the use of `useFindManySpace` query hook and the `useCreateSpace` mutation hook. Some quick notes about the logic:
+The key part is the usage of the `useFindManySpace` query hook and the `useCreateSpace` mutation hook. Some quick notes about the logic:
 
-- Calling `useFindManySpace` is conceptually equivalent to calling `db.space.findMany()` in the backend. The access policies make sure only the spaces readable to the user are returned.
+- Calling `useFindManySpace` is conceptually equivalent to calling `db.space.findMany()` in the backend. The access policies ensure only the spaces readable to the user are returned.
 
-- The `onCreateSpace` function shows the flexibility of the hooks. When creating a space, we make a nested write to create a `SpaceUser` record that adds the user as the admin member of the space. The call is executed in the backend as a nested write too, so the two create operations are atomic.
+- The `onCreateSpace` function shows the flexibility of the hooks. When creating a space, we make a nested write to create a `SpaceUser` record that adds the user as the admin member of the space. The call is also executed in the backend as a nested write, so the two create operations are atomic.
 
-Now you can head to the homepage and create a few spaces. The UI should look like this:
+Now, you can head to the homepage and create a few spaces. The UI should look like this:
 
 ![Space management](space-mgmt.png)
 
-You've probably already noticed this: after creating a space, you don't need to refresh the UI to see the result. ZenStack figures out that the `useCreateSpace` mutation can potentially impact the `useFindManySpace` query, and invalidates it automatically.
+You've probably already noticed this: after creating a space, you don't need to refresh the UI to see the result. ZenStack figures out that the `useCreateSpace` mutation can potentially impact the `useFindManySpace` query and automatically invalidates it.
 
 :::tip Opt-out of automatic invalidation
 
-When calling a mutation hook, you can pass an extra `invalidateQueries` argument as `false` to opt-out of automatic invalidation. For example:
+When calling a mutation hook, you can pass an extra `invalidateQueries` argument as `false` to opt out of automatic invalidation. For example:
 
 ```ts
 const { mutate: createSpace } = useCreateSpace(undefined, false);
 ```
 
-With this change, the created space won't show up in the list until you refresh the page.
+With this change, the created space won't appear in the list until you refresh the page.
 
 :::
 
 ### 🛠️ Adding List Management
 
-List management is essentially the same as space's, so we'll skip the code walkthrough. Here's the content of `src/app/spaces/[slug]/page.tsx`:
+List management is essentially the same as space, so we'll skip the code walkthrough. Here's the content of `src/app/spaces/[slug]/page.tsx`:
 
 ```tsx title="src/app/spaces/[slug]/page.tsx"
 'use client';

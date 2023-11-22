@@ -4,23 +4,23 @@ sidebar_label: 5. Optimistic Update
 
 # Optimistic Update
 
-Optimistic update is a technique that allows us to update the UI immediately after a user action, without waiting for the server response. It's a great way to improve the perceived performance of an application, and is especially useful for the parts where users interact with the UI frequently.
+Optimistic update is a technique that allows us to update the UI immediately after a user action without waiting for the server response. It's a great way to improve the perceived performance of an application and is especially useful for the parts where users interact with the UI frequently.
 
-Libraries like TanStack Query and SWR provides the framework for developers to implement optimistic update. The approach is essentially to update the query cache immediately after the user action, and revert or invalidate the cache after the server response comes back (either success or error). However, similar to the query invalidation problem we discussed in the previous chapter, the challenge is to identify which queries need to be updated, and how.
+Libraries like TanStack Query and SWR provides the framework for developers to implement optimistic update. The approach is essentially to update the query cache immediately after the user action and revert or invalidate the cache after the server response comes back (either success or error). However, similar to the query invalidation problem we discussed in the previous chapter, the challenge is identifying which queries need to be updated and how.
 
 ZenStack supports automatic optimistic update for the hooks it generates. It uses a set of rules to update queries and aims to cover the most common use cases. You can find more on how it works [here](/docs/reference/plugins/tanstack-query#details-of-the-optimistic-behavior).
 
 :::info Automatic optimistic update is an approximation
 
-It's often impossible to accurately determine what's the correct way to update a query cache from the frontend. For example, you may have a query that fetches a filtered list of Todos using `useFindManyTodo()` hook. When creating a new Todo, we can't precisely determine if the new item should be inserted into the query result (i.e., matching the filter conditions) without querying the database. But paradoxically, if we query the database, the update is no longer optimistic.
+It's often impossible to accurately determine the correct way to update a query cache from the frontend. For example, you may have a query that fetches a filtered list of Todos using the `useFindManyTodo()` hook. When creating a new Todo, we can't precisely determine if the new item should be inserted into the query result (i.e., matching the filter conditions) without querying the database. But paradoxically, the update is no longer optimistic if we query the database.
 
-ZenStack takes an "optimistic" action here and inserts the new Todo into the query result. It's not always correct, but the worst case scenario is that the item shows up on the list for a short while until the query is invalidated upon getting the server response.
+ZenStack takes an "optimistic" action here and inserts the new Todo into the query result. It's not always correct, but the worst-case scenario is that the item shows up on the list for a short while until the query is invalidated upon getting the server response.
 
 :::
 
 ### 🛠️ Adding Todo Management
 
-The main missing part of our sample app is managing Todos in a List. This is a great place to implement optimistic update, because users may add, update, or delete Todos in quick paces, and waiting for server response to update the UI will result in a very sluggish experience.
+The main missing part of our sample app is managing Todos in a List. This is a great place to implement optimistic update because users may add, update, or delete Todos in quick paces, and waiting for the server response to update the UI will result in a very sluggish experience.
 
 Let's first implement the Todo management UI without optimistic update. First, create a component `src/components/TodoComponent.tsx` to manage one single Todo:
 
@@ -168,11 +168,11 @@ export default function TodoList() {
 }
 ```
 
-To simulate usage in the real world, I've enabled Chrome's network throttling to "Fast 3G" mode. Here's how it looks like:
+To simulate usage in the real world, I've enabled Chrome's network throttling to "Fast 3G" mode. Here's what it looks like:
 
 ![Todo management without optimistic update](todo-mgmt-non-optimistic.gif)
 
-It's obviously very sluggish. Not something a user wants to pay for.
+It's obviously very sluggish. It's not something a user wants to pay for.
 
 Let's make some small changes to enable automatic optimistic update. In `src/pages/spaces/[slug]/[listId]/index.tsx`, change the `useCreateTodo` call to the following:
 
@@ -197,7 +197,7 @@ Now, if we repeat the same test with network throttling, we'll see a much better
 
 :::tip Opt-out of automatic optimistic update
 
-When you enable automatic optimistic update for a mutation, it applies to all queries that may be impacted. If this is not desirable, you can pass an extra `optimistic` argument as `false` to opt-out of automatic optimistic update. For example:
+When you enable automatic optimistic update for a mutation, it applies to all queries that may be impacted. If this is not desirable, you can pass an extra `optimisticUpdate` argument as `false` to opt out of automatic optimistic update. For example:
 
 ```ts
 const { data: todos } = useFindManyTodo(

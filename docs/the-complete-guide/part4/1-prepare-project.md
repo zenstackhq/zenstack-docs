@@ -2,13 +2,13 @@
 sidebar_label: 1. Creating a Full-Stack Project
 ---
 
-# Creating a Full-Stack Project
+# 🛠️ Creating a Full-Stack Project
 
-To simplify the process of building our full-stack Todo app, we'll recreate the project from scratch using the [create-t3-app](https://create.t3.gg/) scaffolding tool - which saves us a lot of time integrating different tools and libraries manually. We'll reuse the ZModel schema from the previous part.
+To simplify the process of building our full-stack Todo app, we'll recreate the project from scratch using the [create-t3-app](https://create.t3.gg/) scaffolding tool - saving us a lot of time manually integrating different tools and libraries. We'll reuse the ZModel schema from the previous part.
 
 :::info ZenStack is framework-agnostic
 
-For ease of demonstration, we'll use the [Next.js](https://nextjs.org/) framework for the frontend. However, ZenStack is framework-agnostic. Most parts of the content are applicable to other frameworks, include full-stack frameworks like like [Nuxt](https://nuxt.com/) and [SvelteKit](https://kit.svelte.dev/), or SPA + backend frameworks like [Express](https://expressjs.com/), [Fastify](https://fastify.dev/), [NestJS](https://nestjs.com/).
+For ease of demonstration, we'll use the [Next.js](https://nextjs.org/) framework for full-stack development. However, ZenStack is framework-agnostic. Most of the content apply to other choices, including full-stack ones like like [Nuxt](https://nuxt.com/) and [SvelteKit](https://kit.svelte.dev/), or SPA + backend frameworks like [Express](https://expressjs.com/), [Fastify](https://fastify.dev/), [NestJS](https://nestjs.com/).
 
 :::
 
@@ -84,10 +84,10 @@ import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 
 type Props = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 function NextAuthSessionProvider({ children }: Props) {
-    return <SessionProvider>{children}</SessionProvider>;
+  return <SessionProvider>{children}</SessionProvider>;
 }
 
 export default NextAuthSessionProvider;
@@ -99,13 +99,13 @@ Then, update the `src/app/layout.tsx` file to use it
 import NextAuthSessionProvider from '~/components/SessionProvider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <html lang="en">
-            <body className={`font-sans ${inter.variable}`}>
-                <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={`font-sans ${inter.variable}`}>
+        <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+      </body>
+    </html>
+  );
 }
 ```
 
@@ -124,53 +124,56 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { db } from './db';
 
 declare module 'next-auth' {
-    interface Session extends DefaultSession {
-        user: {
-            id: string;
-        } & DefaultSession['user'];
-    }
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+    } & DefaultSession['user'];
+  }
 }
 
 export const authOptions: NextAuthOptions = {
-    session: {
-        strategy: 'jwt',
+  session: {
+    strategy: 'jwt',
+  },
+  // Include user.id on session
+  callbacks: {
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.sub!;
+      }
+      return session;
     },
-    // Include user.id on session
-    callbacks: {
-        session({ session, token }) {
-            if (session.user) {
-                session.user.id = token.sub!;
-            }
-            return session;
-        },
-    },
-    // Configure one or more authentication providers
-    adapter: PrismaAdapter(db),
-    providers: [
-        CredentialsProvider({
-            credentials: {
-                email: { type: 'email' },
-                password: { type: 'password' },
-            },
-            authorize: authorize(db),
-        }),
-    ],
+  },
+  // Configure one or more authentication providers
+  adapter: PrismaAdapter(db),
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: { type: 'email' },
+        password: { type: 'password' },
+      },
+      authorize: authorize(db),
+    }),
+  ],
 };
 
 function authorize(prisma: PrismaClient) {
-    return async (credentials: Record<'email' | 'password', string> | undefined) => {
-        if (!credentials?.email) throw new Error('"email" is required in credentials');
-        if (!credentials?.password) throw new Error('"password" is required in credentials');
-        const maybeUser = await prisma.user.findFirst({
-            where: { email: credentials.email },
-            select: { id: true, email: true, password: true },
-        });
-        if (!maybeUser?.password) return null;
-        // verify the input password with stored hash
-        const isValid = await compare(credentials.password, maybeUser.password);
-        if (!isValid) return null;
-        return { id: maybeUser.id, email: maybeUser.email };
-    };
+  return async (credentials: Record<'email' | 'password', string> | undefined) => {
+    if (!credentials?.email) throw new Error('"email" is required in credentials');
+    if (!credentials?.password) throw new Error('"password" is required in credentials');
+
+    const maybeUser = await prisma.user.findFirst({
+      where: { email: credentials.email },
+      select: { id: true, email: true, password: true },
+    });
+    if (!maybeUser?.password) return null;
+
+    // verify the input password with stored hash
+    const isValid = await compare(credentials.password, maybeUser.password);
+    if (!isValid) return null;
+    
+    return { id: maybeUser.id, email: maybeUser.email };
+  };
 }
 
 export default NextAuth(authOptions);
@@ -191,7 +194,7 @@ You should use a strong `NEXTAUTH_SECRET` in a real application.
 
 ### 4. Mounting the CRUD API
 
-ZenStack uses server adapters to mount CRUD APIs to frameworks, and it this several built-in adapters for popular frameworks - one of which is Next.js. First, install the server adapter package:
+ZenStack uses server adapters to mount CRUD APIs to frameworks, and it has several pre-built adapters for popular frameworks - one of which is Next.js. First, install the server adapter package:
 
 ```bash
 npm install @zenstackhq/server
@@ -207,8 +210,8 @@ import { authOptions } from '~/server/auth';
 import { db } from '~/server/db';
 
 async function getPrisma() {
-    const session = await getServerSession(authOptions);
-    return enhance(db, { user: session?.user });
+  const session = await getServerSession(authOptions);
+  return enhance(db, { user: session?.user });
 }
 
 const handler = NextRequestHandler({ getPrisma, useAppDir: true });
@@ -218,13 +221,13 @@ export { handler as DELETE, handler as GET, handler as PATCH, handler as POST, h
 
 :::info
 
-The important part here is that we use an enhanced PrismaClient with the server adapter, so all API calls are automatically subject to the access policies defined in the ZModel schema.
+The crucial part is that we use an enhanced PrismaClient with the server adapter, so all API calls are automatically subject to the access policies defined in the ZModel schema.
 
 :::
 
-By default, the server adapter uses the RPC flavor of the API. In the next chapter, we'll learn how to use a plugin to generate frontend data query hooks that help up consume it.
+In the next chapter, we'll learn how to use a plugin to generate frontend data query hooks that help us consume it.
 
-Finally, make a change to the `next.config.mjs` file to exclude `@zenstackhq/runtime` package from the server component bundler:
+Finally, make a change to the `next.config.mjs` file to exclude the `@zenstackhq/runtime` package from the server component bundler:
 
 ```js title="next.config.mjs"
 const config = {
@@ -233,6 +236,12 @@ const config = {
   }
 };
 ```
+
+:::info Why is this needed?
+
+Next.js's server component bundler automatically bundles dependencies, but it has some restrictions on the set of Node.js features a package can use. The `@zenstackhq/runtime` package makes [unsupported](https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages) `require()` calls. We'll try to make it compatible in a future release. 
+
+:::
 
 ### 5. Compile the Project
 
