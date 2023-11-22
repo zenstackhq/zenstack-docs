@@ -4,7 +4,7 @@ sidebar_label: 1. Creating a Full-Stack Project
 
 # 🛠️ Creating a Full-Stack Project
 
-To simplify the process of building our full-stack Todo app, we'll recreate the project from scratch using the [create-t3-app](https://create.t3.gg/) scaffolding tool - saving us a lot of time manually integrating different tools and libraries. We'll reuse the ZModel schema from the previous part.
+To simplify the process of building our full-stack Todo app, we'll recreate the project from scratch using the [create-t3-app](https://create.t3.gg/) scaffolding tool - saving us a lot of time manually integrating different tools and libraries. We'll reuse the ZModel schema we built in Part I.
 
 :::info ZenStack is framework-agnostic
 
@@ -171,7 +171,7 @@ function authorize(prisma: PrismaClient) {
     // verify the input password with stored hash
     const isValid = await compare(credentials.password, maybeUser.password);
     if (!isValid) return null;
-    
+
     return { id: maybeUser.id, email: maybeUser.email };
   };
 }

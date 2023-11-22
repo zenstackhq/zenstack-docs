@@ -46,6 +46,17 @@ Enforcing access policies causes an enhanced Prisma Client to behave differently
 - Read operations can return fewer rows than with a raw Prisma Client.
 - Write operations can fail with an error if policies are violated. See [Error Handling](/docs/reference/error-handling) for more details.
 
+### ZenStack Access Policy vs Postgres Row-Level Security
+
+If you are an experienced Postgres user, or are familiar with products like [Supabase](https://supabase.com/) or [PostgREST](https://postgrest.org/), you may find ZenStack's access policy similar to Postgres' [row-level security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html). Conceptually, they're identical: they both let you define access control rules at the schema level and enforce them automatically during data access.
+
+ZenStack's access policy is NOT implemented with Postgres RLS. Here are some key differences between them:
+
+- RLS is implemented at the database engine level, while ZenStack's access policy is at the ORM level.
+- Due to the different levels of implementation, RLS is likely more performant, but ZenStack's access policy is more portable (it supports databases other than Postgres).
+- RLS is defined in SQL, while ZenStack's access policies are defined in a more intuitive expression language.
+- RLS, as its name suggests, is limited to row-level access control. ZenStack's access policy supports both row-level and field-level access control.
+
 ---
 
 Following this part of the guide, you'll build an in-depth understanding of how access policy works in ZenStack and how to use it to secure your data.

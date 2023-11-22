@@ -81,7 +81,7 @@ model Comment extends Base {
 
 #### A Better Plugin System
 
-Prisma allows you to write custom generators. However, the generator development API is undocumented and difficult to understand. ZenStack provides a plugin system that enables you to generate custom artifacts with a simple API and object model. In fact, almost all the features of ZenStack itself are implemented as plugins.
+Prisma allows you to write custom generators. However, the generator development API is undocumented and difficult to understand. ZenStack provides a plugin system that enables you to generate custom artifacts with a simple API and object model. In fact, almost all the features of ZenStack itself are implemented as plugins. [Part II](/docs/the-complete-guide/part2) of this guide is dedicated to covering the plugin system.
 
 ### ZModel Structure
 

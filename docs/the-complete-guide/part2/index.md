@@ -7,7 +7,7 @@ sidebar_position: 2
 
 Welcome to the second part of *ZenStack: The Complete Guide*!
 
-Like many wonderful tools in the web development world, ZenStack adopts a plugin-based architecture. At the core of the system is the ZModel schema, around which features are implemented as plugins.
+Like many wonderful tools in the web development world, ZenStack adopts a plugin-based architecture. At the core of the system is the ZModel schema, around which features are implemented as plugins. It's perfectly fine to use ZenStack just as enhanced Prisma ORM, as we explained in Part I. However, plugins enable many other use cases and allow you to extend the system as needed.
 
 A plugin can include the following parts:
 
