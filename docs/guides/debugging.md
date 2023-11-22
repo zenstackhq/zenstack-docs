@@ -57,6 +57,8 @@ prisma:info [policy] `findMany` list:
 
 The `zenstack` CLI provides a REPL environment for you to execute queries with the regular or enhanced PrismaClient interactively. You can quickly switch between different user contexts and see how the access policies affect the result.
 
+<iframe width="800" height="450" src="https://www.youtube.com/embed/yJr8zZVj-JA?si=kACpOQH57XINBCR7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 Please find more details about the REPL in the [CLI reference](/docs/reference/cli#repl).
 
 ---
