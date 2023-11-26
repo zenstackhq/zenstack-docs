@@ -36,7 +36,6 @@ function InfiniteLooper({ direction, className, children, ...props }: React.Prop
 
         const widthDeficit = parentWidth - width;
         const instanceWidth = width / innerRef.current.children.length;
-        console.log(direction, instanceWidth);
 
         if (widthDeficit && instanceWidth > 0) {
             setLooperInstances(
