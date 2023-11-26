@@ -1,40 +1,53 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { HiArrowSmRight } from 'react-icons/hi';
 
-function Badge({ children }: { children: ReactNode }) {
+function Badge(props: React.PropsWithChildren) {
     return (
-        <span className="text-emerald-500 dark:text-emerald-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-xl border border-solid border-emerald-500 dark:border-emerald-600">
-            {children}
-        </span>
+        <span
+            {...props}
+            className="w-fit text-emerald-500 dark:text-emerald-600 text-xs font-medium px-2.5 py-0.5 rounded-xl border border-solid border-emerald-500 dark:border-emerald-600"
+        />
     );
 }
 
-function Title({ children }: { children: ReactNode }) {
+function Title(props: React.PropsWithChildren) {
     return (
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-700 dark:text-gray-300">{children}</h3>
+        <h3
+            {...props}
+            className="max-readable-text-width flex items-center text-xl md:text-2xl lg:text-3xl font-semibold text-gray-700 dark:text-gray-300"
+        />
     );
 }
 
-function Content({ children }: { children: ReactNode }) {
-    return <p className="lg:text-lg text-gray-600 dark:text-gray-400 font-normal">{children}</p>;
+function Content(props: React.PropsWithChildren) {
+    return <p {...props} className="max-readable-text-width lg:text-lg text-gray-600 dark:text-gray-400 font-normal" />;
 }
 
-function LearnMore({ url }: { url: string }) {
-    return <a href={url}>Learn More →</a>;
+function LearnMore({ href, ...props }: JSX.IntrinsicElements['a']) {
+    return (
+        <a {...props} href={href} className="font-medium flex items-center w-fit">
+            Learn More <HiArrowSmRight className="h-6 w-6 mr-4" />
+        </a>
+    );
 }
 
 export default function ZenStackInStack(): JSX.Element {
     return (
-        <div className="flex flex-col justify-center w-full">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl w-full text-center mb-16">
-                Empower Every Layer of Your Stack
+        <div className="container flex flex-col w-full">
+            <span className="text-primary uppercase opacity-50 font-medium">Simplify development</span>
+            <h2 className="mt-4 max-readable-text-width text-4xl md:text-5xl leading-relaxed">
+                Empower every layer of your stack
             </h2>
-            <div className="w-full xl:max-w-3/4 mx-auto">
-                <div className="flex flex-col gap-16 text-left">
-                    <div>
-                        <Badge>Backend</Badge>
-                        <Title>ORM With Access Control</Title>
+            <div className="mt-16 w-full flex flex-col space-y-36 lg:space-y-48">
+                <div className="flex flex-col space-y-3">
+                    <div className="grid md:grid-cols-2 w-full gap-3">
+                        <div className="space-y-3">
+                            <Badge>Backend</Badge>
+                            <Title>ORM With Access Control</Title>
+                            <LearnMore href="/docs/intro/zmodel" />
+                        </div>
                         <Content>
                             ZenStack extends Prisma ORM with a powerful access control layer. By defining policies right
                             inside the data model, your schema becomes the single source of truth. By using a
@@ -42,21 +55,27 @@ export default function ZenStackInStack(): JSX.Element {
                             ZenStack automagically enforcing access control rules. Its core is framework-agnostic and
                             runs wherever Prisma runs.
                         </Content>
+                    </div>
+                    <div className="mx-auto lg:w-3/4 flex items-center">
                         <img
-                            className="py-4 xl:max-w-3/4 block dark:hidden"
+                            className="py-4 w-full h-auto block dark:hidden"
                             src="/img/home/supercharged-orm-light.png"
                             alt="supercharged orm"
                         />
                         <img
-                            className="py-4 xl:max-w-3/4 hidden dark:block"
+                            className="py-4 w-full h-auto hidden dark:block"
                             src="/img/home/supercharged-orm-dark.png"
                             alt="supercharged orm"
                         />
-                        <LearnMore url="/docs/intro/zmodel" />
                     </div>
-                    <div>
-                        <Badge>API</Badge>
-                        <Title>Automatic CRUD API</Title>
+                </div>
+                <div className="flex flex-col space-y-3">
+                    <div className="w-full grid md:grid-cols-2 gap-3">
+                        <div className="space-y-3">
+                            <Badge>API</Badge>
+                            <Title>Automatic CRUD API</Title>
+                            <LearnMore href="/docs/intro/api" />
+                        </div>
                         <Content>
                             Wrapping APIs around a database is tedious and error-prone. ZenStack can introspect the
                             schema and install CRUD APIs to the framework of your choice with just a few lines of code.
@@ -64,15 +83,15 @@ export default function ZenStackInStack(): JSX.Element {
                             exposed to the public. What about documentation? Turn on a plugin, and an OpenAPI
                             specification will be generated in seconds.
                         </Content>
-                        <div className="xl:max-w-3/4">
-                            <Tabs>
-                                <TabItem value="Next.js" label="Next.js">
-                                    <img
-                                        src="/img/home/server-adapter-nextjs.png"
-                                        alt="next.js server adapter"
-                                        className="rounded-lg"
-                                    />
-                                    {/* <CodeBlock language="ts">
+                    </div>
+                    <Tabs>
+                        <TabItem value="Next.js" label="Next.js">
+                            <img
+                                src="/img/home/server-adapter-nextjs.png"
+                                alt="next.js server adapter"
+                                className="rounded-lg mx-auto lg:max-w-3/4 w-full h-auto"
+                            />
+                            {/* <CodeBlock language="ts">
                                             {`
 import { prisma } from 'server/db';
 import { enhance } from '@zenstackhq/runtime';
@@ -85,14 +104,14 @@ export default NextRequestHandler({
 });
                                     `}
                                         </CodeBlock> */}
-                                </TabItem>
-                                <TabItem value="Nuxt" label="Nuxt">
-                                    <img
-                                        src="/img/home/server-adapter-nuxt.png"
-                                        alt="nuxt server adapter"
-                                        className="rounded-lg"
-                                    />
-                                    {/* <CodeBlock language="ts">
+                        </TabItem>
+                        <TabItem value="Nuxt" label="Nuxt">
+                            <img
+                                src="/img/home/server-adapter-nuxt.png"
+                                alt="nuxt server adapter"
+                                className="rounded-lg mx-auto lg:max-w-3/4 w-full h-auto"
+                            />
+                            {/* <CodeBlock language="ts">
                                             {`
 import { prisma } from '~/server/db';
 import { enhance } from '@zenstackhq/runtime';
@@ -105,14 +124,14 @@ export default createEventHandler({
 });
                                     `}
                                         </CodeBlock> */}
-                                </TabItem>
-                                <TabItem value="SvelteKit" label="SvelteKit">
-                                    <img
-                                        src="/img/home/server-adapter-sveltekit.png"
-                                        alt="svelte kit server adapter"
-                                        className="rounded-lg"
-                                    />
-                                    {/* <CodeBlock language="ts">
+                        </TabItem>
+                        <TabItem value="SvelteKit" label="SvelteKit">
+                            <img
+                                src="/img/home/server-adapter-sveltekit.png"
+                                alt="svelte kit server adapter"
+                                className="rounded-lg mx-auto lg:max-w-3/4 w-full h-auto"
+                            />
+                            {/* <CodeBlock language="ts">
                                             {`
 import { prisma } from '$/lib/db';
 import { enhance } from '@zenstackhq/runtime';
@@ -126,14 +145,14 @@ export const handle = SvelteKitHandler({
 });
                                     `}
                                         </CodeBlock> */}
-                                </TabItem>
-                                <TabItem value="Express" label="Express">
-                                    <img
-                                        src="/img/home/server-adapter-express.png"
-                                        alt="express.js server adapter"
-                                        className="rounded-lg"
-                                    />
-                                    {/* <CodeBlock language="ts">
+                        </TabItem>
+                        <TabItem value="Express" label="Express">
+                            <img
+                                src="/img/home/server-adapter-express.png"
+                                alt="express.js server adapter"
+                                className="rounded-lg mx-auto lg:max-w-3/4 w-full h-auto"
+                            />
+                            {/* <CodeBlock language="ts">
                                             {`
 import { prisma } from './db';
 import { enhance } from '@zenstackhq/runtime';
@@ -149,14 +168,14 @@ app.use(
 );
                                 `}
                                         </CodeBlock> */}
-                                </TabItem>
-                                <TabItem value="Fastify" label="Fastify">
-                                    <img
-                                        src="/img/home/server-adapter-fastify.png"
-                                        alt="fastify server adapter"
-                                        className="rounded-lg"
-                                    />
-                                    {/* <CodeBlock language="ts">
+                        </TabItem>
+                        <TabItem value="Fastify" label="Fastify">
+                            <img
+                                src="/img/home/server-adapter-fastify.png"
+                                alt="fastify server adapter"
+                                className="rounded-lg mx-auto lg:max-w-3/4 w-full h-auto"
+                            />
+                            {/* <CodeBlock language="ts">
                                             {`
 import { prisma } from './db';
 import { enhance } from '@zenstackhq/runtime';
@@ -170,24 +189,25 @@ server.register(ZenStackFastifyPlugin, {
 });
                                     `}
                                         </CodeBlock> */}
-                                </TabItem>
-                            </Tabs>
+                        </TabItem>
+                    </Tabs>
+                    <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" alt="swagger ui" />
+                </div>
+                <div className="space-y-3 flex flex-col">
+                    <div className="grid w-full md:grid-cols-2 gap-3">
+                        <div className="space-y-3">
+                            <Badge>Full-stack</Badge>
+                            <Title>Frontend Query Code Generation</Title>
+                            <LearnMore href="/docs/intro/frontend" />
                         </div>
-                        <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" alt="swagger ui" />
-                        <LearnMore url="/docs/intro/api" />
-                    </div>
-                    <div>
-                        <Badge>Full-stack</Badge>
-                        <Title>Frontend Query Code Generation</Title>
                         <Content>
                             Data query and mutation are one of the toughest topics for frontend development. ZenStack
                             simplifies it by generating fully-typed client-side data access code (aka hooks) targeting
                             the data query library of your choice (SWR, TanStack Query, etc.). The hooks call into the
                             automatically generated APIs, which are secured by the access policies.
                         </Content>
-                        <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" alt="client hooks" />
-                        <LearnMore url="/docs/intro/frontend" />
                     </div>
+                    <img className="mx-auto xl:max-w-3/4 block" src="/img/home/client-hooks.png" alt="client hooks" />
                 </div>
             </div>
         </div>
