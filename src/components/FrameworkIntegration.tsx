@@ -1,10 +1,9 @@
 import React from 'react';
+import MovingCarousel from './MovingCarousel';
 
-function Title({ children }: { children: React.ReactNode }) {
+function Title(props: React.PropsWithChildren) {
     return (
-        <h3 className="text-xl underline lg:no-underline md:text-2xl text-center pb-4 text-slate-700 dark:text-slate-300">
-            {children}
-        </h3>
+        <h3 {...props} className="container font-medium text-xl pb-4 text-slate-800 dark:text-slate-200" />
     );
 }
 
@@ -33,13 +32,20 @@ function Logo({
 
 export default function FrameworkIntegration(): JSX.Element {
     return (
-        <div className="flex justify-center w-full">
-            <div className="flex flex-col text-center xl:w-3/4">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl pb-20">Integrated With The Tools You Love</h2>
-                <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-16">
-                    <div>
-                        <Title>Server & Full-stack</Title>
-                        <div className="flex flex-col gap-4">
+        <div>
+            <div className="w-full container">
+                <span className="text-primary uppercase opacity-50 font-medium">
+                    Effortless
+                </span>
+                <h2 className="mt-4 max-readable-text-width text-3xl md:text-4xl pb-20">
+                    Integrate the tools you already know and love
+                </h2>
+            </div>
+            <div className="w-full flex flex-col space-y-24">
+                <div className="flex flex-col space-y-1">
+                    <Title>Server & Full-stack</Title>
+                    <MovingCarousel direction="left">
+                        <div className="space-x-8 flex items-center">
                             <Logo
                                 src="/img/logo/nextjs.png"
                                 darkSrc="/img/logo/nextjs-dark.png"
@@ -64,17 +70,21 @@ export default function FrameworkIntegration(): JSX.Element {
                             />
                             <Logo src="/img/logo/nestjs.png" darkModeBrightness={0.85} />
                         </div>
-                    </div>
-                    <div>
-                        <Title>Data Query Client</Title>
-                        <div className="flex flex-col gap-4">
+                    </MovingCarousel>
+                </div>
+                <div className="flex flex-col space-y-1">
+                    <Title>Data Query Client</Title>
+                    <MovingCarousel direction="right">
+                        <div className="flex space-x-8 items-center">
                             <Logo src="/img/logo/swr.png" darkSrc="/img/logo/swr-dark.png" darkModeBrightness={0.85} />
                             <Logo src="/img/logo/tanstackquery.png" />
                         </div>
-                    </div>
-                    <div>
-                        <Title>API</Title>
-                        <div className="flex flex-col gap-4">
+                    </MovingCarousel>
+                </div>
+                <div className="flex flex-col space-y-1">
+                    <Title>APIs</Title>
+                    <MovingCarousel direction="left">
+                        <div className="flex items-center space-x-8">
                             <Logo
                                 src="/img/logo/rest.png"
                                 darkSrc="/img/logo/rest-dark.png"
@@ -92,7 +102,7 @@ export default function FrameworkIntegration(): JSX.Element {
                                 darkModeBrightness={0.85}
                             />
                         </div>
-                    </div>
+                    </MovingCarousel>
                 </div>
             </div>
         </div>
