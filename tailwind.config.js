@@ -35,7 +35,7 @@ module.exports = {
             },
             backgroundImage: {
                 'carousel-gradient-x':
-                    'linear-gradient(to right, rgb(0 0 0) calc(0% + 2rem), rgba(255,255,255,0) calc(0% + 6.25rem), rgba(255,255,255,0) calc(100% - 6.25rem), hsl(var(--background)) calc(100% - 2rem))',
+                    'linear-gradient(to right, rgb(0 0 0) calc(0% + 2rem), rgba(255,255,255,0) calc(0% + 6.25rem), rgba(255,255,255,0) calc(100% - 6.25rem), rgb(0 0 0) calc(100% - 2rem))',
             },
         },
         maxWidth: {
