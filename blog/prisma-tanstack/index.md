@@ -127,6 +127,8 @@ ZenStack helps eliminate these challenges by baking automatic query invalidation
 
 ![Auto query invalidation](auto-invalidation.png)
 
+![Optimistic update](optimistic.gif)
+
 You've probably been screaming for a while: "Wait, where do the hooks send the requests? Where's the backend API?".
 
 ## Your Schema Is Your API
