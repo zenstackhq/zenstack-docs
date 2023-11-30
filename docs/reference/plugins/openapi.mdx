@@ -7,7 +7,13 @@ sidebar_position: 8
 
 The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oas/v3.1.0) specification based on your ZModel schema. The output is a plain YAML or JSON file that can be used with tools like [Swagger UI](https://swagger.io/tools/swagger-ui/). You can also merge it with other OpenAPI specifications before serving it to your users.
 
-## Options
+### Installation
+
+```bash
+npm install --save-dev @zenstackhq/openapi
+```
+
+### Options
 
 | Name            | Type   | Description                                                                   | Required | Default                |
 | --------------- | ------ | ----------------------------------------------------------------------------- | -------- | ---------------------- |
@@ -21,7 +27,7 @@ The `@zenstackhq/openapi` generates an [OpenAPI V3](https://spec.openapis.org/oa
 | summary         | String | API summary                                                                   | No       |                        |
 | securitySchemes | Object | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
 
-### API flavor
+#### API flavor
 
 The `flavor` option controls the style of API endpoints and data format of the generated specification. Currently we support two flavors: `rpc` and `rest`. The default flavor is `rpc`.
 
@@ -36,7 +42,7 @@ The `flavor` option controls the style of API endpoints and data format of the g
 
 The two flavors correspond to the two style of APIs supported by ZenStack server adapters. See [here](/docs/reference/server-adapters/api-handlers/) for more details.
 
-### Security schemes
+#### Security schemes
 
 The `securitySchemes` option is an object containing security schemes for the API, following the specification [here](https://swagger.io/docs/specification/authentication/). The object will be generated as the `securitySchemes` field under the `components` section in the OpenAPI specification.
 
@@ -57,7 +63,7 @@ The names of the configured security schemes will be added to the root `security
 
 You can override the security scheme for a specific model or operation by using the `@@openapi.meta` attribute.
 
-## Attributes
+### Attributes
 
 -   `@@openapi.meta`
 
@@ -67,7 +73,7 @@ You can override the security scheme for a specific model or operation by using 
 
     Provide metadata for a data model for generating OpenAPI specification. The input is an object containing customized configuration for each model and each CRUD operation. You can use it to override Http method, API endpoint path, description, summary, tags, security, and etc. Currently there's no type checking for the structure, but we'll add that in the near future.
 
-    ### Model-level metadata
+    #### Model-level metadata
 
     The input object can contain the following top-level fields:
 
@@ -76,7 +82,7 @@ You can override the security scheme for a specific model or operation by using 
     | security       | Array  | Security for this model                         |                         |
     | tagDescription | String | Description of the tag generated for this model | [Model Name] operations |
 
-    ### Operation-level metadata
+    #### Operation-level metadata
 
     :::info
     Only supported by "rpc" flavor.
@@ -94,7 +100,7 @@ You can override the security scheme for a specific model or operation by using 
     | tags        | Array  | Tags of the operation               |                                         |
     | deprecated  | Bool   | Whether the operation is deprecated | false                                   |
 
-    ### Sample usage
+    #### Sample usage
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -155,7 +161,7 @@ model User {
 
     Mark a data model to be ignored when generating OpenAPI specification.
 
-## Example
+### Example
 
 ```zmodel title='schema.zmodel'
 datasource db {

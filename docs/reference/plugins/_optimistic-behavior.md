@@ -1,0 +1,3 @@
+- `create` mutation inserts item to the head of the query results of the corresponding `useFindMany` queries.
+- `update` mutation updates the item in the query results of `useFindXXX` queries and their nested reads by matching the item's ID.
+- `delete` mutation removes the item from the query results of the corresponding `useFindMany` queries and sets `null` to `useFindUnique` and `useFindFirst` query results, by matching the item's ID.

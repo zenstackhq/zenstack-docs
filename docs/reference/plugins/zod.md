@@ -41,7 +41,11 @@ The generated schemas have the following three parts:
 
     The schema for objects and enums used by the `zod/input` schemas. You usually won't use them directly.
 
-## Options
+### Installation
+
+This plugin is built-in to ZenStack and does not need to be installed separately.
+
+### Options
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |

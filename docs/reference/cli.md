@@ -23,6 +23,8 @@ Commands:
   info [path]            Get information of installed ZenStack and related packages.
   init [options] [path]  Initialize an existing project for ZenStack.
   generate [options]     Generates RESTful API and Typescript client for your data model.
+  repl [options]         Start a REPL session.
+  format [options]       Format a ZenStack schema file.
   help [command]         display help for command
 ```
 
@@ -182,6 +184,20 @@ Table output: true
 │    2    │ 'Model for a space in which users can collaborate' │  false  │
 └─────────┴────────────────────────────────────────────────────┴─────────┘
 ```
+
+### format
+
+Format a ZenStack schema file.
+
+```bash
+zenstack format [options]
+```
+
+#### Options
+
+| Name                  | Description                                      | Default                |
+| --------------------- | ------------------------------------------------ | ---------------------- |
+| --schema              | schema file (with extension .zmodel)             | ./schema.zmodel        |
 
 ### info
 

@@ -82,7 +82,7 @@ const config = {
                 },
                 items: [
                     {
-                        to: 'docs/intro',
+                        to: 'docs/welcome',
                         position: 'left',
                         label: 'Get Started',
                     },
@@ -147,7 +147,7 @@ const config = {
                         items: [
                             {
                                 label: 'Get Started',
-                                to: '/docs/intro',
+                                to: '/docs/welcome',
                             },
                             {
                                 label: 'Reference',
@@ -216,10 +216,13 @@ const config = {
                 // Optional: path for search page that enabled by default (`false` to disable it)
                 searchPagePath: 'search',
             },
+
+            tableOfContents: {
+                maxHeadingLevel: 4,
+            },
         },
 
     plugins: [
-        // require.resolve('docusaurus-plugin-image-zoom'),
         async function myPlugin(context, options) {
             return {
                 name: 'docusaurus-tailwindcss',

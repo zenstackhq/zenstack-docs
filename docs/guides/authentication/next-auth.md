@@ -1,10 +1,10 @@
 ---
-description: Integrating with NextAuth.
+description: Integrating with Auth.js.
 sidebar_position: 1
-sidebar_label: NextAuth
+sidebar_label: Auth.js (NextAuth)
 ---
 
-# Integrating With NextAuth
+# Integrating With Auth.js (NextAuth)
 
 [NextAuth](https://next-auth.js.org/) is a comprehensive framework for implementing authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
 

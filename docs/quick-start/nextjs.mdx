@@ -104,7 +104,7 @@ import { compare } from 'bcryptjs';
 import type { GetServerSidePropsContext } from 'next';
 import NextAuth, { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from './db';
+import { db } from './db';
 /**
  * Module augmentation for `next-auth` types.
  * Allows us to add custom properties to the `session` object and keep type
@@ -140,14 +140,14 @@ export const authOptions: NextAuthOptions = {
         },
     },
     // Configure one or more authentication providers
-    adapter: PrismaAdapter(prisma),
+    adapter: PrismaAdapter(db),
     providers: [
         CredentialsProvider({
             credentials: {
                 email: { type: 'email' },
                 password: { type: 'password' },
             },
-            authorize: authorize(prisma),
+            authorize: authorize(db),
         }),
     ],
 };
@@ -637,7 +637,7 @@ backend code. Pretty cool, isn't it?
 
 If you have trouble following the building process, you can find the final result
 [here](https://github.com/zenstackhq/docs-tutorial-nextjs). For more details about ZenStack,
-please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/guides)
+please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/recipes)
 parts of the documentation.
 
 Have fun building cool stuff 🚀!

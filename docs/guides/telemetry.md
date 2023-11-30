@@ -1,6 +1,6 @@
 ---
 description: Telemetry
-sidebar_position: 10
+sidebar_position: 100
 ---
 
 # Telemetry

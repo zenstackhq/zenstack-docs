@@ -6,6 +6,8 @@ sidebar_position: 6
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Invalidation from './_invalidation.md';
+import OptimisticBehavior from './_optimistic-behavior.md';
+import OptmisticLimitation from './_optimistic-limitation.md';
 
 # @zenstackhq/tanstack-query
 
@@ -19,7 +21,13 @@ The hooks syntactically mirror the APIs of a standard Prisma client, including t
 
 To use the generated hooks, you need to install "tanstack-query" for the target framework with version 4.0.0 or above.
 
-## Options
+### Installation
+
+```bash
+npm install --save-dev @zenstackhq/tanstack-query
+```
+
+### Options
 
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
@@ -28,7 +36,7 @@ To use the generated hooks, you need to install "tanstack-query" for the target 
 | version | String | Version of TanStack Query to generate for. Choose from "v4" and "v5".                    | No      | v4      |
 | useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization     | No      | false   |
 
-## Providing Context
+### Context Provider
 
 The generated hooks allow you to control their behavior by setting up context. The following options are available on the context:
 
@@ -142,11 +150,11 @@ provideHooksContext({
 
 </Tabs>
 
-## Example
+### Example
 
 Here's a quick example with a ReactJs blogging app. You can find a fully functional Todo app example [here](https://github.com/zenstackhq/sample-todo-nextjs-tanstack).
 
-### Schema
+#### Schema
 
 ```zmodel title='/schema.zmodel'
 plugin hooks {
@@ -179,7 +187,7 @@ model Post {
 }
 ```
 
-### App Setup
+#### App Setup
 
 <Tabs>
 
@@ -275,7 +283,7 @@ export default config;
 
 </Tabs>
 
-### Using Query and Mutation Hooks
+#### Using Query and Mutation Hooks
 
 <Tabs>
 <TabItem value="react" label="React">
@@ -419,16 +427,11 @@ When `mutate` executes, if there are active queries like `useFindManyPost()`, th
 
 #### Details of the optimistic behavior
 
-- `create` mutation inserts item to the head of the query results of the corresponding `useFindMany` queries.
-- `update` mutation updates the item in the query results of `useFindXXX` queries and their nested reads by matching the item's ID.
-- `delete` mutation removes the item from the query results of the corresponding `useFindMany` queries and sets `null` to `useFindUnique` and `useFindFirst` query results, by matching the item's ID.
+<OptimisticBehavior />
 
 #### Limitations
 
-- The automatic optimistic update relies on ID matching. It only works for queries that select the ID field(s).
-- Non-entity-fetching queries like `count`, `aggregate`, and `groupBy` are not affected.
-- Infinite queries are not affected.
-- It doesn't respect filter conditions or access policies that potentially affect the queries under update. For example, for query `useFindManyPost({ where: { published: true }})`, when a non-published `Post` is created, it'll still be inserted into the query result.
+<OptmisticLimitation />
 
 #### Opt-out
 
@@ -441,7 +444,7 @@ const { data } = useFindManyPost({ where: { published: true } }, undefined, fals
 
 When a query opts out, it won't be updated by a mutation, even if the mutation is set to update optimistically.
 
-### Using Infinite Query
+#### Using Infinite Query
 
 <Tabs>
 <TabItem value="react" label="React">
@@ -615,8 +618,12 @@ See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/svelte/exa
 
 :::info
 
-The generated mutation hooks include a `invalidateQueries` boolean parameter. You can use it to disable automatic invalidation.
+The automatic invalidation is enabled by default, and you can use the `invalidateQueries` argument to opt-out and handle revalidation by yourself.
 
+```ts
+// arguments are mutation options and invalidateQueries
+useCreatePost(undefined, false);
+```
 :::
 
 ### Query Key
@@ -624,7 +631,7 @@ The generated mutation hooks include a `invalidateQueries` boolean parameter. Yo
 Query keys serve as unique identifiers for organizing the query cache. The generated hooks use the following query key scheme:
 
 ```ts
-['zenstack', model, operation, args]
+['zenstack', model, operation, args, flags]
 ```
 
 For example, the query key for
@@ -636,7 +643,7 @@ useFindUniqueUser({ where: { id: '1' } })
 will be:
 
 ```ts
-['zenstack', 'User', 'findUnique', { where: { id: '1' } }]
+['zenstack', 'User', 'findUnique', { where: { id: '1' } }, { infinite: false }]
 ```
 
 You can use the generated `getQueryKey` function to compute it.

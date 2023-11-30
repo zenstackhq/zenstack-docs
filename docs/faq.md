@@ -3,7 +3,7 @@ description: ZenStack FAQ.
 
 slug: /faq
 sidebar_label: FAQ
-sidebar_position: 5
+sidebar_position: 8
 ---
 
 # 🙋🏻 FAQ

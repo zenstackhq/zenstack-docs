@@ -1,7 +1,7 @@
-position: 3
-label: Guides
+position: 5
+label: Recipes
 collapsible: true
-collapsed: false
+collapsed: true
 link:
     type: generated-index
-    title: Guides
+    title: Recipes
