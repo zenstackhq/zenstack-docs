@@ -6,6 +6,8 @@ sidebar_position: 6
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Invalidation from './_invalidation.md';
+import OptimisticBehavior from './_optimistic-behavior.md';
+import OptmisticLimitation from './_optimistic-limitation.md';
 
 # @zenstackhq/tanstack-query
 
@@ -425,16 +427,11 @@ When `mutate` executes, if there are active queries like `useFindManyPost()`, th
 
 #### Details of the optimistic behavior
 
-- `create` mutation inserts item to the head of the query results of the corresponding `useFindMany` queries.
-- `update` mutation updates the item in the query results of `useFindXXX` queries and their nested reads by matching the item's ID.
-- `delete` mutation removes the item from the query results of the corresponding `useFindMany` queries and sets `null` to `useFindUnique` and `useFindFirst` query results, by matching the item's ID.
+<OptimisticBehavior />
 
 #### Limitations
 
-- The automatic optimistic update relies on ID matching. It only works for queries that select the ID field(s).
-- Non-entity-fetching queries like `count`, `aggregate`, and `groupBy` are not affected.
-- Infinite queries are not affected.
-- It doesn't respect filter conditions or access policies that potentially affect the queries under update. For example, for query `useFindManyPost({ where: { published: true }})`, when a non-published `Post` is created, it'll still be inserted into the query result.
+<OptmisticLimitation />
 
 #### Opt-out
 
@@ -621,8 +618,12 @@ See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/svelte/exa
 
 :::info
 
-The generated mutation hooks include a `invalidateQueries` boolean parameter. You can use it to disable automatic invalidation.
+The automatic invalidation is enabled by default, and you can use the `invalidateQueries` argument to opt-out and handle revalidation by yourself.
 
+```ts
+// arguments are mutation options and invalidateQueries
+useCreatePost(undefined, false);
+```
 :::
 
 ### Query Key

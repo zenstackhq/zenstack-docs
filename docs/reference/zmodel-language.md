@@ -1210,14 +1210,9 @@ Model-level access policies are defined with `@@allow` and `@@deny` attributes. 
 
 ### Field-level policy
 
-:::info
-
-Field-level access policies are in preview stage and its behavior may change in the future. Please let us know your feedback!
-
-:::
-
-
 Field-level access policies are defined with `@allow` and `@deny` attributes. They control whether the annotated field can be read or updated. If a field fails "read" check, it'll be deleted when returned. If a field is set to be updated but fails "update" check, the update operation will be rejected.
+
+Note that it's not allowed to put "update" rule on relation fields, because whether an entity can be updated shouldn't be determined indirectly by a relation, but directly by the entity itself. However, you can put "update" rule on a foreign key field to control how a a relation can be updated.
 
 The signatures of the attributes are:
 

@@ -4,6 +4,8 @@ sidebar_position: 5
 ---
 
 import Invalidation from './_invalidation.md';
+import OptimisticBehavior from './_optimistic-behavior.md';
+import OptmisticLimitation from './_optimistic-limitation.md';
 
 # @zenstackhq/swr
 
@@ -109,11 +111,11 @@ model Post {
 
 ```tsx title='/src/components/posts.tsx'
 import type { Post } from '@prisma/client';
-import { useFindManyPost, useMutatePost } from '../lib/hooks';
+import { useFindManyPost, useCreatePost } from '../lib/hooks';
 
 // post list component
 const Posts = ({ userId }: { userId: string }) => {
-    const { createPost } = useMutatePost();
+    const { trigger: createPost } = useCreatePost();
 
     // list all posts that're visible to the current user, together with their authors
     const { data: posts } = useFindManyPost({
@@ -121,8 +123,8 @@ const Posts = ({ userId }: { userId: string }) => {
         orderBy: { createdAt: 'desc' },
     });
 
-    async function onCreatePost() {
-        await createPost({
+    function onCreatePost() {
+        createPost({
             data: {
                 title: 'My awesome post',
                 authorId: userId,
@@ -144,6 +146,46 @@ const Posts = ({ userId }: { userId: string }) => {
     );
 };
 ```
+
+### Automatic Optimistic Update (Preview)
+
+Optimistic update is a technique that allows you to update the data cache immediately when a mutation executes while waiting for the server response. It helps achieve a more responsive UI. SWR provides the [infrastructure for implementing it](https://swr.vercel.app/docs/mutation#optimistic-updates).
+
+The ZenStack-generated mutation hooks allow you to opt-in to "automatic optimistic update" by passing the `optimisticUpdate` option when calling the hook. When the mutation executes, it analyzes the current queries in the cache and tries to find the ones that need to be updated. When the mutation settles (either succeeded or failed), the queries are invalidated to trigger a re-fetch.
+
+Here's an example:
+
+```ts
+const { trigger: create } = useCreatePost({ optimisticUpdate: true });
+
+function onCreatePost() {
+    create({ ... })
+}
+```
+
+When `create` executes, if there are active queries like `useFindManyPost()`, the data of the mutation call will be optimistically inserted into the head of the query result.
+
+#### Details of the optimistic behavior
+
+<OptimisticBehavior />
+
+#### Limitations
+
+<OptmisticLimitation />
+
+#### Opt-out
+
+By default, all queries opt into automatic optimistic update. You can opt-out on a per-query basis by passing `false` to the `optimisticUpdate` option.
+
+```ts
+// arguments are query args, query options, and optimisticUpdate
+const { data } = useFindManyPost(
+    { where: { published: true } },
+    { optimisticUpdate: false }
+);
+```
+
+When a query opts out, it won't be updated by a mutation, even if the mutation is set to update optimistically.
 
 #### Using Infinite Query
 
@@ -205,6 +247,16 @@ const Posts = ({ userId }: { userId: string }) => {
 ### Query Invalidation
 
 <Invalidation />
+
+:::info
+
+The automatic invalidation is enabled by default, and you can use the `revalidate` option to opt-out and handle revalidation by yourself.
+
+```ts
+useCreatePost({ revalidate: false });
+```
+
+:::
 
 ### Query Key
 
