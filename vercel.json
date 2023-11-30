@@ -4,7 +4,6 @@
         { "source": "/docs", "destination": "/docs/welcome" },
         { "source": "/docs/category/get-started", "destination": "/docs/category/quick-start", "permanent": true },
         { "source": "/docs/get-started/:path*", "destination": "/docs/category/quick-start", "permanent": true },
-        { "source": "/docs/category/quick-start", "destination": "/docs/category/quick-start", "permanent": true },
         { "source": "/docs/category/guides", "destination": "/docs/category/recipes", "permanent": true }
     ]
 }
