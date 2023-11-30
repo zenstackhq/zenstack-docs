@@ -218,4 +218,4 @@ export default function Signup() {
 }
 ```
 
-By now, we've got a fully running signup and sign-in flow.
+By now, we've got a fully running signup and sign-in flow. You can try signin in with the account you just created at [http://localhost:3000/signin](http://localhost:3000/signin).

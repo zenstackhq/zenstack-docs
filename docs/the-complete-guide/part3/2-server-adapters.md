@@ -48,7 +48,7 @@ npm install --save-dev @types/express tsx
 
 Create a file `main.ts` with the following content:
 
-```ts
+```ts title="main.ts"
 import express from 'express';
 
 const app = express();
@@ -68,7 +68,7 @@ Start the server:
 npx tsx --watch main.ts
 ```
 
-Make a request to verify everything is working:
+Make a request in another terminal to verify everything is working:
 
 ```bash
 curl http://localhost:3000
@@ -80,7 +80,7 @@ curl http://localhost:3000
 
 Let's create an express middleware and mount the CRUD API to the `/api/rpc` path. Replace `main.ts` with the following content:
 
-```ts
+```ts title="main.ts"
 import { PrismaClient } from '@prisma/client';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import express from 'express';
@@ -125,8 +125,9 @@ We've configured the server adapter to use a vanilla Prisma Client for now for q
 
 - Find a private `List`
 
+    Note the parameter `q` is url-encoded `{"where":{"private":true}}`.
+
     ```bash
-    # Parameter `q` is url-encoded `{"where":{"private":true}}`.
     curl "http://localhost:3000/api/rpc/list/findFirst?q=%7B%22where%22%3A%7B%22private%22%3Atrue%7D%7D"
     ```
 
@@ -172,11 +173,18 @@ We've configured the server adapter to use a vanilla Prisma Client for now for q
 
 To make access policies work, we need to create an enhanced Prisma Client, and to do that, we need to be able to get the current user from the request. Since we haven't implemented authentication yet, we'll use a special `x-user-id` header to simulate and pass the requesting user's ID. It's definitely not a secure implementation, but it's sufficient for demonstration. We'll hook up a real authentication system in [Part IV](/docs/the-complete-guide/part4/).
 
-Change the line of creating `ZenStackMiddleware` to the following:
+Replace the content of `main.ts` with the following code:
 
-```ts
-import { Request } from 'express';
+```ts title="main.ts"
+import { PrismaClient } from '@prisma/client';
 import { enhance } from '@zenstackhq/runtime';
+import { ZenStackMiddleware } from '@zenstackhq/server/express';
+import express, { Request } from 'express';
+
+const app = express();
+app.use(express.json());
+
+const prisma = new PrismaClient();
 
 function getUser(req: Request) {
     if (req.headers['x-user-id']) {
@@ -191,6 +199,8 @@ app.use('/api/rpc',
         getPrisma: (req) => enhance(prisma, { user: getUser(req) })
     })
 );
+
+app.listen(3000, () => console.log('🚀 Server ready at: http://localhost:3000'));
 ```
 
 Now, if we hit the endpoint again without the `x-user-id` header, we'll get a null response:
@@ -228,7 +238,7 @@ You can try other operations with different user identities. The service's behav
 
 #### 5. Trying Out The RESTful API Flavor
 
-Let's mount a RESTful-flavor API under another path `/api/rest`. Add the following code to `main.ts`:
+Let's mount a RESTful-flavor API under another path `/api/rest`. Add the following code to `main.ts` before the line of `app.listen(...)`:
 
 ```ts
 import RESTHandler from '@zenstackhq/server/api/rest';
@@ -241,10 +251,13 @@ app.use('/api/rest',
 );
 ```
 
-As you've seen above, we're using the same server adapter implementation and swapped the API handler. Now we can fetch the first `List` item by making a RESTful-style request:
+As you've seen above, we're using the same server adapter implementation and swapped the API handler. Now we can fetch the first `List` item by making a RESTful-style request.
+
+:::info
+The "-g" parameter passed to curl is for allowing square brackets in the URL.
+:::
 
 ```bash
-# The "-g" parameter passed to curl is for allowing square brackets in the URL
 curl -g 'http://localhost:3000/api/rest/list?page[limit]=1' -H "x-user-id: 1"
 ```
 

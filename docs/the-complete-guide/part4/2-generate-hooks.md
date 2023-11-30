@@ -86,7 +86,7 @@ The generated hooks allow you to query and mutate data without worrying about th
     ```tsx
     // `data` is typed as `(Todo & { list: List })[]`
     const { data } = useFindManyTodo({
-      where: { author: { id: 1 } },
+      where: { owner: { id: 1 } },
       include: { list: true },
       orderBy: { createdAt: 'desc' }
     });
@@ -96,17 +96,21 @@ The generated hooks allow you to query and mutate data without worrying about th
 
     ```tsx
     const { mutate } = useCreateList();
-    mutate({
-      data: { 
-        title: 'My List',
-        todos: {
-          create: [
-            { name: 'Todo 1' },
-            { name: 'Todo 2' }
-          ]
+
+    function onCreateList() {
+      mutate({
+        data: { 
+          title: 'My List',
+          owner: { connect: { id: userId } },
+          todos: {
+            create: [
+              { name: 'Todo 1' },
+              { name: 'Todo 2' }
+            ]
+          }
         }
-      }
-    })
+      })
+    }
     ```
 
 - Count

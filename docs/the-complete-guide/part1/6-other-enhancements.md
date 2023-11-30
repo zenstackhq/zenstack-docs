@@ -14,7 +14,7 @@ When using a credential-based authentication system, it's important never to sto
 model User {
     id Int @id @default(autoincrement())
     email String @unique
-    password String @password
+    password String? @password
 }
 ```
 
@@ -89,7 +89,7 @@ Some database fields can be sensitive and should not be exposed to the client. P
 ```zmodel
 model User {
     ...
-    password String @password @omit
+    password String? @password @omit
 }
 ```
 
@@ -100,7 +100,7 @@ You can use a field-level access policy to achieve the same goal:
 ```zmodel
 model User {
     ...
-    password String @password @allow('read', false)
+    password String? @password @allow('read', false)
 }
 ```
 

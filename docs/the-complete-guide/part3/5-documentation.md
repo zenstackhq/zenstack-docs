@@ -44,7 +44,7 @@ The `todo-api.json` file should be generated in the project root.
 
 #### 3. Serving the OpenAPI Spec
 
-Add the following code to `main.ts`:
+Add the following code to `main.ts` before the line of `app.listen(...)`:
 
 ```ts title="main.ts"
 import swaggerUI from 'swagger-ui-express';

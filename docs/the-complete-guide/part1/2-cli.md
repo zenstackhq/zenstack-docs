@@ -59,7 +59,7 @@ model Space {
   name String
   slug String @unique
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  ownerId String
+  ownerId Int
   members SpaceUser[]
   lists List[]
 }
@@ -193,6 +193,7 @@ async function main() {
         data: {
             name: 'Central Perk',
             slug: 'central-perk',
+            owner: { connect: { id: rachel.id } },
             members: {
                 create: [
                     {
@@ -213,6 +214,7 @@ async function main() {
         data: {
             name: "Rachel's Personal Space",
             slug: 'rachel',
+            owner: { connect: { id: rachel.id } },
             members: {
                 create: [
                     {
@@ -347,6 +349,8 @@ prisma.space.findFirst({ include: { members: true } })
 ```
 
 The REPL also provides a `db` variable for querying data with access control. We'll get back to it in [chapter 4](/docs/the-complete-guide/part1/access-policy).
+
+You can exit the REPL with the `.exit` command.
 
 #### 6. Listing Installed ZenStack Packages
 

@@ -21,10 +21,9 @@ You can find more details about serialization in the [RPC API Handler](/docs/ref
 
 To illustrate this, let's try a few requests to observe the serialization behavior.
 
-Make the following request:
+Make the following request to find the first `List` with `{"select":{"id":true,"title":true}}`:
 
 ```bash
-# find first `List` with `{"select":{"id":true,"title":true}}`
 curl "http://localhost:3000/api/rpc/list/findFirst?q=%7B%22select%22%3A%7B%22id%22%3Atrue%2C%22title%22%3Atrue%7D%7D" -H "x-user-id: 1"
 ```
 

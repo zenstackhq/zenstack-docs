@@ -17,7 +17,7 @@ For ease of demonstration, we'll use the [Next.js](https://nextjs.org/) framewor
 Create a new Next.js project using `create-t3-app`:
 
 ```bash
-npx create-t3-app@latest --tailwind --nextAuth --prisma --appRouter --CI my-blog-app
+npx create-t3-app@latest --tailwind --nextAuth --prisma --appRouter --CI my-todo-app
 ```
 
 It sets up a project with the following features:
@@ -63,13 +63,19 @@ Besides installing dependencies, the command also copies the `prisma/schema.pris
 1. All "id" fields are changed to String type (as required by NextAuth).
 2. The "markdown" and "openapi" plugins are removed (not needed for this part).
 
-You can also find the updated version here: [https://github.com/zenstackhq/the-complete-guide-sample/blob/part3/schema.zmodel](https://github.com/zenstackhq/the-complete-guide-sample/blob/part3/schema.zmodel). Replace the `schema.zmodel` file in your project with it.
+You can also find the updated version here: [https://github.com/zenstackhq/the-complete-guide-sample/blob/part4-start/schema.zmodel](https://github.com/zenstackhq/the-complete-guide-sample/blob/part4-start/schema.zmodel). Replace the `schema.zmodel` file in your project with it.
 
 Run generation and push the schema to the database:
 
 ```bash
 npx zenstack generate && npx prisma db push
 ```
+
+:::tip
+
+If you ran into any trouble creating the project, you can also use the "part4-start" branch of [https://github.com/zenstackhq/the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample) as the starting point and continue from there.
+
+:::
 
 ### 3. Implementing Authentication
 
@@ -115,7 +121,7 @@ The default project created by `create-t3-app` uses Discord OAuth for authentica
 
 Replace the content of `/src/server/auth.ts` with the following:
 
-```ts
+```ts title="/src/server/auth.ts"
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
@@ -179,9 +185,9 @@ function authorize(prisma: PrismaClient) {
 export default NextAuth(authOptions);
 ```
 
-Remove code related to `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` from `/src/env.mjs`, and update the `.env` file under project root to the following:
+Remove code related to `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` from `/src/env.js`, and update the `.env` file under project root to the following:
 
-```bash
+```bash title=".env"
 DATABASE_URL="file:./db.sqlite"
 NEXTAUTH_SECRET="abc123"
 NEXTAUTH_URL="http://localhost:3000"
@@ -227,9 +233,9 @@ The crucial part is that we use an enhanced PrismaClient with the server adapter
 
 In the next chapter, we'll learn how to use a plugin to generate frontend data query hooks that help us consume it.
 
-Finally, make a change to the `next.config.mjs` file to exclude the `@zenstackhq/runtime` package from the server component bundler:
+Finally, make a change to the `next.config.js` file to exclude the `@zenstackhq/runtime` package from the server component bundler:
 
-```js title="next.config.mjs"
+```js title="next.config.js"
 const config = {
   experimental: {
     serverComponentsExternalPackages: ['@zenstackhq/runtime']

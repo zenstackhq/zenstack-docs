@@ -24,7 +24,7 @@ The main missing part of our sample app is managing Todos in a List. This is a g
 
 Let's first implement the Todo management UI without optimistic update. First, create a component `src/components/TodoComponent.tsx` to manage one single Todo:
 
-```tsx
+```tsx title="src/components/TodoComponent.tsx"
 import type { Todo } from "@prisma/client";
 import { useDeleteTodo, useUpdateTodo } from "~/lib/hooks";
 
@@ -88,20 +88,21 @@ export default function TodoComponent({ value, optimistic }: Props) {
 Then, create a page at `src/app/spaces/[slug]/[listId]/page.tsx` to manage Todos in a List:
 
 ```tsx title="src/app/spaces/[slug]/[listId]/page.tsx"
+"use client";
+
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-import TodoComponent from "~/components/Todo";
+import TodoComponent from "~/components/TodoComponent";
 import { useCreateTodo, useFindManyTodo, useFindUniqueList } from "~/lib/hooks";
 
 export default function TodoList() {
-  const router = useRouter();
-
+  const { listId } = useParams<{ listId: string }>();
   const { data: session } = useSession();
 
   const { data: list } = useFindUniqueList(
     {
-      where: { id: router.query.listId as string },
+      where: { id: listId },
     },
     { enabled: !!session?.user },
   );
@@ -109,7 +110,7 @@ export default function TodoList() {
   const { mutate: create } = useCreateTodo();
   const { data: todos } = useFindManyTodo(
     {
-      where: { listId: router.query.listId as string },
+      where: { listId },
       orderBy: { createdAt: "desc" as const },
     },
     { enabled: !!session?.user },
@@ -122,7 +123,7 @@ export default function TodoList() {
       data: {
         title,
         owner: { connect: { id: session?.user.id } },
-        list: { connect: { id: router.query.listId as string } },
+        list: { connect: { id: listId } },
       },
     });
     setTitle("");
@@ -153,7 +154,7 @@ export default function TodoList() {
             }}
           />
         </div>
-        <ul className="flex flex-col space-y-4 py-8 w-auto">
+        <ul className="flex w-auto flex-col space-y-4 py-8">
           {todos?.map((todo) => (
             <TodoComponent
               key={todo.id}

@@ -148,7 +148,7 @@ A multi-tenant Todo app built with ZenStack.
 
 In our sample project, create a `markdown-plugin.ts` file at the root:
 
-```ts
+```ts title='markdown-plugin.ts'
 import { type PluginOptions } from '@zenstackhq/sdk';
 import {
     isDataModel,
@@ -189,11 +189,11 @@ ${dataModelDocs}
 }
 ```
 
-The code sets up the high-level structure of the markdown document. Let's now implement the `generateDataModelDocs` function.
+The code sets up the high-level structure of the markdown document. Let's now add the `generateDataModelDocs` function implementation in the same file.
 
-```ts
-import { ZModelCodeGenerator getLiteral } from '@zenstackhq/sdk';
-import { type DataModel, type DataModelAttribute } from '@zenstackhq/sdk/ast';
+```ts title='markdown-plugin.ts'
+import { ZModelCodeGenerator, getLiteral } from '@zenstackhq/sdk';
+import { type DataModelAttribute } from '@zenstackhq/sdk/ast';
 
 function generateDataModelDocs(dataModels: DataModel[]) {
     // AST -> ZModel source generator
