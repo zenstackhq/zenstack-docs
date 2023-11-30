@@ -43,6 +43,7 @@ If you're the kind of inpatient developer who wants to get your hand dirty ASAP,
 ## Other Resources
 
 - [Recipes](/docs/category/recipes/) - Mini guides for completing specific tasks using ZenStack
+- [Sample Catalog](/docs/sample-catalog) - A catalog of sample projects using different frameworks
 - [Reference](/docs/category/reference/) - Detailed documentation for the DSL, CLI, APIs, and plugins
 - [FAQ](/docs/faq) - Frequently asked questions
   

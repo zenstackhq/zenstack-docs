@@ -7,7 +7,7 @@ sidebar_label: Sample Catalog
 
 The ZenStack team maintains the following two main series of sample projects:
 
-- **Multi-tenant Todo App**
+- **Multi-Tenant Todo App**
 
     This series demonstrates a complete implementation of a multi-tenant, SaaS-like application with a relatively complex authorization model. It is also the sample we used throughout [The Complete Guide](/docs/the-complete-guide/).
 
