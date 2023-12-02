@@ -1,6 +1,12 @@
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}', 'docusaurus.config.js'],
     theme: {
+        container: {
+            center: true,
+            screens: {
+                '2xl': '1400px',
+            },
+        },
         extend: {
             colors: {
                 primary: {
@@ -12,6 +18,24 @@ module.exports = {
                     lighter: 'var(--ifm-color-primary-lighter)',
                     lightest: 'var(--ifm-color-primary-lightest)',
                 },
+            },
+            keyframes: {
+                'slide-left': {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-100%)' },
+                },
+                'slide-right': {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(0%)' },
+                },
+            },
+            animation: {
+                'infinite-carousel-left': 'slide-left 18s linear infinite',
+                'infinite-carousel-right': 'slide-right 18s linear infinite',
+            },
+            backgroundImage: {
+                'carousel-gradient-x':
+                    'linear-gradient(to right, rgb(0 0 0) calc(0% + 2rem), rgba(255,255,255,0) calc(0% + 6.25rem), rgba(255,255,255,0) calc(100% - 6.25rem), rgb(0 0 0) calc(100% - 2rem))',
             },
         },
         maxWidth: {
