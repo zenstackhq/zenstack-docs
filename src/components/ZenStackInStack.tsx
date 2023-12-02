@@ -52,7 +52,7 @@ export default function ZenStackInStack(): JSX.Element {
                             src="/img/home/supercharged-orm-dark.png"
                             alt="supercharged orm"
                         />
-                        <LearnMore url="/docs/intro/zmodel" />
+                        <LearnMore url="/docs/the-complete-guide/part1/" />
                     </div>
                     <div>
                         <Badge>API</Badge>
@@ -174,7 +174,7 @@ server.register(ZenStackFastifyPlugin, {
                             </Tabs>
                         </div>
                         <img className="xl:max-w-3/4 block" src="/img/home/swagger-ui.png" alt="swagger ui" />
-                        <LearnMore url="/docs/intro/api" />
+                        <LearnMore url="/docs/the-complete-guide/part3/" />
                     </div>
                     <div>
                         <Badge>Full-stack</Badge>
@@ -186,7 +186,7 @@ server.register(ZenStackFastifyPlugin, {
                             automatically generated APIs, which are secured by the access policies.
                         </Content>
                         <img className="xl:max-w-3/4 block mb-4" src="/img/home/client-hooks.png" alt="client hooks" />
-                        <LearnMore url="/docs/intro/frontend" />
+                        <LearnMore url="/docs/the-complete-guide/part4/" />
                     </div>
                 </div>
             </div>

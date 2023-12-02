@@ -149,7 +149,7 @@ When the application code uses the ORM to talk to the database, proper filters a
 -   When you do `db.chat.findMany()`, only chats related to the current user are returned.
 -   When you do `db.chat.create({ fromUserId: 1, toUserId: 2, subject: 'hello' })`, the ORM will reject your request if the current user does not have ID 1.
 
-Check for more information about ZenStack [here](https://zenstack.dev/docs/intro).
+Check for more information about ZenStack [here](https://zenstack.dev/docs).
 
 ### Pros
 
