@@ -217,7 +217,7 @@ Authorization is a very challenging topic, no matter what framework you choose t
 
 >[https://github.com/zenstackhq/sample-redwood-blog](https://github.com/zenstackhq/sample-redwood-blog)
 
-If you'd like to learn more about ZenStack, check out this comprehensive introduction [here](https://zenstack.dev/docs/intro/).
+If you'd like to learn more about ZenStack, check out this comprehensive introduction [here](https://zenstack.dev/docs).
 
 We created ZenStack based on this belief:
 

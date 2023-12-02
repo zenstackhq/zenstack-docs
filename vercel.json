@@ -4,6 +4,12 @@
         { "source": "/docs", "destination": "/docs/welcome" },
         { "source": "/docs/category/get-started", "destination": "/docs/category/quick-start", "permanent": true },
         { "source": "/docs/get-started/:path*", "destination": "/docs/category/quick-start", "permanent": true },
-        { "source": "/docs/category/guides", "destination": "/docs/category/recipes", "permanent": true }
+        { "source": "/docs/category/guides", "destination": "/docs/category/recipes", "permanent": true },
+        { "source": "/docs/intro", "destination": "/docs", "permanent": true },
+        {
+            "source": "/docs/intro/prisma-crash-course",
+            "destination": "/docs/the-complete-guide/part1/prisma",
+            "permanent": true
+        }
     ]
 }
