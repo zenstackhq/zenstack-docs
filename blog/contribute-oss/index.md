@@ -50,6 +50,7 @@ Many people are impressed by the concise code by Prisma or ZenStack to achieve t
 ```
 
 What they might not know is that it’s not possible before Prisma 4.5.0 because of the below issue:
+
 [Be able to update or retrieve a single record including non-unique fields in the "where" conditions](https://github.com/prisma/prisma/issues/7290)
 
 Before that you have to use `updateMany` followed by the count check as below:
