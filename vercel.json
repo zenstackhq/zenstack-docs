@@ -10,6 +10,21 @@
             "source": "/docs/intro/prisma-crash-course",
             "destination": "/docs/the-complete-guide/part1/prisma",
             "permanent": true
+        },
+        {
+            "source": "/docs/intro/zmodel",
+            "destination": "/docs/the-complete-guide/part1/zmodel",
+            "permanent": true
+        },
+        {
+            "source": "/docs/intro/api",
+            "destination": "/docs/the-complete-guide/part3/",
+            "permanent": true
+        },
+        {
+            "source": "/docs/intro/frontend",
+            "destination": "/docs/the-complete-guide/part4/",
+            "permanent": true
         }
     ]
 }
