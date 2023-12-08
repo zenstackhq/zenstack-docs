@@ -236,13 +236,6 @@ const config = {
         },
     ],
 
-    scripts: [
-        {
-            src: '/_vercel/insights/script.js',
-            defer: true,
-        },
-    ],
-
     markdown: {
         mermaid: true,
     },
