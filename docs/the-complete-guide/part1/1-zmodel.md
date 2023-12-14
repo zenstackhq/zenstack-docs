@@ -24,7 +24,7 @@ model User {
 }
 ```
 
-It works, but it's ugly and gets no protection from the compiler. The model can become messy if it's littered with such hacks everyone. One of the biggest reasons for introducing the ZModel language is to systematically remove this obstacle so that we have a solid foundation for adding custom semantics into the schema down the road.
+It works, but it's ugly and gets no protection from the compiler. The model can become messy if it's littered with such hacks everywhere. One of the biggest reasons for introducing the ZModel language is to systematically remove this obstacle so that we have a solid foundation for adding custom semantics into the schema down the road.
 
 Here's a quick example of the custom `@password` and `@omit` attributes ZModel added for automatically hashing passwords upon saving and omitting them from query results:
 

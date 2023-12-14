@@ -33,6 +33,11 @@ The easiest way to create a Next.js project with boilerplates is with `create-t3
 ```bash
 npx create-t3-app@latest --prisma --nextAuth --tailwind --CI my-blog-app
 cd my-blog-app
+```
+
+Remove `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` related code from `src/env.js`, since we're not going to use Discord for authentication. After that, start the dev server:
+
+```bash
 npm run dev
 ```
 

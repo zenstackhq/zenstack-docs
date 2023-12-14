@@ -91,6 +91,16 @@ zenstack generate [options]
 | --no-compile          | do not compile the output of built-in plugins    | false                  |
 | --no-version-check    | do not check for new versions of ZenStack        | false                  |
 
+You can also specify the ZModel schema location in the "package.json" file of your project like the following:
+
+```json title="package.json"
+{
+  "zenstack": {
+    "schema": "./db/schema.zmodel"
+  }
+}
+```
+
 #### Examples
 
 Generate with default settings.
@@ -198,6 +208,16 @@ zenstack format [options]
 | Name                  | Description                                      | Default                |
 | --------------------- | ------------------------------------------------ | ---------------------- |
 | --schema              | schema file (with extension .zmodel)             | ./schema.zmodel        |
+
+You can also specify the ZModel schema location in the "package.json" file of your project like the following:
+
+```json title="package.json"
+{
+  "zenstack": {
+    "schema": "./db/schema.zmodel"
+  }
+}
+```
 
 ### info
 
