@@ -53,3 +53,45 @@ Yes. When you run `zenstack generate` it generates a standard Prisma schema file
 ### Are there any other IDE integrations besides VSCode?
 
 Unfortunately for the time being, VSCode is the only officially supported IDE. There have been many asks about JetBrains. ZenStack's language tooling is built with [Langium](https://github.com/langium/langium), and we'll need to wait for the resolution of [this issue](https://github.com/langium/langium/issues/999) to evaluate JetBrains support.
+
+### Why am I getting "Critical dependency: the request of a dependency is an expression" error with Next.js 13 and above?
+
+Next.js 13's new bundler has compatibility issues with `@zenstackhq/runtime` package. We've submitted a [PR](https://github.com/vercel/next.js/pull/54829) to Next.js but it hasn't been accepted yet. For the time being, please add the following settings to your `next.config.js`:
+
+```js
+{
+  ...
+  experimental: {
+    serverComponentsExternalPackages: [
+      "@zenstackhq/runtime"
+    ],
+  }
+}
+```
+
+### Does ZenStack work with Prisma Client Extensions?
+
+Yes, it does. You can call `enhance` on a Prisma Client with extensions installed. Inside the client extension, the PrismaClient instance used will be the enhanced one with access policy enforcement.
+
+For example, for the code below:
+
+```ts
+const prisma = new PrismaClient().$extends({
+    model: {
+        $allModels: {
+            async exists<T>(
+                this: T,
+                where: Prisma.Args<T, 'findFirst'>['where']
+            ): Promise<boolean> {
+                const context = Prisma.getExtensionContext(this);
+                const result = await (context as any).findFirst({ where });
+                return result !== null;
+            },
+        },
+    },
+});
+
+const db = enhance(prisma, { ... });
+```
+
+`await db.post.exists()` will return `false` if no `Post` item is readable to the current user.

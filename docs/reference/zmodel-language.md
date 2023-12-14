@@ -1219,15 +1219,16 @@ The signatures of the attributes are:
 -   `@allow`
 
     ```zmodel
-        attribute @allow(_ operation: String, _ condition: Boolean)
+        attribute @allow(_ operation: String, _ condition: Boolean, _ override: Boolean?)
     ```
 
     _Params_:
 
-    | Name      | Description                                                                                                                                                              |
-    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations. |
-    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |
+    | Name      | Description                                                                                                                                                              | Default |
+    | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+    | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations.                          |         |
+    | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |         |
+    | override  | Boolean indicating if the field-level policy should override model-level ones. See [here](/docs/the-complete-guide/part1/access-policy/field-level#overriding-model-level-policies) for more details. | false   |
 
 -   `@deny`
 
@@ -1490,7 +1491,7 @@ Data validation is used for attaching constraints to field values. Unlike access
 
 The [`@core/zod`](/docs/reference/plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
 
-### Field-level validation attributes
+### Data validation attributes
 
 The following attributes can be used to attach validation rules to individual fields:
 
