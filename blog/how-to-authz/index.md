@@ -145,10 +145,12 @@ model Article {
   accessList AccessControlList[]
 
   @@allow('read', 
-		// user access
-		accessList?[user == auth()] 
-    // group access
-		|| accessList?[user.groups?[members?[id == auth().id]]])
+    accessList?[
+      // user access
+      user == auth() 
+      // group access
+      || accessList?[user.groups?[members?[id == auth().id]]]]
+  )
 }
 ```
 
