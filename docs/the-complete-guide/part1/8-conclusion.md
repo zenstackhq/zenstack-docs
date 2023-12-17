@@ -10,4 +10,8 @@ In this part of the guide, we've focused on the core layer of ZenStack - an enha
 
 The design choice of enhancing Prisma Client makes ZenStack framework-agnostic. It can be used wherever Prisma is used - a CLI application, a Node.js backend, or a full-stack application - as a non-intrusive drop-in replacement.
 
-You can find the completed sample project up to the end of this part in the "part1" branch of [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1).
+The completed sample project up to the end of this part can be found in the "part1" branch of the [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1) repo. You can clone it and check out to that branch with the following command:
+
+```bash
+git clone --branch part1 https://github.com/zenstackhq/the-complete-guide-sample.git my-todo-app
+```

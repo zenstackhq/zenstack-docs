@@ -10,4 +10,8 @@ ZModel contains a formal representation of how data is organized and its constra
 
 In [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of the guide, you'll see in action how we use plugins to turn our Todo project from a schema to a full-stack application without writing much code.
 
-You can find the completed sample project up to the end of this part in the "part2" branch of [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part2).
+The completed sample project up to the end of this part can be found in the "part2" branch of the [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part2) repo. You can clone it and check out to that branch with the following command:
+
+```bash
+git clone --branch part2 https://github.com/zenstackhq/the-complete-guide-sample.git my-todo-app
+```

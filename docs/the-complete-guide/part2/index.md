@@ -45,6 +45,10 @@ In this part of the guide, we'll explore the following topics:
 2. An overview of the built-in plugins
 3. How to write your own plugins
 
-As with Part I, we'll continue evolving our Todo project and see how to create a helpful custom plugin. If you're unfamiliar with the project, please first revisit the [Sample Project](/docs/the-complete-guide/#sample-project) part first. You can use the "part1" branch of [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1) as a starting point.
+As with Part I, we'll continue evolving our Todo project and see how to create a helpful custom plugin. If you're unfamiliar with the project, please first revisit the [Sample Project](/docs/the-complete-guide/#sample-project) part first. You can use the "part1" branch of the [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1) repo as a starting point, and clone it and check out to that branch with the following command:
+
+```bash
+git clone --branch part1 https://github.com/zenstackhq/the-complete-guide-sample.git my-todo-app
+```
 
 Let's roll on.
