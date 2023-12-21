@@ -56,7 +56,7 @@ classDiagram
     }
 ```
 
-With such a hierarchy, we can avoid repeating the common fields in each model. Moreover, the Asset abstraction allows us to query across different concrete types. For example, you can list and paginate all assets a user owns.
+With such a hierarchy, we can avoid repeating the common fields in each model. Moreover, the `Asset` abstraction allows us to query across different concrete types. For example, you can list and paginate all assets a user owns.
 
 With Prisma, we would like to be able to program against the hierarchy in the following ways:
 
@@ -132,7 +132,7 @@ Also, from the ORM point of view, the `User` model is "polluted" by the concrete
 
 ### 2. Single Table Inheritance
 
-Another simple solution is to merge all fields of all types into one wide table and use a `type` field to record the record type as a discriminator.
+Another simple solution is to merge all fields of all types into one wide table and use a `type` field to record the concrete type as a discriminator.
 
 ```mermaid
 erDiagram
@@ -209,11 +209,11 @@ This approach avoids the drawbacks of the previous two patterns. Each table cont
 This post explores how ZenStack can add the missing "polymorphism" feature to Prisma. Before getting into details, let me first briefly explain what ZenStack is.
 
 
-ZenStack is a toolkit that stretches Prisma's power to full-stack development. At its most fundamental level, it extends Prisma at two levels:
+ZenStack is a toolkit that stretches Prisma's power to full-stack development. At its most fundamental level, it extends Prisma at two levels - schema and runtime.
 
 ### Schema language
 
-ZenStack introduced a schema language called "ZModel" - a superset of Prisma schema. It adds new language constructs for better extensibility, for example, custom attributes, model inheritance, etc. At compile time, ZenStack transforms ZModel to a standard Prisma schema, which can be used to generate PrismaClient and migration records using the standard prisma CLI.
+ZenStack introduced a schema language called "ZModel" - a superset of Prisma schema. It adds new language constructs for better extensibility, for example, custom attributes, model inheritance, etc. At compile time, ZenStack transforms ZModel to a standard Prisma schema, which can be used to generate `PrismaClient` and migration records using the standard prisma CLI.
 
 ```zmodel
 abstract model Asset {
@@ -239,7 +239,7 @@ You'll see how we use them to express polymorphism shortly.
 
 ### Runtime behavior
 
-Extending schema language is only useful when it makes a difference at the runtime. ZenStack creates an "enhanced" PrismaClient at runtime by wrapping a proxy around the standard PrismaClient and injecting new behaviors - for example, the automatic enforcement of access policies (as shown in the example above).
+Extending schema language is only useful when it makes a difference at the runtime. ZenStack creates an "enhanced" `PrismaClient` at runtime by wrapping a proxy around the standard `PrismaClient` and injecting new behaviors - for example, the automatic enforcement of access policies (as shown in the example above).
 
 ```ts
 import { Prisma } from '@prisma/client';
@@ -419,7 +419,7 @@ Here are a few examples:
 
 ### 4. Achieving perfect typing
 
-The "logical" PrismaClient helps us put a "polymorphic" overlay above the physical table schema. However, it's far from perfect. For example, `db.asset.create()` method shouldn't exist. You are not supposed to create a standalone base entity. Although we can reject it with a runtime error, it'd be much nicer if we could exclude it from typing in the first place.
+The "logical" `PrismaClient` helps us put a "polymorphic" overlay above the physical table schema. However, it's far from perfect. For example, `db.asset.create()` method shouldn't exist. You are not supposed to create a standalone base entity. Although we can reject it with a runtime error, it'd be much nicer if we could exclude it from typing in the first place.
 
 Another example is reading with `db.asset` (e.g., `db.asset.findFirst()`) returns model type Asset. This is not wrong, but it'd be much easier to use if a discriminated union type is returned instead:
 
@@ -445,7 +445,7 @@ if (asset.type === 'Video') {
 }
 ```
 
-How do we achieve this? We used a separate Prisma schema to generate our "logical" PrismaClient typing, and nothing is stopping us from post-processing the generated types. We can customize the types either with TypeScript's type manipulation or just directly "edit" the ".d.ts" files using "ts-morph".
+How do we achieve this? We used a separate Prisma schema to generate our "logical" `PrismaClient` typing, and nothing is stopping us from post-processing the generated types. We can customize the types either with TypeScript's type manipulation or just directly "edit" the ".d.ts" files using "ts-morph".
 
 ## Wrap up
 
