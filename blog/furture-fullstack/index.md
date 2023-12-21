@@ -49,7 +49,7 @@ Bezos has a famous quote about the success of Amazon:
 
 It means focusing on things that don’t change.  While technologies and methodologies continuously shift and evolve, the fundamental need to store, manage, and retrieve data consistently persists.  So you still need to have at least a database to achieve so.  
 
-Even now, fewer full-stack developers are willing to directly talk with databases through the complexities of SQL queries and database schema management, let alone the ones that come from the front-end world.  Therefore ORM has already been the standard kit for the existing framework.  For instance, all three frameworks mentioned above have adopted Prisma ORM.
+Even now, fewer full-stack developers are willing to directly talk with databases through the complexities of SQL queries and database schema management, let alone the ones that come from the front-end world.  Therefore ORM has already been the standard kit for the existing framework.  For instance, all three frameworks mentioned above have adopted [Prisma ORM](https://www.prisma.io/).
 
 Furthermore, when it comes to scaling an application, it's common to think about the complexity of the code. However, in reality, the underlying data layer is often the root cause of scaling issues. If the data layer is tightly coupled with the application code, and as the application grows, the relationships between data entities become increasingly complex and difficult to manage. This challenge is even more pronounced in a full-stack environment where the frontend and backend are tightly coupled. Therefore, the abstraction layer that ORM provides ensures consistency across different layers of the application and facilitates efficient communication between the frontend and backend.
 
