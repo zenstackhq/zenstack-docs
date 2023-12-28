@@ -2,7 +2,7 @@
 description: ZenStack offers increased flexibility in managing your schema file through multiple schema files and model inheritance.
 sidebar_position: 5
 ---
-# Managing Large Schema
+# Multiple Schema Files and Model Inheritance
 
 As your business expands, your schema file grows with it. ZenStack offers increased flexibility in managing your schema file through multiple schema files and model inheritance. An example project is provided below for your reference:
 
@@ -75,7 +75,7 @@ model Comment {
 }
 ```
 
-## Multiple Schemas
+## Multiple Schema Files
 
 You can split your schema file into multiple files and use `import` statements to include the file you needed.  When running `zenstack generate`, it recursively traverses all the imported models and combine them into a single model.  For instance, you can split the above schema file into two files below:
 
