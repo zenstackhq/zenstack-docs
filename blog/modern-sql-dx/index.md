@@ -18,7 +18,7 @@ Under the flourishing surface, the new generation of modern SQL databases is ren
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - [#2 New Ways to Program](/blog/modern-sql-programming)
 - **#3 Better Developer Experience (this post)**
-- #4 AI Capabilities (coming soon)
+- [#4 Into The AI Era](/blog/modern-sql-ai)
 
 Let’s discuss how DX (developer experience) is becoming increasingly crucial in database designs. <!-- truncate -->In the old days, databases were passive participants in software development - they were reliable and delivered what they promised but didn’t get deeply involved in the dev flow. However, things are changing rapidly.
 
@@ -96,3 +96,4 @@ Modern cloud databases strive to improve the developer experience by making data
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - [#2 New Ways to Program](/blog/modern-sql-programming)
 - [#3 Better Developer Experience](/blog/modern-sql-dx)
+- [#4 Into The AI Era](/blog/modern-sql-ai)
