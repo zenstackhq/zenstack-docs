@@ -18,7 +18,7 @@ Under the flourishing surface, the new generation of modern SQL databases is ren
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - **#2 New Ways to Program (this post)**
 - #3 Integration with Development Flow (coming soon)
-- #4 AI Capabilities (coming soon)
+- [#4 Into The AI Era](/blog/modern-sql-ai)
 
 Let’s talk about how we program against the database today.
 
@@ -107,3 +107,5 @@ Despite being around for half a century, the core of RDBMS hasn’t changed much
 
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - [#2 New Ways to Program](/blog/modern-sql-programming)
+- [#3 Better Developer Experience](/blog/modern-sql-dx)
+- [#4 Into The AI Era](/blog/modern-sql-ai)

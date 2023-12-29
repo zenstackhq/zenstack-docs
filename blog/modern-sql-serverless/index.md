@@ -17,8 +17,8 @@ Under the flourishing surface, the new generation of modern SQL databases is ren
 
 - **#1 Serverless & Edge (this post)**
 - [#2 New Ways to Program](/blog/modern-sql-programming)
-- #3 Integration with Development Flow (coming soon)
-- #4 AI Capabilities (coming soon)
+- [#3 Better Developer Experience](/blog/modern-sql-dx)
+- [#4 Into The AI Era](/blog/modern-sql-ai)
 
 Let's talk about "Serverless" and "Edge-Ready" today.
 
@@ -96,3 +96,5 @@ Meanwhile, being able to query from the edge doesn't mean you should just do it.
 
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - [#2 New Ways to Program](/blog/modern-sql-programming)
+- [#3 Better Developer Experience](/blog/modern-sql-dx)
+- [#4 Into The AI Era](/blog/modern-sql-ai)
