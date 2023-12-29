@@ -1,5 +1,5 @@
 ---
-title: 'How Modern SQL Databases Are Changing Web Development - #4 Building AI Applications'
+title: 'How Modern SQL Databases Are Changing Web Development - #4 Into the AI Era'
 description: An introduction to how modern SQL databases are adapting the AI era.
 tags: [ai, database, sql]
 authors: yiming
