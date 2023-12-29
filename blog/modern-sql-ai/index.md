@@ -1,13 +1,13 @@
 ---
 title: 'How Modern SQL Databases Are Changing Web Development - #4 Building AI Applications'
-description: An introduction to how modern SQL databases help us build AI-powered applications.
+description: An introduction to how modern SQL databases are adapting the AI era.
 tags: [ai, database, sql]
 authors: yiming
 date: 2023-12-29
 image: ./cover.png
 ---
 
-# How Modern SQL Databases Are Changing Web Development - #4 Building AI Applications
+# How Modern SQL Databases Are Changing Web Development - #4 Into the AI Era
 
 ![Cover Image](cover.png)
 
@@ -18,27 +18,27 @@ Under the flourishing surface, the new generation of modern SQL databases is ren
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - [#2 New Ways to Program](/blog/modern-sql-programming)
 - [#3 Better Developer Experience](/blog/modern-sql-dx)
-- **#4 Building AI Applications (this post)**
+- **#4 Into The AI Era (this post)**
 
-Now we've come to the last part of this series. Let's get hold of the hottest trend of the year - AI, and see how modern databases enables easier development of AI-powered applications.
+Now we've come to the last part of this series. Let's get hold of the hottest trend of the year - AI, and see how modern databases enable easier development of AI-powered applications.
 
 <!-- truncate -->
 
 ## LLM? Not So Fast!
 
-Before ChatGPT showed the world how powerful a large language model can be, AI, or more precisely machine learning, has been there for over 60 years. It had its ups and downs, and had made excellent progress in many domains, including computer vision, natural language processing, speech recognition, and so on.
+Before ChatGPT showed the world how powerful a large language model can be, AI, or more precisely, machine learning, has been there for over 60 years. It has had its ups and downs and has made excellent progress in many domains, including computer vision, natural language processing, speech recognition, etc.
 
-Unlike GPT, traditional methods of machine learning often requires training custom models for solving specific problems. While ML practitioners like talking about learning algorithms, the truth is that most of their time is spent on data wrangling; and this gets SQL databases into the picture. Preparing data for model training often requires heavy preprocessing of raw data: eliminating noise, filling missing values, merging multiple pieces of data, normalizing values, extracting features, and so on. Filtering, joining, and transforming data are the tasks that databases are most adept at.
+Unlike GPT, traditional machine learning methods often require training custom models for solving specific problems. While ML practitioners like talking about learning algorithms, the truth is that most of their time is spent on data wrangling, and this gets SQL databases into the picture. Preparing data for model training requires heavy preprocessing of raw data: eliminating noise, filling missing values, merging multiple pieces of data, normalizing values, extracting features, and so on. Filtering, joining, and transforming data are the tasks that databases are most adept at.
 
-Some very cool tools were created to make these tasks represented "naturally" in SQL, and even let most of the computation happens inside the database. [PostgresML](https://postgresml.org/) is a great example. It's built above PostgreSQL, and provides a set of functions that allow you to train and use machine learning models with SQL. Here's how you can train a classification model for the classic handwritten digit recognition problem:
+Some excellent tools were created to represent these tasks "naturally" in SQL and even let most of the computation happen inside the database. [PostgresML](https://postgresml.org/) is a great example. It's built above PostgreSQL and provides a set of functions that allow you to train and use machine learning models with SQL. Here's how you can train a classification model for the classic handwritten digit recognition problem:
 
-1. Load the dataset as a table
+1. Loading a dataset as a table
 
     ```sql
     SELECT * FROM pgml.load_dataset('digits');
     ```
 
-2. Train a classifier using "xgboost" algorithm
+2. Training a classifier using "xgboost" algorithm
    
     ```sql
     SELECT * FROM pgml.train(
@@ -60,32 +60,32 @@ Some very cool tools were created to make these tasks represented "naturally" in
     LIMIT 10;
     ```
 
-Although such a model can be trained with other programming languages easily too, PostgresML makes it possible to get the job done without the data ever leaving your database. Plus, if you're a SQL lover and proficient with preparing the training data using it, you can then have your entire preprocessing-training-predicting pipeline written in SQL.
+Although such a model can also be easily trained with other programming languages, PostgresML makes it possible to get the job done without the data ever leaving your database. Plus, if you're a SQL lover and proficient in preparing the training data using it, you can have your entire preprocessing-training-predicting pipeline written in SQL.
 
 ## LLM & RAG: A Bit of Background
 
-Fast forward to the post-GPT era, many people equate AI to LLM today. To understand database's role in this new context, let's first have a quick review of the landscape of LLM.
+Fast forward to the post-GPT era, and many people equate AI to LLM today. To understand the database's role in this new context, let's first have a quick review of the landscape of LLM.
 
-LLMs are pre-trained machine learning models specialized for generating text output based on text input. They are called "large" because the models have very large number of internal parameters, and are trained with very large amount of data to ensure adequate performance. Because the models are pre-trained, developers can use them directly without worrying about the training process. Instead of fighting with feature engineering and training algorithms, developers now focus on prompt engineering.
+LLMs are pre-trained machine learning models specialized for generating text output based on text input. They are called "large" because the models have a very large number of internal parameters and are trained with a very large amount of data to ensure adequate performance. Because the models are pre-trained, developers can use them directly without worrying about the training process. Instead of fighting with feature engineering and training algorithms, they now focus on prompt engineering.
 
-However, being pre-trained also means that the models are not tailored to any specific task. One technique of making "deep customization" is called Retrieval Augmented Generation (RAG). Suppose you have a knowledge base of documents, using RAG involves the following steps:
+However, being pre-trained also means that the models are not tailored to any specific task. One "deep customization" technique is called Retrieval Augmented Generation (RAG). Suppose you have a knowledge base of documents for a domain; adopting RAG involves the following steps:
 
-- Calculate embeddings for each document (using an existing model or APIs like OpenAI)
-- Store the embeddings in a database that allows fast similarity-based search
-- Given a user query, calculate its embedding, and find the most similar documents in the database
-- Use the matching document to augment the input query as additional context and feed it to the LLM
+- Calculate embeddings for each document (using an existing model or APIs like OpenAI).
+- Store the embeddings in a database that allows fast similarity-based search.
+- Given a user query, calculate its embedding and find the most similar documents in the database.
+- Use the matching document to augment the input query as additional context and feed it to the LLM.
 
 > Embeddings are vector representations of text data.
 
 ![Retrieval Augmented Generation](rag.png)
 
-As you can see, database still plays an important role in this architecture, but in a very different way.
+As you can see, databases still play an essential role in this architecture, but in a very different way.
 
 ## Vector Search
 
-A RAG implementation's quality and performance highly depends on the similarity-based search of embeddings. The challenge arises from the fact that embeddings are usually high-dimensional vectors, and the knowledge base may have a large amount of documents. It's not surprising that the popularity of LLM catalyzed the development of specialized vector databases like [Pinecone](https://www.pinecone.io/) and [Weaviate](https://weaviate.io/). However, SQL databases are also evolving to meet the new challenge.
+A RAG implementation's quality and performance highly depend on the similarity-based search of embeddings. The challenge arises from the fact that embeddings are usually high-dimensional vectors, and the knowledge base may have many documents. It's not surprising that the popularity of LLM catalyzed the development of specialized vector databases like [Pinecone](https://www.pinecone.io/) and [Weaviate](https://weaviate.io/). However, SQL databases are also evolving to meet the new challenge.
 
-PostgreSQL's [pgvector](https://github.com/pgvector/pgvector) extension is probably the most widely used SQL solution for storing and searching vector data. The extension introduces a "vector" type specialized for storing high-dimensional vector data. It allows you to create vector indices (in "IVFFlat" or "HNSW" format for different indexing/searching performance tradeoff) and leverage them to do different types of similarity searches.
+PostgreSQL's [pgvector](https://github.com/pgvector/pgvector) extension is probably the most widely used SQL solution for storing and searching vector data today. The extension introduces a "vector" type specialized for storing high-dimensional vector data. It allows you to create vector indices (in "IVFFlat" or "HNSW" format for different indexing/searching performance tradeoffs) and leverage them to do various types of similarity searches.
 
 ```sql
 -- Create a table with a vector column
@@ -101,16 +101,16 @@ CREATE INDEX ON items USING hnsw (embedding vector_l2_ops);
 SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;
 ```
 
-SQL databases are not optimized specifically for vector searches, and benchmark shows it's usually slower than vector databases. However, there are still good reasons to use them:
+SQL databases are not explicitly optimized for vector searches; benchmarks show it's usually slower than vector databases. However, there are still good reasons to use them:
 
-- You can filter with both vector and non-vector data at the same time.
+- You can filter with both vector and non-vector data simultaneously.
 - You can combine full-text search and vector-based search.
 - You can have the matching document's content directly returned in the search result without making a separate fetch request.
 - You can leverage the database's security mechanisms (roles, row-level-security, etc.) to segregate data across tenants. 
 
-## SQL As the Facade of LLM Workflows
+## SQL as the Facade of LLM Workflows
 
-Besides storing and searching vector data, there are also other cool innovations that let you describe your entire LLM workflows using SQL - conceptually similar to how end-to-end machine learning tasks are done with PostgresML.
+Besides storing and searching vector data, there are also other remarkable innovations that let you describe your entire LLM workflows using SQL - conceptually similar to how end-to-end machine learning tasks are done with PostgresML.
 
 [Mindsdb](https://mindsdb.com) is a good example. It abstracts everything related to an AI workflow as "virtual tables". For example, you can import OpenAI API as a "virtual table":
 
@@ -137,17 +137,17 @@ FROM my_openai_model
 WHERE question = 'Where is Stockholm located?';
 ```
 
-And get result like:
+And get back result like:
 
 | question                   |answer                         |
 | ---------------------------|-------------------------------|
 |Where is Stockholm located? |Stockholm is located in Sweden.|
 
-It's essentially a platform for integrating data, APIs and LLMs, and use SQL to declaratively orchestrate them to create high-level workflows like RAG, chatbot, text summarization, etc. 
+It's essentially a platform for integrating data, APIs, and LLMs and using SQL to declaratively orchestrate them to create high-level workflows like RAG, chatbot, text summarization, etc. 
 
 ## Wrap Up
 
-AI is everywhere. It's encouraging people to rethink every aspect of software development, and database is no exception. We should expect to see that SQL databases - one of the most time-tested supporting pillar of software engineering, continue exploring this new frontier and being reshaped along the way.
+AI is everywhere. It's encouraging us to rethink every aspect of software development, and database is no exception. We should expect to see SQL databases - one of the most time-tested supporting pillars of software engineering, continue exploring this new frontier and being reshaped along the way.
 
 ---
 
@@ -156,4 +156,4 @@ AI is everywhere. It's encouraging people to rethink every aspect of software de
 - [#1 Serverless & Edge](/blog/modern-sql-serverless)
 - [#2 New Ways to Program](/blog/modern-sql-programming)
 - [#3 Better Developer Experience](/blog/modern-sql-dx)
-- [#4 Building AI Applications](/blog/modern-sql-ai)
+- [#4 Into the AI Era](/blog/modern-sql-ai)
