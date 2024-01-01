@@ -37,6 +37,8 @@ JetBrain's LSP support is not available to the community edition of the IDEs, so
 - Error highlighting
 - Go to definition
 
+### Installation
+
 You can install it by searching "ZenStack Language Tools" inside JetBrain IDE's plugins marketplace or directly from [here](https://plugins.jetbrains.com/plugin/23397-zenstack-language-tools).
 
 [![JetBrains Screenshot](/img/jetbrains-screenshot.png)](https://plugins.jetbrains.com/plugin/17210-zenstack-language-tools)
