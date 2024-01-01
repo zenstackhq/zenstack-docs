@@ -16,6 +16,7 @@ ZenStack VSCode extension provides syntax highlighting and error checking to imp
 - Go to definition
 - Auto-completion
 - Hover documentation
+- Formatting
 
 ### Installation
 
@@ -36,6 +37,8 @@ JetBrain's LSP support is not available to the community edition of the IDEs, so
 - Syntax highlighting
 - Error highlighting
 - Go to definition
+- Auto-completion (partial)
+- Formatting
 
 ### Installation
 
