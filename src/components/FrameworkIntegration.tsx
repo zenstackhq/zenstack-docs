@@ -63,6 +63,7 @@ export default function FrameworkIntegration(): JSX.Element {
                                 darkModeBrightness={0.85}
                             />
                             <Logo src="/img/logo/nestjs.png" darkModeBrightness={0.85} />
+                            <Logo src="/img/logo/redwood.png" darkSrc="/img/logo/redwood-dark.png" />
                         </div>
                     </div>
                     <div>
