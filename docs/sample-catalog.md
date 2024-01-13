@@ -22,6 +22,7 @@ The ZenStack team maintains the following two main series of sample projects:
 -   [Next.js 13 + NextAuth + tRPC](https://github.com/zenstackhq/sample-todo-trpc)
 -   [Nuxt V3 + TanStack Query](https://github.com/zenstackhq/sample-todo-nuxt)
 -   [SvelteKit + TanStack Query](https://github.com/zenstackhq/sample-todo-sveltekit)
+-   [RedwoodJS](https://github.com/zenstackhq/sample-todo-redwood)
 
 ### Blog Samples
 
