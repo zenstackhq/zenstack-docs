@@ -7,7 +7,7 @@ date: 2024-01-15
 image: ./cover.png
 ---
 
-# How to Model Authorization in Prisma - No Theory, Just Code
+# Modeling Authorization in Prisma - No Theory, Just Code
 
 ![Cover Image](cover.png)
 
@@ -20,8 +20,6 @@ This post aims to fill the gap by targeting [Prisma](https://prisma.io) - the mo
 ## Before We Start
 
 It's assumed that you know the basics of using Prisma. Prisma is an excellent ORM. But it doesn't have a built-in authorization solution. To supplement that, we'll use [ZenStack](https://zenstack.dev) throughout the samples. ZenStack is a toolkit that supercharges Prisma in many ways. One of the features is to provide a declarative way to model authorization. Its modeling language, ZModel, is a superset of Prisma Schema Language, so it should be easily understandable to people familiar with Prisma.
-
-> *Disclaimer:* I'm the creator ZenStack.
 
 A few quick notes about the syntax:
 
@@ -609,4 +607,4 @@ Authorization can be a very fuzzy topic for people new to the challenge. What th
 
 You can find the source code at [https://github.com/zenstackhq/authz-modeling-samples](https://github.com/zenstackhq/authz-modeling-samples).
 
-I hope you also enjoy how ZenStack allows you to express authorization rules declaratively. Its syntax provides great flexibility to traverse relationships and access the current user to define sophisticated rules. Please visit [its website](https://zenstack.dev) to learn more. By the way, don't forget to give it a ⭐️ on [GitHub](https://github.com/zenstackhq/zenstack).
+I hope you also enjoy how ZenStack allows you to express authorization rules declaratively. Its syntax provides great flexibility to traverse relationships and access the current user to define sophisticated rules. Please visit [documentation](https://zenstack.dev/docs) to learn more. By the way, don't forget to give it a ⭐️ on [GitHub](https://github.com/zenstackhq/zenstack).
