@@ -7,6 +7,10 @@ sidebar_label: Sample Catalog
 
 The ZenStack team maintains the following two main series of sample projects:
 
+- **Schema Samples**
+
+    A set of ZModel schemas demonstrating how to model different types of authorization patterns.
+
 - **Multi-Tenant Todo App**
 
     This series demonstrates a complete implementation of a multi-tenant, SaaS-like application with a relatively complex authorization model. It is also the sample we used throughout [The Complete Guide](/docs/the-complete-guide/).
@@ -14,6 +18,17 @@ The ZenStack team maintains the following two main series of sample projects:
 - **Simple Blog App**
 
     This series is for those who want to quickly understand the structure of a project using ZenStack, without the burden of comprehending a complex application. These samples are used in the [Quick Start](/docs/category/quick-start) guides.
+
+### Schema Samples
+
+The [sample repo](https://github.com/zenstackhq/authz-modeling-samples) includes the following patterns:
+
+- ACL
+- RBAC
+- ABAC
+- Multi-Tenancy
+
+You can use [this blog post](https://zenstack.dev/blog/model-authz) as an introduction.
 
 ### Multi-Tenant Todo Samples
 
