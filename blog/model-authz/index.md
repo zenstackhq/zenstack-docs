@@ -534,9 +534,9 @@ const microsoft = await prisma.org.create({
 });
 
 // create an enhanced PrismaClient for each user
-const emilyDb = enhance(prisma, { user: emily }, { loadPath: '.zenstack' });
-const adamDb = enhance(prisma, { user: adam }, { loadPath: '.zenstack' });
-const joeDb = enhance(prisma, { user: joe }, { loadPath: '.zenstack' });
+const emilyDb = enhance(prisma, { user: emily });
+const adamDb = enhance(prisma, { user: adam });
+const joeDb = enhance(prisma, { user: joe });
 
 // Emily should be able to add Adam to the org
 await emilyDb.org.update({
