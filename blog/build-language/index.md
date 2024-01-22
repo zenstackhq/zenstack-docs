@@ -239,19 +239,19 @@ The bar for creating dev tools is high today. An innovation needs to work great 
 
 Deriving a resolved and error-free parse tree is pretty cool, but it's not very useful by itself. You have a few options to continue from there and generate actual values out of it:
 
-- Just stop here
+1. Just stop here
 
     You can stop here, declare the parse tree is the outcome, and let your users decide what to do with it.
 
-- Transform it into other languages.
+2. Transform it into other languages.
 
     Often, a language will have a "backend" to transform the parse tree to a lower-level language. For example, Java compiler's backend generates JVM byte code. TypeScript's backend generates Javascript code. At ZenStack, we transform ZModel to Prisma Schema Language. Then, the tooling/runtime of the target language can take it as input.
 
-- Implement a pluggable transformation mechanism.
+3. Implement a pluggable transformation mechanism.
 
     You can also implement a plug-in mechanism to let your language users provide their backend transformation. It's a more structural way of doing #1.
 
-- Build a runtime to execute the parse tree.
+4. Build a runtime to execute the parse tree.
 
     This is the most "complete" route for building a language. You can implement an interpreter to "run" the parsed code. Whatever "run" means is entirely up to you. At ZenStack, besides transforming ZModel to Prisma Schema Language, we also have a runtime that interprets the access control rules to enforce them during data access.
 
@@ -263,4 +263,4 @@ Congratulations! You can pat yourself on the back now, as you have completed 20%
 
 Compiler construction feels like an ancient art, given how fast software engineering has evolved in the past decades. However, I still think it's something that a serious developer should try out to gain unique experiences. It very nicely reflects the dualism of programming - aesthetics and pragmatism. An excellent software system usually has an elegant conceptual model, but you'll find many improvisations that don't look too pretty under the surface.
 
-You should build a language because why not.
+You should build a language because why not?
