@@ -159,6 +159,19 @@ You should run the "generate" command in your deployment script before `yarn rw 
 yarn rw @zenstackhq generate && yarn rw deploy vercel
 ```
 
+:::info Notes about Netlify
+
+ZenStack generates supporting JS modules into the `node_modules/.zenstack` folder, and the folder needs to be accessible at the runtime. Netlify detects the dependencies it needs to bundle by inspecting an application's root package.json file. This will result in the `.zenstack` folder being ignored. 
+
+To fix this problem, add the following section to your `netlify.toml` file:
+
+```toml
+[functions]
+  included_files = ["node_modules/.zenstack/*"]
+```
+
+:::
+
 ### Using the `@zenstackhq` CLI plugin
 
 The `@zenstackhq/redwood` package registers a set of custom commands to the RedwoodJS CLI under the `@zenstackhq` namespace. You can run it with:
