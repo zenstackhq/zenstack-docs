@@ -173,7 +173,7 @@ model User {
 
 ### IDE Support
 
-ZenStack offers a VSCode extension to support authoring ZModel files - syntax highlighting, auto-completion, and error checking. You can install it from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack). Although it still lacks some features, the goal is to make it on par with the Prisma VSCode extension. We're also actively looking to support JetBrains IDEs. Please follow [this discussion](https://github.com/zenstackhq/zenstack/discussions/414) for updates.
+ZenStack comes with a [VSCode extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) and a [JetBrains IDE plugin](https://plugins.jetbrains.com/plugin/23397-zenstack-language-tools). You can find more information about IDE support [here](/docs/guides/ide).
 
 ### Full Documentation
 
