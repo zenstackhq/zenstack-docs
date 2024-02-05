@@ -31,7 +31,7 @@ The most straightforward form of embedded AuthZ is libraries that help you model
 
 Another form of embedded AuthZ is those that are built-in features of databases. In the previous post, we've seen how Postgres's RLS feature allows you to define complex access control rules inside the database directly. [Firebase](https://firebase.google.com/) and [EdgeDB](https://www.edgedb.com/) are also excellent examples of this category.
 
-### Pros & Cons
+#### Pros & Cons
 
 Having AuthZ as part of an existing service has some clear benefits:
 
@@ -53,7 +53,7 @@ AuthZ-as-a-Service became popular with the publication of the [Zanzibar paper](h
 
 It should be noted that AuthZ-as-a-Service is not just about Zanzibar. Products like [Hasura](https://hasura.io/) have started to provide AuthZ capabilities long before that.
 
-### Pros & Cons
+#### Pros & Cons
 
 Separating AuthZ as a standalone service brings us several benefits:
 
