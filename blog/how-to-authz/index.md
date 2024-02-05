@@ -254,14 +254,15 @@ Decoupling authorization from the application's data model has several advantage
 
 - **Separation of concerns**: you can let these two things evolve relatively independently and swap one implementation without affecting the other.
     
-- **Isomorphic authorization**: libraries like CASL allow you to model authorization the same way in the back and frontend. Although you cannot trust the frontend's judgement for access control, it's very useful for rending UI components conditionally. Another scenario is authorizing access to first-party (database) and third-party (API) data. Using a database-independent authorization allows you to achieve a homogeneous implementation.
+- **Isomorphic authorization**: libraries like [CASL](https://casl.js.org/) allow you to model authorization the same way in the back and frontend. Although you cannot trust the frontend's judgement for access control, it's very useful for rending UI components conditionally. Another scenario is authorizing access to first-party (database) and third-party (API) data. Using a database-independent authorization allows you to achieve a homogeneous implementation.
     
-
 There are prices to pay when using decoupled authorization:
 
 - **Synchronization**: no matter whether you use a library or a service, you need to pull out information from your database and sync it to the authorization side, introducing extra complexity.
     
 - **Performance**: although Authz libraries and services can be highly optimized for performance, in many cases, you can't avoid reading data out of the database and then discard it due to policy filtering.
+
+It should be noted that some decoupled solutions, like [CASL](https://casl.js.org/) and [cerbos](https://cerbos.dev), try to mitigate the performance problem by providing a way to generate data query filters (usually by integrating with ORM) based on authorization rules. You can merge the filters into the database query to achieve optimal performance.
 
 ## Decision Factors
 
@@ -284,25 +285,4 @@ We’ve seen how coupled and decoupled authorization solutions work together wit
 
 ![Updated quadrant](updated-quadrant.png)
 
-In the next part (coming soon), we'll focus on the other axis of the quadrant: authorization embedded inside the application vs. as a separate service.
-
-Stay tuned!
-
----
-
-### Solution Catalog
-
-- [accesscontrol](https://github.com/onury/accesscontrol)
-- [authzed](https://authzed.com/)
-- [casbin](https://casbin.org/)
-- [CASL](https://casl.js.org/)
-- [cerbos](https://cerbos.dev/)
-- [edgedb](https://www.edgedb.com/)
-- [firebase](https://firebase.google.com/)
-- [hasura](https://hasura.io/)
-- [ory/keto](https://www.ory.sh/keto/)
-- [PostGraphile](https://www.graphile.org/postgraphile)
-- [PostgREST](https://postgrest.org/)
-- [Supabase](https://supabase.com/)
-- [Warrant](https://warrant.dev/)
-- [ZenStack](https://zenstack.dev/)
+In the [next part](/blog/how-to-authz-2/), we'll focus on the other axis of the quadrant: authorization embedded inside the application vs. as a separate service.
