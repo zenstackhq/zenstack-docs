@@ -7,7 +7,7 @@ date: 2024-02-07
 image: ./cover.png
 ---
 
-# What Are the Chances of You Creating a Programming Language?
+## What Are the Chances of You Creating a Programming Language?
 ![Cover Image](cover.png)
 
 If I asked what’s your favorite  words of Steve Jobs, I believe most people would say:
@@ -19,7 +19,7 @@ It’s coming from the 3rd story of the speech he gave at Stanford.  But my favo
 > Connecting the Dots
 
 <!--truncate-->
-# Would You Ever Create a New Language?
+## Would You Ever Create a New Language?
 
 Does the below content look familiar to you?
 
@@ -41,7 +41,7 @@ I also had that doubt too. But for me, it was the first time I ever felt the **s
 
 With hindsight, now I would say:
 
-# You Never Know What Would Happen
+## You Never Know What Would Happen
 
 During my last year of graduate school, I was lucky to get an internship at Microsoft.  The even more lucky part is that the team I joined was building a new DSL(Domain Specific Language) for protocol.  
 
@@ -51,13 +51,13 @@ I still remember the day when the architect of my team reviewed my prototype wit
 
 I thought the job was done for me, the next step would be assigning a full-time employee to write the production code.  To my surprise,  I’m the one who put it into the production.  I assume that’s the main reason why I finally got the offer to join Microsoft. 
 
-# I Would Never Write Front-End Code
+## I Would Never Write Front-End Code
 
 As a backend developer with over 10 years of experience, I never imagined that I would write any front-end code. This is not only because front-end and back-end development require different skill sets but also because I believe that having a good sense of visual aesthetics is a crucial quality for front-end developers, which I lack.   However, there is a significant shortage of developer resources for the new SaaS product we were building in my previous company. As a result, I had to write front-end code. 
 
 Although the view still stands that I would never be a good front-end developer, it is that experience that opened the door to full-stack development for me. I could see the knowledge gap between front-end and back-end developers, which makes it inefficient to deliver features end-to-end for complex web apps. 
 
-# The Dots Are Connected
+## The Dots Are Connected
 
 If you investigate some successful software, you will notice that many of them are created due to the pain point of the creator himself. The underlying logic this is easy to understand: 
 
@@ -71,7 +71,7 @@ Check out the details of how we build it:
 
 [How Much Work Does It Take to Build a Programming Language? | ZenStack](https://zenstack.dev/blog/build-language)
 
-# Allow It and Make the Magic Happen
+## Allow It and Make the Magic Happen
 
 Despite ZenStack being relatively young, it has already integrated with various types of stacks:
 
