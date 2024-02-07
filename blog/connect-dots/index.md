@@ -4,11 +4,11 @@ description: Enjoy whatever you are doing and wait for the dots to connect
 tags: [compiler, language, DSL]
 authors: jiasheng
 date: 2024-02-07
-image: ./cover.jpg
+image: ./cover.png
 ---
 
 # What Are the Chances of You Creating a Programming Language?
-![Cover Image](cover.jpg)
+![Cover Image](cover.png)
 
 If I asked what’s your favorite  words of Steve Jobs, I believe most people would say:
 
