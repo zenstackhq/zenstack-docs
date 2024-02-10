@@ -21,6 +21,7 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 | -------------- | ------- | ------------------------------------------------- | -------- | ---------------------- |
 | output         | String  | Output file path (relative to the path of ZModel)                                  | No       | ./prisma/schema.prisma |
 | generateClient | Boolean | Whether to run `prisma generate` after generation | No       | true                   |
+| generateArgs | String | Command line arguments appended to the `prisma generate` call, e.g., "--no-engine". Please note that the "--schema" option is automatically passed, and you shouldn't provide it explicitly. | No       |                    |
 | format         | Boolean | Whether to run `prisma format` after generation   | No       | false                  |
 
 ### Example
