@@ -1,0 +1,139 @@
+---
+title: Next.js
+description: Adapter for integrating with Next.js
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ErrorHandling from './_error-handling.md';
+import AdapterOptions from './_options.mdx';
+import UsingAPI from './_using-api.mdx';
+
+# Next.js Server Adapter
+
+The `@zenstackhq/server/next` module provides a quick way to install API endpoints onto a [Next.js](https://nextjs.org/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+The server adapter supports both the "pages" routes for older versions of Next.js and the new "app" routes for Next.js 13.
+
+### Installation
+
+```bash
+npm install @zenstackhq/server
+```
+
+### Mounting the API
+
+You can use it to create a request handler in an API endpoint like:
+
+<Tabs>
+
+<TabItem value="pages" label={`For "pages" routes`}>
+
+```ts title='/src/pages/api/model/[...path].ts'
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { enhance } from '@zenstackhq/runtime';
+import { prisma } from '../../../lib/db.ts';
+import { getSessionUser } from '../../../lib/auth.ts';
+
+// create an enhanced Prisma client with user context
+function getPrisma(req: NextApiRequest, res: NextApiResponse) {
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    return enhance(prisma, { user: getSessionUser(req, res) });
+}
+
+// create the request handler with the `getPrisma` hook
+export default NextRequestHandler({ getPrisma });
+```
+
+The Next.js API route handler takes the following options to initialize:
+
+<AdapterOptions getPrisma='(req: NextApiRequest, res: NextApiResponse) => unknown | Promise<unknown>' />
+
+</TabItem>
+
+<TabItem value="appdir" label={`For Next.js 13 "app" routes`}>
+
+```ts title='/src/app/api/model/[...path]/route.ts'
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import type { NextRequest } from "next/server";
+import { enhance } from '@zenstackhq/runtime';
+import { prisma } from '../../../lib/db.ts';
+import { getSessionUser } from '../../../lib/auth.ts';
+
+// create an enhanced Prisma client with user context
+function getPrisma(req: NextRequest) {
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    return enhance(prisma, { user: getSessionUser(req) });
+}
+
+const handler = NextRequestHandler({ getPrisma, useAppDir: true });
+
+export {
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as PATCH,
+  handler as DELETE,
+};
+```
+
+:::info
+Next.js 13 has issues handling `@zenstackhq/runtime` and `@zenstackhq/server` packages when compiling server components. Please add the following config section to your `next.config.mjs` to exclude them:
+
+```js title='next.config.mjs'
+const config = {
+    experimental: {
+        serverComponentsExternalPackages: [
+            "@zenstackhq/runtime",
+            "@zenstackhq/server",
+        ],
+    },
+}
+```
+:::
+
+The Next.js API route handler takes the following options to initialize:
+
+<AdapterOptions getPrisma='(req: NextRequest) => unknown | Promise<unknown>' />
+
+</TabItem>
+
+</Tabs>
+
+### Controlling what endpoints to expose
+
+You can use a [Next.js middleware](https://nextjs.org/docs/pages/building-your-application/routing/middleware) to further control what endpoints to expose. For example, if you're using a RESTful API handler installed at "/api/model", you can disallow listing all `User` entities by adding a middleware like:
+
+```ts title='/src/middleware.ts'
+import { type NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+    const url = new URL(request.url);
+    if (
+        request.method === 'GET' &&
+        url.pathname.match(/^\/api\/model\/user\/?$/)
+    ) {
+        return NextResponse.json({ error: 'Not allowed' }, { status: 405 });
+    }
+}
+
+export const config = {
+    matcher: '/api/model/:path*',
+};
+```
+
+### Using the API
+
+<UsingAPI />
+
+<ErrorHandling />
+
+### Fully working example
+
+You can find the fully working examples below:
+- [Pages router](https://github.com/zenstackhq/docs-tutorial-nextjs)
+- [Apps router](https://github.com/zenstackhq/docs-tutorial-nextjs-app-dir)

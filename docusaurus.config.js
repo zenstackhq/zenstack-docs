@@ -34,6 +34,11 @@ const config = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     path: 'docs',
                     editUrl: 'https://github.com/zenstackhq/zenstack-docs/edit/main',
+                    versions: {
+                        current: {
+                            label: '2.0 🚧',
+                        },
+                    },
                 },
                 blog: {
                     showReadingTime: true,
@@ -94,6 +99,10 @@ const config = {
                     {
                         href: 'https://go.zenstack.dev/chat',
                         label: 'Discord',
+                        position: 'right',
+                    },
+                    {
+                        type: 'docsVersionDropdown',
                         position: 'right',
                     },
                     {

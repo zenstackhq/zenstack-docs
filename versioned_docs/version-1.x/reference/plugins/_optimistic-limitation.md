@@ -1,0 +1,4 @@
+- The automatic optimistic update relies on ID matching. It only works for queries that select the ID field(s).
+- Non-entity-fetching queries like `count`, `aggregate`, and `groupBy` are not affected.
+- Infinite queries are not affected.
+- It doesn't respect filter conditions or access policies that potentially affect the queries under update. For example, for query `useFindManyPost({ where: { published: true }})`, when a non-published `Post` is created, it'll still be inserted into the query result.
