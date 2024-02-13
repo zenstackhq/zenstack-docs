@@ -69,7 +69,7 @@ As running web workload becomes the prevailing use case of databases, some new-g
 
 -   [Supabase](/blog/supabase)
 -   [PostgREST](/blog/postgrest)
--   [ZenStack](blog/prisma-zenstack)
+-   [ZenStack](/blog/prisma-zenstack)
 -   [Hasura](https://hasura.io)
 -   [WunderGraph](https://wundergraph.com/)
 
