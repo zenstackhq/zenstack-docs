@@ -6,7 +6,7 @@ sidebar_position: 4
 # @core/zod
 
 The `@core/zod` plugin generates [Zod](https://github.com/colinhacks/zod) schemas for models and input arguments of Prisma CRUD operations. The plugin is automatically enabled when any of the following conditions meets:
-- If any model carries [field validation attributes](/docs/reference/zmodel-language#field-validation).
+- If any model carries [field validation attributes](/docs/reference/zmodel-language#data-validation).
 - If any plugin that depends on it is used, e.g., the [tRPC plugin](/docs/reference/plugins/trpc).
 
 :::info
@@ -19,7 +19,7 @@ The generated schemas have the following three parts:
 
 - `zod/models`
     
-    The schema for validating the models, containing field's typing and [validation rules](/docs/reference/zmodel-language#field-validation). Relation fields and foreign key fields are ignored. For each model, three schemas are generated respectively:
+    The schema for validating the models, containing field's typing and [validation rules](/docs/reference/zmodel-language#data-validation). Relation fields and foreign key fields are ignored. For each model, three schemas are generated respectively:
   
     - *[Model]Schema*
 

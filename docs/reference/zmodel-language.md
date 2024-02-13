@@ -297,7 +297,7 @@ id String @[ATTR_NAME](ARGS)?
 
 -   **[ATTR_NAME]**
 
-Attribute name. See [below](#built-in-attributes) for a full list of attributes.
+Attribute name. See [below](#predefined-attributes) for a full list of attributes.
 
 -   **[ARGS]**
 
@@ -315,7 +315,7 @@ model Model {
 
 -   **[ATTR_NAME]**
 
-Attribute name. See [below](#built-in-attributes) for a full list of attributes.
+Attribute name. See [below](#predefined-attributes) for a full list of attributes.
 
 -   **[ARGS]**
 
@@ -1491,7 +1491,7 @@ Data validation is used for attaching constraints to field values. Unlike access
 
 The [`@core/zod`](/docs/reference/plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
 
-### Data validation attributes
+### Field-level validation attributes
 
 The following attributes can be used to attach validation rules to individual fields:
 

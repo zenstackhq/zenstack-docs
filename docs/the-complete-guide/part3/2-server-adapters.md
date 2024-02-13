@@ -74,7 +74,7 @@ Make a request in another terminal to verify everything is working:
 curl http://localhost:3000
 ```
 
-> { "greet": "Hello World!" }
+> &#123; "greet": "Hello World!" &#125;
 
 #### 3. Adding ZenStack server adapter (RPC flavor)
 
@@ -234,7 +234,7 @@ curl "http://localhost:3000/api/rpc/list/findFirst" -H "x-user-id: 1"
 }
 ```
 
-You can try other operations with different user identities. The service's behavior should be consistent with what we've seen in the REPL with the enhanced Prisma in [Part I](/docs/the-complete-guide/part1/access-policy/current-user#%EF%B8%8F-adding-user-based-access-control-to-our-todo-app).
+You can try other operations with different user identities. The service's behavior should be consistent with what we've seen in the REPL with the enhanced Prisma in [Part I](/docs/the-complete-guide/part1/access-policy/current-user#add-user-based-access-control).
 
 #### 5. Trying Out The RESTful API Flavor
 

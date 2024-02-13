@@ -52,7 +52,7 @@ Example for using the context provider:
 
 <Tabs>
 
-<Tab value="react" label="React">
+<TabItem value="react" label="React">
 
 ```tsx title='_app.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -84,9 +84,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 export default MyApp;
 ```
 
-</Tab>
+</TabItem>
 
-<Tab value="vue" label="Vue">
+<TabItem value="vue" label="Vue">
 
 ```html title='App.vue'
 <script setup lang="ts">
@@ -112,9 +112,9 @@ provideHooksContext({
     <!-- App Content -->
 </template>
 ```
-</Tab>
+</TabItem>
 
-<Tab value="svelte" label="Svelte">
+<TabItem value="svelte" label="Svelte">
 
 ```svelte title='+layout.svelte'
 <script lang="ts">
@@ -146,7 +146,7 @@ provideHooksContext({
     </QueryClientProvider>
 </div>
 ```
-</Tab>
+</TabItem>
 
 </Tabs>
 
@@ -214,7 +214,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
 </TabItem>
 
-<Tab value="vue" label="Vue">
+<TabItem value="vue" label="Vue">
 
 ```ts title='main.ts'
 import { createApp } from 'vue';
@@ -239,7 +239,7 @@ provideHooksContext({
     <!-- App Content -->
 </template>
 ```
-</Tab>
+</TabItem>
 
 <TabItem value="svelte" label="Svelte">
 
