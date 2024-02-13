@@ -37,6 +37,7 @@
         "@docusaurus/types": "^3.1.1",
         "@tailwindcss/typography": "^0.5.9",
         "@tsconfig/docusaurus": "^2.0.2",
+        "@types/node": "^20.11.17",
         "@types/react": "^18.0.26",
         "typescript": "^5.3.3"
     },
