@@ -232,12 +232,3 @@ zenstack info [options] [path]
 | Name | Description  | Default        |
 | ---- | ------------ | -------------- |
 | path | Project path | current folder |
-
-<!-- ### Config file
-
-ZenStack CLI loads configuration from `zenstack.config.json` file if it finds one. The config file path can be overridden with `--config` option.
-
-The config file is a JSON object with the following properties:
-
-| Name                 | Description                                                         | Default              |
-| -------------------- | ------------------------------------------------------------------- | -------------------- | -->
