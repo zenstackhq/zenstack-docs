@@ -8,7 +8,7 @@ As your business expands, your schema file grows with it. ZenStack offers increa
 
 [https://github.com/zenstackhq/sample-multiple-schema](https://github.com/zenstackhq/sample-multiple-schema) 
 
-## Model Inheritance
+## Abstract Model Inheritance
 
 You can use abstract model to include common fields that would be shared by multiple models.  By extending abstract model, you can keep your schema DRY(Don’t repeat yourself).  The abstract model can contain both fields and attributes like a normal model, but it is erased after generation and does not appear in the generated Prisma schema file.
 

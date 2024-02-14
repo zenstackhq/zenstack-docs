@@ -790,7 +790,7 @@ _Params_:
 
 | Name      | Description                                                                                                                                                              |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbriviation for including all operations. |
+| operation | Comma separated list of operations to control, including `"create"`, `"read"`, `"update"`, and `"delete"`. Pass` "all"` as an abbreviation for including all operations. |
 | condition | Boolean expression indicating if the operations should be denied                                                                                                         |
 
 ##### @@auth
@@ -799,7 +799,21 @@ _Params_:
 attribute @@auth()
 ```
 
-Specify the model for resolving `auth()` function call in access policies. By default, the model named "User" is used. You can use this attribute to override the default behavior. A Zmodel can have at most one model with this attribute. 
+Specify the model for resolving `auth()` function call in access policies. By default, the model named "User" is used. You can use this attribute to override the default behavior. A Zmodel can have at most one model with this attribute.
+
+##### @@auth
+
+```zmodel
+attribute @@delegate(_ discriminator: FieldReference)
+```
+
+Marks a model to be a delegated type. Used for [modeling a polymorphic hierarchy](../guides/polymorphism).
+
+_Params_:
+
+| Name          | Description                                                                                                                  |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| discriminator | A `String` or `enum` field in the same model used to store the name of the concrete model that inherit from this base model. |
 
 ##### @@prisma.passthrough
 
