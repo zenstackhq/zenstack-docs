@@ -216,6 +216,7 @@ model Video extends Content {
 
 ### Sample Project
 
+Check [here](https://github.com/zenstackhq/v2-polymorphism) for a sample project.
 
 ### Inner Workings
 
