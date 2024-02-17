@@ -1543,6 +1543,22 @@ The following attributes can be used to attach validation rules to individual fi
 
     Validates a string field value matches a regex.
 
+-   `@trim(_ value: String)`
+
+    Trims whitespace.
+
+-   `@lower(_ value: String)`
+
+    Converts to lowercase.
+
+-   `@upper(_ value: String)`
+
+    Converts to uppercase.
+
+:::info
+Attributes `@trim`, `@lower`, and `@upper` are actually "transformation" instead of "validation". They make sure the values are transformed before storing into the database.
+:::
+
 #### Number
 
 -   `@gt(_ value: Int, _ message: String?)`

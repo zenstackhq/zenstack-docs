@@ -47,6 +47,13 @@ type EnhancementContext = {
 Options with the following typing.
 
 ```ts
+type TransactionIsolationLevel =
+    | 'ReadUncommitted'
+    | 'ReadCommitted'
+    | 'RepeatableRead'
+    | 'Snapshot'
+    | 'Serializable';
+
 type EnhancementOptions = {
     kinds?: EnhancementKind[];
     logPrismaQuery?: boolean;
@@ -62,9 +69,9 @@ type EnhancementOptions = {
 | kinds                     | The kinds of enhancements to apply. By default all enhancements are applied. Supported values: "policy", "password", "omit", "delegate". | All enhancement kinds                                                          |
 | logPrismaQuery            | Whether to log queries sent to Prisma client. Log will be emitted with "info" level, so please make sure you [turn that level on](https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/logging#log-to-stdout) when creating Prisma client | false                        |
 | errorTransformer          | A function for transforming error thrown by the enhanced `PrismaClient` into a custom one. |                         |
-| transactionMaxWait        | The `maxWait` option passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |                         |
-| transactionTimeout        | The `timeout` option passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |                         |
-| transactionIsolationLevel | The `isolationLevel` option passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |                         |
+| transactionMaxWait        | The `maxWait` option (in ms) passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
+| transactionTimeout        | The `timeout` option (in ms) passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
+| transactionIsolationLevel | The `isolationLevel` option passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
 
 
 #### Example
