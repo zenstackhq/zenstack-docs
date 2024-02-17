@@ -16,7 +16,7 @@ You can install ZenStack to your project using one of the following methods.
 The easiest way to install ZenStack is to use the `zenstack init` command. In an existing TypeScript project folder, run the following command:
 
 ```bash
-npx zenstack@latest init
+npx zenstack@next init
 ```
 
 <ZenStackInit />
@@ -29,12 +29,12 @@ The following steps show how to install using "npm" as package manager. Replace 
 2. Install the `zenstack` CLI package as a dev dependency
    
    ```bash
-   npm install --save-dev zenstack@latest
+   npm install --save-dev zenstack@next
    ```
 3. Install the `@zenstackhq/runtime` package as a regular dependency
    
    ```bash
-   npm install @zenstackhq/runtime@latest
+   npm install @zenstackhq/runtime@next
    ```
 4. Bootstrap ZModel from Prisma schema
     

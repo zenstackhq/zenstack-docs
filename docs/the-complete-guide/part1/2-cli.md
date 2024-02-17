@@ -32,7 +32,7 @@ cd my-todo-app
 Then initialize the project for ZenStack:
 
 ```bash
-npx zenstack@latest init
+npx zenstack@next init
 ```
 
 <ZenStackInit />

@@ -55,7 +55,7 @@ npm install nanoid
 Initialize the project for ZenStack:
 
 ```bash
-npx zenstack@latest init
+npx zenstack@next init
 ```
 
 Besides installing dependencies, the command also copies the `prisma/schema.prisma` file to `schema.zmodel`. We're going to continue using the ZModel we've developed in the previous part, but with a few tweaks:
