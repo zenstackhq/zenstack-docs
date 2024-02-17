@@ -76,11 +76,19 @@ Coming soon.
 
 Coming soon.
 
+## Upgrading
+
+V2 features will be continuously released using the "@next" npm tag. To upgrade, update your project's dependencies of `zenstack` and `@zenstackhq/*` packages to the `@next` tag.
+
+```bash
+npm i -D zenstack@next
+npm i @zenstackhq/runtime@next
+...
+```
+
 ## Breaking Changes
 
 The following sections list breaking changes introduced in ZenStack V2 and guide for upgrading your project.
-
-To upgrade, you should update the `zenstack` and `@zenstackhq/*` packages to the `@next` tag.
 
 ### 1. Unified `enhance` API
 
