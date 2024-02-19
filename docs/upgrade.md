@@ -78,6 +78,8 @@ Coming soon.
 
 ## Upgrading
 
+### NPM Packages
+
 V2 features will be continuously released using the "@next" npm tag. To upgrade, update your project's dependencies of `zenstack` and `@zenstackhq/*` packages to the `@next` tag.
 
 ```bash
@@ -85,6 +87,16 @@ npm i -D zenstack@next
 npm i @zenstackhq/runtime@next
 ...
 ```
+
+### VSCode Extension
+
+The VSCode extension supporting the V2 features is also available in the VSCode marketplace as "pre-release" versions. To use it, please head to the extension manager in VSCode, find "ZenStack Language Tools", and "Switch to Pre-Release Version". You can easily switch back to the production version at any time.
+
+![VSCode switch to pre-release](./vscode-prerelease.png)
+
+### JetBrains Plugin
+
+The JetBrains plugin for V2 features is not yet available.
 
 ## Breaking Changes
 
