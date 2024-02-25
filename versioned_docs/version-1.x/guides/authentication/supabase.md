@@ -92,3 +92,5 @@ async function getPrisma() {
 ```
 
 You can then use this enhanced Prisma client for CRUD operations that you desire to be governed by the access policies you defined in your data models.
+
+Next, read [this guide](https://zenstack.dev/docs/guides/supabase-security) to ensure your database is securely protected from direct HTTP requests.
