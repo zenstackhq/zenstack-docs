@@ -1,9 +1,8 @@
 ---
-description: Guide to securely integrating supabase with zenstack - how to prevent unauthorized access.
+description: Guide to securely integrating Supabase with ZenStack - how to prevent unauthorized access.
 sidebar_position: 3
 sidebar_label: Secure Supabase with ZenStack
 ---
-
 
 
 # Ensuring Security When Integrating Supabase with ZenStack
@@ -12,7 +11,7 @@ Integrating Supabase with ZenStack can be a great choice as Supabase provides au
 
 However, it is essential to take some precautions when using ZenStack with Supabase to ensure that the ZenStack authorization layer cannot be bypassed via requests to the Supabase API url.
 
-This article will help you to understand the risk, how to test if your database is at risk, and how to prevent it.
+This article will help you to understand the risk, how to test if your database is exposed, and how to prevent it.
 
 ## 1.  Understanding the Risk
 
@@ -28,12 +27,10 @@ This poses a potential risk because Supabase API URL and anon key are both publi
 Use Bash or an API client (such as postman or VS Code thunder client) to send a HTTP request with these details:
 
 ```bash
-curl '{Supabase_PROJECT_URL}/rest/v1/{DATABASE_TABLE}?select=*' \
--H "apikey: Supabase_ANON_KEY" \
--H "Authorization: Bearer Supabase_ANON_KEY"
+curl '{SUPABASE_PROJECT_URL}/rest/v1/{DATABASE_TABLE}?select=*' \
+-H "apikey: SUPABASE_ANON_KEY" \
+-H "Authorization: Bearer SUPABASE_ANON_KEY"
 ```
-
-Note: You can find both of these values inside Supabase dashboard > settings > api
 
 For example:
 
@@ -42,6 +39,10 @@ curl 'https://jypbzsozorjnogibmfhu.supabase.co/rest/v1/User?select=*' \
 -H "apikey: eyOiJIUzJhbGciI1..." \
 -H "Authorization: Bearer eyOiJIUzJhbGciI1..."
 ```
+
+Note:
+- Your Supabase project URL should look like this: `https://projectid.supabase.co`
+- You can find both of these values inside Supabase dashboard > settings > api
 
 As previously mentioned, all the detailed needed to make this request are public and could be accessed eg by inspecting the url/headers of a Supabase authentication network request.
 
@@ -76,7 +77,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anon;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anon;
 ```
 
-Note: If you are using Supabase cli for local development, then create a migration file with `pnpm Supabase db migration new disable-anon-access` to prevent accidental rollbacks. (this creates a new local sql migration file, 'disable-anon-access' can be replaced)
+Note: If you are using Supabase cli for local development, then create a migration file with `pnpm supabase db migration new disable-anon-access` to prevent accidental rollbacks. (this creates a new local sql migration file, 'disable-anon-access' can be replaced)
 
 ### Verify Role Configurations
 
@@ -92,4 +93,6 @@ In the Supabase dashboard under the Database > Roles section, confirm the follow
 By disabling permissions for `anon` and `authenticated` roles, you prevent direct public access to your database, relying instead on your application logic and ZenStack's authorization to control access.
 
 Remember to regularly test your application security to ensure effective and appropriate access control for your application.
+
+
 
