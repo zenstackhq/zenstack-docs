@@ -93,4 +93,4 @@ async function getPrisma() {
 
 You can then use this enhanced Prisma client for CRUD operations that you desire to be governed by the access policies you defined in your data models.
 
-Next, read [this guide](../supabase-security) to ensure your database is securely protected from direct HTTP requests.
+Next, make sure to read [this guide](../supabase-security) to ensure your database is securely protected from HTTP requests to the supabase API.
