@@ -57,6 +57,8 @@ If your database is secure, you should receive a permission denied error, such a
 }
 ```
 
+If you have RLS enabled on the table, you may get a response with an empty array instead of a permission denied error. This means RLS filtering is effective, and it's preventing you from reading rows that are not granted access. However, it's still recommended to fully revoke anonymous access permissions for better security
+
 ## 3. How to prevent direct Supabase API requests
 
 ### Revoke default & current privileges
