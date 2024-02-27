@@ -1,6 +1,6 @@
 ---
 description: ZenStack offers increased flexibility in managing your schema file through multiple schema files and model inheritance.
-sidebar_position: 5
+sidebar_position: 6
 ---
 # Multiple Schema Files and Model Inheritance
 

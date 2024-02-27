@@ -1,6 +1,6 @@
 ---
 description: Guide for using ZenStack with RedwoodJS.
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Using With RedwoodJS
