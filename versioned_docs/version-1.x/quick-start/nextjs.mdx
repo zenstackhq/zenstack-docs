@@ -1,6 +1,6 @@
 ---
-title: Next.js
-description: Step-by-step guide for building a blogging app with Next.js.
+title: Next.js (pages router)
+description: Step-by-step guide for building a blogging app with Next.js (pages router).
 sidebar_position: 1
 ---
 
@@ -10,7 +10,7 @@ import InitTips from './_zenstack-init-tips.md';
 import PasswordOmit from './_password-omit.md';
 import AccessPolicy from './_access-policy.md';
 
-# Get Started With Next.js
+# Get Started With Next.js (pages router)
 
 Let's have some fun by creating a simple blogging app. You'll see how effortless it is to have a secure backend service without actually coding it.
 
@@ -72,6 +72,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  posts         Post[]
 
   // highlight-start
   // everyone can signup, and user profile is also publicly readable
@@ -642,7 +643,7 @@ backend code. Pretty cool, isn't it?
 
 If you have trouble following the building process, you can find the final result
 [here](https://github.com/zenstackhq/docs-tutorial-nextjs). For more details about ZenStack,
-please refer to the [Reference](/docs/category/reference) and [Guides](/docs/category/recipes)
+please refer to the [Reference](../category/reference) and [Guides](../category/recipes)
 parts of the documentation.
 
 Have fun building cool stuff 🚀!
