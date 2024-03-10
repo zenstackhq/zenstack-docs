@@ -325,4 +325,4 @@ The tenant isolation is still handled seamlessly in the background.
 
 Consider the benefits of having a newly hired developer who is unfamiliar with the multi-tenant concept. Despite their lack of understanding, they can still perform their job without causing any issues.
 
-If you like it, join our [Discord](https://go.zenstack.dev/chat) or follow our [GitHub](https://github.com/zenstackhq/zenstack). You will see more features and usages there.
+If you like it, join our [Discord](https://discord.gg/Ykhr738dUe) or follow our [GitHub](https://github.com/zenstackhq/zenstack). You will see more features and usages there.

@@ -210,4 +210,4 @@ After that, if you try to access the Post endpoint again, the result won’t con
 
 ## Last
 
-The SaaS product [MermaidChart](https://www.mermaidchart.com/) has recently launched its Teams feature powered by ZenStack. If you want to know about their experience of adopting ZenStack, you are welcome to join our [Discord](https://go.zenstack.dev/chat). For other information and examples, check out our [official website](https://zenstack.dev/).
+The SaaS product [MermaidChart](https://www.mermaidchart.com/) has recently launched its Teams feature powered by ZenStack. If you want to know about their experience of adopting ZenStack, you are welcome to join our [Discord](https://discord.gg/Ykhr738dUe). For other information and examples, check out our [official website](https://zenstack.dev/).
