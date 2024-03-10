@@ -223,5 +223,5 @@ We created ZenStack based on this belief:
 
 > Since authorization is mainly about data, it should be modeled together with data and enforced close to the data.
 
-Do you share the same view? Yes or no, join our [Discord community](https://go.zenstack.dev/chat) and let us know your thoughts!
+Do you share the same view? Yes or no, join our [Discord community](https://discord.gg/Ykhr738dUe) and let us know your thoughts!
 

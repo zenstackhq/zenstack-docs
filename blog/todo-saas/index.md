@@ -452,4 +452,4 @@ How many places do you think we need to change? Actually just one in the `List` 
 
 I hope this tutorial can show you the benefit of [ZenStack](https://zenstack.dev/) in using the data model as the single source of truth to handle access control.
 
-Feel free to contact us on our [Discord](https://go.zenstack.dev/chat) or [GitHub](https://github.com/zenstackhq/zenstack) if you have any questions about it.
+Feel free to contact us on our [Discord](https://discord.gg/Ykhr738dUe) or [GitHub](https://github.com/zenstackhq/zenstack) if you have any questions about it.

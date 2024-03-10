@@ -97,7 +97,7 @@ const config = {
                     },
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
-                        href: 'https://go.zenstack.dev/chat',
+                        href: 'https://discord.gg/Ykhr738dUe',
                         label: 'Discord',
                         position: 'right',
                     },
@@ -168,7 +168,7 @@ const config = {
                         items: [
                             {
                                 label: 'Discord',
-                                href: 'https://go.zenstack.dev/chat',
+                                href: 'https://discord.gg/Ykhr738dUe',
                             },
                             {
                                 label: 'Twitter',

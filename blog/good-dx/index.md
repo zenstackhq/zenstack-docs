@@ -138,4 +138,4 @@ Therefore, people could “get it” easily. Simultaneously, we need to ensure t
 
 ## Last Takeaway
 
-To truly understand and empathize with developers, the most efficient approach is to communicate with them directly. Therefore, if you want to assist [ZenStack](https://zenstack.dev) in creating the most optimal DX for developing web applications, why not engage with us in [GitHub](https://github.com/zenstackhq/zenstack) or [Discord](https://go.zenstack.dev/chat)?
+To truly understand and empathize with developers, the most efficient approach is to communicate with them directly. Therefore, if you want to assist [ZenStack](https://zenstack.dev) in creating the most optimal DX for developing web applications, why not engage with us in [GitHub](https://github.com/zenstackhq/zenstack) or [Discord](https://discord.gg/Ykhr738dUe)?
