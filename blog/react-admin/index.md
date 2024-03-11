@@ -11,29 +11,29 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-Building a customer-facing application is exciting, but not much fun when it comes to the admin console part. However, almost every serious app requires some sort of admin console for operation needs. It doesn't need to be slick in design or have blazing fast performance. The main focus should be reliability, cost effectiveness, and ease to evolve.
+Building a customer-facing application is exciting. But it's not much fun when it comes to the admin console part. However, almost every serious app requires some sort of admin console for operation needs. It doesn't need to be slick in design or have blazing-fast performance. The main focus should be reliability, cost-effectiveness, and extensibility.
 
-There are many different types of admin consoles. In this post, we're going to discuss the most common type: those that allows non-technical people to make changes to the database, and ensures proper permission management at the same time.
+There are many different types of admin consoles. In this post, we'll discuss the most common ones: those that allow non-technical people to make changes to the database and ensure proper permission management at the same time.
 
 <!-- truncate -->
 
 To build such an admin console, you have three choices:
 
-1. Don't build it. Just use a database editor (like Prisma Studio and etc.) for the job.
+1. Don't build it. Just use a database editor (like phpMyAdmin, Prisma Studio, etc.) for the job.
 2. Quickly construct one from scratch by combining high-level libraries and tools.
 3. Build it the same way as you would build the customer-facing app.
 
-The choices have largely different pros and cons. In this post, we'll focus on the 2nd, which tends to have the best balance between cost and quality in most cases.
+Each choice has its unique pros and cons. This post will focus on the 2nd, which tends to have the best balance between cost and quality for most real-world applications.
 
 ## A quick look into the libraries we'll use
 
 ### React-Admin
 
-[React-Admin](https://marmelab.com/react-admin/) a React-based frontend framework for building admin applications that talk to a backend data API. It offers a pluggable mechanism for you to easily adapt to the specific API style that your backend uses.
+[React-Admin](https://marmelab.com/react-admin/) is a React-based frontend framework for building admin applications that talk to a backend data API. It offers a pluggable mechanism for easily adapting to the specific API style of your backend.
 
 ### Prisma
 
-[Prisma](https://www.prisma.io) is a modern TypeScript-first ORM that allows you to manage database schemas with ease, and make queries and mutations with great flexibility and excellent type-safety.
+[Prisma](https://www.prisma.io) is a modern TypeScript-first ORM that allows you to manage database schemas easily, make queries and mutations with great flexibility, and ensure excellent type safety.
 
 ### ZenStack
 
@@ -41,17 +41,17 @@ The choices have largely different pros and cons. In this post, we'll focus on t
 
 ## The target app
 
-To facilitate our discussion, I'll use a fantasy content publishing app as an example. The app is essentially about creating blog posts, making editorial changes, and publishing them. It involves three user roles:
+I'll use a fantasy content publishing app as an example to facilitate our discussion. The app is about creating blog posts, making editorial changes, and publishing them. It involves three user roles:
 
-- **Author**: who can posts and submit for editorial review.
+- **Author**: who can create posts and submit them for editorial review.
 - **Editor**: who can make editorial changes (to other people's posts) and publish posts.
-- **Admin**: who can do everything.
+- **Admin**: who can do anything.
 
-A blog post can be in one of the following status:
+A blog post can be in one of the following statuses:
 
 - **Draft**
    
-   The author working on it privately. Only the author and admin can access it.
+   The author is working on it privately. Only the author and admin can access it.
 
 - **Submitted**
    
@@ -65,17 +65,15 @@ Of course, admin users can do anything to posts of any status.
 
 ## Hooking things up
 
-An admin console is a full-stack web app. So the easiest way to build it is to use a full-stack framework which couples frontend and backend in a single project. I'll use Next.js in this post, but you can also choose to go with a decoupled frontend and backend (e.g., a Vite React SPA and an ExpressJS backend). The fundamentals stay unchanged.
+An admin console is a full-stack web app, so the easiest way to build it is to use a full-stack framework that couples the frontend and backend in a single project. I'll use Next.js in this post, but you can also choose to go with a decoupled frontend and backend (e.g., a Vite React SPA and an ExpressJS backend). The fundamentals stay unchanged.
 
-You can find the link to the GitHub repro of the completed project at the end of the post.
+You can find the link to the completed project's GitHub repo at the end of the post.
 
 ### Scaffolding the app
 
 I used [create-t3-app](https://create.t3.gg/) to scaffold the Next.js app, with TypeScript, Prisma, and "app router" enabled in the options. You can also use [create-next-app](https://www.npmjs.com/package/create-next-app) for the job and install Prisma manually.
 
-### Installing dependencies
-
-Install react-admin, ZenStack, and a few other dependencies:
+Also, install react-admin, ZenStack, and a few other dependencies:
 
 ```bash
 npm install react-admin jsonwebtoken
@@ -84,15 +82,15 @@ npx zenstack@latest init
 npm install @zenstackhq/server
 ```
 
-One thing to notice is that the `zenstack init` command copies `prisma/schema.prisma` into `/schema.zmodel`. The ZModel language is the DSL used by ZenStack for modeling both  the database schema and other stuff (like access control policies). ZModel is a superset of Prisma Schema. For the time being, we'll just author it the same way as we would with Prisma schema.
+One thing to notice is that the `zenstack init` command copies `prisma/schema.prisma` into `/schema.zmodel`. The ZModel language is the DSL ZenStack uses to model both the database schema and other stuff (like access control policies). ZModel is a superset of Prisma Schema. For now, we'll just author it like we would with a Prisma schema.
 
 Just remember when you need to make database schema changes:
 1. Always edit `schema.zmodel`.
 2. Run `npx zenstack generate` instead of `npx prisma generate`
 
-### Updating the database schema
+### Database schema
 
-Change `schema.zmodel` to the following content to reflect the needs of our app:
+Here's the schema for our app:
 
 ```zmodel
 generator client {
@@ -135,55 +133,11 @@ A few quick notes:
 
 1. The `@password` attribute marks the `password` field to be automatically hashed (using [bcryptjs](https://www.npmjs.com/package/bcryptjs)) before saving to the database. The `@omit` attribute marks the field to be dropped before an entity is returned for a query. These are extensions ZenStack made to Prisma.
    
-2. The `@@allow` attribute defines access policies that verdicts the operations allowed. For the time being, we simply allows anyone to do anything. Access control is the most significant extension ZenStack made to Prisma. We'll revisit it soon.
-
-Then, regenerate `PrismaClient` and push the changes to the database:
-
-```bash
-npx zenstack generate
-npx prisma db push
-```
-
-Let's also create a seed script `prisma/seed.ts` to create an admin user:
-
-```ts title="prisma/seed.ts"
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
-
-async function main() {
-  await prisma.user.upsert({
-    where: { email: "admin@example.com" },
-    update: {},
-    create: {
-      email: "admin@example.com",
-      name: "Admin User",
-      role: "Admin",
-      password: await bcrypt.hash("123456", 12),
-    },
-  });
-}
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
-```
-
-Run it to create the admin user:
-
-```bash
-npx prisma db seed
-```
+2. The `@@allow` attribute defines access policies that verdict the operations allowed. We'll allow anyone to do anything for now. Access control is the most significant extension ZenStack made to Prisma. We'll revisit it soon.
 
 ### Building authentication
 
-React-Admin provides built-in authentication (AuthN) flow and UI. You only need to implement an `auth provider` to adapt to your backend's AuthN mechanism. For simplicity, we'll use a simple JWT-based authentication design using email and password as credentials. To do that, first create an API handler at `/src/app/api/auth/login/route.ts`:
+React-Admin provides built-in authentication (AuthN) flow and UI. You only need to implement an "auth provider" to adapt to your backend's AuthN mechanism. For simplicity, we'll use a simple JWT-based authentication design with email and password as credentials. To do that, first, create an API handler at `/src/app/api/auth/login/route.ts`:
 
 ```ts title="/src/app/api/auth/login/route.ts"
 import { compare } from "bcryptjs";
@@ -217,14 +171,7 @@ export async function POST(request: Request) {
   });
 }
 ```
-
-Also, make sure you have the `JWT_SECRET` variable defined in `.env`:
-
-```ini title=".env"
-JWT_SECRET=yourjwtsecret
-```
-
-Now implement a React-Admin [auth provider](https://marmelab.com/react-admin/AuthProviderWriting.html):
+Then, implement a React-Admin [auth provider](https://marmelab.com/react-admin/AuthProviderWriting.html), which defines how the frontend interacts with the backend for authentication:
 
 ```ts title="/src/lib/auth-provider.ts"
 import type { AuthProvider } from "react-admin";
@@ -286,14 +233,16 @@ const authProvider: AuthProvider = {
 export default authProvider;
 ```
 
+The auth provider will be used when we build the CRUD UI with React-Admin.
+
 ### Building data provider
 
 Our admin console is essentially about making queries and mutations to the underlying database. To achieve that, we'll need to complete two pieces of work:
 
 1. backend: a CRUD API
-2. frontend: an adapter to connect to the backend API ([data provider](https://marmelab.com/react-admin/DataProviderWriting.html) in the terms of React-Admin)
+2. frontend: a [data provider](https://marmelab.com/react-admin/DataProviderWriting.html) to consume the backend API
 
-For the backend part, ZenStack makes it almost effortless by providing an automatic RESTful API based on the database schema. Here's how to install it as a Next.js API handler ("/src/app/api/model/[...path]/router.ts"):
+ZenStack makes the backend part almost effortless by providing an automatic RESTful API based on the database schema. Here's how to install it as a Next.js API handler ("/src/app/api/model/[...path]/router.ts"):
 
 ```ts title="/src/app/api/model/[...path]/router.ts"
 import { type AuthUser, enhance } from "@zenstackhq/runtime";
@@ -337,9 +286,10 @@ export {
   handler as PUT,
 };
 ```
-With the above code, you have a full set of CRUD APIs served at "/api/model" path. For example, you can list all users with `GET /api/model/user`. See the full specification of the CRUD API [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest). As you can see, the code expects a JWT token in the `Authorization` header, and you'll see how the frontend sends it when we get to the part of building CRUD UI with React-Admin.
 
-Now let's tackle the React-Admin data provider part, which turns out to pretty straightforward. For brevity, I'm only showing partial code here, but you can find the full implementation at the end of this post.
+With the above code, you have a complete set of CRUD APIs served at "/api/model". For example, you can list all users with `GET /api/model/user`. See the full specification of the CRUD API [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest). As you can see, the code expects a JWT token in the `Authorization` header, and you'll see how the frontend sends it when we get to the part of building CRUD UI with React-Admin.
+
+Now, let's tackle the React-Admin data provider part, which is pretty straightforward. For brevity, I'm only showing partial code here, but you can find the complete implementation at the end of this post.
 
 ```ts title="/src/lib/data-provider.ts"
 type FetchFn = (url: string, init: RequestInit) => Promise<Response>;
@@ -350,6 +300,7 @@ export function createDataProvider(
 ): DataProvider {
   const fetcher = customFetch ?? fetch;
 
+  // make the API fetch
   const doFetch = async (url: string, init: RequestInit) => {
     const resp = await fetcher(url, init);
     if (resp.status < 200 || resp.status >= 300) {
@@ -358,6 +309,7 @@ export function createDataProvider(
     return await resp.json();
   };
 
+  // convert React-Admin query params to URL search params
   const getListQuerySearchParams = (
     params: GetListParams | GetManyReferenceParams,
   ) => {
@@ -382,6 +334,7 @@ export function createDataProvider(
     return searchParams.toString();
   };
 
+  // convert the API response to React-Admin query result
   const makeListQueryResult = (
     data: any[],
     meta: { total: number },
@@ -427,7 +380,7 @@ Now we've got all the infrastructure we need. Time to move on to building the UI
 
 ### Building the CRUD UI
 
-This is where React-Admin shines - it makes building CRUD UI really really easy. Here's how it goes:
+This is where React-Admin shines - it makes building CRUD UI really, really easy. Here's how it goes:
 
 ```ts title="/src/components/AdminApp.tsx"
 const AdminApp = () => (
@@ -525,7 +478,7 @@ const dataProvider = createDataProvider("/api/model", (url, init) => {
 });
 ```
 
-React-Admin makes constructing CRUD UI effortless by offering high-level components that automatically talks to the backend API via the data provider. In many cases, the `Guesser` components already work great, but you can easily create custom ones by composing `Grid`, `List`, `Input`, etc.
+React-Admin simplifies constructing CRUD UI by offering high-level components that automatically talk to the backend API via the data provider. In many cases, the `Guesser` components already work great, but you can easily create custom ones by composing `Grid`, `List`, `Input`, etc.
 
 You should be able to log in and CRUD users and posts now.
 
@@ -533,9 +486,9 @@ You should be able to log in and CRUD users and posts now.
 
 ## What about authorization?
 
-Having CRUD to work is great. But we're still missing one big piece in the puzzle: authorization. ZenStack makes implementing AuthZ a breeze by allowing you to define rules declaratively in the schema.
+Having CRUD to work is great. But we're still missing one significant piece in the puzzle: authorization. ZenStack makes implementing AuthZ a breeze by allowing you to define rules declaratively in the schema.
 
-Remember that when creating the CRUD API handler, created an "enhanced" `PrismaClient` to access the database for the current request? The enhanced client automatically enforces access control. However, we need to define the policies. Let's start with protecting the `User` model.
+Remember when building the CRUD API handler, we created an "enhanced" `PrismaClient` to access the database for the current request? The enhanced client automatically enforces access control. However, it's our responsibility to define the policies. Let's start with protecting the `User` model.
 
 ```zmodel title="schema.zmodel"
 model User {
@@ -549,7 +502,7 @@ model User {
 }
 ```
 
-Straightforward, right? In the policy rules, the special `auth()` function represents the current requesting user, which is the one that we extracted from the JWT token.
+Straightforward, right? In the policy rules, the special `auth()` function represents the current requesting user, which is the one that we extracted from the JWT token and passed to the `enhance` call previously.
 
 Then, let's get to the `Post` part. There are more requirements to cover:
 
@@ -585,12 +538,14 @@ model Post {
 }
 ```
 
-Now if you rerun `npx zenstack generate` and restart the dev server, the access policies will take effect. You'll notice some of the operations are rejected, for example, if you try to set post's status to "Published" as an author.
+A new feature here is the `future()` function. An "update" operation involves a pre-state and a post-state. By default, fields in the policy rules refer to the pre-state, but the `future()` function allows you to refer to the post-state.
+
+If you rerun `npx zenstack generate` and restart the dev server, the access policies will take effect. You'll notice some of the operations are rejected, for example, if you try to set a post's status to "Published" as an author.
 
 ![Operation forbidden](./forbidden.png)
 
 ## Conclusion
 
-I hope you enjoy reading the post and also find the approach interesting. Building an admin console is often a less rewarding task because it doesn't add customer value directly. However, by combining the right tools, you can make it more fun and productive. We've only touched the surface of what React-Admin and ZenStack can do in this post. They both have a lot more to offer, and I encourage you to explore them further.
+I hope you enjoyed the reading and found the approach interesting. Building an admin console is often a less rewarding task because it doesn't directly add customer value. However, by combining the right tools, you can make it more fun and productive. In this post, we've only touched the surface of what React-Admin and ZenStack can do. They both have much more to offer, and I encourage you to explore them further.
 
-You can find the completed sample project here: [https://github.com/ymc9/react-admin-blog](https://github.com/ymc9/react-admin-blog).
+The completed sample project is here:: [https://github.com/ymc9/react-admin-blog](https://github.com/ymc9/react-admin-blog).
