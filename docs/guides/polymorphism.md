@@ -136,19 +136,27 @@ const video = await db.video.create({
   }
 });
 
-// query with base model, will return only base fields
-// [ 
-//   { id: 1, ownerId: 1, contentType: 'Post', published: false, createdAt: ..., updatedAt: ... },
-//   { id: 2, ownerId: 1, contentType: 'Video', published: false, createdAt: ..., updatedAt: ... }
-// ]
-console.log('All content:', inspect(await db.content.findMany()));
-
 // query with concrete model, will return fields from both base and concrete models
 // [ 
 //   { id: 1, ownerId: 1, contentType: 'Post', title: 'Post1', published: false, createdAt: ..., updatedAt: ... },
 //   { id: 2, ownerId: 1, contentType: 'Video', name: 'Video1', duration: 100, published: false, createdAt: ..., updatedAt: ... }
 // ]
 console.log('All posts:', inspect(await db.post.findMany()));
+
+// query with base model, will also return fields from both base and concrete models, but with base's typing
+// [ 
+//   { id: 1, ownerId: 1, contentType: 'Post', title: 'Post1', published: false, createdAt: ..., updatedAt: ... },
+//   { id: 2, ownerId: 1, contentType: 'Video', name: 'Video1', duration: 100, published: false, createdAt: ..., updatedAt: ... }
+// ]
+console.log('All contents:', inspect(await db.content.findMany()));
+
+// you can use the discriminator field to help TypeScript narrow down the typing
+const firstContent = await db.content.findFirstOrThrow();
+if (firstContent.contentType === 'Post') {
+  console.log('Post title:', firstContent.title);
+} else {
+  console.log('Video name:', firstContent.name);
+}
 
 // set all contents as published from the user
 await db.user.update({
@@ -216,7 +224,8 @@ model Video extends Content {
 
 ### Sample Project
 
-Check [here](https://github.com/zenstackhq/v2-polymorphism) for a sample project.
+- Simple TypeScript script sample: [https://github.com/zenstackhq/v2-polymorphism](https://github.com/zenstackhq/v2-polymorphism)
+- Full-stack blog app sample (use `polymorphic` branch): [https://github.com/zenstackhq/docs-tutorial-nextjs/tree/polymorphic](https://github.com/zenstackhq/docs-tutorial-nextjs/tree/polymorphic)
 
 ### Inner Workings
 
@@ -234,13 +243,9 @@ ZenStack works with two versions of `PrismaClient` to achieve polymorphism:
 
 The main thing that ZenStack does internally is to translate between these two "views". The end-developer works on the logical view, and ZenStack intercepts the Prisma calls and translate them into appropriate queries and mutations to the physical view.
 
-### TBD
-
-- [x] Support multi-level inheritance.
-- [ ] Support multi-inheritance (one model directly inheriting from multiple delegated models).
-- [ ] Optimize how deletes are cascaded from delegated models to concrete ones.
-
 ### Limitations
+
+- Inheriting from multiple `@delegate` models is not supported yet.
 
 - You cannot access base fields when calling `count`, `aggregate`, and `groupBy`. The following query is not supported:
 
@@ -248,3 +253,5 @@ The main thing that ZenStack does internally is to translate between these two "
     // you can't access base fields (`published` here) when aggregating
     db.post.count({ select: { published: true } });
     ```
+
+- The enhanced `PrismaClient`'s typing doesn't preserve the typing changes made by Prisma client extensions.
