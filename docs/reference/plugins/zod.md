@@ -53,7 +53,7 @@ The generated schemas have the following three parts:
 
     - *[Model]CreateScalarSchema*
 
-        The schema for validating the input for creating the model. It only include scalar fields. All fields are required unless it's optional in the model or has a default value.
+        The schema for validating the input for creating the model. It only includes scalar fields. All fields are required unless it's optional in the model or has a default value.
 
         ```ts
         const PostCreateScalarSchema = z.object({
@@ -82,7 +82,7 @@ The generated schemas have the following three parts:
 
     - *[Model]UpdateScalarSchema*
     
-        The schema for validating the input for updating the model. It only include scalar fields. All fields are optional (since in Prisma's semantic all updates are patching).
+        The schema for validating the input for updating the model. It only includes scalar fields. All fields are optional (since in Prisma's semantic, all updates are patching).
 
         ```ts
         const PostUpdateScalarSchema = z.object({
@@ -121,7 +121,7 @@ The generated schemas have the following three parts:
         }
         ```
 
-        However, zod has a limitation that, when you call `.refine()` on a `ZodObject` schema, the result won't be an object schema anymore, which means that you can't use `.omit()`, `.partial()`, etc. `ZodObject` methods to further tune it for your needs anymore. That's why a series of `WithoutRefinementSchema` schemas are exported. They are the Zod schemas prior to calling the `refine()` method. If you need to make changes to the schema while still preserve the `@@validate` rules, you can manipulate the `WithoutRefinementSchema` schemas and then call the `refine` function manually on the result. E.g.:
+        However, zod has a limitation that, when you call `.refine()` on a `ZodObject` schema, the result won't be an object schema anymore, which means that you can't use `.omit()`, `.partial()`, etc. `ZodObject` methods to further tune it for your needs anymore. That's why a series of `WithoutRefinementSchema` schemas are exported. They are the Zod schemas prior to calling the `refine()` method. If you need to make changes to the schema while still preserving the `@@validate` rules, you can manipulate the `WithoutRefinementSchema` schemas and then call the `refine` function manually on the result. E.g.:
 
         ```ts
         const myPostCreateSchema = refinePost(PostCreateWithoutRefinementSchema.omit({id: true}));
