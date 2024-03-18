@@ -42,11 +42,17 @@ ZModel allows to import other ZModel files. This is useful when you want to spli
 ### Syntax
 
 ```zmodel
-import [File_PATH]
+import [IMPORT_SPECIFICATION]
 ```
 
-- **[File_PATH]**: 
-    Path to the ZModel file to be imported. Can be either a relative path or an absolute path, without .zmodel extension. Once a file is imported, all the declarations in that file will be included in the building process.
+- **[IMPORT_SPECIFICATION]**: 
+    Path to the ZModel file to be imported. It can be:
+    
+    - An absolute path, e.g., "/path/to/user".
+    - A relative path, e.g., "./user".
+    - A module resolved to an installed NPM package, e.g., "my-package/base".
+
+    If the import specification doesn't end with ".zmodel", the resolver will automatically append it. Once a file is imported, all the declarations in that file will be included in the building process.
 
 ### Examples
 

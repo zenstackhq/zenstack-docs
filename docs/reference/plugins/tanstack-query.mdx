@@ -8,6 +8,7 @@ import TabItem from '@theme/TabItem';
 import Invalidation from './_invalidation.md';
 import OptimisticBehavior from './_optimistic-behavior.md';
 import OptmisticLimitation from './_optimistic-limitation.md';
+import FineGrainedOptimistic from './_fine-grained-optimistic.md';
 
 # @zenstackhq/tanstack-query
 
@@ -33,8 +34,7 @@ npm install --save-dev @zenstackhq/tanstack-query
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
 | output  | String | Output directory (relative to the path of ZModel)                                        | Yes     |         |
 | target  | String | Target framework to generate for. Choose from "react", "vue", and "svelte".              | Yes     |         |
-| version | String | Version of TanStack Query to generate for. Choose from "v4" and "v5".                    | No      | v4      |
-| useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization     | No      | false   |
+| version | String | Version of TanStack Query to generate for. Choose from "v4" and "v5".                    | No      | v5      |
 
 ### Context Provider
 
@@ -406,7 +406,7 @@ const onCreate = () => {
 </TabItem>
 </Tabs>
 
-### Automatic Optimistic Update (Preview)
+### Automatic Optimistic Update
 
 Optimistic update is a technique that allows you to update the data cache immediately when a mutation executes while waiting for the server response. It helps achieve a more responsive UI. TanStack Query provides the [infrastructure for implementing it](https://tanstack.com/query/v5/docs/react/guides/optimistic-updates).
 
@@ -444,12 +444,16 @@ const { data } = useFindManyPost({ where: { published: true } }, undefined, fals
 
 When a query opts out, it won't be updated by a mutation, even if the mutation is set to update optimistically.
 
-#### Using Infinite Query
+### Fine-Grained Optimistic Update
+
+<FineGrainedOptimistic />
+
+### Using Infinite Query
 
 <Tabs>
 <TabItem value="react" label="React">
 
-See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/react/guides/infinite-queries) for more details.
+Here's a quick example of using infinite query to load a list of posts with infinite pagination. See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/react/guides/infinite-queries) for more details.
 
 ```tsx title='/src/components/Posts.tsx'
 import { useInfiniteFindManyPost } from '../lib/hooks';
@@ -504,7 +508,7 @@ const Posts = () => {
 
 <TabItem value="vue" label="Vue">
 
-See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/vue/guides/infinite-queries) for more details.
+Here's a quick example of using infinite query to load a list of posts with infinite pagination. See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/vue/guides/infinite-queries) for more details.
 
 ```html title='/src/components/Posts.vue'
 <script setup lang="ts">
@@ -557,7 +561,7 @@ const { data, hasNextPage, fetchNextPage } = useInfiniteFindManyPost(
 
 <TabItem value="svelte" label="Svelte">
 
-See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/svelte/examples/svelte/load-more-infinite-scroll) for more details.
+Here's a quick example of using infinite query to load a list of posts with infinite pagination. See [Tanstack Query documentation](https://tanstack.com/query/v4/docs/svelte/examples/svelte/load-more-infinite-scroll) for more details.
 
 ```svelte title='/src/components/Posts.svelte'
 <script lang="ts">

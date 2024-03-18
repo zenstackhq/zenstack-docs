@@ -253,5 +253,3 @@ The main thing that ZenStack does internally is to translate between these two "
     // you can't access base fields (`published` here) when aggregating
     db.post.count({ select: { published: true } });
     ```
-
-- The enhanced `PrismaClient`'s typing doesn't preserve the typing changes made by Prisma client extensions.

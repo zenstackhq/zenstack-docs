@@ -37,7 +37,7 @@ The generated schemas have the following three parts:
     
     - *[Model]Schema*
 
-        The schema for validating the model itself, including all scalar fields, foreign key fields, and relation fields. All fields are optional (**we may revisit this design in a future release**).
+        The schema for validating the model itself, including all scalar fields, foreign key fields, and relation fields. All relation fields are optional.
 
         ```ts
         const PostSchema = z.object({
@@ -46,9 +46,9 @@ The generated schemas have the following three parts:
           published: z.boolean(),
           createdAt: z.date(),
           updatedAt: z.date(),
-          author: z.record(z.unknown()),
+          author: z.record(z.unknown()).optional(),
           authorId: z.number(),
-        }).partial();
+        });
         ```
 
     - *[Model]CreateScalarSchema*
