@@ -6,6 +6,7 @@ sidebar_position: 5
 import Invalidation from './_invalidation.md';
 import OptimisticBehavior from './_optimistic-behavior.md';
 import OptmisticLimitation from './_optimistic-limitation.md';
+import FineGrainedOptimistic from './_fine-grained-optimistic.md';
 
 # @zenstackhq/swr
 
@@ -69,7 +70,6 @@ export default MyApp;
 | Name    | Type   | Description                                             | Required | Default |
 | ------- | ------ | ------------------------------------------------------- | -------- | ------- |
 | output  | String | Output directory (relative to the path of ZModel)                                        | Yes      |         |
-| useSuperJson  | Boolean | Use [superjson](https://github.com/blitz-js/superjson) for data serialization                                        | No      | false        |
 
 ### Example
 
@@ -147,7 +147,7 @@ const Posts = ({ userId }: { userId: string }) => {
 };
 ```
 
-### Automatic Optimistic Update (Preview)
+### Automatic Optimistic Update
 
 Optimistic update is a technique that allows you to update the data cache immediately when a mutation executes while waiting for the server response. It helps achieve a more responsive UI. SWR provides the [infrastructure for implementing it](https://swr.vercel.app/docs/mutation#optimistic-updates).
 
@@ -187,7 +187,11 @@ const { data } = useFindManyPost(
 
 When a query opts out, it won't be updated by a mutation, even if the mutation is set to update optimistically.
 
-#### Using Infinite Query
+### Fine-Grained Optimistic Update
+
+<FineGrainedOptimistic />
+
+### Using Infinite Query
 
 See [SWR's documentation](https://swr.vercel.app/docs/pagination) for more details.
 
