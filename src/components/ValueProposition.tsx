@@ -9,7 +9,7 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
     {
-        title: 'Easy Access Control',
+        title: 'Easy access control',
         img: '/img/access-control.png',
         description: (
             <>
@@ -19,7 +19,7 @@ const FeatureList: FeatureItem[] = [
         ),
     },
     {
-        title: 'Generated API & Hooks',
+        title: 'Generated API & hooks',
         img: '/img/auto-api.png',
         description: (
             <>
@@ -29,7 +29,7 @@ const FeatureList: FeatureItem[] = [
         ),
     },
     {
-        title: 'E2E Type Safety',
+        title: 'E2E type safety',
         img: '/img/type-safety.png',
         description: (
             <>
@@ -42,37 +42,38 @@ const FeatureList: FeatureItem[] = [
 
 function Proposition({ title, img, description }: FeatureItem) {
     return (
-        <div className="lg:max-w-1/3 w-full">
-            <div className="text-center">
-                <img className="w-48 p-10" src={img} alt={title} />
-            </div>
-            <div className="text--center padding-horiz--md">
-                <h3 className="text-xl text-bold text-center lg:text-2xl text-gray-700 dark:text-gray-300">{title}</h3>
-                <p className="text-center text-base lg:text-lg text-gray-600 dark:text-gray-400">{description}</p>
-            </div>
+        <div className="w-full flex flex-col space-y-4">
+            <img className="block w-20 h-auto aspect-square" src={img} alt={title} />
+            <h3 className="text-xl text-bold lg:text-2xl text-gray-800 dark:text-gray-200">{title}</h3>
+            <p className="text-base lg:text-lg text-gray-500 dark:text-gray-300">{description}</p>
         </div>
     );
 }
 
 export default function ValueProposition(): JSX.Element {
     return (
-        <div className="flex flex-col items-start lg:items-center w-full">
-            <div className="w-full">
-                <h2 className="flex flex-col lg:flex-row text-2xl md:text-3xl lg:text-4xl items-center justify-center pb-4">
-                    <div className="flex items-center">
-                        <span>
-                            Built Above{' '}
-                            <a href="https://prisma.io" target="_blank" className="underline">
-                                Prisma
-                            </a>
-                        </span>
-                        <PrismaLogo className="w-6 h-6 lg:w-8 lg:h-8 ml-1" />
-                        <span className="hidden lg:inline">{', '} </span>
-                    </div>
-                    <div className="lg:ml-4">More Than ORM</div>
-                </h2>
-            </div>
-            <div className="flex flex-wrap gap-4 md:gap-0">
+        <div className="container flex flex-col w-full">
+            <span className="text-primary uppercase opacity-50 font-medium">Expand on the APIs you already know</span>
+            <h2 className="mt-3 max-readable-text-width flex flex-col text-4xl md:text-5xl leading-relaxed">
+                <span className="sr-only">Built on top of Prisma, More than an ORM.</span>
+                <span className="inline-flex items-center mb-2 flex-wrap">
+                    Built on top of&nbsp;
+                    <span className="inline-flex items-center">
+                        <a
+                            href="https://prisma.io"
+                            target="_blank"
+                            rel="nofollow noreferrer"
+                            className="ml-1 inline-block underline underline-offset-4"
+                        >
+                            Prisma
+                        </a>
+                        &nbsp;
+                        <PrismaLogo className="inline-block h-8 md:h-12 lg:h-16 w-auto mr-1" />,
+                    </span>
+                </span>
+                <span className="opacity-75">More than an ORM.</span>
+            </h2>
+            <div className="mt-24 md:mt-28 grid md:grid-cols-3 gap-14 md:gap-8">
                 {FeatureList.map((props, idx) => (
                     <Proposition key={idx} {...props} />
                 ))}

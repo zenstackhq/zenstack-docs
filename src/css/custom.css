@@ -33,6 +33,79 @@
     --docusaurus-highlighted-code-line-bg: rgba(0, 148, 0, 0.3);
 }
 
+@layer base {
+    body {
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        font-feature-settings: 'rlig' 1, 'calt' 1;
+        font-synthesis: none;
+    }
+    svg {
+        text-rendering: optimizeLegibility;
+    }
+    svg path {
+        shape-rendering: geometricPrecision;
+    }
+    a,
+    button {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+    }
+}
+
+@layer utilities {
+    /* Use to keep headings readable (not too long) */
+    .max-readable-text-width {
+        @apply max-w-[calc(calc(1080px*0.25)*3)];
+    }
+    /* Subtle shimmer animation */
+    .animate-shine {
+        @apply absolute inset-0 overflow-hidden;
+    }
+    .animate-shine::before {
+        @apply absolute top-0 block h-full w-14 bg-white/40 blur-[30px] content-[''];
+        transform: translateX(-200px) skewX(-15deg);
+        transition: 0.7s;
+        animation: ShimmerWave 3.7s infinite;
+    }
+    .animate-shine::after {
+        @apply absolute top-0 block h-full w-7 bg-white/20 blur-[5px];
+        transform: translateX(-200px) skewX(-15deg);
+        transition: 0.7s;
+        animation: ShimmerWave 3.7s infinite;
+    }
+}
+
+@keyframes ShimmerWave {
+    0% {
+        transform: translateX(-200px) skewX(-15deg);
+    }
+    20%,
+    100% {
+        transform: translateX(500px) skewX(-15deg);
+    }
+}
+
+::-moz-selection,
+::selection {
+    color: #000000;
+    background: (var(--ifm-color-primary));
+}
+
+/**
+ * Makes sure h-screen works on mobile Safari. By default h-screen
+ * does not take into account the height of the address bar, causing
+ * weird behaviour when scrolling — sometimes the height will be correct
+ * and sometimes it won't, depending on whether the address bar is
+ * in 'collapsed' state or not.
+ * @see: https://benborgers.com/posts/tailwind-h-screen
+ */
+@supports (-webkit-touch-callout: none) {
+    .h-screen {
+        height: -webkit-fill-available;
+    }
+}
+
 .footer {
     @apply px-8 lg:px-16;
 }

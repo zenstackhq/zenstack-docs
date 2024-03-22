@@ -30,7 +30,7 @@ function Quote({
     children: React.ReactNode;
 }) {
     const quote = (
-        <div className="flex justify-center items-center relative w-[300px] h-[426px] md:w-[360px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-100 border-solid">
+        <div className="group flex justify-center items-center relative w-full h-[426px] md:h-[512px] p-4 shadow-xl rounded-xl border border-gray-600 hover:border-gray-200 transition-colors border-solid">
             {twitter && <img src="/img/logo/twitter.png" className="absolute w-5 top-6 right-6" alt="twitter" />}
             <div className="flex flex-col h-full text-center py-6">
                 <div className="flex-grow flex items-center justify-center">
@@ -78,9 +78,12 @@ function Quote({
 
 export default function VOC(): JSX.Element {
     return (
-        <div className="flex flex-col items-start lg:items-center w-full">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center pb-20 mx-auto">Voice of Developers</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 mx-auto">
+        <div className="container flex flex-col w-full">
+            <span className="text-primary uppercase opacity-50 font-medium">Building together</span>
+            <h2 className="mt-4 max-readable-text-width text-4xl md:text-5xl leading-relaxed pb-16">
+                Voice of developers
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-12">
                 <Quote author="Sid" company="MermaidChart" avatar="/img/logo/sid.jpg">
                     <div className="text-lg">
                         We've launched{' '}

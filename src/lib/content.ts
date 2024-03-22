@@ -1,2 +1,2 @@
 export const description =
-    'A TypeScript toolkit that supercharges Prisma ORM with a powerful access control layer and unleashes its full power for full-stack development.';
+    'Zenstack is a TypeScript toolkit that supercharges the Prisma ORM with a powerful access control layer — unleashing Prisma\'s full power for full-stack development.';
