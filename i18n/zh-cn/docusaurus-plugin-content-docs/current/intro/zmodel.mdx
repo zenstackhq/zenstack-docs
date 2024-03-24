@@ -1,0 +1,98 @@
+---
+description: ZModel - 一个扩展的Prisma模式
+sidebar_label: 2. ZModel - 一个扩展的Prisma模式
+sidebar_position: 2
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+# ZModel - 一个扩展的Prisma模式
+
+Prisma很棒，但它的潜力受到其模式语言不开放扩展这一事实的限制。 例如，最好附加字段注释以进行数据验证，例如：
+
+```zmodel
+model User {
+    ...
+    email String @email
+}
+```
+
+但是，由于Prisma不支持自定义属性，因此这是不可能的。 社区一直在努力解决这个限制，方法是将信息偷偷放入模式文件的代码注释中，但它很脆弱，不可伸缩，而且看起来很难看。
+
+### ZModel语言
+
+ZenStack做出了一个大胆的决定，完全复制Prisma模式语言，然后在上面添加所需的内容，以便在未来具有无限的可扩展性。 ZenStack引入的“ZModel”语言是Prisma模式的超集。 在所有的扩展中，最重要的一个是对自定义属性的支持，通过这些属性，您可以向模式添加新的语义，例如，
+
+```zmodel
+
+attribute @email()
+
+model User {
+    ...
+    email String @email
+}
+```
+
+### 访问控制和数据验证
+
+基于自定义属性支持，ZModel提供了一组内置属性和函数，用于处理数据模型的两个非常重要的方面：访问控制和数据验证。 以下是一些快速展示案例：
+
+```zmodel
+
+model User {
+    id Int @id
+    email String @unique @email // ✅ field must be a valid email
+    posts Post[]
+
+    // 🔐 everyone can signup, and user profile is also publicly readable
+    @@allow('create,read', true)
+
+    // 🔐 only the user can update or delete his own profile
+    @@allow('update,delete', auth() == this)
+}
+
+model Post {
+    id Int @id
+    title String @length(min: 5, max: 255) // ✅ field mustn't be too short or too long
+    published Boolean @default(false)
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+
+    // 🔐 author has full access
+    @@allow('all', auth() == author)
+
+    // 🔐 logged-in users can view published posts
+    @@allow('read', auth() != null && published)
+}
+
+```
+
+:::info
+- `@email`和`@length`是用于数据验证的内置属性。
+- `@@allow`是用于附加访问控制策略的内置属性。
+- `auth()`是用于访问当前用户的内置函数。
+
+如果您熟悉PostgreSQL的[行级安全性](https://www.postgresql.org/docs/15/ddl-rowsecurity.html)，您会发现这些想法是相似的。 然而，ZenStack的访问控制
+ 是在ORM层实现的，所以它不仅限于PostgreSQL，而且它比SQL更容易编写。
+:::
+
+能够将访问策略和数据验证附加到数据模型中是很酷的，但是除非它具有运行时效果，否则它是无用的。 别担心，我们会在下一节讨论这个问题。
+
+:::info
+
+ZModel语言对Prisma模式进行了除访问策略外的其他扩展，如[多文件模式和模型继承](/docs/guides/multiple-schema)。 今后将增加更多。 有时人们只是简单地使用ZenStack作为Prisma的更好版本。
+
+:::
+
+### 转换到Prisma Schema
+
+`zenstack`CLI编译ZModel模式并从中生成标准Prisma模式文件以及其他工件。 您可以在常规的Prisma开发工作流中使用它，如Prisma客户端生成，模式迁移等。
+
+<ThemedImage
+    alt="ZModel Generation"
+    sources={{
+        light: useBaseUrl('/img/intro/zmodel-generation-light.png'),
+        dark: useBaseUrl('/img/intro/zmodel-generation-dark.png'),
+    }}
+/>

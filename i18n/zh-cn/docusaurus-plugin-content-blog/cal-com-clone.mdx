@@ -1,0 +1,822 @@
+---
+description: This tutorial demonstrates how easy it is to make a simplified clone of Cal.com with a modern Javascript stack - Remix.run, Prisma, and ZenStack.
+tags: [tutorial, remix, prisma, zenstack]
+image: https://res.cloudinary.com/practicaldev/image/fetch/s--2aYn9_Qz--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jr9gmjh96zzijtr0cuww.png
+authors: yiming
+date: 2023-02-04
+---
+
+# Building a Cal.com Clone With Remix + Prisma + ZenStack
+
+![Cover Image](https://res.cloudinary.com/practicaldev/image/fetch/s--2aYn9_Qz--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jr9gmjh96zzijtr0cuww.png)
+
+If you're in the SaaS business or into trying out different web apps, you've likely heard of [Cal.com](https://cal.com). It's an fantastic product that helps you schedule meetings with clients more efficiently - simply set your availability, share your public booking link, and let people book when it works for both of you.
+
+This post demonstrates how easy it is to make a simplified clone of Cal.com with a modern Javascript stack - [Remix.run](https://remix.run), [Prisma](https://prisma.io), and [ZenStack](https://zenstack.dev).
+
+<!--truncate-->
+
+## Key Takeaways
+
+-   Use Remix's `loader` and `action` to easily build up UI that fetches and mutates data.
+-   Use Prisma to build a concise and centralized model data.
+-   Use ZenStack to secure your database access declaratively.
+
+## Features
+
+Cal.com has many features. For simplicity, we will only replicate the essential part - event booking. The requirements are as follows:
+
+1. User signup and login
+1. Browse and manage existing bookings
+1. Invite other users to a booking
+1. Allow anonymous users to make bookings via public booking urls
+
+![App Homepage](https://user-images.githubusercontent.com/16986811/216758083-94d29c4e-22d7-45f5-ad5d-c360c0f2b043.png)
+
+## About The Stack
+
+### Remix.run
+
+[Remix.run](https://remix.run) is a React-based full-stack framework that's both powerful and pleasant to use. A few really nice features:
+
+-   File-based routing - just drop .tsx files in folders, no need to configure routing
+-   Easy data loading and submitting - use simple conventional `loader` function for fetching and `action` function for mutation
+-   Preconfigured "stacks" allow you to have a quick start without messing with tooling configurations
+
+Overall Remix.run feels like a simpler and more elegantly designed alternative to [Next.js](https://nextjs.org/) for React developers.
+
+### Prisma
+
+[Prisma](https://prisma.io) is the most loved ORM for Node.js development and a natural fit into a modern web development stack. It gives you:
+
+-   An intuitive DSL for modeling your database schema
+-   Fully type-safe CRUD APIs
+-   Easy-to-use database migration flow
+
+### ZenStack
+
+[ZenStack](https://zenstack.dev) is a power pack for Prisma and adds a powerful access control layer. It helps you to:
+
+-   Express data access control rules succinctly inside your schema
+-   Automatically generate data access APIs for frontend code
+-   Easily share types between frontend and backend
+
+## Implementation
+
+If you don't want to follow the detailed steps, you can also find the finished project on Gitpod:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/duoduo999/cal-com-clone-remix-zenstack)
+
+### Scaffold the project
+
+Scaffolding a new project is very easy thanks to `create-remix`. We'll use the "indie-stack" here, which uses a SQLite database - well suited for prototyping.
+
+```bash
+npx create-remix@latest --template remix-run/indie-stack cal-com-clone
+```
+
+Choose the following options when prompted:
+
+```
+? TypeScript or JavaScript? TypeScript
+? Do you want me to run `npm install`? Yes
+```
+
+Now run `npm run dev` and verify that the scaffolding works. You should see a homepage with signup/signin functions already working.
+
+![Homepage](https://user-images.githubusercontent.com/16986811/216762408-915f0185-c213-4f03-9d32-bc359215ff7d.png)
+
+Try signing up for a new account and see if it works.
+
+### Configure ZenStack
+
+Next, let's initialize our project to use ZenStack:
+
+```bash
+npx zenstack@latest init
+```
+
+If everything worked, you should see a `schema.zmodel` file under the root of your project. Moving forward, we'll use this file to model data and access policies. Instead, the Prisma schema file `prisma/schema.prisma` will be automatically generated.
+
+Also, install the [VS Code extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) for authoring the '.zmodel' schema.
+
+### Define data models
+
+The scaffolded project already contains a sample Todo data model. Let's add our booking-related models to it:
+
+```zmodel title='/schema.zmodel'
+
+// Booking entity
+model Booking {
+  id           String   @id() @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  email        String
+  notes        String
+  startAt      DateTime
+  duration     Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  invitedUsers InvitedUser[]
+
+  // allow everyone to create a booking, including anonymous users
+  @@allow('create', true)
+
+  // owner is allowed for full CRUD
+  @@allow('all', auth() == user)
+
+  // invited users can read the booking
+  @@allow('read', invitedUsers?[user == auth()])
+}
+
+// Entity representing a User invited to a Booking
+model InvitedUser {
+  id          String @id() @default(cuid())
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  booking     Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bookingId   String
+  @@unique([bookingId, userId])
+
+  // allow everyone to create an invitation, disallow create for self
+  @@allow('create', auth() != null && user != auth())
+
+  // booking's owner is allowed for full CRUD
+  @@allow('all', booking.user == auth())
+}
+
+```
+
+Also, make an update to the `User` model to include references to `Booking` and `InviteUser`, and make it publicly readable.
+
+```zmodel title='/schema.zmodel'
+
+model User {
+  id    String @id @default(cuid())
+  email String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  password Password? @omit
+  notes Note[]
+  // highlight-start
+  invitations InvitedUser[]
+  bookings Booking[]
+
+  // user profiles are publicly readable
+  @@allow('read', true)
+  // highlight-end
+}
+
+```
+
+:::tip
+
+`@@allow` attribute is ZenStack's extension to Prisma for modeling access policies. All operations are, by default, denied unless explicitly opened. `auth()` is a built-in function for getting the current login user.
+
+By expressing access policies explicitly in data schema, you don't need to write imperative code for them anymore. It's both time-saving and more robust.
+
+:::
+
+Finally, run the following command to regenerate Prisma client and synchronize data models to the database schema.
+
+```bash
+
+npx zenstack generate
+npx prisma db push
+
+```
+
+### Add server-side utilities
+
+Let's now add a few server-side utilities that'll be used when building up the UI.
+
+First, add a helper for getting an access-policy-aware Prisma client in `/app/db.server.ts`:
+
+```ts title='/app/db.server.ts'
+import { enhance } from '@zenstackhq/runtime';
+
+export function getEnhancedPrisma(userId: string) {
+    // enhance configures a regular Prisma client for access policy checks
+    return enhance(prisma, { user: { id: userId } });
+}
+```
+
+Next, create `/app/models/booking.server.ts` file and add helpers for manipulating the `Booking` model:
+
+```ts title='/app/models/booking.server.ts'
+import type { Booking, User } from '@prisma/client';
+import { getEnhancedPrisma } from '~/db.server';
+export type { Booking } from '@prisma/client';
+
+// Gets a booking together with its owner and invited users
+export function getBooking({
+    id,
+    userId,
+}: Pick<Booking, 'id'> & {
+    userId: User['id'];
+}) {
+    return getEnhancedPrisma(userId).booking.findFirst({
+        where: { id },
+        include: { user: true, invitedUsers: { include: { user: true } } },
+    });
+}
+
+// Gets all booking items
+export function getBookingItems({ userId }: { userId: User['id'] }) {
+    return getEnhancedPrisma(userId).booking.findMany({
+        orderBy: { updatedAt: 'desc' },
+    });
+}
+
+// Creates a new booking
+export function createBooking({
+    userId,
+    email,
+    notes,
+    startAt,
+    duration,
+}: Pick<Booking, 'email' | 'notes' | 'startAt' | 'duration'> & {
+    userId: User['id'];
+}) {
+    return getEnhancedPrisma(userId).booking.create({
+        data: {
+            email,
+            notes,
+            startAt,
+            duration,
+            user: {
+                connect: {
+                    id: userId,
+                },
+            },
+        },
+    });
+}
+
+// Adds or removes an invitation of a booking
+export function updateInvite({
+    userId,
+    bookingId,
+    inviteUserId,
+    add,
+}: {
+    userId: User['id'];
+    bookingId: Booking['id'];
+    inviteUserId: User['id'];
+    add: boolean;
+}) {
+    return getEnhancedPrisma(userId).booking.update({
+        where: { id: bookingId },
+        include: { invitedUsers: true },
+        data: {
+            invitedUsers: add
+                ? {
+                      connectOrCreate: {
+                          where: {
+                              bookingId_userId: {
+                                  bookingId,
+                                  userId: inviteUserId,
+                              },
+                          },
+                          create: {
+                              user: {
+                                  connect: { id: inviteUserId },
+                              },
+                          },
+                      },
+                  }
+                : {
+                      delete: {
+                          bookingId_userId: {
+                              bookingId,
+                              userId: inviteUserId,
+                          },
+                      },
+                  },
+        },
+    });
+}
+
+// Deletes a booking
+export function deleteBooking({ id, userId }: Pick<Booking, 'id'> & { userId: User['id'] }) {
+    return getEnhancedPrisma(userId).booking.delete({
+        where: { id },
+    });
+}
+```
+
+The code above is mostly standard Prisma programming, except that we used the `getEnhancedPrisma` to get an access-policy-aware
+Prisma client. We don't need to add any filter to check if the user has permission to perform an action anymore because, at
+runtime, our policies defined in `schema.zmodel` will guard the operations; e.g., even though we didn't filter anything in the
+`getBookingItems` function, still only the items that are supposed to be visible to the current user are returned.
+
+Finally, add a `getUsers` helper in `/app/models/user.server.ts`:
+
+```ts title='/app/models/user.server.ts'
+export async function getUsers() {
+    return prisma.user.findMany({ select: { id: true, email: true } });
+}
+```
+
+### Build the booking list page
+
+With all the preparation work done, we can start to build up the UI part now. Create `/app/routes/booking.tsx` with the following content:
+
+```tsx title='/app/routes/booking.tsx'
+import type { LoaderArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { Form, Link, NavLink, Outlet, useLoaderData } from '@remix-run/react';
+import { useEffect, useState } from 'react';
+import { getBookingItems } from '~/models/booking.server';
+import type { User } from '~/models/user.server';
+import { requireUserId } from '~/session.server';
+import { useUser } from '~/utils';
+
+export async function loader({ request }: LoaderArgs) {
+    const userId = await requireUserId(request);
+    const bookings = await getBookingItems({ userId });
+    return json({ bookings });
+}
+
+function getBookingUrl(user: User) {
+    const url = new URL(window.location.href);
+    url.pathname = `/new`;
+    url.search = `?uid=${user.id}`;
+    return url.toString();
+}
+
+export default function BookingsPage() {
+    const data = useLoaderData<typeof loader>();
+    const user = useUser();
+    const [bookingUrl, setBookingUrl] = useState('');
+
+    useEffect(() => {
+        setBookingUrl(getBookingUrl(user));
+    }, [user]);
+
+    return (
+        <div className="flex h-full min-h-screen flex-col">
+            <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
+                <h1 className="text-3xl font-bold">
+                    <Link to=".">Bookings</Link>
+                </h1>
+                <p>{user.email}</p>
+                <Form action="/logout" method="post">
+                    <button
+                        type="submit"
+                        className="rounded bg-slate-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+                    >
+                        Logout
+                    </button>
+                </Form>
+            </header>
+
+            <main className="flex h-full bg-white">
+                <div className="h-full w-1/3 border-r bg-gray-50">
+                    <div className="p-8">
+                        <h3 className="pb-1 font-semibold">Public url:</h3>
+                        <p className="italic">{bookingUrl}</p>
+                    </div>
+
+                    <hr />
+
+                    {data.bookings.length === 0 ? (
+                        <p className="p-4">No bookings yet</p>
+                    ) : (
+                        <ol>
+                            {data.bookings.map((booking) => (
+                                <li key={booking.id}>
+                                    <NavLink
+                                        className={({ isActive }) =>
+                                            `block border-b p-6 text-xl ${isActive ? 'bg-white' : ''}`
+                                        }
+                                        to={booking.id}
+                                    >
+                                        <div className="flex items-baseline justify-between">
+                                            <span>🗓️ {booking.email}</span>
+                                            <span className="ml-8 inline-block text-sm">
+                                                {new Date(booking.startAt).toLocaleString()} ~ {booking.duration} min
+                                            </span>
+                                        </div>
+                                    </NavLink>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                </div>
+
+                <div className="flex-1 p-6">
+                    <Outlet />
+                </div>
+            </main>
+        </div>
+    );
+}
+```
+
+Visit [http://localhost:3000/booking](http://localhost:3000/booking), and you should see an empty list UI:
+
+![Empty booking list](https://user-images.githubusercontent.com/16986811/216762287-15b2ef74-99dc-430c-8a48-90a0229008a2.png)
+
+The _**Public Url**_ at the top is the URL you can share with anonymous users for creating bookings. We'll implement that page next.
+
+### Build the booking detail page
+
+The booking detail page allows the owner to inspect a booking's details, delete it, or
+invite other users to it.
+
+Create `/app/routes/booking/index.tsx` and `/app/routes/booking/$bookingId.tsx`.
+
+```tsx title='/app/routes/booking/index.tsx'
+export default function NoteIndexPage() {
+    return <p>No booking selected. Select one on the left.</p>;
+}
+```
+
+```tsx title='/app/routes/booking/$bookingId.tsx'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
+import { Form, useFetcher, useLoaderData } from '@remix-run/react';
+import invariant from 'tiny-invariant';
+import { deleteBooking, getBooking, updateInvite } from '~/models/booking.server';
+import { getUsers } from '~/models/user.server';
+import { requireUserId } from '~/session.server';
+
+export async function loader({ request, params }: LoaderArgs) {
+    const userId = await requireUserId(request);
+    invariant(params.bookingId, 'bookingId not found');
+
+    const booking = await getBooking({ userId, id: params.bookingId });
+    if (!booking) {
+        throw new Response('Not Found', { status: 404 });
+    }
+
+    const users = await getUsers();
+
+    return json({ booking, users });
+}
+
+async function updateInviteAction({ request }: ActionArgs) {
+    const userId = await requireUserId(request);
+    const formData = await request.formData();
+    const bookingId = formData.get('bookingId') as string;
+    const inviteUserId = formData.get('inviteUserId') as string;
+    const add = formData.get('add') === 'true';
+
+    try {
+        await updateInvite({
+            userId,
+            bookingId,
+            inviteUserId,
+            add,
+        });
+        return json({ error: null, ok: true });
+    } catch (error: any) {
+        return json({ error: error.message, ok: false });
+    }
+}
+
+async function deleteAction({ request, params }: ActionArgs) {
+    const userId = await requireUserId(request);
+    invariant(params.bookingId, 'bookingId not found');
+    await deleteBooking({ userId, id: params.bookingId });
+    return redirect('/booking');
+}
+
+export async function action(args: ActionArgs) {
+    if (args.request.method === 'POST') {
+        return updateInviteAction(args);
+    } else if (args.request.method === 'DELETE') {
+        return deleteAction(args);
+    }
+}
+
+export default function BookingDetailsPage() {
+    const data = useLoaderData<typeof loader>();
+    const fetcher = useFetcher();
+
+    function onChangeInvite(inviteUserId: string, add: boolean) {
+        fetcher.submit(
+            {
+                bookingId: data.booking.id,
+                inviteUserId,
+                add: add.toString(),
+            },
+            { method: 'post' }
+        );
+    }
+
+    return (
+        <div>
+            <h3 className="text-2xl font-bold">{data.booking.email}</h3>
+            <div className="flex flex-col gap-4 py-6">
+                <div>
+                    <p className="font-semibold">Owner</p>
+                    <p>{data.booking.user.email}</p>
+                </div>
+                <div>
+                    <p className="font-semibold">Start At</p>
+                    <p>{new Date(data.booking.startAt).toLocaleString()}</p>
+                </div>
+                <div>
+                    <p className="font-semibold">Duration</p>
+                    <p>{data.booking.duration} minutes</p>
+                </div>
+                <div>
+                    <p className="font-semibold">Notes</p>
+                    <p>{data.booking.notes}</p>
+                </div>
+                <div>
+                    <p className="font-semibold">Invited Members</p>
+
+                    <div className="flex flex-col gap-1">
+                        {data.users
+                            .filter((user) => user.id !== data.booking.user.id)
+                            .map((user) => (
+                                <label key={user.id} className="flex items-center">
+                                    <span>{user.email}</span>
+                                    <input
+                                        type="checkbox"
+                                        className="ml-2"
+                                        checked={data.booking.invitedUsers.some((invite) => invite.userId === user.id)}
+                                        onChange={(e) => onChangeInvite(user.id, e.currentTarget.checked)}
+                                    />
+                                </label>
+                            ))}
+                    </div>
+                </div>
+            </div>
+            <hr className="my-4" />
+            <Form method="delete">
+                <button
+                    type="submit"
+                    className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+                >
+                    Delete
+                </button>
+            </Form>
+        </div>
+    );
+}
+```
+
+### Build the public booking page
+
+Let's build up our public booking UI now.
+
+First, install `react-calendar` package for a nice date-picker component:
+
+```bash
+npm install react-calendar
+npm i --save-dev @types/react-calendar
+```
+
+Next, create `/app/routes/new.tsx` with the following content:
+
+```tsx title='/app/routes/new.tsx'
+import type { ActionArgs, LoaderArgs, MetaFunction } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
+import { Form, useActionData, useLoaderData } from '@remix-run/react';
+import * as React from 'react';
+import { createBooking } from '~/models/booking.server';
+import { getUserById } from '~/models/user.server';
+import Calendar from 'react-calendar';
+import styles from 'react-calendar/dist/Calendar.css';
+
+export function links() {
+    return [{ rel: 'stylesheet', href: styles }];
+}
+
+export async function loader({ request }: LoaderArgs) {
+    const url = new URL(request.url);
+    const uid = url.searchParams.get('uid');
+    if (!uid) {
+        throw Error('Missing uid parameter');
+    }
+    const user = await getUserById(uid);
+    return json({ user });
+}
+
+export async function action({ request }: ActionArgs) {
+    const formData = await request.formData();
+    const uid = formData.get('uid');
+    const email = formData.get('email');
+    const notes = formData.get('notes');
+    const startAt = formData.get('startAt') as string;
+
+    if (typeof uid !== 'string' || uid.length === 0) {
+        return json({ errors: { email: null, notes: null } }, { status: 400 });
+    }
+
+    if (typeof email !== 'string' || email.length === 0) {
+        return json({ errors: { email: 'Email is required', notes: null } }, { status: 400 });
+    }
+
+    if (typeof notes !== 'string' || notes.length === 0) {
+        return json({ errors: { email: null, notes: 'Notes is required' } }, { status: 400 });
+    }
+
+    await createBooking({
+        email,
+        notes,
+        userId: uid,
+        startAt: new Date(startAt),
+        duration: 30,
+    });
+
+    return redirect(`/thankyou`);
+}
+
+export const meta: MetaFunction = () => {
+    return {
+        title: 'Create Booking',
+    };
+};
+
+export default function NewBookingPage() {
+    const data = useLoaderData<typeof loader>();
+    const actionData = useActionData<typeof action>();
+    const emailRef = React.useRef<HTMLInputElement>(null);
+    const notesRef = React.useRef<HTMLTextAreaElement>(null);
+    const [date, setDate] = React.useState(new Date());
+    const [hour, setHour] = React.useState('8');
+    const [duration, setDuration] = React.useState(30);
+    const [startAt, setStartAt] = React.useState(new Date().toISOString());
+
+    function updateStartAt(date: Date, hour: number) {
+        const d = new Date(date);
+        d.setHours(hour);
+        d.setMinutes(0);
+        d.setSeconds(0);
+        d.setMilliseconds(0);
+        setStartAt(d.toISOString());
+        console.log(d.toISOString());
+    }
+
+    function onDateChange(date: Date) {
+        setDate(date);
+        updateStartAt(date, parseInt(hour));
+    }
+
+    function onHourChange(hour: string) {
+        console.log(hour);
+        setHour(hour);
+        updateStartAt(date, parseInt(hour));
+    }
+
+    React.useEffect(() => {
+        if (actionData?.errors?.email) {
+            emailRef.current?.focus();
+        } else if (actionData?.errors?.notes) {
+            notesRef.current?.focus();
+        }
+    }, [actionData]);
+
+    return (
+        <div className="mx-auto max-w-5xl py-16">
+            <h1 className="pb-4 text-center text-3xl font-semibold">Create a booking</h1>
+            <p className="pb-4 text-center">Booking request will be sent to {data.user?.email}</p>
+            <Form
+                method="post"
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8,
+                    width: '100%',
+                }}
+            >
+                <div>
+                    <label className="flex w-full flex-col gap-1">
+                        <span>Email: </span>
+                        <input
+                            ref={emailRef}
+                            name="email"
+                            type="email"
+                            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+                        />
+                    </label>
+                    {actionData?.errors?.email && (
+                        <div className="pt-1 text-red-700" id="email-error">
+                            {actionData.errors.email}
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <label className="flex w-full flex-col gap-1">
+                        <span>Notes: </span>
+                        <textarea
+                            ref={notesRef}
+                            name="notes"
+                            rows={8}
+                            className="w-full flex-1 rounded-md border-2 border-blue-500 py-2 px-3 text-lg leading-6"
+                        />
+                    </label>
+                    {actionData?.errors?.notes && (
+                        <div className="pt-1 text-red-700" id="notes-error">
+                            {actionData.errors.notes}
+                        </div>
+                    )}
+                </div>
+                <div className="flex flex-row gap-4">
+                    <div>
+                        <label className="flex w-full flex-col gap-1">
+                            <span>Date: </span>
+                            <Calendar
+                                className="rounded-lg border-2 border-blue-500 p-4"
+                                value={date}
+                                onChange={onDateChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="flex flex-grow flex-col gap-2">
+                        <label className="flex w-full flex-col gap-1">
+                            <span>Start At: </span>
+                            <select
+                                name="startTime"
+                                className="rounded-lg border-2 border-blue-500 p-2"
+                                value={hour}
+                                onChange={(e) => onHourChange(e.currentTarget.value)}
+                            >
+                                {[...Array(24).keys()].map((i) => (
+                                    <option key={i} value={`${i}`}>
+                                        {String(i).padStart(2, '0')}:00
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                        <label className="flex w-full flex-col gap-1">
+                            <span>Duration: {duration} minutes</span>
+                            <input
+                                name="duration"
+                                type="range"
+                                min="15"
+                                max="120"
+                                step="15"
+                                className="rounded-lg border-2 border-blue-500 p-2"
+                                value={duration}
+                                onChange={(e) => setDuration(Number(e.target.value))}
+                            />
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" value={data.user?.id} name="uid" />
+                <input type="hidden" value={startAt} name="startAt" />
+                <div className="text-right">
+                    <button
+                        type="submit"
+                        className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+                    >
+                        Send Request
+                    </button>
+                </div>
+            </Form>
+        </div>
+    );
+}
+```
+
+Finally, add a simple "Thank you" page to redirect the user after a booking is created - `/app/routes/thankyou.tsx`:
+
+```tsx title='/app/routes/thankyou.tsx'
+export default function ThankYouPage() {
+    return (
+        <div className="flex h-screen w-screen flex-col items-center justify-center">
+            <h1 className="pb-6 text-3xl font-semibold">Thank you for your booking!</h1>
+            <p className="text-lg">We'll get in touch soon.</p>
+        </div>
+    );
+}
+```
+
+Now in an incognito browser tab, visit the _**Public Url**_ as mentioned in the
+[previous step](#build-the-booking-list-page) and create a booking.
+
+<div className="flex">
+    <video autoPlay loop muted playsInline className="w-full shadow-xl rounded-lg p-4 bg-black">
+        <source src="/video/blog/cal-com-clone/make-a-booking.mp4" type="video/mp4" />
+        You need a browser that supports HTML5 video to view this video.
+    </video>
+</div>
+
+### Test out the invitation feature
+
+Get back to your original browser tab and refresh the page. You should see the
+new booking request in the list. Clicking it should open its details view:
+
+![Booking list and details](https://user-images.githubusercontent.com/16986811/216765068-d56b8b3e-e547-4f40-8fb6-929a6a8107b0.png)
+
+Next, sign up a few more users and invite some of them into the booking. When a user is invited to
+a booking, they should see it in the list. However, if they try to make any mutation, like deleting it or
+inviting other users, an error will be thrown, because our access policies only allow "read" operation for
+invited users. Of course, in a real app, you should hide the actions from the UI.
+
+## Conclusion
+
+Congratulations 🎉! You've got a basic version of an event scheduling app up and running now. You can also play with the finished
+code on Gitpod:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/duoduo999/cal-com-clone-remix-zenstack)
+
+Even though we only implemented the basic features of Cal.com, I hope this post convinces you that a modern stack like Remix.run + Prisma + ZenStack can greatly simplify the development of a web app.
+
+Is it something you'll consider for the next project?
