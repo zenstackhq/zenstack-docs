@@ -1,2 +1,2 @@
 export const description =
-    'A TypeScript toolkit that supercharges Prisma ORM with a powerful access control layer and unleashes its full power for full-stack development.';
+    'A TypeScript toolkit that supercharges Prisma ORM with a fine-grained Authorization layer, auto-generated type-safe APIs/hooks to unlock its full potential for full-stack development.';

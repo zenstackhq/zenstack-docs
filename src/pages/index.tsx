@@ -27,8 +27,8 @@ function Header() {
                             <br /> In Minutes
                         </h1>
                         <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed text-gray-100 dark:text-gray-700">
-                            A TypeScript toolkit that supercharges Prisma ORM with a powerful access control layer and
-                            unleashes its full power for full-stack development.
+                            A TypeScript toolkit that supercharges Prisma ORM with a fine-grained Authorization layer,
+                            auto-generated type-safe APIs/hooks to unlock its full potential for full-stack development.
                         </p>
                         <div className={styles.buttons}>
                             <Link
