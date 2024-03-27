@@ -69,12 +69,13 @@ const config = {
             metadata: [
                 {
                     name: 'keywords',
-                    content: 'prisma,orm,web development,webdev,full-stack',
+                    content:
+                        'authorization,auth,prisma,orm,web development,webdev,full-stack,api,type-safe,acl,rls,saas',
                 },
                 {
                     name: 'description',
                     content:
-                        'ZenStack adds the missing access control layer to the awesome Prisma ORM and unleashes its full potential for full-stack development.',
+                        'ZenStack supercharges Prisma ORM with a fine-grained Authorization layer, auto-generated type-safe APIs/hooks to unlock its full potential for full-stack development.',
                 },
             ],
             navbar: {
