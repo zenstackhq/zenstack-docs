@@ -197,6 +197,7 @@ const config = {
             prism: {
                 theme: prismThemes.github,
                 darkTheme: prismThemes.dracula,
+                additionalLanguages: ['json'],
             },
             zoom: {
                 config: {

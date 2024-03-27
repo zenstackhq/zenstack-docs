@@ -1,0 +1,476 @@
+---
+title: NestJS
+description: Steps for using ZenStack in a NestJS application.
+sidebar_position: 7
+---
+
+import InitTips from './_zenstack-init-tips.md';
+import AccessPolicy from './_access-policy.md';
+
+# Get Started With NestJS
+
+NestJS is one of the most popular Node.js/TypeScript backend frameworks for building APIs. ZenStack provides a module for easily integrating with NestJS applications that use Prisma ORM. With the integration, you'll have access to an enhanced Prisma service with built-in access control, while continue enjoying the same Prisma APIs that you're familiar with.
+
+Let's see how it works by creating a simple blogging API. You can find the final build result [here](https://github.com/zenstackhq/docs-tutorial-nestjs).
+
+## Requirements
+
+Our target app should meet the following requirements:
+
+1. Users can create posts for themselves.
+1. Post owner can update their own posts.
+1. Users cannot make changes to posts that do not belong to them.
+1. Published posts can be viewed by everyone.
+
+Let's get started 🚀.
+
+## Prerequisite
+
+1. Make sure you have Node.js 18 or above installed.
+1. Install the [VSCode extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) for editing data models.
+
+## Building the app
+
+### 1. Create a new NestJS project
+
+```bash
+npx @nestjs/cli@latest new -p npm my-blog-app
+cd my-blog-app
+```
+
+### 2. Set up Prisma
+
+```bash
+npm install -D prisma
+npx prisma init
+```
+
+This will create a Prisma schema under `prisma/schema.prisma`. Replace its content with the following:
+
+```zmodel title="/prisma/schema.prisma"
+datasource db {
+  provider = "sqlite"
+  url = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id Int @id() @default(autoincrement())
+  name String
+  posts Post[]
+}
+
+model Post {
+  id Int @id() @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  title String
+  published Boolean @default(false)
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+```
+
+Now, generate `PrismaClient` and push the schema to the database:
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+Create a `PrismaService` which will be injected into the API controllers later.
+
+```ts title="/src/prisma.service.ts"
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+    await this.$connect();
+  }
+}
+```
+
+Finally, add the `PrismaService` to the app module as a provider:
+
+```ts title="/src/app.module.ts"
+import { PrismaService } from './prisma.service';
+
+@Module({
+  imports: [],
+  controllers: [AppController],
+  providers: [PrismaService],
+})
+export class AppModule {}
+```
+
+### 3. Create CRUD controllers
+
+Now let's create the CRUD API controller for `User` and `Post` models. In a real application, you'll want to have `UserService` and `PostService` to encapsulate database operations. For simplicity, we'll put everything in the controller here.
+
+```ts title="/src/app.controller.ts"
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { PrismaService } from './prisma.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly prismaService: PrismaService) {}
+
+  @Post('users')
+  async signup(@Body() userData: { name: string }) {
+    return this.prismaService.user.create({ data: userData });
+  }
+
+  @Get('posts')
+  async getAllPosts() {
+    return this.prismaService.post.findMany();
+  }
+
+  @Post('posts')
+  async createDraft(@Body() postData: { title: string; authorId: number }) {
+    return this.prismaService.post.create({
+      data: postData,
+    });
+  }
+
+  @Put('posts/publish/:id')
+  async publishPost(@Param('id') id: string) {
+    return this.prismaService.post.update({
+      where: { id: Number(id) },
+      data: { published: true },
+    });
+  }
+}
+```
+
+Now, we can start the dev server:
+
+```bash
+npm run start:dev
+```
+
+Let's make a few requests to create a user and two posts:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Joey"}' localhost:3000/users
+curl -X POST -H "Content-Type: application/json" -d '{"title": "My first post", "authorId": 1}' localhost:3000/posts
+curl -X POST -H "Content-Type: application/json" -d '{"title": "My second post", "authorId": 1}' localhost:3000/posts
+curl localhost:3000/posts
+```
+
+The result should look like:
+
+```json
+[
+  {
+    "authorId" : 1,
+    "createdAt" : "2024-03-27T18:16:27.289Z",
+    "id" : 1,
+    "published" : false,
+    "title" : "My first post",
+    "updatedAt" : "2024-03-27T18:16:27.289Z"
+  },
+  {
+    "authorId" : 1,
+    "createdAt" : "2024-03-27T18:16:35.302Z",
+    "id" : 2,
+    "published" : false,
+    "title" : "My second post",
+    "updatedAt" : "2024-03-27T18:16:35.302Z"
+  }
+]
+```
+
+### 4. Set up authentication
+
+Our basic CRUD APIs are up and running. However it's not secured yet. Protecting an API involves two parts: authentication (identifying who's making the request) and authorization (deciding if the requester is allowed to perform the operation).
+
+Let's deal with authentication first. NestJS has [detailed documentation](https://docs.nestjs.com/security/authentication) for implementing authentication. In this guide, we'll simply use a fake one that directly passes user ID in a HTTP header. To allow services and controllers to access the authenticatd user, we'll use the [nestjs-cls](https://www.npmjs.com/package/nestjs-cls) package to put the user information into Node.js's [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage).
+
+First, install the `nestjs-cls` package:
+
+```bash
+npm install nestjs-cls
+```
+
+Then, mount the CLS module:
+
+```ts title="/src/app.module.ts"
+import { ClsModule, ClsService } from 'nestjs-cls';
+
+@Module({
+  imports: [
+    // highlight-start
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+      },
+    }),
+    // highlight-end
+  ],
+  ...
+})
+export class AppModule {}
+```
+
+Now, let's create a NestJS interceptor to extract the user ID from the HTTP header and put it into the CLS context:
+
+```ts title="/src/auth.interceptor.ts"
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { ClsService } from 'nestjs-cls';
+
+@Injectable()
+export class AuthInterceptor implements NestInterceptor {
+  constructor(private readonly cls: ClsService) {}
+
+  async intercept(context: ExecutionContext, next: CallHandler) {
+    const request = context.switchToHttp().getRequest();
+    const userId = request.headers['x-user-id'];
+    if (userId) {
+      this.cls.set('auth', { id: Number(userId) });
+    }
+    return next.handle();
+  }
+}
+```
+
+Then, add the interceptor to `AppModule`:
+
+```ts title="/src/app.module.ts"
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthInterceptor } from './auth.interceptor';
+
+@Module({
+  ...
+
+  providers: [
+    PrismaService,
+    // highlight-start
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuthInterceptor,
+    },
+    // highlight-end
+  ],
+})
+export class AppModule {}
+```
+
+Now we will be able to inject the `ClsService` into the controllers and services as needed to fetch the current authenticated user.
+
+### 5. Set up ZenStack
+
+ZenStack allows you to define access policies inside your data schema. Let's install it first.
+
+```bash
+npx zenstack@next init
+```
+
+<InitTips />
+
+Add the following access policies to the `User` and `Post` models:
+
+```zmodel title='/schema.zmodel'
+model User {
+  id Int @id() @default(autoincrement())
+  name String
+  posts Post[]
+
+  // highlight-start
+  // anyone can sign up, and user profiles are public
+  @@allow('create,read', true)
+
+  // users have full access to their own profile
+  @@allow('all', auth() == this)
+  // highlight-end
+}
+
+model Post {
+  id Int @id() @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  title String
+  published Boolean @default(false)
+  author User? @relation(fields: [authorId], references: [id])
+  authorId Int?
+
+  // highlight-start
+  // author has full access
+  @@allow('all', auth() == author)
+
+  // published posts are readable to all
+  @@allow('read', published)
+  // highlight-end
+}
+```
+
+<AccessPolicy />
+
+Now regenerate `PrismaClient` and other supporting files needed by ZenStack:
+
+```bash
+npx zenstack generate
+```
+
+### 6. Use ZenStack in the controller
+
+One of the main things ZenStack does is to create an "enhanced" `PrismaClient` that automatically enforces access policies. To do that, simply call the `enhance` API with an existing client and a user context:
+
+```ts
+const enhancedPrisma = enhance(prisma, { user: ... });
+```
+
+In a NestJS application, since everything is a dependency injection, we need to create the enhanced client in a DI-compatible way. Fortunately, ZenStack offers a module to make such integration easy. First, install the server adapter package:
+
+```bash
+npm install @zenstackhq/server@next
+```
+
+Then, register the `ZenStackModule` onto the app module:
+
+```ts title="/src/app.module.ts"
+import { ZenStackModule } from '@zenstackhq/server/nestjs';
+import { enhance } from '@zenstackhq/runtime';
+
+@Module({
+  imports: [
+    ...
+
+    // highlight-start
+    ZenStackModule.registerAsync({
+      useFactory: (prisma: PrismaService, cls: ClsService) => {
+        return {
+          getEnhancedPrisma: () => enhance(prisma, { user: cls.get('auth') }),
+        };
+      },
+      inject: [PrismaService, ClsService],
+      extraProviders: [PrismaService],
+    }),
+    // highlight-end
+  ],
+
+  ...
+})
+export class AppModule {}
+```
+
+Note that the `ZenStackModule` registration is done with a factory function that returns a config used for creating an enhanced prisma service. The config contains a callback function where you should create and return an enhanced `PrismaClient`. It'll be called each time a Prisma method is invoked. It's important to fetch the auth data inside the callback so that it correctly returns the data bound to the current request context.
+
+:::info
+The enhanced clients are lightweighted Javascript proxies. They are cheap to create and don't incur new connections to the database.
+:::
+
+The `ZenStackModule` provides an enhanced `PrismaService` with the token name `ENHANCED_PRISMA`. You can use both the regular `PrismaService` and enhanced one in your services and controllers. To use the regular prisma client, simply inject the `PrismaService` as usual. To use the enhanced one, inject it with token name `ENHANCED_PRISMA`.
+
+Let's change our controller to use the enhanced prisma service:
+
+```ts title="/src/app.controller.ts"
+import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs';
+
+@Controller()
+export class AppController {
+  constructor(
+    // highlight-next-line
+    @Inject(ENHANCED_PRISMA) private readonly prismaService: PrismaService,
+  ) {}
+
+  ...
+}
+```
+
+### 7. Test the secured API
+
+Now, restart the dev server, and let's make a few requests to see if the access policies are enforced.
+
+- Listing posts without a user identity should return an empty array:
+
+    ```bash
+    curl localhost:3000/posts
+    ```
+
+    ```
+    []
+    ```
+
+- Listing posts with a user identity should return all posts owned by the user:
+
+    ```bash
+    curl -H "x-user-id:1" localhost:3000/posts
+    ```
+
+    ```json
+    [
+      {
+        "authorId" : 1,
+        "createdAt" : "2024-03-27T18:16:27.289Z",
+        "id" : 1,
+        "published" : false,
+        "title" : "My first post",
+        "updatedAt" : "2024-03-27T18:16:27.289Z"
+      },
+      {
+        "authorId" : 1,
+        "createdAt" : "2024-03-27T18:16:35.302Z",
+        "id" : 2,
+        "published" : false,
+        "title" : "My second post",
+        "updatedAt" : "2024-03-27T18:16:35.302Z"
+      }
+    ]
+    ```
+
+- Published posts are readable to all:
+
+    First, publish a post with its owner's identity.
+
+    ```
+    curl -X PUT -H "x-user-id:1" localhost:3000/posts/publish/1
+    ```
+
+    ```json
+    {
+      "authorId" : 1,
+      "createdAt" : "2024-03-27T18:16:27.289Z",
+      "id" : 1,
+      "published" : true,
+      "title" : "My first post",
+      "updatedAt" : "2024-03-27T18:42:19.043Z"
+    }
+    ```
+
+    Then, list all posts without a user identity:
+
+    ```bash
+    curl localhost:3000/posts
+    ```
+
+    ```json
+    {
+      "authorId" : 1,
+      "createdAt" : "2024-03-27T18:16:27.289Z",
+      "id" : 1,
+      "published" : true,
+      "title" : "My first post",
+      "updatedAt" : "2024-03-27T18:42:19.043Z"
+    }
+    ```
+
+## Wrap up
+
+🎉 Congratulations! You've made a simple but secure blogging API without writing any
+authorization code. Pretty cool, isn't it?
+
+If you have trouble following the building process, you can find the final result
+[here](https://github.com/zenstackhq/docs-tutorial-nestjs). For more details about ZenStack, please refer to the [Reference](../category/reference) and [Guides](../category/recipes) parts of the documentation.
+
+Have fun building cool stuff 🚀!

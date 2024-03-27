@@ -175,6 +175,10 @@ We may introduce a new config file format in the future.
 
 ### 3. Server Adapter
 
+#### HTTP status code `422` is used to represent data validation errors
+
+In V1, when a [data validation](../docs/reference/zmodel-language.md#data-validation) error happens (due to violation of rules represented by `@email`, `@length`, `@@validate` etc.), the server adapters used `403` to represent such error. This is changed in V2 to use `422` to align with the [HTTP status code definition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422).
+
 #### The deprecated `useSuperJSON` initialization options is removed
 
 The server adapters always use SuperJSON for serialization and deserialization.
