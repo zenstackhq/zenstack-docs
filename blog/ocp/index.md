@@ -126,7 +126,7 @@ model Post {
 
 - `Content` would be the base model with the common data and access policy for all the different kinds of feed type.
 - `contentType` is added to indicate the concrete type that this content record represents. The value should be the model name of the concrete type, such as `Post`.
-- Each concrete feed type model like `Post` has a one-to-one relation with `Content`.  It has it’s own specific data like `title` for a post feed.
+- Each concrete feed type model like `Post` has a one-to-one relation with `Content`.  It has its own specific data like `title` for a post feed.
 - In concrete type,  the access policy needs to reference the `Content` model to check the author because it has been moved there.
 - The new One-to-Many realtion with `Like` model is added to the `Content` model.
 
