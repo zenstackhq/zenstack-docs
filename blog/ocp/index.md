@@ -20,7 +20,7 @@ I have no doubt that you have already benefited from it in your backend or front
 
 ## A Classical Feed System
 
-Let's use a typical news feed system as an example, which you can think of as a simplified version of Twitter.
+Let's use typical news feed system as an example, which you can think of as a simplified version of Twitter.
 
 1. You can create or delete a post.
 2. You can publish or unpublish a post. When published, other logged-in users can view it.
