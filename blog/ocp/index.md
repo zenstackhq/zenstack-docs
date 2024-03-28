@@ -92,7 +92,7 @@ Unfortunately [Prisma hasn’t supported polymorphism yet.](https://github.com/p
 
 ### Table Inheritance
 
-Without inheritance, what else can we rely on to establish relationships between different models? Of course, it is the foreign key, the reason we refer to it as a relational database.  So let’s refactor our exsiting `Post` model as below:
+Without inheritance, what else can we rely on to establish relationships between different models? Of course, it is the foreign key, the reason we refer to it as a relational database.  So let’s refactor our existing `Post` model as below:
 
 ```tsx
 model Content {
