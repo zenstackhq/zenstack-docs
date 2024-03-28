@@ -88,7 +88,7 @@ model Post {
 > The bottom part of is the acess control policy, with which it could direclty generate the secured type-safe front-end hooks.
 > 
 
-Unfortuantely [Prisma hasn’t supportted polymorphism yet.](https://github.com/prisma/prisma/issues/1644) As such, you can't use inheritance to model the entity in the same way as in your programming language, as depicted in the above class diagram. The good news is that we could intimate it using table inheritance to imitate it.
+Unfortunately [Prisma hasn’t supported polymorphism yet.](https://github.com/prisma/prisma/issues/1644) As such, you can't use inheritance to model the entity in the same way as in your programming language, as depicted in the above class diagram. The good news is that we could intimate it using table inheritance to imitate it.
 
 ### Table Inheritance
 
