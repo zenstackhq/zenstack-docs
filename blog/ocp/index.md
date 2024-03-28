@@ -549,7 +549,7 @@ We can directly use **`content.contentType`** to get the appropriate UI componen
 type contentType = 'Post' | 'Video' | ...
 ```
 
-Now, you don't need to worry about mismatches between the UI component name and the concrete type name defined in the schema. For instance, if you add a new `Video` type to the schema, but you haven't added a UI component with the exact same name in `content-components.tsx`, TypeScript is smart enough to let you know it:
+Now, you don't need to worry about mismatches between the UI component name and the concrete type name defined in the schema. For instance, if you add a new `Video` type to the schema, but you haven't added a UI component with the same name in `content-components.tsx`, TypeScript is smart enough to let you know it:
 
 ```tsx
 Property 'Video' does not exist on type 'typeof import("/content-components")'.
