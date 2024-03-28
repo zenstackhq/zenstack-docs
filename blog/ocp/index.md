@@ -35,7 +35,7 @@ It is built using Next.js and [ZenStack](https://zenstack.dev/?utm_campaign=devt
 > If you haven’t heard about ZenStack, it supercharges Prisma ORM with a fine-grained Authorization layer, auto-generated type-safe APIs/hooks to unlock its full potential for full-stack development.
 > 
 
-The content now only supports post with text. Here comes the polymorphic part, let’s try to add support for image and video. Regardless of the programming language you're using,  you could definitely model it in your code like this:
+The content now only supports post with text. Here comes the polymorphic part, let’s try to add support for image and video. Regardless of the programming language you're using, you could definitely model it in your code like this:
 
 ```mermaid
 classDiagram
