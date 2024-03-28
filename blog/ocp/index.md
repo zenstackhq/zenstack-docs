@@ -518,7 +518,7 @@ For the rendering part, we can allow `PolymorphicContent` to decide which compon
 
 Now, whenever you add a new concrete type, all you need to do, besides creating a new component, is to add the component to the `componentLookup`. Isn’t it good enough?
 
-No, it still violates the Open-Closed Principle as you must modify the existing code and ensure the Component has the same name as your concrete type.  Let’s see how we can resolve it.
+No, it still violates the Open-Closed Principle as you must modify the existing code, and ensure the Component has the same name as your concrete type.  Let’s see how we can resolve it.
 
 ### Ultimate Polymorphism
 
