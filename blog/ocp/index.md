@@ -85,10 +85,10 @@ model Post {
 }
 ```
 
-> The bottom part of is the acess control policy, with which it could direclty generate the secured type-safe front-end hooks.
+> The bottom part is the access control policy, with which it could directly generate the secured type-safe front-end hooks.
 > 
 
-Unfortunately [Prisma hasn’t supported polymorphism yet.](https://github.com/prisma/prisma/issues/1644) As such, you can't use inheritance to model the entity in the same way as in your programming language, as depicted in the above class diagram. The good news is that we could intimate it using table inheritance to imitate it.
+Unfortunately [Prisma hasn’t supported polymorphism yet.](https://github.com/prisma/prisma/issues/1644) As such, you can't use inheritance to model the entity in the same way as in your programming language, as depicted in the above class diagram. The good news is that we could imitate it using table inheritance.
 
 ### Table Inheritance
 
@@ -151,7 +151,7 @@ model Content {
 }
 ```
 
-Thanks to the table inheritance, we don’t have duplicate all the common fields that has been moved into the `Content` model.   Having said that, you can still see some repetitive thing need to be done for every new concrete type:
+Thanks to the table inheritance, we don’t have to duplicate all the common fields that have been moved into the `Content` model.   Having said that, you can still see some repetitive thing need to be done for every new concrete type:
 
 - ***Need to add the `content` relation field for each new type.***
 - ***Need to add the reversed relation field in `Content` model.***
