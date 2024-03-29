@@ -344,12 +344,9 @@ model Image extends Content {
 
 Let's review the pain-point 1 we had using the new approach.
 
-- ***~~Need to add the `content` relation field for each new type.~~***
-    - Resolved
-- ***~~Need to add the reversed relation field in `Content` model.~~***
-    - Resolved
-- ***~~Has to define the same access policy rule for each concrete type.~~***
-    - Resovled
+- ~~Need to add the `content` relation field for each new type.~~
+- ~~Need to add the reversed relation field in `Content` model.~~
+- ~~Has to define the same access policy rule for each concrete type.~~
 
 <aside>
 ✅ pain-point 1 is resolved.
