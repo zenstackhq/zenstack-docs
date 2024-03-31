@@ -3,7 +3,7 @@ description: Using ZenStack with Prisma Client Extensions.
 sidebar_position: 11
 ---
 
-# Using with Prisma Client Extensions
+# Using With Prisma Client Extensions
 
 [Prisma Client Extension](https://www.prisma.io/docs/orm/prisma-client/client-extensions) is a mechanism for extending the interface and functionality of Prisma Client. This guide introduces two ways of using ZenStack with client extensions and their implications.
 
