@@ -22,7 +22,7 @@ model Post {
 
 ## Enhancing a Prisma Client with extensions installed
 
-This should be the most common way of using ZenStack with client extensions. You install client extensions to  the global `PrismaClient` instance when the application starts and then call `enhance` with the extended client on a per-request basis. It will generally work as you would intuitively expect.
+This should be the most common way of using ZenStack with client extensions. You install client extensions to the global `PrismaClient` instance when the application starts and then call `enhance` with the extended client on a per-request basis. It will generally work as you would intuitively expect.
 
 Let's look at a few examples.
 
@@ -67,6 +67,28 @@ const posts = await enhanced.post.findMany();
 The `findMany` call returns only published posts. The printed log will demonstrate that the `args` is injected by ZenStack to include access policy filters.
 
 You can also override mutation methods and it generally works. However, it must be noted that ZenStack enforces mutation policies before or after the mutation is executed (in the case of "after", a transaction is used to roll back if the policy fails), depending on the access policies and the mutation input. This means that if you alter the mutation args in a client extension to make it conform to the access policy, it may not work because ZenStack intercepts the mutation call first, and may decide to reject it based on the original args.
+
+### 3. Computed fields
+
+```ts
+const extendedPrisma = prisma.$extends({
+  result: {
+    post: {
+      myTitle: {
+        needs: { title: true },
+        compute(post) {
+          return 'MyTitle: ' + post.title;
+        },
+      },
+    },
+  },
+});
+
+const enhanced = enhance(extendedPrisma);
+const post = await enhanced.post.findFirst();
+```
+
+Computed fields will work as expected. ZenStack enhancement works transparently with it.
 
 ## Installing extensions to an enhanced Prisma Client
 
