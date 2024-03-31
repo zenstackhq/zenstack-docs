@@ -21,7 +21,7 @@ It can be created and used as the following:
 
 ```ts title='/src/pages/api/model/[...path].ts'
 import { NextRequestHandler } from '@zenstackhq/server/next';
-import RPCApiHandler from '@zenstackhq/server/api/rpc';
+import { RPCApiHandler } from '@zenstackhq/server/api';
 import { getPrisma } from '../../lib/db';
 
 export default NextRequestHandler({ 
@@ -35,11 +35,11 @@ export default NextRequestHandler({
 <TabItem value="sveltekit" label="SvelteKit">
 
 ```ts title='/src/hooks.server.ts'
-import zenstack from '@zenstackhq/server/sveltekit';
-import RPCApiHandler from '@zenstackhq/server/api/rpc';
+import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
+import { RPCApiHandler } from '@zenstackhq/server/api';
 import { getPrisma } from './lib/db';
 
-export const handle = zenstack.SvelteKitHandler({
+export const handle = SvelteKitHandler({
     prefix: '/api/model',
     handler: RPCApiHandler(), // you can also omit it since `RPCApiHandler` is the default
     getPrisma
@@ -50,8 +50,15 @@ export const handle = zenstack.SvelteKitHandler({
 
 <TabItem value="nuxt" label="Nuxt">
 
-```
-🚧 Coming soon
+```ts title='/server/api/model/[...].ts'
+import { createEventHandler } from '@zenstackhq/server/nuxt';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getPrisma } from './lib/db';
+
+export default createEventHandler({
+    handler: RPCApiHandler(), // you can also omit it since `RPCApiHandler` is the default
+    getPrisma
+});
 ```
 
 </TabItem>

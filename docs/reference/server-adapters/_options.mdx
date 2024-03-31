@@ -34,7 +34,7 @@ import CodeBlock from '@theme/CodeBlock';
         The RPC-style handler can be created like:
 
         ```ts
-        import RPCApiHandler from '@zenstackhq/server/api/rpc';
+        import { RPCApiHandler } from '@zenstackhq/server/api';
         const handler = RPCApiHandler();
         ```
 
@@ -47,7 +47,7 @@ import CodeBlock from '@theme/CodeBlock';
         The RESTful-style handler can be created like:
 
         ```ts
-        import RestApiHandler from '@zenstackhq/server/api/rest';
+        import { RestApiHandler } from '@zenstackhq/server/api';
         const handler = RestApiHandler({ endpoint: 'http://myhost/api' });
         ```
 

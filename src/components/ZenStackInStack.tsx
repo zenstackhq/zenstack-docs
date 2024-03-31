@@ -77,7 +77,7 @@ export default function ZenStackInStack(): JSX.Element {
 import { prisma } from 'server/db';
 import { enhance } from '@zenstackhq/runtime';
 import { NextRequestHandler } from '@zenstackhq/server/next';
-import RestApiHandler from '@zenstackhq/server/api/rest';
+import { RestApiHandler } from '@zenstackhq/server/api';
 
 export default NextRequestHandler({
     getPrisma: (req, res) => enhance(prisma, { user: getSessionUser(req, res) }),
@@ -97,7 +97,7 @@ export default NextRequestHandler({
 import { prisma } from '~/server/db';
 import { enhance } from '@zenstackhq/runtime';
 import { createEventHandler } from '@zenstackhq/server/nuxt';
-import RestApiHandler from '@zenstackhq/server/api/rest';
+import { RestApiHandler } from '@zenstackhq/server/api';
 
 export default createEventHandler({
     getPrisma: (event) => enhance(prisma, { user: getSessionUser(event) }),
@@ -117,7 +117,7 @@ export default createEventHandler({
 import { prisma } from '$/lib/db';
 import { enhance } from '@zenstackhq/runtime';
 import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
-import RestApiHandler from '@zenstackhq/server/api/rpc';
+import { RestApiHandler } from '@zenstackhq/server/api/rpc';
 
 export const handle = SvelteKitHandler({
     prefix: '/api/model',
@@ -138,7 +138,7 @@ export const handle = SvelteKitHandler({
 import { prisma } from './db';
 import { enhance } from '@zenstackhq/runtime';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
-import RestApiHandler from '@zenstackhq/server/api/rpc';
+import { RestApiHandler } from '@zenstackhq/server/api';
 
 app.use(
     '/api/model',
@@ -161,7 +161,7 @@ app.use(
 import { prisma } from './db';
 import { enhance } from '@zenstackhq/runtime';
 import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
-import RestApiHandler from '@zenstackhq/server/api/rpc';
+import { RestApiHandler } from '@zenstackhq/server/api';
 
 server.register(ZenStackFastifyPlugin, {
     prefix: '/api/model',
