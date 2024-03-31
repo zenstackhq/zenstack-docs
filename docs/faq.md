@@ -71,27 +71,4 @@ Next.js 13's new bundler has compatibility issues with `@zenstackhq/runtime` pac
 
 ### Does ZenStack work with Prisma Client Extensions?
 
-Yes, it does. You can call `enhance` on a Prisma Client with extensions installed. Inside the client extension, the PrismaClient instance used will be the enhanced one with access policy enforcement.
-
-For example, for the code below:
-
-```ts
-const prisma = new PrismaClient().$extends({
-    model: {
-        $allModels: {
-            async exists<T>(
-                this: T,
-                where: Prisma.Args<T, 'findFirst'>['where']
-            ): Promise<boolean> {
-                const context = Prisma.getExtensionContext(this);
-                const result = await (context as any).findFirst({ where });
-                return result !== null;
-            },
-        },
-    },
-});
-
-const db = enhance(prisma, { ... });
-```
-
-`await db.post.exists()` will return `false` if no `Post` item is readable to the current user.
+The short answer is it works in most cases. Please refer to [this guide](./guides/client-extensions) for more details.
