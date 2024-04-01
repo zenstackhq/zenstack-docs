@@ -135,7 +135,7 @@ If you use PostgreSQL and are proficient with using its row-level security featu
 
 Another strategy is to model access control declaratively and enforce it in the application layer. [ZenStack](https://zenstack.dev/)(built above Prisma ORM) and [Hasura](https://hasura.io/) are good examples of this approach. The following code shows how access policies are defined with ZenStack and how a secured CRUD API can be derived automatically.
 
-```ts
+```zmodel
 model User {
     id Int @id() @default(autoincrement())
     email String @unique()
