@@ -133,7 +133,7 @@ A more sensible approach is to let the database schema drive the entire thing si
 
 If you use PostgreSQL and are proficient with using its row-level security feature, you can choose from several tools/services built above RLS, including [Supabase](https://supabase.com), [PostgREST](https://postgrest.org/), and [PostGraphile](https://www.graphile.org/postgraphile/). They all provide a way to expose database CRUD as a web API, assuming you've configured the RLS rules to properly secure the access.
 
-Another strategy is to model access control inside the database schema, and enforce it in the application layer. [ZenStack](https://zenstack.dev/) is a good example of this approach. The following code shows what the schema looks like and how a secured CRUD API can be derived automatically.
+Another strategy is to model access control declaratively and enforce it in the application layer. [ZenStack](https://zenstack.dev/)(built above Prisma ORM) and [Hasura](https://hasura.io/) are good examples of this approach. The following code shows how access policies are defined with ZenStack and how a secured CRUD API can be derived automatically.
 
 ```ts
 model User {
@@ -171,6 +171,7 @@ import express from 'express';
 const prisma = new PrismaClient();
 const app = express();
 
+// serve CRUD API at "/api/model"
 app.use(
     '/api/model',
     ZenStackMiddleware({
