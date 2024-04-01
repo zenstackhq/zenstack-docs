@@ -55,7 +55,7 @@ If we understand API as something that serves data to the client, SSR data loade
 
 ## React Server Component
 
-SSR is helpful but it's coarse-grained at the page level. React Server Component (RSC) took a step further by pushing such implicit APIs to the component level. Here's an example using Next.js's app router:
+SSR is helpful, but it's coarse-grained at the page level. React Server Component (RSC) took a step further by pushing such implicit APIs to the component level. Here's an example using Next.js's app router:
 
 ```tsx
 export function ServerComponent() {
@@ -69,11 +69,11 @@ export function ServerComponent() {
 }
 ```
 
-RSC is a complex topic with many detailed differences from SSR. For example its code is guaranteed to run only on the server side, and, as a consequence, it sends its rendering result to the client instead of JSON data. However, conceptually, it's also an implicit kind of API that serves data to the client. I find such a mental model easier to understand, too.
+RSC is a complex topic with many detailed differences from SSR. For example, its code is guaranteed to run only on the server side, and, as a consequence, it sends its rendering result to the client instead of JSON data. However, conceptually, it's also an implicit kind of API that serves data to the client. I find such a mental model easier to understand, too.
 
 ## Functions as API
 
-I'm talking about RPC here. RPC is an ancient technology, almost as old as computer networking. If you had done any [DCOM](https://en.wikipedia.org/wiki/Distributed_Component_Object_Model) programming on Windows I bet you hate how awkward it was. 
+I'm talking about RPC here. RPC is an ancient technology, almost as old as computer networking. If you had done any [DCOM](https://en.wikipedia.org/wiki/Distributed_Component_Object_Model) programming on Windows, I bet you hate how awkward it was. 
 
 Surprisingly, thanks to the power of TypeScript, new Node.js RPC frameworks like [tRPC](https://trpc.io) and [ts-rest](https://ts-rest.com/) now provide extremely pleasant and snappy developer experiences. 
 
@@ -129,7 +129,7 @@ As you can see, the non-business-logic boilerplate has been reduced to a minimum
 
 As much as we feel ashamed to admit it, most web apps are CRUD apps. Simple as it may sound, many CRUD API implementations are bloated. I still remember my typical NestJS GraphQL APIs: a schema, a controller, a resolver, a DTO, a database repository, ... so much work for so little fun, and you can sense how much duplication there is.
 
-A more sensible approach is to let the database schema drive the entire thing since CRUD is all about the database anyway. Mapping a database schema into a web API is not difficult, but the challenge is how to secure it. There are two different strategies to it.
+A more sensible approach is to let the database schema drive the entire thing, since CRUD is all about the database anyway. Mapping a database schema into a web API is not difficult, but the challenge is how to secure it. There are two different strategies to it.
 
 If you use PostgreSQL and are proficient with using its row-level security feature, you can choose from several tools/services built above RLS, including [Supabase](https://supabase.com), [PostgREST](https://postgrest.org/), and [PostGraphile](https://www.graphile.org/postgraphile/). They all provide a way to expose database CRUD as a web API, assuming you've configured the RLS rules to properly secure the access.
 
