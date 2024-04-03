@@ -17,7 +17,7 @@ export default function GiscusComponent() {
                         fontStyle: 'italic',
                     }}
                 >
-                    Dont Spam
+                    Don't Spam
                 </p>
             </span>
             <hr />
