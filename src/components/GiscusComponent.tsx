@@ -32,7 +32,7 @@ export default function GiscusComponent() {
                 }}
             >
                 <Giscus
-                    repo="zenstachhq/zenstack-docs"
+                    repo="zenstackhq/zenstack-docs"
                     repoId="R_kgDOIvA9Bg"
                     category="Comments"
                     categoryId="DIC_kwDOIvA9Bs4Cego9" // id of "Comments"
