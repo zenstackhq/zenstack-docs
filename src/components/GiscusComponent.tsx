@@ -32,10 +32,10 @@ export default function GiscusComponent() {
                 }}
             >
                 <Giscus
-                    repo="Eliav2/zenstack-docs"
-                    repoId="R_kgDOLao3kw"
+                    repo="zenstachhq/zenstack-docs"
+                    repoId="R_kgDOIvA9Bg"
                     category="Comments"
-                    categoryId="DIC_kwDOLao3k84Ceb6H" // id of "Comments"
+                    categoryId="DIC_kwDOIvA9Bs4Cego9" // id of "Comments"
                     mapping="pathname" // Important! To map comments to URL
                     term="Welcome zenstack site comments!"
                     strict="0"
