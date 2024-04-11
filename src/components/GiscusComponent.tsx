@@ -28,10 +28,11 @@ export default function GiscusComponent() {
             <div
                 style={{
                     padding: 2,
-                    backgroundColor: colorMode === 'dark' ? '#1e1e1e' : 'rgb(255, 255, 255)',
+                    backgroundColor: colorMode === 'dark' ? '#1B1B1D' : 'rgb(255, 255, 255)',
                 }}
             >
                 <Giscus
+                    key={colorMode} // This is important to force re-mounting on theme change
                     repo="zenstackhq/zenstack-docs"
                     repoId="R_kgDOIvA9Bg"
                     category="Comments"
