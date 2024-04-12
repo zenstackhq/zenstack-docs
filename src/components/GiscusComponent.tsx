@@ -25,14 +25,9 @@ export default function GiscusComponent() {
                 You can edit/delete your comments by going directly to the discussion, clicking on the 'comments' link
                 below
             </div>
-            <div
-                style={{
-                    padding: 2,
-                    backgroundColor: colorMode === 'dark' ? '#1B1B1D' : 'rgb(255, 255, 255)',
-                }}
-            >
+            <div style={{ padding: 2 }}>
                 <Giscus
-                    key={colorMode} // This is important to force re-mounting on theme change
+                    key={colorMode} // This is important to force re-mounting on theme change(bug in giscus)
                     repo="zenstackhq/zenstack-docs"
                     repoId="R_kgDOIvA9Bg"
                     category="Comments"
