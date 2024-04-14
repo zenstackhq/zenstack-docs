@@ -11,7 +11,7 @@ toc_max_heading_level: 3
 
 **ZModel**, the modeling DSL of ZenStack, is the main concept you'll deal with when using this toolkit. The ZModel syntax is a superset of [Prisma Schema](https://www.prisma.io/docs/concepts/components/prisma-schema). Therefore, every valid Prisma schema is a valid ZModel.
 
-:::tip
+:::info
 
 We made that choice to extend the Prisma schema for several reasons:
 
@@ -260,7 +260,7 @@ Models represent the business entities of your application. A model inherits all
 
 A model must include a field marked with `@id` attribute. The `id` field serves as a unique identifier for a model entity and is mapped to the database table's primary key.
 
-See [here](/docs/reference/zmodel-language#attribute) for more details about attributes.
+See [here](#attribute) for more details about attributes.
 
 ### Example
 
@@ -1180,7 +1180,7 @@ A relation field referencing its own model is called "self-relation". ZModel's r
 
 ### Referential action
 
-When defining a relation, you can specify what happens when one side of a relation is updated or deleted. See [Referential action](/docs/reference/zmodel-language#referential-action) for details.
+When defining a relation, you can specify what happens when one side of a relation is updated or deleted. See [Referential action](#referential-action) for details.
 
 ## Access policy
 
@@ -1234,7 +1234,7 @@ The signatures of the attributes are:
     | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
     | operation | Comma separated list of operations to control, including `"read"` and `"update"`. Pass` "all"` as an abbreviation for including all operations.                          |         |
     | condition | Boolean expression indicating if the operations should be allowed                                                                                                        |         |
-    | override  | Boolean indicating if the field-level policy should override model-level ones. See [here](/docs/the-complete-guide/part1/access-policy/field-level#overriding-model-level-policies) for more details. | false   |
+    | override  | Boolean indicating if the field-level policy should override model-level ones. See [here](../the-complete-guide/part1/access-policy/field-level#overriding-model-level-policies) for more details. | false   |
 
 -   `@deny`
 
@@ -1495,7 +1495,7 @@ model User {
 
 Data validation is used for attaching constraints to field values. Unlike access policies, field validation rules cannot access the current user with the `auth()` function and are only checked for 'create' and 'update' operations. The main purpose of field validation is to ensure data integrity and consistency, not for access control.
 
-The [`@core/zod`](/docs/reference/plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
+The [`@core/zod`](./plugins/zod) plugin recognizes the validation attributes and includes them into the generated Zod schemas.
 
 ### Field-level validation attributes
 

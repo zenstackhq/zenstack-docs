@@ -5,7 +5,7 @@ sidebar_label: Sample Catalog
 
 # A Catalog of Sample Projects
 
-The ZenStack team maintains the following two main series of sample projects:
+The ZenStack team maintains the following three series of sample projects.
 
 - **Schema Samples**
 
@@ -13,11 +13,13 @@ The ZenStack team maintains the following two main series of sample projects:
 
 - **Multi-Tenant Todo App**
 
-    This series demonstrates a complete implementation of a multi-tenant, SaaS-like application with a relatively complex authorization model. It is also the sample we used throughout [The Complete Guide](/docs/the-complete-guide/).
+    This series demonstrates a complete implementation of a multi-tenant, SaaS-like application with a relatively complex authorization model. It is also the sample we used throughout [The Complete Guide](./the-complete-guide/).
 
 - **Simple Blog App**
 
-    This series is for those who want to quickly understand the structure of a project using ZenStack, without the burden of comprehending a complex application. These samples are used in the [Quick Start](/docs/category/quick-start) guides.
+    This series is for those who want to quickly understand the structure of a project using ZenStack, without the burden of comprehending a complex application. These samples are used in the [Quick Start](./category/quick-start) guides.
+
+We also actively collect and share community-contributed samples.
 
 ### Schema Samples
 
@@ -49,3 +51,11 @@ You can use [this blog post](https://zenstack.dev/blog/model-authz) as an introd
 -   [Remix](https://github.com/zenstackhq/docs-tutorial-remix)
 -   [Express Backend API](https://github.com/zenstackhq/docs-tutorial-express)
 -   [Clerk Integration](https://github.com/zenstackhq/docs-tutorial-clerk)
+
+### Community Samples
+
+- [Warehouse Management System](https://github.com/Eliav2/zenstack-warehouse-demo) by [Eliav2](https://github.com/Eliav2)
+
+    - Decoupled frontend and backend with monorepo
+    - Backend: ZenStack + Express + GitHub SSO
+    - Frontend: React + TanStack-Query + TanStack-Router + MUI5 + Vite

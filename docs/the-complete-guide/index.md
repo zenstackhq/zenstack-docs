@@ -45,7 +45,7 @@ The extension to Prisma ORM is the foundation of ZenStack and enables all other 
 
 In this part of the guide, we'll finish building the schema of the sample project - including the data models, access policies, and data validation rules. There's no API or UI yet, but the business logic will be mostly complete.
 
-[Go to Part I](/docs/the-complete-guide/part1)
+[Go to Part I](./part1)
 
 ### Part II: Plugin System
 
@@ -53,7 +53,7 @@ ZenStack adopts a plugin-based architecture for great extensibility. The plugin 
 
 In this part of the guide, you'll see how to use plugins to achieve various goals, and we'll also build a simple plugin for our Todo app from scratch.
 
-[Go to Part II](/docs/the-complete-guide/part2)
+[Go to Part II](./part2)
 
 ### Part III: Automatic CRUD API
 
@@ -63,7 +63,7 @@ Since ZenStack already secures data access at the ORM layer, as we learned from 
 
 In this part of the guide, we'll add a CRUD API layer to our Todo app and turn it into a fully functional backend service.
 
-[Go to Part III](/docs/the-complete-guide/part3)
+[Go to Part III](./part3)
 
 ### Part IV: Frontend Data Query
 
@@ -73,4 +73,4 @@ ZenStack can generate hooks code that talks to the automatic CRUD API introduced
 
 In this part of the guide, we'll use the generated data query hooks to build a frontend UI for our Todo app. We'll finally complete our full-stack Todo application!
 
-[Go to Part IV](/docs/the-complete-guide/part4)
+[Go to Part IV](./part4)

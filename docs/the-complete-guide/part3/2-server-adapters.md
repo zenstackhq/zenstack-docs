@@ -10,11 +10,12 @@ ZenStack is a toolkit but not a framework. It doesn't come with its own web serv
 
 Server adapters are framework-specific. ZenStack ships a `@zenstackhq/server` package that contains adapters for the most popular backend and full-stack frameworks:
 
-- [Express](/docs/reference/server-adapters/express)
-- [Fastify](/docs/reference/server-adapters/fastify)
-- [Next.js](/docs/reference/server-adapters/next)
-- [Nuxt](/docs/reference/server-adapters/nuxt)
-- [SvelteKit](/docs/reference/server-adapters/sveltekit)
+- [Express](../../reference/server-adapters/express)
+- [Fastify](../../reference/server-adapters/fastify)
+- [NestJS](../../reference/server-adapters/nestjs)
+- [Next.js](../../reference/server-adapters/next)
+- [Nuxt](../../reference/server-adapters/nuxt)
+- [SvelteKit](../../reference/server-adapters/sveltekit)
   
 Check out their respective documentation to learn more details.
 
@@ -171,7 +172,7 @@ We've configured the server adapter to use a vanilla Prisma Client for now for q
 
 #### 4. Making access policies work
 
-To make access policies work, we need to create an enhanced Prisma Client, and to do that, we need to be able to get the current user from the request. Since we haven't implemented authentication yet, we'll use a special `x-user-id` header to simulate and pass the requesting user's ID. It's definitely not a secure implementation, but it's sufficient for demonstration. We'll hook up a real authentication system in [Part IV](/docs/the-complete-guide/part4/).
+To make access policies work, we need to create an enhanced Prisma Client, and to do that, we need to be able to get the current user from the request. Since we haven't implemented authentication yet, we'll use a special `x-user-id` header to simulate and pass the requesting user's ID. It's definitely not a secure implementation, but it's sufficient for demonstration. We'll hook up a real authentication system in [Part IV](../part4/).
 
 Replace the content of `main.ts` with the following code:
 
@@ -234,7 +235,7 @@ curl "http://localhost:3000/api/rpc/list/findFirst" -H "x-user-id: 1"
 }
 ```
 
-You can try other operations with different user identities. The service's behavior should be consistent with what we've seen in the REPL with the enhanced Prisma in [Part I](/docs/the-complete-guide/part1/access-policy/current-user#add-user-based-access-control).
+You can try other operations with different user identities. The service's behavior should be consistent with what we've seen in the REPL with the enhanced Prisma in [Part I](../part1/access-policy/current-user#add-user-based-access-control).
 
 #### 5. Trying Out The RESTful API Flavor
 

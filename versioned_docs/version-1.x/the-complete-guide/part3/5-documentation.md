@@ -6,7 +6,7 @@ sidebar_label: 5. API Documentation
 
 An API is only complete when documented. Similar to the API itself, the documentation can also be derived from the ZModel.
 
-In [Part II](/docs/the-complete-guide/part2/) of the guide, we've learned how to use plugins. ZenStack ships the [@zenstackhq/openapi](/docs/reference/plugins/openapi) plugin to generate [OpenAPI](https://www.openapis.org/) specs from the ZModel schema. Like the API handlers, the openapi plugin also supports two flavors: "rpc" and "rest".
+In [Part II](../part2/) of the guide, we've learned how to use plugins. ZenStack ships the [@zenstackhq/openapi](../../reference/plugins/openapi) plugin to generate [OpenAPI](https://www.openapis.org/) specs from the ZModel schema. Like the API handlers, the openapi plugin also supports two flavors: "rpc" and "rest".
 
 Once the documentation is generated, it's easy to render it using tools like [Swagger UI](https://swagger.io/tools/swagger-ui/) and [Redocly](https://redocly.com/).
 

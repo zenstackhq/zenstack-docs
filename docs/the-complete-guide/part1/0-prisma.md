@@ -5,7 +5,7 @@ sidebar_label: 0. Prisma Crash Course
 # Prisma Crash Course
 
 :::info
-Feel free to skip to the [next chapter](/docs/the-complete-guide/part1/zmodel) if you are already familiar with Prisma.
+Feel free to skip to the [next chapter](./zmodel) if you are already familiar with Prisma.
 :::
 
 ZenStack is built above Prisma ORM, so it'll be important to have a basic understanding of it.

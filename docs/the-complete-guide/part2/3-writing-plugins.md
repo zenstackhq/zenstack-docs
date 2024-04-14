@@ -8,17 +8,17 @@ The ZModel schema is the single source of truth for your data and access control
 
 ### Structure of a Plugin
 
-A plugin is a Node.js module that has two exports:
+A plugin is a Node.js module that has the following exports:
 
-1. A named export `name` that specifies the name of the plugin used for logging and error reporting.
-2. A default function export containing the plugin logic.
+1. [Required] A named export `name` that specifies the name of the plugin used for logging and error reporting.
+2. [Optional] A named export `description` that contains a short human-readable description of the plugin.
+3. [Required] A default function export containing the plugin logic.
 
 Here's what a bare minimum plugin looks like:
 
 ```ts
-import type { DMMF } from '@prisma/generator-helper';
-import { type PluginOptions } from '@zenstackhq/sdk';
-import { type Model } from '@zenstackhq/sdk/ast';
+import type { DMMF, PluginOptions } from '@zenstackhq/sdk';
+import type { Model } from '@zenstackhq/sdk/ast';
 
 export const name = 'My Plugin';
 
@@ -289,12 +289,11 @@ npx zenstack generate
 You should see the following output and the `schema.md` file generated in the current directory:
 
 ```
-⌛️ ZenStack CLI v1.3.1, running plugins
-✔ Running plugin Prisma
-✔ Running plugin Model Metadata
-✔ Running plugin Access Policy
-✔ Running plugin Zod
-✔ Running plugin Markdown
+⌛️ ZenStack CLI vx.y.z, running plugins
+✔ Generating Prisma schema
+✔ Generating PrismaClient enhancer
+✔ Generating Zod schemas
+✔ Running plugin markdown
 
 👻 All plugins completed successfully!
 Don't forget to restart your dev server to let the changes take effect.

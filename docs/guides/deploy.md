@@ -27,10 +27,11 @@ There might be cases where you don't want to run the `zenstack` CLI during the d
 npx zenstack generate --output ./zenstack
 ```
 
-At the runtime, when calling `enhance()`, you need to pass in an extra `loadPath` option to point to the directory where the supporting modules are located:
+
+Then, instead of importing the `enhance` API from `@zenstackhq/runtime`, import it directly from the output location:
 
 ```ts
-const db = enhance(prisma, { user }, { loadPath: './zenstack' })
+import { enhance } from './zenstack/enhance';
 ```
 
 In this way, all information ZenStack needs at runtime is already in the source tree, and you don't need to run `zenstack generate` during deployment.

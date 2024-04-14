@@ -165,7 +165,6 @@ import { useCreateList, useFindManyList, useFindUniqueSpace } from '~/lib/hooks'
 
 export default function SpaceHome() {
     const { slug } = useParams<{ slug: string }>();
-    console.log('slug', slug);
 
     const { data: session } = useSession();
 

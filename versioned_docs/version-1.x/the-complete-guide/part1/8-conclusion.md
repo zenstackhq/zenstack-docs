@@ -17,5 +17,5 @@ As you have seen, the ZModel language provides great flexibility in modeling the
 The completed sample project up to the end of this part can be found in the "part1" branch of the [the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part1) repo. You can clone it and check out to that branch with the following command:
 
 ```bash
-git clone --branch part1 https://github.com/zenstackhq/the-complete-guide-sample.git my-todo-app
+git clone --branch v1-part1 https://github.com/zenstackhq/the-complete-guide-sample.git my-todo-app
 ```

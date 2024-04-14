@@ -44,7 +44,7 @@ The reason is that, with an enhanced client, all CRUD operations are denied by d
 Enforcing access policies causes an enhanced Prisma Client to behave differently from the original:
 
 - Read operations can return fewer rows than with a raw Prisma Client.
-- Write operations can fail with an error if policies are violated. See [Error Handling](/docs/reference/error-handling) for more details.
+- Write operations can fail with an error if policies are violated. See [Error Handling](../../../reference/error-handling) for more details.
 
 ### ZenStack Access Policy vs Postgres Row-Level Security
 

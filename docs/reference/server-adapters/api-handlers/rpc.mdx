@@ -12,22 +12,31 @@ import DataTypeSerialization from './_data_type_serialization.md';
 
 ## Introduction
 
-The RPC-style API handler exposes CRUD endpoints that fully mirror [PrismaClient's query API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries). Consuming the APIs feels like making RPC calls to a PrismaClient then. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](/docs/category/server-adapters) which handles the request and response API for a specific framework.
+The RPC-style API handler exposes CRUD endpoints that fully mirror [PrismaClient's query API](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries). Consuming the APIs feels like making RPC calls to a PrismaClient then. The API handler is not meant to be used directly; instead, you should use it together with a [server adapter](../../../category/server-adapters) which handles the request and response API for a specific framework.
 
 It can be created and used as the following:
 
 <Tabs>
 <TabItem value="next" label="Next.js">
 
-```ts title='/src/pages/api/model/[...path].ts'
+```ts title='/src/app/api/model/[...path]/route.ts'
 import { NextRequestHandler } from '@zenstackhq/server/next';
-import { RPCApiHandler } from '@zenstackhq/server/api';
-import { getPrisma } from '../../lib/db';
+import { RestApiHandler } from '@zenstackhq/server/api';
+import { getPrisma } from '~/lib/db';
 
-export default NextRequestHandler({ 
-    getPrisma, 
+const handler = NextRequestHandler({
+    getPrisma,
+    useAppDir: true,
     handler: RPCApiHandler() // you can also omit it since `RPCApiHandler` is the default
 });
+
+export {
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as PATCH,
+  handler as DELETE,
+};
 ```
 
 </TabItem>
@@ -236,6 +245,7 @@ The HTTP status code used by the endpoints follows the following rules:
 - `create` and `createMany` use `201` for success. Other endpoints use `200`.
 - `403` is used for to indicate the request is denied due to lack of permissions, usually caused by access policy violation.
 - `400` is used for invalid requests, e.g., malformed request body.
+- `422` is used for data validation errors.
 - `500` is used for other unexpected errors.
 
 ### Error response format

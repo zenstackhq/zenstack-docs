@@ -52,7 +52,7 @@ A few extra notes about enhanced Prisma Client:
 
 - **Using Prisma Client Extensions with enhanced client**
   
-  Enhanced Prisma Client is a transparent proxy, so it has the same API as the original Prisma Client. You can enhance a Prisma Client with Client Extensions installed or install Client Extensions on an enhanced Prisma Client - both work.
+  Enhanced Prisma Client can work with [Prisma Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions) with some caveats. Please refer to [Using With Prisma Client Extensions](../../guides/client-extensions) for more details.
 
 - **Using the original client and an enhanced one together**
   

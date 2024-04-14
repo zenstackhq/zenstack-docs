@@ -99,6 +99,24 @@ model Video extends Content {
 ZenStack v1 already supports [inheriting from abstract models](./multiple-schema#abstract-model-inheritance). Abstract inheritance merely copies over the fields and attributes from the base model to the child. It doesn't really provide a polymorphic hierarchy.
 :::
 
+:::info Discriminator field
+
+When a concrete model entity is created, the discriminator field will be automatically set to the model name. You can also use en enum for the discriminator field, and in that case, the enum fields must match the concrete model names.
+
+```zmodel
+enum ContentType {
+  Post
+  Video
+}
+
+model Content {
+  ...
+  @@delegate(contentType)
+}
+```
+
+:::
+
 #### Querying
 
 To use polymorphic relations, you should create an enhanced `PrismaClient` with the "delegate" enhancement kind enabled - either by a simple `enhance` call with all kinds enabled:

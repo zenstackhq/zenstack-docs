@@ -59,7 +59,7 @@ The `zenstack` CLI provides a REPL environment for you to execute queries with t
 
 <iframe width="800" height="450" src="https://www.youtube.com/embed/yJr8zZVj-JA?si=kACpOQH57XINBCR7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-Please find more details about the REPL in the [CLI reference](/docs/reference/cli#repl).
+Please find more details about the REPL in the [CLI reference](../reference/cli#repl).
 
 ---
 

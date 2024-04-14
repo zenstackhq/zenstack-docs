@@ -114,3 +114,5 @@ You can split your schema file into multiple files and use `import` statements t
         postId Int
     }
     ```
+
+You can also import schema files from NPM packages by prefixing the import path with a package name (with or without organization scope). See [the docs](../reference/zmodel-language#import) for more details. ZenStack user [TGTGamer](https://github.com/TGTGamer) made [this cool project](https://github.com/Eventiva/Eventiva) demonstrating a component-based organization of a complex schema.

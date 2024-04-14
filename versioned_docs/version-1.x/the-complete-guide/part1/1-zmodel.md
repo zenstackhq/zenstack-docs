@@ -81,7 +81,7 @@ model Comment extends Base {
 
 #### A Better Plugin System
 
-Prisma allows you to write custom generators. However, the generator development API is undocumented and difficult to understand. ZenStack provides a plugin system that enables you to generate custom artifacts with a simple API and object model. In fact, almost all the features of ZenStack itself are implemented as plugins. [Part II](/docs/the-complete-guide/part2) of this guide is dedicated to covering the plugin system.
+Prisma allows you to write custom generators. However, the generator development API is undocumented and difficult to understand. ZenStack provides a plugin system that enables you to generate custom artifacts with a simple API and object model. In fact, almost all the features of ZenStack itself are implemented as plugins. [Part II](../part2) of this guide is dedicated to covering the plugin system.
 
 ### ZModel Structure
 
@@ -147,7 +147,7 @@ plugin trpc {
 }
 ```
 
-[Part II](/docs/the-complete-guide/part2) of this guide will cover the plugin system in detail.
+[Part II](../part2) of this guide will cover the plugin system in detail.
 
 #### Models
 
@@ -173,8 +173,8 @@ model User {
 
 ### IDE Support
 
-ZenStack comes with a [VSCode extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) and a [JetBrains IDE plugin](https://plugins.jetbrains.com/plugin/23397-zenstack-language-tools). You can find more information about IDE support [here](/docs/guides/ide).
+ZenStack comes with a [VSCode extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) and a [JetBrains IDE plugin](https://plugins.jetbrains.com/plugin/23397-zenstack-language-tools). You can find more information about IDE support [here](../../guides/ide).
 
 ### Full Documentation
 
-Check out the [ZModel Language](/docs/reference/zmodel-language) reference documentation for a complete language description.
+Check out the [ZModel Language](../../reference/zmodel-language) reference documentation for a complete language description.

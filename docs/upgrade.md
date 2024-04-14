@@ -10,7 +10,7 @@ sidebar_position: 8
 
 ## What's New
 
-### Polymorphic Relations
+### 1. Polymorphic Relations
 
 Polymorphic relations allows you to model relations over an "abstract interface". This feature is inspired by the following Prisma issues:
 
@@ -19,7 +19,7 @@ Polymorphic relations allows you to model relations over an "abstract interface"
 
 See the [Polymorphic Relations](./guides/polymorphism) recipe for more information.
 
-### Using `auth()` in `@default()`
+### 2. Using `auth()` in `@default()`
 
 You can now use the `auth()` function inside the `@default()` attribute. A very common use case is to automatically assign foreign key field when creating entities with relation with the current user. In ZenStack V1, you needed to explicitly assign foreign key value even though the enhanced `PrismaClient` already implies a current user:
 
@@ -68,7 +68,7 @@ const db = enhance(prisma, { user });
 await db.post.create({ data: { title: 'Post1' } });
 ```
 
-### Fine-grained Optimistic Updates
+### 3. Fine-grained Optimistic Updates
 
 Previously the ZenStack-generated data query hooks (TanStack Query and SWR) support automatic optimistic updates. When a mutation executes, the hooks analyzes what queries are potentially affected and try to compute an optimistically updated piece of data, and use it to update the query cache. This feature is very useful in many cases, but it can't cover all cases. For example, if you create an entity and connect it to a related entity at the same time, the automatic optimistic logic doesn't know how to compute the relation (if it's used in a related query).
 
@@ -86,11 +86,11 @@ See more information [here]:
 
 The callback is invoked for each query cache entry. You can use the return value to control if to use the optimistic data you computed, skip the update, or leave it to the automatic logic.
 
-### Permission Checker API 🚧
+### 4. Edge Runtime Support 🚧
 
 Coming soon.
 
-### Edge Runtime Support 🚧
+### 5. Permission Checker API 🚧
 
 Coming soon.
 

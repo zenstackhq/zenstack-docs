@@ -20,7 +20,7 @@ model User {
 
 Under the hood, ZenStack uses [bcryptjs](https://github.com/dcodeIO/bcrypt.js/tree/master) to generate a hash.
 
-See [here](/docs/reference/zmodel-language#password) for more details about the `@password` attribute.
+See [here](../../reference/zmodel-language#password) for more details about the `@password` attribute.
 
 #### 🛠️ Adding User Password
 

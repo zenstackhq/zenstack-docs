@@ -15,7 +15,7 @@ No, it is not implemented with Postgres RLS. Instead, ZenStack applies access co
 1. Database agnostic: ZenStack works with any database that Prisma supports.
 1. No need to create migrations when changing access control rules.
 1. A significantly simpler syntax for access control rules compared to SQL RLS.
-1. Colocating access control rules with the data model.
+1. Collocating access control rules with the data model.
 
 ### Does using ZenStack introduce more connections to my databases?
 
@@ -23,7 +23,7 @@ No. It's common to create enhanced PrismaClient wrappers per request (for bindin
 
 ### Is ZenStack framework-agnostic?
 
-Yes, ZenStack is framework-agnostic. The core of ZenStack's runtime is a transparent proxy wrapping a PrismaClient, so it can be used in any framework that can run Prisma. ZenStack already provides adapters for popular frameworks like [Next.js](/docs/reference/server-adapters/next) and [Fastify](/docs/reference/server-adapters/fastify), and more are being made. It's also easy to write your own adapters.
+Yes, ZenStack is framework-agnostic. The core of ZenStack's runtime is a transparent proxy wrapping a PrismaClient, so it can be used in any framework that can run Prisma. ZenStack already provides adapters for popular frameworks like [Next.js](./reference/server-adapters/next) and [Fastify](./reference/server-adapters/fastify), and more are being made. It's also easy to write your own adapters.
 
 ### How to use ZenStack in a monorepo setup?
 
@@ -33,8 +33,8 @@ To use ZenStack in a monorepo setup (e.g., pnpm workspace), run `zenstack init` 
 
 The ZModel language is designed to be a superset of Prisma Schema. The major extension that ZModel made to Prisma schema today are:
 
--   [Custom attributes](/docs/reference/zmodel-language#custom-attributes-and-functions)
--   [Plugins](/docs/category/plugins)
+-   [Custom attributes](./reference/zmodel-language#custom-attributes-and-functions)
+-   [Plugins](./category/plugins)
 
 Using a separate DSL gives us the flexibility to add more extensions in the future; however, the goal is to maintain the "superset" positioning, i.e., every valid `schema.prisma` is a valid `schema.zmodel`.
 
@@ -44,7 +44,7 @@ We will continue improving the parity between ZModel and Prisma Schema regarding
 
 ### Does ZenStack require a specific Prisma version?
 
-No. ZenStack references Prisma as a peer dependency and should work with Prisma 4.8.0 and above.
+No. ZenStack references Prisma as a peer dependency and works with Prisma 5.0.0 and above.
 
 ### Does ZenStack work with Prisma migration?
 
@@ -52,22 +52,7 @@ Yes. When you run `zenstack generate` it generates a standard Prisma schema file
 
 ### Are there any other IDE integrations besides VSCode?
 
-Unfortunately for the time being, VSCode is the only officially supported IDE. There have been many asks about JetBrains. ZenStack's language tooling is built with [Langium](https://github.com/langium/langium), and we'll need to wait for the resolution of [this issue](https://github.com/langium/langium/issues/999) to evaluate JetBrains support.
-
-### Why am I getting "Critical dependency: the request of a dependency is an expression" error with Next.js 13 and above?
-
-Next.js 13's new bundler has compatibility issues with `@zenstackhq/runtime` package. We've submitted a [PR](https://github.com/vercel/next.js/pull/54829) to Next.js but it hasn't been accepted yet. For the time being, please add the following settings to your `next.config.js`:
-
-```js
-{
-  ...
-  experimental: {
-    serverComponentsExternalPackages: [
-      "@zenstackhq/runtime"
-    ],
-  }
-}
-```
+Yes, ZenStack has integrations with VSCode and JetBrains IDEs. Please see [here](./guides/ide) for ore details.
 
 ### Does ZenStack work with Prisma Client Extensions?
 

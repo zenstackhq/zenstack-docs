@@ -10,7 +10,7 @@ ZenStack's enhancements to Prisma clients are transparent proxies, so normal err
 -   [Handling exceptions and errors](https://www.prisma.io/docs/concepts/components/prisma-client/handling-exceptions-and-errors)
 -   [Error message reference](https://www.prisma.io/docs/reference/api-reference/error-reference)
 
-The enhanced Prisma client can throw extra errors when an operation is rejected by [access policies](/docs/reference/zmodel-language#access-policy) or its data fails [validation rules](/docs/reference/zmodel-language#data-validation). To keep a consistent programming experience, a `PrismaClientKnownRequestError` is thrown with code [`P2004`](https://www.prisma.io/docs/reference/api-reference/error-reference#p2004) is used in such cases:
+The enhanced Prisma client can throw extra errors when an operation is rejected by [access policies](./zmodel-language#access-policy) or its data fails [validation rules](./zmodel-language#data-validation). To keep a consistent programming experience, a `PrismaClientKnownRequestError` is thrown with code [`P2004`](https://www.prisma.io/docs/reference/api-reference/error-reference#p2004) is used in such cases:
 
 ```ts
 throw new PrismaClientKnownRequestError(message, {
@@ -36,7 +36,7 @@ The error contains a `meta` field providing more information about the error. It
 
     - *DATA_VALIDATION_VIOLATION*
     
-        CRUD failed because of a [data validation](/docs/reference/zmodel-language#data-validation) error.
+        CRUD failed because of a [data validation](./zmodel-language#data-validation) error.
 
 - `zodErrors`
   

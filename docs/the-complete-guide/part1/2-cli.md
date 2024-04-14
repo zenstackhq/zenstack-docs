@@ -10,7 +10,7 @@ import ZenStackInit from '../../_components/_zenstack-init.md';
 
 The `zenstack` CLI is the primary tool for using ZenStack in a project. The CLI is intentionally designed to have similar commands to the `prisma` CLI.
 
-In this chapter, we'll use the CLI to scaffold our Todo sample project. You can find the complete documentation in the [CLI reference guide](/docs/reference/cli).
+In this chapter, we'll use the CLI to scaffold our Todo sample project. You can find the complete documentation in the [CLI reference guide](../../reference/cli).
 
 ### 🛠️ Creating Our Sample Project
 
@@ -143,9 +143,9 @@ You should see output like the following in your terminal:
 
 ```
 ⌛️ ZenStack CLI vx.y.z, running plugins
-✔ Running plugin Prisma
-✔ Running plugin Model Metadata
-✔ Running plugin Access Policy
+✔ Generating Prisma schema
+✔ Generating PrismaClient enhancer
+✔ Generating Zod schemas
 
 👻 All plugins completed successfully!
 Don't forget to restart your dev server to let the changes take effect.
@@ -348,7 +348,7 @@ prisma.space.findFirst({ include: { members: true } })
 }
 ```
 
-The REPL also provides a `db` variable for querying data with access control. We'll get back to it in [chapter 4](/docs/the-complete-guide/part1/access-policy).
+The REPL also provides a `db` variable for querying data with access control. We'll get back to it in [chapter 4](./access-policy).
 
 You can exit the REPL with the `.exit` command.
 
@@ -381,7 +381,7 @@ The ZenStack CLI is not meant for replacing the Prisma CLI. After `zenstack gene
 - Launching Prisma Studio with `prisma studio`
 - ...
 
-The Prisma development workflow that you're already familiar with should work seamlessly with ZenStack. See [here](/docs/guides/dev-workflow) for a detailed explanation of the development workflow.
+The Prisma development workflow that you're already familiar with should work seamlessly with ZenStack. See [here](../../guides/dev-workflow) for a detailed explanation of the development workflow.
 
 <ThemedImage
     alt="ZModel Generation"

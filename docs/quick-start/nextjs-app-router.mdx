@@ -57,24 +57,6 @@ npx zenstack@next init
 
 <InitTips />
 
-Next, add the following configuration to the `next.config.js` file:
-
-```js title='/next.config.js'
-const config = {
-  // highlight-start
-  experimental: {
-    serverComponentsExternalPackages: ["@zenstackhq/runtime"],
-  }
-  // highlight-end
-};
-```
-
-:::info
-
-The extra configuration is needed because the package `@zenstackhq/runtime` is not yet fully compatible with NextJS's server component bundler. We'll resolve this issue in a future release.
-
-:::
-
 ### 3. Preparing the User model for authentication
 
 First, in `schema.zmodel`, make a few changes to the `User` model:

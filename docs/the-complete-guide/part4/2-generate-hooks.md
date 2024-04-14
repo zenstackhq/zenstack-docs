@@ -64,12 +64,11 @@ Now add the plugin to the ZModel schema:
 plugin hooks {
   provider = '@zenstackhq/tanstack-query'
   target = 'react'
-  version = 'v5'
   output = 'src/lib/hooks'
 }
 ```
 
-TanStack Query is a multi-framework library and supports React, Vue, and Svelte. The "target" field specifies the frontend framework to generate hooks for. The "version" field specifies the version of TanStack Query to target. Here, we're using the latest "v5" version.
+TanStack Query is a multi-framework library and supports React, Vue, and Svelte. The "target" field specifies the frontend framework to generate hooks for.
 
 Then, rerun generation and observe that the hooks code is generated in the `src/lib/hooks` directory.
 
@@ -101,7 +100,6 @@ The generated hooks allow you to query and mutate data without worrying about th
       mutate({
         data: { 
           title: 'My List',
-          owner: { connect: { id: userId } },
           todos: {
             create: [
               { name: 'Todo 1' },
