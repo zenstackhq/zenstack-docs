@@ -22,8 +22,8 @@ As its name suggests, we want the project to help bring simplicity, tranquility,
 
 ### What's Next
 
-- The [Quick Start](/docs/category/quick-start) documents guide you through creating a simple app using ZenStack with various frameworks. They are fast-paced and can get you up running in minutes.
-- The [Recipes](/docs/category/recipes) include guides for achieving specific tasks. For example, you may want to learn how to [deploy to production](/docs/guides/deploy).
+- The [Quick Start](../category/quick-start) documents guide you through creating a simple app using ZenStack with various frameworks. They are fast-paced and can get you up running in minutes.
+- The [Recipes](../category/recipes) include guides for achieving specific tasks. For example, you may want to learn how to [deploy to production](../guides/deploy).
 - The best way to get support or send feedback is to join our [Discord server](https://discord.gg/Ykhr738dUe). The community is responsive and helpful.
 - But you're also welcome to create issues and feature requests directly on [GitHub](https://github.com/zenstackhq/zenstack).
 - Finally, don't forget to [⭐️Star Us⭐️](https://github.com/zenstackhq/zenstack). We appreciate it!

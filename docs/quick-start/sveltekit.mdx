@@ -610,15 +610,15 @@ In a real application you can catch the error and render a proper message to the
 
 In this tutorial, we used ZenStack only on the SSR side (loader and actions) of SvelteKit, but its power doesn't stop there. There're two more things worth your attention that enable more advanced scenarios:
 
-- The [`@zenstackhq/server/sveltekit`](/docs/reference/server-adapters/sveltekit) server adapter provides a SvelteKit hooks handler that installs an automatic CRUD API for database operations.
+- The [`@zenstackhq/server/sveltekit`](../reference/server-adapters/sveltekit) server adapter provides a SvelteKit hooks handler that installs an automatic CRUD API for database operations.
 
-- The [`@zenstackhq/tanstack-query`](/docs/reference/plugins/tanstack-query) plugin provides automatic generation of client-side query and mutation hooks for consuming the afore-mentioned CRUD API.
+- The [`@zenstackhq/tanstack-query`](../reference/plugins/tanstack-query) plugin provides automatic generation of client-side query and mutation hooks for consuming the afore-mentioned CRUD API.
 
 These two features combined allow you to build a typical SPA (CSR + API). You can also freely mix and match SSR and CSR as you wish.
 
 If you have trouble following the building process, you can find the final result
 [here](https://github.com/zenstackhq/docs-tutorial-sveltekit). For more details about ZenStack,
-please refer to the [Reference](../category/reference) and [Guides](../category/recipes)
+please refer to the [Reference](../category/reference) and [Recipes](../category/recipes)
 parts of the documentation.
 
 Have fun building cool stuff 🚀!

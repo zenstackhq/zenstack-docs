@@ -16,115 +16,100 @@ This document explains how these extensions work so that you can make a more inf
 
 ## ZModel Language
 
-ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCode extension, using the fantastic language toolkit [Langium](https://langium.org/). The DLS includes a plugin system, allowing a modular and extensible way to generate different artifacts from the schema. The core functionality of the toolkit is supported by the following three core plugins:
+ZenStack implemented the ZModel DSL from scratch, including the CLI and the VSCode extension, using the fantastic language toolkit [Langium](https://langium.org/). The DLS includes a plugin system, allowing a modular and extensible way to generate different artifacts from the schema. The core functionality of the toolkit is supported by the following core plugins:
 
 -   Prisma: `@core/prisma`
 
-    The Prisma plugin generates the Prisma schema and Prisma client from the ZModel schema. The Prisma schema can then be used for common Prisma tasks like `db push`, `migrate dev`, etc.
+    The `@core/prisma` plugin generates the Prisma schema and Prisma client from the ZModel schema. The Prisma schema can then be used for common Prisma tasks like `db push`, `migrate dev`, etc.
 
--   Model-meta: `@core/model-meta`
+-   Enhancer: `@core/enhancer`
 
-    The model-meta plugin generates the model metadata, which provides basic information about models and fields at runtime. The metadata is much more lightweight than the whole ZModel AST and is much cheaper to load.
+    The `@core/enhancer` plugin generates several Javascript modules to support ZenStack's runtime enhancements to Prisma clients. The modules include:
 
-    The default output location is `node_modules/.zenstack/model-meta.ts`.
+    - Model metadata
+    
+        Provides basic information about models and fields at runtime. The metadata is much more lightweight than the whole ZModel AST and is much cheaper to load.
 
--   Policy: `@core/access-policy`
+        The default output location is `node_modules/.zenstack/model-meta.js`.
 
-    The access policy plugin converts access policy rules (expressed with `@@allow` and `@@deny` attributes) into checker functions. The functions take a context object as input and return partial Prisma query objects, which will be injected into Prisma query arguments at runtime. The context object contains the following properties:
+    - Access policies
 
-    -   `user`: the current user, which serves as the return value of [`auth()`](/docs/the-complete-guide/part1/access-policy/current-user) in the policy rules.
-    -   `preValue`: the previous value of an entity before update (for supporting the [`future()`](/docs/the-complete-guide/part1/access-policy/post-update) function in the policy rules).
+        Javascript function representation of access policy rules (expressed with `@@allow` and `@@deny` attributes). The functions take a context object as input and return partial Prisma query objects, which will be injected into Prisma query arguments at runtime. The context object contains the following properties:
 
-    The default output location is `node_modules/.zenstack/policy.ts`.
+        -   `user`: the current user, which serves as the return value of [`auth()`](./access-policy/current-user) in the policy rules.
+        -   `preValue`: the previous value of an entity before update (for supporting the [`future()`](./access-policy/post-update) function in the policy rules).
 
-    For example, for the following `Post` model:
+        The default output location is `node_modules/.zenstack/policy.js`.
 
-    ```zmodel
-    model Post {
-        id        String @id @default(cuid())
-        createdAt DateTime @default(now())
-        updatedAt DateTime @updatedAt
-        title     String
-        published Boolean @default(false)
-        author    User @relation(fields: [authorId], references: [id])
-        authorId  String
+        For example, for the following `Post` model:
 
-        // author has full access
-        @@allow('all', auth() == author)
+        ```zmodel
+        model Post {
+            id        String @id @default(cuid())
+            createdAt DateTime @default(now())
+            updatedAt DateTime @updatedAt
+            title     String
+            published Boolean @default(false)
+            author    User @relation(fields: [authorId], references: [id])
+            authorId  String
 
-        // logged-in users can view published posts
-        @@allow('read', auth() != null && published)
-    }
-    ```
+            // author has full access
+            @@allow('all', auth() == author)
 
-    , the following checker functions are generated for "read" and "update" respectively:
+            // logged-in users can view published posts
+            @@allow('read', auth() != null && published)
+        }
+        ```
 
-    ```ts
-    function Post_read(context: QueryContext) {
-        const user = hasAllFields(context.user, ['id']) ? context.user : null;
-        return {
-            OR: [
-                user == null
-                    ? { OR: [] } // false condition
-                    : {
-                          author: {
-                              is: {
-                                  id: user.id,
+        , the following checker functions are generated for "read" and "update" respectively:
+
+        ```ts
+        function Post_read(context: QueryContext) {
+            const user = hasAllFields(context.user, ['id']) ? context.user : null;
+            return {
+                OR: [
+                    user == null
+                        ? { OR: [] } // false condition
+                        : {
+                              author: {
+                                  is: {
+                                      id: user.id,
+                                  },
                               },
                           },
-                      },
-                {
-                    AND: [
-                        user == null ? { OR: [] } : { AND: [] },
-                        {
-                            published: true,
-                        },
-                    ],
-                },
-            ],
-        };
-    }
+                    {
+                        AND: [
+                            user == null ? { OR: [] } : { AND: [] },
+                            {
+                                published: true,
+                            },
+                        ],
+                    },
+                ],
+            };
+        }
 
-    function Post_update(context: QueryContext) {
-        const user = hasAllFields(context.user, ['id']) ? context.user : null;
-        return user == null
-            ? { OR: [] } // false condition
-            : {
-                  author: {
-                      is: {
-                          id: user.id,
+        function Post_update(context: QueryContext) {
+            const user = hasAllFields(context.user, ['id']) ? context.user : null;
+            return user == null
+                ? { OR: [] } // false condition
+                : {
+                      author: {
+                          is: {
+                              id: user.id,
+                          },
                       },
-                  },
-              };
-    }
-    ```
+                  };
+        }
+        ```
 
 ## Runtime Enhancements
 
-The primary responsibility of ZenStack's runtime is to create _enhanced_ Prisma client instances:
+The primary responsibility of ZenStack's runtime is to create _enhanced_ Prisma client instances. Runtime enhancements are achieved by creating transparent proxies around raw Prisma clients. The proxies intercept all Prisma client methods, inject into query arguments, and manipulate the query results returned by the client.
 
--   `enhance` creates an enhanced client that includes all behaviors below.
--   `withPolicy` creates an enhanced client that enforces access policies expressed with `@@allow` and `@@deny` attributes.
--   `withPassword` creates an enhanced client that automatically hashes fields marked with the `@password` attribute before storing them in the database.
--   `withOmit` creates an enhanced client that automatically strips fields marked with the `@omit` attribute before returning to the caller.
+### Access Policy
 
-### Proxies
-
-Runtime enhancements are achieved by creating transparent proxies around raw Prisma clients. The proxies intercept all Prisma client methods, inject into query arguments, and manipulate the query results returned by the client. The proxies work independently from each other so that they can be freely combined. In fact, the `enhance` helper is a direct combination of `withPassword`, `withOmit`, and `withPolicy`.
-
-```ts
-export function enhance<DbClient extends object>(
-    prisma: DbClient,
-    context?: WithPolicyContext,
-    options?: EnhancementOptions
-) {
-    return withPolicy(withOmit(withPassword(prisma, modelMeta), modelMeta), context, policy, modelMeta);
-}
-```
-
-### Access Policies
-
-Access policies, enabled by the `withPolicy` enhancer, are the most complex parts of the system. Part of the complexity comes from the great flexibility Prisma offers in querying and mutating data. For example, to enforce "read" rules on a `Post` model, we need to consider several possibilities:
+Access policy is the most complex part of the system. Part of the complexity comes from the great flexibility Prisma offers in querying and mutating data. For example, to enforce "read" rules on a `Post` model, we need to consider several possibilities:
 
 ```ts
 // a direct where condition
@@ -197,7 +182,7 @@ We need the following measures to enforce access policies systematically:
     prisma.user.update({ data: { ... }, include: { posts: { where: { /* read conditions */ } } } });
     ```
 
-1. **Inject filter conditions into the "where" clause of "mutate many"**
+2. **Inject filter conditions into the "where" clause of "mutate many"**
 
     This covers cases like `updateMany` and `deleteMany`:
 
@@ -232,7 +217,7 @@ We need the following measures to enforce access policies systematically:
     });
     ```
 
-1. **Post-read check for entities fetched as a to-one relation**
+3. **Post-read check for entities fetched as a to-one relation**
 
     To-one relation is a special case for reading because there's no way to do filtering at the read time: you either include it or not. So, we need to do a post-read check to ensure the fetched entity can be read.
 
@@ -247,7 +232,7 @@ We need the following measures to enforce access policies systematically:
     }
     ```
 
-1. **Transaction-protected mutations**
+4. **Transaction-protected mutations**
 
     Policies that do "post-mutation" checks, including "create" and "post-update" ("update" rule calling [`future()`](#the-future-function) function) rules, are protected by a transaction. The mutation is conducted first, and then post-mutation checks are performed. If any of the checks fail, the transaction rolls back.
 

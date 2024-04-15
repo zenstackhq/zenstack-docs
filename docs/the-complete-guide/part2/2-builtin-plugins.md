@@ -12,19 +12,15 @@ Most of the core functionalities of ZenStack are implemented as or supported by 
 
 Here's a quick overview of them:
 
-- [@core/prisma](/docs/reference/plugins/prisma)
+- [@core/prisma](../../reference/plugins/prisma)
 
     Transforms ZModel to Prisma schema and runs `prisma generate` to generate Prisma Client.
 
-- [@core/model-meta](/docs/reference/plugins/model-meta)
+- [@core/enhancer](../../reference/plugins/enhancer)
 
-    Transforms ZModel to lightweight Javascript to be used at runtime.
+    Generates Javascript modules that support ZenStack's runtime enhancements, like access policy enforcement.
 
-- [@core/access-policy](/docs/reference/plugins/access-policy)
-
-    Transforms access policies into partial Prisma query objects for injecting Prisma queries at runtime.
-
-- [@core/zod](/docs/reference/plugins/zod)
+- [@core/zod](../../reference/plugins/zod)
 
     Transforms ZModel into [Zod](https://zod.dev/) schemas for validating input data at runtime.
 
@@ -41,18 +37,18 @@ plugin prisma {
 
 Besides core plugins, the ZenStack team maintains a set of useful but non-essential plugins. They are implemented in separate npm packages under the `@zenstackhq` organization.
 
-- [@zenstackhq/tanstack-query](/docs/reference/plugins/tanstack-query)
+- [@zenstackhq/tanstack-query](../../reference/plugins/tanstack-query)
 
-    Generates frontend data query hooks for targeting [Tanstack Query](https://tanstack.com/query). In [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of this guide, you'll learn more about using ZenStack for full-stack development.
+    Generates frontend data query hooks for targeting [Tanstack Query](https://tanstack.com/query). In [Part III](../part3/) and [Part IV](../part4/) of this guide, you'll learn more about using ZenStack for full-stack development.
 
-- [@zenstackhq/swr](/docs/reference/plugins/swr)
+- [@zenstackhq/swr](../../reference/plugins/swr)
 
-    Generates frontend data query hooks for targeting [SWR](https://swr.vercel.app/). In [Part III](/docs/the-complete-guide/part3/) and [Part IV](/docs/the-complete-guide/part4/) of this guide, you'll learn more about using ZenStack for full-stack development.
+    Generates frontend data query hooks for targeting [SWR](https://swr.vercel.app/). In [Part III](../part3/) and [Part IV](../part4/) of this guide, you'll learn more about using ZenStack for full-stack development.
 
-- [@zenstackhq/trpc](/docs/reference/plugins/trpc)
+- [@zenstackhq/trpc](../../reference/plugins/trpc)
 
     Generates [tRPC](https://trpc.io/) routers for database queries and mutations.
   
-- [@zenstackhq/openapi](/docs/reference/plugins/openapi)
+- [@zenstackhq/openapi](../../reference/plugins/openapi)
 
     Generates [OpenAPI](https://www.openapis.org/) specs from the ZModel schema.

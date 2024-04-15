@@ -1,11 +1,23 @@
 ---
-description: Built-in plugin for generating access policy guards
-sidebar_position: 3
+description: Built-in plugin for generating JavaScript modules that support runtime enhancement of Prisma Client.
+sidebar_position: 2
 ---
 
-# @core/access-policy
+# @core/enhancer
 
-The `@core/access-policy` plugin generates access policy guard objects from [policy rules](/docs/the-complete-guide/part1/access-policy/) (defined using `@@allow` and `@@deny` attributes).
+The `@core/enhancer` plugin generates JavaScript modules that support runtime enhancement of Prisma Client. The generated modules include the following:
+
+- enhance
+
+    The `enhance` API that creates a proxy around a `PrismaClient` instance to extend its behavior. When using the default output location, you can import this API from `@zenstackhq/runtime`.
+
+- model-meta
+
+    Lightweight runtime representation of ZModel's AST.
+
+- policy
+  
+    Partial Prisma query input objects and input checker functions compiled from access policy expressions.
 
 :::info
 This plugin is always automatically included when `zenstack generate` is run. You only need to add it to your ZModel if you want to customize its options.
@@ -26,16 +38,9 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 ### Example
 
 ```zmodel title='/schema.zmodel'
-plugin zod {
-  provider = '@core/access-policy'
+plugin enhancer {
+  provider = '@core/enhancer'
   output = 'src/lib/zenstack'
   compile = false
 }
-```
-
-Runtime APIs like [`enhance`](/docs/reference/runtime-api#enhance) and [`withPolicy`](/docs/reference/runtime-api#withpolicy) depend on the output of this plugin and by default load it from the default output location. If you customize the output location, you need to load and pass it manually:
-
-```ts
-const policy = require('./lib/zenstack/policy').default;
-const db = enhance(prisma, { user }, policy);
 ```

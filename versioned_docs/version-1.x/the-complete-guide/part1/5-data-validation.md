@@ -28,7 +28,7 @@ Data validation and access policy may have some similarities, but there are some
 
 ### Field-Level Validation
 
-ZenStack provides a set of field-level attributes for defining validation rules. You can find the full list of such attributes [here](/docs/reference/zmodel-language#field-level-validation-attributes). Here are a few usage examples:
+ZenStack provides a set of field-level attributes for defining validation rules. You can find the full list of such attributes [here](../../reference/zmodel-language#field-level-validation-attributes). Here are a few usage examples:
 
 ```zmodel
 model User {
@@ -52,7 +52,7 @@ model User {
 
 ### Model-Level Validation
 
-You can use the model-level `@@validate` attribute to define validation rules that involve multiple fields. A set of helper functions are provided for building complex validation expressions. You can find the full list of such functions [here](/docs/reference/zmodel-language#model-level-validation-attributes). Here's an example:
+You can use the model-level `@@validate` attribute to define validation rules that involve multiple fields. A set of helper functions are provided for building complex validation expressions. You can find the full list of such functions [here](../../reference/zmodel-language#model-level-validation-attributes). Here's an example:
 
 ```zmodel
 model User {

@@ -87,7 +87,7 @@ The setup command will:
     });
     ```
 
-    See [here](/docs/the-complete-guide/part1/access-policy/current-user) for more details about accessing the current user.
+    See [here](../the-complete-guide/part1/access-policy/current-user) for more details about accessing the current user.
    
 6. Eject service templates
 
@@ -95,7 +95,7 @@ The setup command will:
 
 ### Modeling data and access policies
 
-ZenStack's ZModel language is a superset of Prisma schema language. You should use it to define both the data schema and access policies. [The Complete Guide](/docs/the-complete-guide/part1/) of ZenStack is the best way to learn how to author ZModel schemas. Here's a quick example to show how you can define access policies for the blog post sample used throughout the official RedwoodJS tutorial:
+ZenStack's ZModel language is a superset of Prisma schema language. You should use it to define both the data schema and access policies. [The Complete Guide](../the-complete-guide/part1/) of ZenStack is the best way to learn how to author ZModel schemas. Here's a quick example to show how you can define access policies for the blog post sample used throughout the official RedwoodJS tutorial:
 
 ```zmodel title="api/db/schema.zmodel"
 model Post {
@@ -182,7 +182,7 @@ yarn rw @zenstackhq <cmd> [options]
 
 The plugin is a simple wrapper of the standard `zenstack` CLI, similar to how RedwoodJS wraps the standard `prisma` CLI. It's equivalent to running `npx zenstack ...` inside the "api" directory.
 
-See the [CLI references](/docs/reference/cli) for the complete list of commands.
+See the [CLI references](../reference/cli) for the complete list of commands.
 
 ## Sample application
 

@@ -4,7 +4,19 @@ import CodeBlock from '@theme/CodeBlock';
 
     <blockquote>{props.getPrisma}</blockquote>
 
-    A callback for getting a PrismaClient instance for talking to the database. Usually you'll use an enhanced instance created with ZenStack's [`enhance`](/docs/reference/runtime-api#enhance) API to ensure access policies are enforced.
+    A callback for getting a PrismaClient instance for talking to the database. Usually you'll use an enhanced instance created with ZenStack's [`enhance`](../runtime-api#enhance) API to ensure access policies are enforced.
+
+-   logger (optional)
+
+    <blockquote>{'LoggerConfig'}</blockquote>
+
+    Configuration for customizing logging behavior.
+
+-   modelMeta (optional)
+
+    <blockquote>{'ModelMeta'}</blockquote>
+
+    Model metadata. By default loaded from the `node_module/.zenstack/model-meta` module. You can pass it in explicitly if you configured ZenStack to output to a different location. E.g.: `require('output/model-meta').default`.
 
 -   zodSchemas (optional)
 
@@ -46,7 +58,7 @@ import CodeBlock from '@theme/CodeBlock';
         const handler = RPCApiHandler();
         ```
 
-        For more details, please check out [RPC API Handler](/docs/reference/server-adapters/api-handlers/rpc).
+        For more details, please check out [RPC API Handler](./api-handlers/rpc).
 
     - RESTful
 
@@ -59,4 +71,4 @@ import CodeBlock from '@theme/CodeBlock';
         const handler = RestApiHandler({ endpoint: 'http://myhost/api' });
         ```
 
-        For more details, please check out [RESTful API Handler](/docs/reference/server-adapters/api-handlers/rest).
+        For more details, please check out [RESTful API Handler](./api-handlers/rest).

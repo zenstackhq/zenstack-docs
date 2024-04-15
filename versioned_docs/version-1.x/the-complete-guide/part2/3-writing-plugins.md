@@ -8,7 +8,7 @@ The ZModel schema is the single source of truth for your data and access control
 
 ### Structure of a Plugin
 
-A plugin is a Node.js module that has two exports:
+A plugin is a Node.js module that has the following exports:
 
 1. A named export `name` that specifies the name of the plugin used for logging and error reporting.
 2. A default function export containing the plugin logic.

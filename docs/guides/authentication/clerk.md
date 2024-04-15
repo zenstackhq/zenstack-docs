@@ -46,7 +46,7 @@ If you choose to [synchronize user data to your database](https://clerk.com/docs
 
 ### Create an enhanced Prisma client
 
-You can create an enhanced Prisma client that automatically validates access policies, field validation rules, etc., during CRUD operations. For more details, please refer to [ZModel Language](/docs/reference/zmodel-language) reference.
+You can create an enhanced Prisma client that automatically validates access policies, field validation rules, etc., during CRUD operations. For more details, please refer to [ZModel Language](../../reference/zmodel-language) reference.
 
 To create such a client with a standard setup, call the `enhance` API with a regular Prisma client and the current user (fetched from Clerk). Here's an example:
 

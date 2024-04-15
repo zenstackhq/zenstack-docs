@@ -29,7 +29,7 @@ The command does the following things:
     npx zenstack@next init --package-manager pnpm
     ```
 
-If the `init` command doesn't suit your needs, manually doing these steps is just fine. See [ZenStack CLI](/docs/reference/cli) for more details about using the CLI.
+If the `init` command doesn't suit your needs, manually doing these steps is just fine. See [ZenStack CLI](../reference/cli) for more details about using the CLI.
 
 ## Prisma generators' triple slash hack
 

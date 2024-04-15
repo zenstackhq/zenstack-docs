@@ -8,7 +8,7 @@ Optimistic update is a technique that allows us to update the UI immediately aft
 
 Libraries like TanStack Query and SWR provides the framework for developers to implement optimistic update. The approach is essentially to update the query cache immediately after the user action and revert or invalidate the cache after the server response comes back (either success or error). However, similar to the query invalidation problem we discussed in the previous chapter, the challenge is identifying which queries need to be updated and how.
 
-ZenStack supports automatic optimistic update for the hooks it generates. It uses a set of rules to update queries and aims to cover the most common use cases. You can find more on how it works [here](/docs/reference/plugins/tanstack-query#details-of-the-optimistic-behavior).
+ZenStack supports automatic optimistic update for the hooks it generates. It uses a set of rules to update queries and aims to cover the most common use cases. You can find more on how it works [here](../../reference/plugins/tanstack-query#details-of-the-optimistic-behavior).
 
 :::info Automatic optimistic update is an approximation
 
@@ -178,18 +178,14 @@ It's obviously very sluggish. It's not something a user wants to pay for.
 Let's make some small changes to enable automatic optimistic update. In `src/pages/spaces/[slug]/[listId]/index.tsx`, change the `useCreateTodo` call to the following:
 
 ```tsx
-// the three arguments are: 
-//     - mutation options
-//     - auto invalidate (default true)
-//     - auto optimistic-update (default false)
-const { mutate: create } = useCreateTodo(undefined, true, true);
+const { mutate: create } = useCreateTodo({ optimisticUpdate: true });
 ```
 
 And likewise, change the `useUpdateTodo` and `useDeleteTodo` calls in `Todo.tsx` to the following:
 
 ```tsx
-const update = useUpdateTodo(undefined, true, true); // optimistic update
-const del = useDeleteTodo(undefined, true, true); // optimistic update
+const update = useUpdateTodo({ optimisticUpdate: true });
+const del = useDeleteTodo({ optimisticUpdate: true });
 ```
 
 Now, if we repeat the same test with network throttling, we'll see a much better experience:
@@ -198,13 +194,12 @@ Now, if we repeat the same test with network throttling, we'll see a much better
 
 :::tip Opt-out of automatic optimistic update
 
-When you enable automatic optimistic update for a mutation, it applies to all queries that may be impacted. If this is not desirable, you can pass an extra `optimisticUpdate` argument as `false` to opt out of automatic optimistic update. For example:
+When you enable automatic optimistic update for a mutation, it applies to all queries that may be impacted. If this is not desirable, you can pass the `optimisticUpdate` option as `false` to opt out of automatic optimistic update per query. For example:
 
 ```ts
 const { data: todos } = useFindManyTodo(
     { where: { listId } },
-    { enabled: !!session?.user },
-    false, // <- opt-out automatic optimistic update
+    { enabled: !!session?.user, optimisticUpdate: false },
 );
 ```
 

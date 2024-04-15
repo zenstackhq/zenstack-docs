@@ -73,7 +73,7 @@ npx zenstack generate && npx prisma db push
 
 :::tip
 
-If you ran into any trouble creating the project, you can also use the "part4-start" branch of [https://github.com/zenstackhq/the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample) as the starting point and continue from there.
+If you ran into any trouble creating the project, you can also use the "part4-start" branch of [https://github.com/zenstackhq/the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/part4-start) as the starting point and continue from there.
 
 :::
 
@@ -217,7 +217,8 @@ import { db } from '~/server/db';
 
 async function getPrisma() {
   const session = await getServerSession(authOptions);
-  return enhance(db, { user: session?.user });
+  const user = session ? { id: session.user.id } : undefined;
+  return enhance(db, { user });
 }
 
 const handler = NextRequestHandler({ getPrisma, useAppDir: true });
@@ -232,22 +233,6 @@ The crucial part is that we use an enhanced PrismaClient with the server adapter
 :::
 
 In the next chapter, we'll learn how to use a plugin to generate frontend data query hooks that help us consume it.
-
-Finally, make a change to the `next.config.js` file to exclude the `@zenstackhq/runtime` package from the server component bundler:
-
-```js title="next.config.js"
-const config = {
-  experimental: {
-    serverComponentsExternalPackages: ['@zenstackhq/runtime']
-  }
-};
-```
-
-:::info Why is this needed?
-
-Next.js's server component bundler automatically bundles dependencies, but it has some restrictions on the set of Node.js features a package can use. The `@zenstackhq/runtime` package makes [unsupported](https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages) `require()` calls. We'll try to make it compatible in a future release. 
-
-:::
 
 ### 5. Compile the Project
 

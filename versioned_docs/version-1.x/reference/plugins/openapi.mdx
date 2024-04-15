@@ -18,7 +18,7 @@ npm install --save-dev @zenstackhq/openapi
 | Name            | Type   | Description                                                                   | Required | Default                |
 | --------------- | ------ | ----------------------------------------------------------------------------- | -------- | ---------------------- |
 | output          | String | Output file path (with suffix .yaml or .json, relative to the path of ZModel)                                 | Yes      |                        |
-| flavor          | String | API flavor: "rpc" or "rest". See [here](/docs/reference/server-adapters/api-handlers/) for more details.                                       | No       | rpc                   |
+| flavor          | String | API flavor: "rpc" or "rest". See [here](../server-adapters/api-handlers/) for more details.                                       | No       | rpc                   |
 | specVersion     | String | OpenAPI specification version                                                 | No       | 3.1.0                  |
 | title           | String | API title                                                                     | No       | ZenStack Generated API |
 | version         | String | API version                                                                   | No       | 1.0.0                  |
@@ -40,7 +40,7 @@ The `flavor` option controls the style of API endpoints and data format of the g
     RESTful resource-centric endpoints using [JSON:API](https://jsonapi.org/) as transportation format
 
 
-The two flavors correspond to the two style of APIs supported by ZenStack server adapters. See [here](/docs/reference/server-adapters/api-handlers/) for more details.
+The two flavors correspond to the two style of APIs supported by ZenStack server adapters. See [here](../server-adapters/api-handlers/) for more details.
 
 #### Security schemes
 

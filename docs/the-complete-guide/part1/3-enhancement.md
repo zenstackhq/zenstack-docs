@@ -52,7 +52,7 @@ A few extra notes about enhanced Prisma Client:
 
 - **Using Prisma Client Extensions with enhanced client**
   
-  Enhanced Prisma Client is a transparent proxy, so it has the same API as the original Prisma Client. You can enhance a Prisma Client with Client Extensions installed or install Client Extensions on an enhanced Prisma Client - both work.
+  Enhanced Prisma Client can work with [Prisma Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions) with some caveats. Please refer to [Using With Prisma Client Extensions](../../guides/client-extensions) for more details.
 
 - **Using the original client and an enhanced one together**
   
@@ -82,6 +82,16 @@ We try to make the enhanced Prisma Client as compatible as possible with the ori
 You should fall back to using the original Prisma Client in such cases.
 :::
 
+### Enhancement Kinds
+
+ZenStack can enhance Prisma Client in several ways. When you call the `enhance` API to create an enhanced client, all enhancement kinds are enabled by default. You can use the `kinds` option to fine tune which ones to enable:
+
+```ts
+const db = enhance(prisma, { user: getSessionUser() }, { kinds: ['policy'] });
+```
+
+See [here](../../reference/runtime-api#enhancement-kinds) for more details.
+
 ### 🛠️ Using Enhanced Prisma Client In REPL
 
 We saw in the previous chapter that in the REPL environment, you can use the built-in `prisma` variable to access Prisma Client directly. Another variable named `db` gives you access to an enhanced Prisma Client.
@@ -108,17 +118,21 @@ It works but gives an empty array. Why? With an enhanced Prisma Client, all oper
 This part is for those interested in the inner workings of ZenStack. It's not necessary to understand it to use ZenStack.
 :::
 
-If you know the inner workings of Prisma Client, you'll find ZenStack shares some similarities.. When `zenstack generate` is run, besides generating the `prisma/schema.prisma` file, it also runs several other plugins that transform different pieces of information in the ZModel into Javascript code that can be efficiently loaded and executed at runtime. The `enhance` API relies on the generated code to get its job done.
+If you know the inner workings of Prisma Client, you'll find ZenStack shares some similarities.. When `zenstack generate` is run, besides generating the `prisma/schema.prisma` file, it also runs several other plugins that transform different pieces of information in the ZModel into Javascript code that can be efficiently loaded and executed at runtime. The `enhance` API from`@zenstackhq/runtime` relies on the generated Javascript modules to get its job done.
 
-- `model-meta.js`
+- `enhance`
+
+    Contains the function that enhances a `PrismaClient`. The `enhance` API from `@zenstackhq/runtime` simply reexports this function.
+
+- `model-meta`
 
     Lightweight representation of ZModel's AST.
 
-- `policy.js`
+- `policy`
   
     Partial Prisma query input objects compiled from access policy expressions.
 
-- `zod/**/*.js|ts`
+- `zod/**`
 
     Zod schemas for validating input data according to ZModel.
 
@@ -128,10 +142,10 @@ The generation by default outputs to the `node_modules/.zenstack` folder. You ca
 npx zenstack generate -o lib/zenstack
 ```
 
-The `enhance` API, by default, loads the generated code from the `node_modules/.zenstack` folder. If you use a custom output location, make sure to use the `loadPath` option to specify it.
+When using a custom output location, you can't use the `enhance` API from `@zenstackhq/runtime` directly. Instead, import directly from the output location:
 
 ```ts
-const db = enhance(prisma, { user: getSessionUser() }, { loadPath: 'lib/zenstack' });
+import { enhance } from 'lib/zenstack/enhance';
 ```
 
 ### Next

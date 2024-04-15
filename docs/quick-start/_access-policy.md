@@ -12,5 +12,5 @@ Whether an operation is permitted is determined as follows:
 2. If any `@@allow` rule evaluates to true, it's allowed.
 3. Otherwise, it's denied.
 
-Check out [Understanding Access Policies](/docs/the-complete-guide/part1/access-policy) for more details.
+Check out [Understanding Access Policies](../the-complete-guide/part1/access-policy) for more details.
 :::

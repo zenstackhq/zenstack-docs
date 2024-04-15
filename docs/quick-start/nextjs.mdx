@@ -262,12 +262,12 @@ import type { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
 import Router from 'next/router';
 import { useState, type FormEvent } from 'react';
-import { useMutateUser } from '../lib/hooks';
+import { useCreateUser } from "../lib/hooks";
 
 const Signup: NextPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { createUser: signup } = useMutateUser();
+    const { trigger: signup } = useCreateUser();
 
     async function onSignup(e: FormEvent) {
         e.preventDefault();
@@ -330,7 +330,7 @@ const Signup: NextPage = () => {
 export default Signup;
 ```
 
-In the code above, we used the auto-generated `useMutateUser` hooks to create new `User` entities.
+In the code above, we used the auto-generated `useCreateUser` hooks to create new `User` entities.
 
 :::tip
 
@@ -481,7 +481,12 @@ import { type NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { useFindManyPost, useMutatePost } from '../lib/hooks';
+import {
+  useCreatePost,
+  useDeletePost,
+  useFindManyPost,
+  useUpdatePost,
+} from "../lib/hooks";
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -515,7 +520,9 @@ const SigninSignup = () => {
 
 const Posts = ({ user }: { user: AuthUser }) => {
     // Post crud hooks
-    const { createPost, updatePost, deletePost } = useMutatePost();
+    const { trigger: createPost } = useCreatePost();
+    const { trigger: updatePost } = useUpdatePost();
+    const { trigger: deletePost } = useDeletePost();
 
     // list all posts that're visible to the current user, together with their authors
     const { data: posts } = useFindManyPost({

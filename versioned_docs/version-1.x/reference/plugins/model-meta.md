@@ -26,14 +26,14 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 ### Example
 
 ```zmodel title='/schema.zmodel'
-plugin zod {
+plugin meta {
   provider = '@core/model-meta'
   output = 'src/lib/zenstack'
   compile = false
 }
 ```
 
-Runtime APIs like [`enhance`](/docs/reference/runtime-api#enhance) and [`withPolicy`](/docs/reference/runtime-api#withpolicy) depend on the output of this plugin and by default load it from the default output location. If you customize the output location, you need to load and pass it manually:
+Runtime APIs like [`enhance`](../runtime-api#enhance) and [`withPolicy`](../runtime-api#withpolicy) depend on the output of this plugin and by default load it from the default output location. If you customize the output location, you need to load and pass it manually:
 
 ```ts
 const meta = require('./lib/zenstack/model-meta').default;

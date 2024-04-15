@@ -15,7 +15,7 @@ ZenStack solves this problem by using [superjson](https://github.com/blitz-js/su
 
 The benefit of this design is that if the data is fully JSON-serializable (not involving the types mentioned above), the wire format is just plain JSON serialization without any pollution.
 
-You can find more details about serialization in the [RPC API Handler](/docs/reference/server-adapters/api-handlers/rpc#serialization) and [RESTful API Handler](/docs/reference/server-adapters/api-handlers/rest#serialization) documentation.
+You can find more details about serialization in the [RPC API Handler](../../reference/server-adapters/api-handlers/rpc#serialization) and [RESTful API Handler](../../reference/server-adapters/api-handlers/rest#serialization) documentation.
 
 ### 🛠️ Observing Serialization Behavior
 

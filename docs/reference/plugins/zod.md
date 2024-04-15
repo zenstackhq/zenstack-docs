@@ -6,11 +6,11 @@ sidebar_position: 4
 # @core/zod
 
 The `@core/zod` plugin generates [Zod](https://github.com/colinhacks/zod) schemas for models and input arguments of Prisma CRUD operations. The plugin is automatically enabled when any of the following conditions meets:
-- If any model carries [field validation attributes](/docs/reference/zmodel-language#data-validation).
-- If any plugin that depends on it is used, e.g., the [tRPC plugin](/docs/reference/plugins/trpc).
+- If any model carries [field validation attributes](../zmodel-language#data-validation).
+- If any plugin that depends on it is used, e.g., the [tRPC plugin](./trpc).
 
 :::info
-You need to explicitly enable `@core/zod` plugin if you use the [Express.js](/docs/reference/server-adapters/express) or [Fastify](/docs/reference/server-adapters/fastify) server adapter with `zodSchemas` option enabled.
+You need to explicitly enable `@core/zod` plugin if you use the [Express.js](../server-adapters/express) or [Fastify](../server-adapters/fastify) server adapter with `zodSchemas` option enabled.
 :::
 
 By default, the Zod schemas are generated into `node_modules/.zenstack/zod` directory, and are reexported through `@zenstackhq/runtime/zod`. If you configure the plugin to output to a custom location, you can just directly import from there.
@@ -137,7 +137,7 @@ The generated schemas have the following three parts:
 
 - `zod/input`
 
-    The schema for validating the input arguments of Prisma CRUD operations. You usually won't use them directly. The [tRPC plugin](/docs/reference/plugins/trpc) relies on them to validate the input arguments in the generated routers.
+    The schema for validating the input arguments of Prisma CRUD operations. You usually won't use them directly. The [tRPC plugin](./trpc) relies on them to validate the input arguments in the generated routers.
 
 - `zod/objects`
 

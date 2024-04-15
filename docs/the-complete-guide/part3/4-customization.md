@@ -41,7 +41,7 @@ Since server adapters are just lightweight wrappers around API handlers, you can
 The following code demonstrates how to add the 'x-requested-by' header with this approach:
 
 ```ts
-import RESTHandler from '@zenstackhq/server/api/rest';
+import { RPCApiHandler } from '@zenstackhq/server/api';
 
 app.use('/api/rpc-custom', async (req: Request, res: Response) => {
     const url = req.protocol + '://' + req.get('host') + req.originalUrl;

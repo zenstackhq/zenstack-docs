@@ -63,7 +63,7 @@ Besides installing dependencies, the command also copies the `prisma/schema.pris
 1. All "id" fields are changed to String type (as required by NextAuth).
 2. The "markdown" and "openapi" plugins are removed (not needed for this part).
 
-You can also find the updated version here: [https://github.com/zenstackhq/the-complete-guide-sample/blob/part4-start/schema.zmodel](https://github.com/zenstackhq/the-complete-guide-sample/blob/part4-start/schema.zmodel). Replace the `schema.zmodel` file in your project with it.
+You can also find the updated version here: [https://github.com/zenstackhq/the-complete-guide-sample/blob/v1-part4-start/schema.zmodel](https://github.com/zenstackhq/the-complete-guide-sample/blob/v1-part4-start/schema.zmodel). Replace the `schema.zmodel` file in your project with it.
 
 Run generation and push the schema to the database:
 
@@ -73,7 +73,7 @@ npx zenstack generate && npx prisma db push
 
 :::tip
 
-If you ran into any trouble creating the project, you can also use the "part4-start" branch of [https://github.com/zenstackhq/the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample) as the starting point and continue from there.
+If you ran into any trouble creating the project, you can also use the "part4-start" branch of [https://github.com/zenstackhq/the-complete-guide-sample](https://github.com/zenstackhq/the-complete-guide-sample/tree/v1-part4-start) as the starting point and continue from there.
 
 :::
 

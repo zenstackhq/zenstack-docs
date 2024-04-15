@@ -34,17 +34,17 @@ ZenStack is not opinionated about your choice of framework. It can be used with 
 
 ## Find the Learning Path That Fits You
 
-ZenStack is a comprehensive toolkit that touches a wide range of topics. For most developers, we'd highly recommend you start with the [The Complete Guide](/docs/the-complete-guide) to build a solid understanding of each layer of ZenStack's functionalities. The guide is designed to lay out concepts gradually and lead you through the learning journey from using ZenStack just as a better ORM, to leveraging its total power in full-stack development. The guide is pretty long, but trust me you'll enjoy the reading 😉.
+ZenStack is a comprehensive toolkit that touches a wide range of topics. For most developers, we'd highly recommend you start with the [The Complete Guide](./the-complete-guide) to build a solid understanding of each layer of ZenStack's functionalities. The guide is designed to lay out concepts gradually and lead you through the learning journey from using ZenStack just as a better ORM, to leveraging its total power in full-stack development. The guide is pretty long, but trust me you'll enjoy the reading 😉.
 
-If you're the kind of inpatient developer who wants to get your hand dirty ASAP, you can also jump straight to the [Quick Start](/docs/category/quick-start) guide. It shows how to quickly set up a ZenStack project targeting the framework of your choice.
+If you're the kind of inpatient developer who wants to get your hand dirty ASAP, you can also jump straight to the [Quick Start](./category/quick-start) guide. It shows how to quickly set up a ZenStack project targeting the framework of your choice.
 
 <!-- It explains how to use the CLI to quickly scaffold a ZenStack project targeting the framework of your choice. -->
 
 ## Other Resources
 
-- [Recipes](/docs/category/recipes/) - Mini guides for completing specific tasks using ZenStack
-- [Sample Catalog](/docs/sample-catalog) - A catalog of sample projects using different frameworks
-- [Reference](/docs/category/reference/) - Detailed documentation for the DSL, CLI, APIs, and plugins
-- [FAQ](/docs/faq) - Frequently asked questions
+- [Recipes](./category/recipes/) - Mini guides for completing specific tasks using ZenStack
+- [Sample Catalog](./sample-catalog) - A catalog of sample projects using different frameworks
+- [Reference](./category/reference/) - Detailed documentation for the DSL, CLI, APIs, and plugins
+- [FAQ](./faq) - Frequently asked questions
   
 Ready to roll? Let's get started 🚀

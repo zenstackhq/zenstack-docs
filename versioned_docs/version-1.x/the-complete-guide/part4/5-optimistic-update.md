@@ -8,7 +8,7 @@ Optimistic update is a technique that allows us to update the UI immediately aft
 
 Libraries like TanStack Query and SWR provides the framework for developers to implement optimistic update. The approach is essentially to update the query cache immediately after the user action and revert or invalidate the cache after the server response comes back (either success or error). However, similar to the query invalidation problem we discussed in the previous chapter, the challenge is identifying which queries need to be updated and how.
 
-ZenStack supports automatic optimistic update for the hooks it generates. It uses a set of rules to update queries and aims to cover the most common use cases. You can find more on how it works [here](/docs/reference/plugins/tanstack-query#details-of-the-optimistic-behavior).
+ZenStack supports automatic optimistic update for the hooks it generates. It uses a set of rules to update queries and aims to cover the most common use cases. You can find more on how it works [here](../../reference/plugins/tanstack-query#details-of-the-optimistic-behavior).
 
 :::info Automatic optimistic update is an approximation
 
