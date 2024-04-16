@@ -55,6 +55,12 @@ You can use [this blog post](https://zenstack.dev/blog/model-authz) as an introd
 
 ### Community Samples
 
+- [Monorepo Todo App](https://github.com/ErikDakoda/sample-todo-nextjs-turbo) by [ErikDakoda](https://github.com/ErikDakoda)
+
+    - PNPM workspace
+    - Turborepo
+    - Next.js + NextAuth
+
 - [Warehouse Management System](https://github.com/Eliav2/zenstack-warehouse-demo) by [Eliav2](https://github.com/Eliav2)
 
     - Decoupled frontend and backend with monorepo

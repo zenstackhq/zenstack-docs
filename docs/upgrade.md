@@ -86,11 +86,15 @@ See more information [here]:
 
 The callback is invoked for each query cache entry. You can use the return value to control if to use the optimistic data you computed, skip the update, or leave it to the automatic logic.
 
-### 4. Edge Runtime Support 🚧
+### 4. Prisma-Like Schema Formatting
+
+We've heard your feedback: the way how Prisma formats the schema code makes it more readable. Now ZenStack's IDE extensions and the CLI `format` command resemble Prisma's behavior and format fields into a tabular form.
+
+### 5. Edge Runtime Support 🚧
 
 Coming soon.
 
-### 5. Permission Checker API 🚧
+### 6. Permission Checker API 🚧
 
 Coming soon.
 
