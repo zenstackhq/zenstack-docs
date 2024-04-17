@@ -115,7 +115,7 @@ export default {
     const prisma = new PrismaClient({ adapter });
     const db = enhance(prisma, { user: getSessionUser(request) });
     const posts = await db.post.findMany();  
-    return new Response(...);
+    return Response.json(posts);
   }
 };
 ```
