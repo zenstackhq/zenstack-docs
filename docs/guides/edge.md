@@ -16,7 +16,6 @@ ZenStack is tested to work with Vercel Edge Runtime and Cloudflare Workers. Plea
 
 ZenStack is built above Prisma, and Prisma's edge support was added recently and still evolving. The first thing you need to check is to make sure you use a edge-compatible database driver and Prisma adapter, or a traditional database with [Prisma Accelerate](https://www.prisma.io/docs/accelerate). Please check [this documentation](https://www.prisma.io/docs/orm/prisma-client/deployment/edge/overview) for more details.
 
-
 ## Vercel Edge Runtime
 
 You can enable edge runtime for a route by exporting a const named `runtime`. For example, for a RSC page:
