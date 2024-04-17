@@ -20,3 +20,7 @@ Right now, the focus of this project is SQL databases, and there's no plan to su
 ### Edge runtime is not supported
 
 Prisma by default doesn't support running in edge runtime environments (e.g. [Vercel Edge Runtime](https://edge-runtime.vercel.app/)). Its [Accelerate](https://www.prisma.io/data-platform/accelerate) commercial service does support edge, but ZenStack is not compatible with it yet. We plan to support it in the near future.
+
+### Cloudflare D1 database is not supported
+
+Prisma doesn't support interactive transactions with D1 databases. ZenStack relies on the feature to enforce access policies in certain cases.

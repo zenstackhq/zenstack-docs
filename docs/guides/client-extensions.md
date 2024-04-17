@@ -90,6 +90,12 @@ const post = await enhanced.post.findFirst();
 
 Computed fields will work as expected. ZenStack enhancement works transparently with it.
 
+:::danger
+
+Currently there's a limitation that computed fields are not governed by field-level access policies. This means that if you have a computed field that depends on a field that the current user cannot read, the computed field will still be calculated and returned.
+
+:::
+
 ## Installing extensions to an enhanced Prisma Client
 
 Such a setup DOES NOT WORK as you would expect in most cases, so it should generally be avoided. For example,

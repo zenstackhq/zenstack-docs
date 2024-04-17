@@ -16,3 +16,7 @@ As a workaround, use [interactive transactions](https://www.prisma.io/docs/conce
 ### MongoDB is not supported
 
 Right now, the focus of this project is SQL databases, and there's no plan to support MongoDB in the near future.
+
+### Cloudflare D1 database is not supported
+
+Prisma doesn't support interactive transactions with D1 databases. ZenStack relies on the feature to enforce access policies in certain cases.
