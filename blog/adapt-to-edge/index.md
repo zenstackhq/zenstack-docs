@@ -7,11 +7,11 @@ date: 2024-04-19
 image: ./cover.png
 ---
 
-# Adapting ZenStack to the Edge: Our Struggle and Learnings
+# Adapting ZenStack to the Edge: Our Struggles and Learnings
 
 ![Cover Image](cover.png)
 
-Edge has been a buzzword for web development for a while, but the reality is the ecosystem support is still lagging, many tools and libraries are not ready for it yet. We've recently been working on adapting [ZenStack](https://zenstack.dev) to the edge runtime. As we're wrapping up the work, it's time to share our struggle and learnings with you.
+Edge has been a buzzword for web development for a while, but the reality is the ecosystem support is still lagging, many tools and libraries are not ready for it yet. We've recently been working on adapting [ZenStack](https://zenstack.dev) to the edge runtime. As we're wrapping up the work, it's time to share our struggles and learnings with you.
 
 <!--truncate-->
 
