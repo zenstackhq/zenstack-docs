@@ -1,5 +1,5 @@
 ---
-title: "Adapting ZenStack to the Edge: Our Struggle and Learnings"
+title: "Adapting ZenStack to the Edge: Our Struggles and Learnings"
 description: This post introduces the nature of edge runtime, and the common problems that you'll face when adapting a project to run on it.
 tags: [edge,vercel,cloudflare]
 authors: yiming
