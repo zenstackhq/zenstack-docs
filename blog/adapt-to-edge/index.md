@@ -31,7 +31,7 @@ My initial worry was that to run in an edge runtime, your code has to be compile
 
 Being able to use CommonJS doesn't mean there are no restrictions. One of the biggest hurdles we met was that `require` a module from a dynamically calculated path is not supported. We do that in ZenStack for several reasons. For example, to deal with differences between multiple versions of a peer dependency (Prisma ORM specifically), we detect its version and adjust the module load path accordingly. It'll result in errors like:
 
-```
+```plaintext
 Error: Dynamic require of "[Module Name]" is not supported.
 ```
 
@@ -68,7 +68,7 @@ If you've read to this point, you've probably already noticed that different edg
 
 So far, the experience working with Cloudflare has been smoother than Vercel (or, more accurately, Next.js?). We've run into numerous issues with Vercel without an actionable error message. For example, the reason for the following is still unknown:
 
-```
+```plaintext
 Compiler edge-server unexpectedly exited with code: null and signal: SIGTERM
 ```
 
@@ -76,7 +76,7 @@ Compiler edge-server unexpectedly exited with code: null and signal: SIGTERM
 
 After getting everything running locally with a Next.js project targeting edge runtime, we excitedly deployed it to Vercel. And it worked, well, sometimes ... and other times the APIs on edge randomly return HTTP 405, 500, and 504 with incomprehensible errors like: 
 
-```
+```plaintext
 [GET ] /api/... reason=INTERNAL_EDGE_FUNCTION_INVOCATION_FAILED, status=500, upstream_status=500, user_error=false
 [POST] /api/... reason=EDGE_FUNCTION_INVOCATION_TIMEOUT, status=504, user_error=true
 ```
