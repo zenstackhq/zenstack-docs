@@ -9,6 +9,7 @@ import Prerequisite from './_prerequisite.md';
 import InitTips from './_zenstack-init-tips.md';
 import PasswordOmit from './_password-omit.md';
 import AccessPolicy from './_access-policy.md';
+import AuthDefault from './_auth_default.md';
 
 # Get Started With SvelteKit
 
@@ -57,7 +58,7 @@ Follow the guide [here](https://tailwindcss.com/docs/guides/sveltekit) to add Ta
 Let's run the `zenstack` CLI to prepare your project for using ZenStack. Inside your project directory, run the following command:
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -85,7 +86,7 @@ model Post {
     title String @length(1, 256)
     published Boolean @default(false)
     author User? @relation(fields: [authorId], references: [id])
-    authorId String?
+    authorId String? @default(auth().id)
 
     // allow read for all signin users
     @@allow('read', auth() != null && published)
@@ -94,6 +95,8 @@ model Post {
     @@allow('all', author == auth())
 }
 ```
+
+<AuthDefault field="authorId" />
 
 <PasswordOmit />
 
@@ -525,9 +528,7 @@ export const actions: Actions = {
             return fail(400, { missing: true });
         }
 
-        await locals.db.post.create({
-            data: { title, author: { connect: { id: locals.user?.id } } }
-        });
+        await locals.db.post.create({ data: { title } });
 
         return { success: true };
     },

@@ -8,6 +8,7 @@ import Requirements from './_requirements.md';
 import Prerequisite from './_prerequisite.md';
 import InitTips from './_zenstack-init-tips.md';
 import AccessPolicy from './_access-policy.md';
+import AuthDefault from './_auth_default.md';
 
 # Get Started With Nuxt (V3)
 
@@ -49,7 +50,7 @@ If everything works, you should have a running Nuxt app at [http://localhost:300
 Let's run the `zenstack` CLI to prepare your project for using ZenStack. The CLI will also install Prisma dependencies too.
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -134,7 +135,7 @@ model Post {
     content String
     published Boolean @default(false)
     author User @relation(fields: [authorId], references: [id])
-    authorId String
+    authorId String @default(auth().id)
 
     // allow read for all signin users
     @@allow('read', auth() != null && published)
@@ -143,6 +144,8 @@ model Post {
     @@allow('all', author == auth())
 }
 ```
+
+<AuthDefault field="authorId" />
 
 Notice how the access policies are defined in the schema to control who has what access to the data? To enforce these policies, we'll need to create an "enhanced" PrismaClient, like:
 
@@ -302,13 +305,11 @@ import { useFindManyPost, useCreatePost } from '~/lib/hooks';
 
 const title = ref('');
 const createPost = useCreatePost();
-const { session } = useAuth();
 
 const onCreatePost = async () => {
     try {
         await createPost.mutateAsync({
             data: {
-                author: { connect: { id: session.value!.id } },
                 title: title.value,
                 content: 'My awesome content',
             },

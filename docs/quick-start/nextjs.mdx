@@ -9,6 +9,7 @@ import Prerequisite from './_prerequisite.md';
 import InitTips from './_zenstack-init-tips.md';
 import PasswordOmit from './_password-omit.md';
 import AccessPolicy from './_access-policy.md';
+import AuthDefault from './_auth_default.md';
 
 # Get Started With Next.js
 
@@ -52,7 +53,7 @@ If everything works, you should have a running Next.js app at [http://localhost:
 Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -430,7 +431,7 @@ model Post {
   title     String
   published Boolean @default(false)
   author    User @relation(fields: [authorId], references: [id])
-  authorId  String
+  authorId  String @default(auth().id)
 
 
   // author has full access
@@ -440,6 +441,8 @@ model Post {
   @@allow('read', auth() != null && published)
 }
 ```
+
+<AuthDefault field="authorId" />
 
 `User` and `Post` model has a one-to-many relation. We can establish it by adding
 a `posts` relation field to the `User` model.
@@ -533,7 +536,7 @@ const Posts = ({ user }: { user: AuthUser }) => {
     async function onCreatePost() {
         const title = prompt('Enter post title');
         if (title) {
-            await createPost({ data: { title, authorId: user.id } });
+            await createPost({ data: { title } });
         }
     }
 

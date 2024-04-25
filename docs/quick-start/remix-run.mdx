@@ -8,6 +8,7 @@ import Requirements from './_requirements.md';
 import Prerequisite from './_prerequisite.md';
 import InitTips from './_zenstack-init-tips.md';
 import AccessPolicy from './_access-policy.md';
+import AuthDefault from './_auth_default.md';
 
 # Get Started With Remix.run
 
@@ -51,7 +52,7 @@ Now sign up for a new account to continue.
 Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -71,7 +72,8 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  // highlight-next-line
+  userId String @default(auth().id)
 
   // highlight-start
   // author has full access
@@ -82,6 +84,8 @@ model Post {
   // highlight-end
 }
 ```
+
+<AuthDefault field="userId" />
 
 <AccessPolicy />
 
@@ -229,15 +233,7 @@ import type { Post } from '@prisma/client';
 
 export function createPost({ body, title, userId }: Post & { userId: User['id'] }) {
     return getEnhancedPrisma(userId).post.create({
-        data: {
-            title,
-            body,
-            user: {
-                connect: {
-                    id: userId,
-                },
-            },
-        },
+        data: { title, body },
     });
 }
 ```

@@ -70,7 +70,7 @@ model Post {
   title String
   published Boolean @default(false)
   author User @relation(fields: [authorId], references: [id])
-  authorId Int
+  authorId Int @default(auth().id)
 }
 ```
 
@@ -273,7 +273,7 @@ Now we will be able to inject the `ClsService` into the controllers and services
 ZenStack allows you to define access policies inside your data schema. Let's install it first.
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -333,7 +333,7 @@ const enhancedPrisma = enhance(prisma, { user: ... });
 In a NestJS application, since everything is a dependency injection, we need to create the enhanced client in a DI-compatible way. Fortunately, ZenStack offers a module to make such integration easy. First, install the server adapter package:
 
 ```bash
-npm install @zenstackhq/server@next
+npm install @zenstackhq/server@latest
 ```
 
 Then, register the `ZenStackModule` onto the app module:
