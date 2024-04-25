@@ -66,4 +66,4 @@ async function getPrisma(req: NextApiRequest) {
 
 ---
 
-You can find a working sample project [here](https://github.com/zenstackhq/docs-tutorial-clerk).
+You can find a working sample project [here](https://github.com/zenstackhq/docs-tutorial-clerk/tree/v1).

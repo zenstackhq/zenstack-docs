@@ -8,7 +8,7 @@ sidebar_label: Auth.js (NextAuth)
 
 [NextAuth](https://next-auth.js.org/) is a comprehensive framework for implementing authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
 
-To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. This guide introduces tasks required for integrating ZenStack with NextAuth. You can find a complete example [here](https://github.com/zenstackhq/sample-todo-nextjs ':target=blank').
+To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. This guide introduces tasks required for integrating ZenStack with NextAuth. You can find a complete example [here](https://github.com/zenstackhq/sample-todo-nextjs/tree/v1 ':target=blank').
 
 ### Data model requirement
 

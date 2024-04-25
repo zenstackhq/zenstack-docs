@@ -11,6 +11,12 @@ import ThemedImage from '@theme/ThemedImage';
 
 # Upgrading to V2
 
+We're excited to announce the release of ZenStack V2 🎉!
+
+While V1 focused on implementing an access control layer around Prisma, V2 is more ambitious and desires to solve some deeper problems in modeling a database-centric application while continuing to improve the overall developer experience.
+
+This document outlines the first batch of new features, together with breaking changes and upgrade instructions. More goodies will land in the future V2 series releases. Enjoy, and please [share your feedback](https://discord.gg/Ykhr738dUe)!
+
 ## What's New
 
 ### 1. Polymorphic Relations
