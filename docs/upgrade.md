@@ -6,6 +6,9 @@ sidebar_label: Upgrading to V2
 sidebar_position: 8
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
 # Upgrading to V2
 
 ## What's New
@@ -90,35 +93,39 @@ The callback is invoked for each query cache entry. You can use the return value
 
 We've heard your feedback: the way how Prisma formats the schema code makes it more readable. Now ZenStack's IDE extensions and the CLI `format` command resemble Prisma's behavior and format fields into a tabular form.
 
-### 5. Edge Runtime Support 🚧
+<ThemedImage
+    alt="ZModel Formatting"
+    sources={{
+        light: useBaseUrl('/img/zmodel-format-light.png'),
+        dark: useBaseUrl('/img/zmodel-format-dark.png'),
+    }}
+/>
 
-Coming soon.
+You can switch back to the old behavior in the extension settings (VSCode only).
+
+### 5. Edge Runtime Support (Preview)
+
+We've updated the `@zenstackhq/runtime` package to be compatible with Vercel Edge Runtime and Cloudflare Workers. See [this documentation](./guides/edge) for more details.
 
 ### 6. Permission Checker API 🚧
 
-Coming soon.
+Coming soon. Please watch [this feature request](https://github.com/zenstackhq/zenstack/issues/242) for updates.
 
 ## Upgrading
 
 ### NPM Packages
 
-V2 features will be continuously released using the "@next" npm tag. To upgrade, update your project's dependencies of `zenstack` and `@zenstackhq/*` packages to the `@next` tag.
+To upgrade, update your project's dependencies of `zenstack` and `@zenstackhq/*` packages to the `@latest` tag.
 
 ```bash
-npm i -D zenstack@next
-npm i @zenstackhq/runtime@next
+npm i -D zenstack@latest
+npm i @zenstackhq/runtime@latest
 ...
 ```
 
-### VSCode Extension
+### IDE Extensions
 
-The VSCode extension supporting the V2 features is also available in the VSCode marketplace as "pre-release" versions. To use it, please head to the extension manager in VSCode, find "ZenStack Language Tools", and "Switch to Pre-Release Version". You can easily switch back to the production version at any time.
-
-![VSCode switch to pre-release](./vscode-prerelease.png)
-
-### JetBrains Plugin
-
-The JetBrains plugin for V2 features is not yet available.
+Please upgrade VSCode extension and JetBrains plugin to the latest version.
 
 ## Breaking Changes
 

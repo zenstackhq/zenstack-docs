@@ -9,6 +9,7 @@ import Prerequisite from './_prerequisite.md';
 import InitTips from './_zenstack-init-tips.md';
 import PasswordOmit from './_password-omit.md';
 import AccessPolicy from './_access-policy.md';
+import AuthDefault from './_auth_default.md';
 
 # Get Started With Next.js (app router)
 
@@ -52,7 +53,7 @@ If everything works, you should have a running Next.js app at [http://localhost:
 Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -214,8 +215,8 @@ automagically, so you don't need to write it yourself.
 First install the `@zenstackhq/server`, `@tanstack/react-query`, and `@zenstackhq/tanstack-query` packages:
 
 ```bash
-npm install @zenstackhq/server@next @tanstack/react-query
-npm install -D @zenstackhq/tanstack-query@next
+npm install @zenstackhq/server@latest @tanstack/react-query
+npm install -D @zenstackhq/tanstack-query@latest
 ```
 
 Let's mount it to the `/api/model/[...path]` endpoint. Create a `/src/app/api/model/[...path]/route.ts`
@@ -516,7 +517,8 @@ model Post {
   published Boolean @default(false)
 
   createdBy User @relation(fields: [createdById], references: [id])
-  createdById String
+  // highlight-next-line
+  createdById String @default(auth().id)
 
   @@index([name])
 
@@ -529,6 +531,8 @@ model Post {
   // highlight-end
 }
 ```
+
+<AuthDefault field="createdById" />
 
 Don't forget to regenerate and push schema changes to the database:
 
@@ -604,9 +608,7 @@ const Posts = ({ user }: { user: AuthUser }) => {
   async function onCreatePost() {
     const name = prompt("Enter post name");
     if (name) {
-      await createPost({
-        data: { name, createdBy: { connect: { id: user.id } } },
-      });
+      await createPost({ data: { name } });
     }
   }
 

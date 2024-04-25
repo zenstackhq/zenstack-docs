@@ -5,6 +5,7 @@ sidebar_position: 8
 
 import InitTips from './_zenstack-init-tips.md';
 import AccessPolicy from './_access-policy.md';
+import AuthDefault from './_auth_default.md';
 
 # Backend-only Usage
 
@@ -95,7 +96,7 @@ You should see a list of posts like this:
 Let's run the `zenstack` CLI to prepare your project for using ZenStack.
 
 ```bash
-npx zenstack@next init
+npx zenstack@latest init
 ```
 
 <InitTips />
@@ -141,7 +142,8 @@ model Post {
     published Boolean @default(false)
     viewCount Int @default(0)
     author User? @relation(fields: [authorId], references: [id])
-    authorId Int?
+    // highlight-next-line
+    authorId Int? @default(auth().id)
 
     // highlight-start
     // author has full access
@@ -152,6 +154,8 @@ model Post {
     // highlight-end
 }
 ```
+
+<AuthDefault field="authorId" />
 
 <AccessPolicy />
 
@@ -211,12 +215,7 @@ when creating a new post:
 app.post(`/post`, async (req, res) => {
     const { title, content } = req.body;
     const result = await prisma.post.create({
-        data: {
-            title,
-            content,
-            // highlight-next-line
-            author: { connect: { id: getUserId(req) } },
-        },
+        data: { title, content },
     });
     res.json(result);
 });

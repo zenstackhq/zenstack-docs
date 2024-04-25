@@ -34,9 +34,15 @@ const config = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     path: 'docs',
                     editUrl: 'https://github.com/zenstackhq/zenstack-docs/edit/main',
+                    lastVersion: 'current',
                     versions: {
                         current: {
-                            label: '2.0 🚧',
+                            label: '2.x',
+                            banner: 'none',
+                        },
+                        '1.x': {
+                            label: '1.x',
+                            banner: 'none',
                         },
                     },
                 },

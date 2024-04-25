@@ -98,13 +98,13 @@ To workaround this problem, add the following to the "package.json" file to avoi
 
 ## Cloudflare Workers
 
-You can use ZenStack-enhanced `PrismaClient` in Cloudflare Workers. Here's an example for using with a Neon database.
+You can use ZenStack-enhanced `PrismaClient` in Cloudflare Workers. Here's an example for using with a Neon database. It's recommended to import `enhance` from `@zenstackhq/runtime/edge` instead of `@zenstackhq/runtime`. Although these two modules are identical today, they may diverge in the future due to limitations of the edge runtime.
 
 ```ts
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { Pool } from '@neondatabase/serverless';
-import { enhance } from '@zenstackhq/runtime';
+import { enhance } from '@zenstackhq/runtime/edge';
 import { getSessionUser } from './auth';
 
 export default {
@@ -124,4 +124,3 @@ Cloudflare's [D1 database](https://developers.cloudflare.com/d1/) is not yet sup
 :::
 
 ZenStack currently doesn't have adapters for edge-first server frameworks like [hono](https://hono.dev/). Please create a [feature request](https://github.com/zenstackhq/zenstack/issues/new?template=feature_request.md&title=%5BFeature+Request%5D) if you have a need for it.
-
