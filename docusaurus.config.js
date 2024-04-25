@@ -67,6 +67,11 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
+            announcementBar: {
+                id: 'v2_announcement',
+                content: '🎉 <a href="/docs/upgrade-v2">ZenStack V2</a> is released 🥳️!',
+            },
+
             colorMode: {
                 defaultMode: 'light',
                 respectPrefersColorScheme: false,
@@ -84,6 +89,7 @@ const config = {
                         'ZenStack supercharges Prisma ORM with a fine-grained Authorization layer, auto-generated type-safe APIs/hooks to unlock its full potential for full-stack development.',
                 },
             ],
+
             navbar: {
                 title: 'ZenStack',
                 logo: {
@@ -199,12 +205,15 @@ const config = {
                 ],
                 copyright: `Copyright © ${new Date().getFullYear()} ZenStack, Inc.`,
             },
+
             image: '/img/social-cover.png',
+
             prism: {
                 theme: prismThemes.github,
                 darkTheme: prismThemes.dracula,
                 additionalLanguages: ['json'],
             },
+
             zoom: {
                 config: {
                     // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
@@ -214,6 +223,7 @@ const config = {
                     },
                 },
             },
+
             algolia: {
                 // The application ID provided by Algolia
                 appId: 'VS0AELD3AC',
