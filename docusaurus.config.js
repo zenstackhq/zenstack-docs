@@ -69,7 +69,7 @@ const config = {
         {
             announcementBar: {
                 id: 'v2_announcement',
-                content: '🎉 <a href="/docs/upgrade-v2">ZenStack V2</a> is released 🥳️!',
+                content: '🎉 <a href="/blog/v2-stories">ZenStack V2</a> is released 🥳️!',
             },
 
             colorMode: {
