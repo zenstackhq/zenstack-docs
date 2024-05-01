@@ -137,110 +137,144 @@ Please upgrade VSCode extension and JetBrains plugin to the latest version.
 
 The following sections list breaking changes introduced in ZenStack V2 and guide for upgrading your project.
 
-### 1. Runtime
+### 1. ZModel Schema
 
-#### Unified `enhance` API
+- #### No more access to declarations from indirectly imported schemas
 
-In V1, there were several `withXXX` APIs (like `withPolicy`, `withOmit`, etc.) that help you create enhanced PrismaClient instances with specific enhancements. These APIs are now deprecated and unified to the single `enhance` API. You can use the `kinds` option to control what enhancements to apply:
+  V1 had an unintended behavior that you can access a declaration without importing the ZModel file where it's declared, as long as the schema is indirectly imported.
 
-```ts
-const db = enhance(prisma, { user }, { kinds: ['policy', 'omit'] })
-```
+  The behavior is changed in V2. If you use a declaration from another ZModel, you'll need to explicitly import it.
 
-By default, all enhancements are enabled.
+  Please note that this implies if you use `auth()` function in access policies, you'll need to import the ZModel where the `User` model (or the model marked with `@@auth`) so that `auth()` can be resolved. If you feel it causes extra imports in too many schema files, please leave your feedback in [this GitHub issue](https://github.com/zenstackhq/zenstack/issues/1388).
 
-#### Changes to the `enhance` API
+### 2. Runtime
 
-One of the main changes in V2 is that the `enhance` API is now generated, by default into the `node_modules/.zenstack` package, together with other supporting modules. The `@zenstackhq/runtime/enhance` module is simply a reexport of `.zenstack/enhance`. This change allows us to customize the API of the enhanced `PrismaClient` based on the enhancements enabled.
+- #### Unified `enhance` API
 
-The change also simplifies the way how the `enhance` API is used when you specify a custom output location (usually for checking in the generated files with the source tree). For example, if you use the "--output" CLI switch to output to "./.zenstack" folder:
+  In V1, there were several `withXXX` APIs (like `withPolicy`, `withOmit`, etc.) that help you create enhanced PrismaClient instances with specific enhancements. These APIs are now deprecated and unified to the single `enhance` API. You can use the `kinds` option to control what enhancements to apply:
 
-```bash
-npx zenstack generate --output ./.zenstack
-```
+  ```ts
+  const db = enhance(prisma, { user }, { kinds: ['policy', 'omit'] })
+  ```
 
-You can import the `enhance` API directly from the output location and use it without any other changes:
+  By default, all enhancements are enabled.
 
-```ts
-import { enhance } from './.zenstack/enhance';
+- #### Changes to the `enhance` API
 
-const db = enhance(...);
-```
+  One of the main changes in V2 is that the `enhance` API is now generated, by default into the `node_modules/.zenstack` package, together with other supporting modules. The `@zenstackhq/runtime/enhance` module is simply a reexport of `.zenstack/enhance`. This change allows us to customize the API of the enhanced `PrismaClient` based on the enhancements enabled.
 
-Several options of the `enhance` API are also removed because they are no more needed:
+  The change also simplifies the way how the `enhance` API is used when you specify a custom output location (usually for checking in the generated files with the source tree). For example, if you use the "--output" CLI switch to output to "./.zenstack" folder:
 
-- policy
-- modelMeta
-- zodSchemas
-- loadPath
-  
-These options were for guiding ZenStack to load the generated modules from a custom location. They are not needed anymore because the generated `enhance` API can always load them from relative paths.
+  ```bash
+  npx zenstack generate --output ./.zenstack
+  ```
 
-Another major benefit of generating `enhance` is the `user` context object is now strongly typed. The CLI statically analyzes the ZModel schema to identify the fields accessed through `auth()` (including multi-level accesses into relation fields), and use that information to type the `user` object. This helps you to identify missing or incorrectly typed fields and avoid unexpected runtime behavior.
+  You can import the `enhance` API directly from the output location and use it without any other changes:
 
-#### Prisma version below 5.0.0 is not supported anymore
+  ```ts
+  import { enhance } from './.zenstack/enhance';
 
-Supporting both Prisma V4 and V5 caused quite some complexities. We decided to require Prisma 5.0.0 and above for ZenStack V2. This also makes it possible to make ZenStack's runtime compatible with Edge environments (TBD).
+  const db = enhance(...);
+  ```
 
-### 2. CLI
+  Several options of the `enhance` API are also removed because they are no more needed:
 
-#### Removed support of CLI config file
+  - policy
+  - modelMeta
+  - zodSchemas
+  - loadPath
+    
+  These options were for guiding ZenStack to load the generated modules from a custom location. They are not needed anymore because the generated `enhance` API can always load them from relative paths.
 
-The "--config" switch and the "zenstack.config.json" file are removed. They weren't doing anything useful and were only kept in V1 for backward compatibility reasons.
+  Another major benefit of generating `enhance` is the `user` context object is now strongly typed. The CLI statically analyzes the ZModel schema to identify the fields accessed through `auth()` (including multi-level accesses into relation fields), and use that information to type the `user` object. This helps you to identify missing or incorrectly typed fields and avoid unexpected runtime behavior.
 
-We may introduce a new config file format in the future.
+- #### Strict typing for the user context
 
-### 3. Server Adapter
+  The `enhance` API now analyzes the fields accessed through `auth()` in ZModel access policies and use that to derive a strong typed `user` context. For example, if your ZModel looks like:
 
-#### HTTP status code `422` is used to represent data validation errors
+  ```zmodel
+  model Post {
+    id Int @id
+    ...
+    @@allow('all', auth().role == ADMIN)
+  }
+  ```
 
-In V1, when a [data validation](../docs/reference/zmodel-language.md#data-validation) error happens (due to violation of rules represented by `@email`, `@length`, `@@validate` etc.), the server adapters used `403` to represent such error. This is changed in V2 to use `422` to align with the [HTTP status code definition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422).
+  You'll get an compile-time error if you pass an `user` object without the `role` field:
 
-#### The deprecated `useSuperJSON` initialization options is removed
+  ```ts
+  const db = enhance(prisma, { user: { id: userId }}); // <- `role` field is required
+  ```
 
-The server adapters always use SuperJSON for serialization and deserialization.
+- #### Prisma version below 5.0.0 is not supported anymore
 
-### 4. Zod Plugin
+  Supporting both Prisma V4 and V5 caused quite some complexities. We decided to require Prisma 5.0.0 and above for ZenStack V2. This also makes it possible to make ZenStack's runtime compatible with Edge environments (TBD).
 
-#### Changes to the optionality of `[Model]Schema` schema
+### 3. CLI
 
-In V1, the generated `[Model]Schema` schema has all fields marked optional. This is changed in V2 to respect the optionality of fields as they are declared in ZModel.
+- #### Removed support of CLI config file
 
-### 5. SWR Plugin
+  The "--config" switch and the "zenstack.config.json" file are removed. They weren't doing anything useful and were only kept in V1 for backward compatibility reasons.
 
-#### Legacy mutation functions are removed
+  We may introduce a new config file format in the future.
 
-In V1, the SWR plugin used to generate a set of legacy mutation functions via the `useMutate[Model]` hook. These functions (together with the hook) are removed in V2. You should use the individual mutation hooks instead.
+### 4. Server Adapter
 
-Old code:
+- #### HTTP status code `422` is used to represent data validation errors
 
-```ts
-import { useMutatePost } from '@lib/hooks';
+  In V1, when a [data validation](../docs/reference/zmodel-language.md#data-validation) error happens (due to violation of rules represented by `@email`, `@length`, `@@validate` etc.), the server adapters used `403` to represent such error. This is changed in V2 to use `422` to align with the [HTTP status code definition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422).
 
-const { createPost } = useMutatePost();
-await createPost({ data: {...} });
-```
+- #### The deprecated `useSuperJSON` initialization options is removed
 
-New code:
+  The server adapters always use SuperJSON for serialization and deserialization.
 
-```ts
-import { useCreatePost } from '@lib/hooks';
+### 5. Plugins
 
-const { trigger: createPost, isMutating } = useCreatePost();
-await createPost({ data: {...} })
-```
+:::warning
+All plugins now automatically clean up the output directory before generating new files. Please make sure not to mix manually created files with the generated ones to to avoid data loss.
+:::
 
-#### The `initialData` query option is removed
+#### 5.1 Zod Plugin
 
-Use the `fallbackData` option instead.
+- ##### Changes to the optionality of `[Model]Schema` schema
 
-### 6. TanStack Query Plugin
+  In V1, the generated `[Model]Schema` schema has all fields marked optional. This is changed in V2 to respect the optionality of fields as they are declared in ZModel.
 
-#### Default target version is now "v5".
+#### 5.2. SWR Plugin
+
+- ##### Legacy mutation functions are removed
+
+  In V1, the SWR plugin used to generate a set of legacy mutation functions via the `useMutate[Model]` hook. These functions (together with the hook) are removed in V2. You should use the individual mutation hooks instead.
+
+  Old code:
+
+  ```ts
+  import { useMutatePost } from '@lib/hooks';
+
+  const { createPost } = useMutatePost();
+  await createPost({ data: {...} });
+  ```
+
+  New code:
+
+  ```ts
+  import { useCreatePost } from '@lib/hooks';
+
+  const { trigger: createPost, isMutating } = useCreatePost();
+  await createPost({ data: {...} })
+  ```
+
+- ##### The `initialData` query option is removed
+
+  Use the `fallbackData` option instead.
+
+#### 5.3. TanStack Query Plugin
+
+- ##### Default target version is now "v5".
 
   In V1 the default target version was TanStack Query V4.
 
-#### Generated hooks got simplified parameters
+- ##### Generated hooks got simplified parameters
 
   The query and mutation hooks generated in V1 had a few parameters like `invalidateQueries` and `optimisticUpdate`. These parameters are merged into the `options` parameter. The `options` parameter is used for configuring both tanstack-query and the additional behavior of ZenStack.
 
