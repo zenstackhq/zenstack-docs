@@ -105,15 +105,15 @@ const db = enhance(prisma, { user: getCurrentUser() });
 await canRead = await db.post.check({ operation: 'read' });
 ```
 
-The input also has an optional filter field for imposing additional constraints on model fields.
+The input also has an optional where field for imposing additional constraints on model fields.
 
 ```ts
-await canRead = await db.post.check({ operation: 'read', filter: { published: true }});
+await canRead = await db.post.check({ operation: 'read', where: { published: true }});
 ```
 
 :::danger
 
-As explained in [the previous section](#the-challenge-and-solution), permission checking is an approximation and can be over-permissive. You SHOULD NOT trust it and circumvent the real access control mechanism (e.g., calling raw Prisma CRUD operations without further authorization checks).
+As explained in [the previous section](#the-challenge-and-solution), permission checking is an approximation and can be over-permissive. You MUST NOT trust it and circumvent the real access control mechanism (e.g., calling raw Prisma CRUD operations without further authorization checks).
 
 :::
 
