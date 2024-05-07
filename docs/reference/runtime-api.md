@@ -19,7 +19,7 @@ Creates an enhanced wrapper for a `PrismaClient`. The return value has the same 
 ```ts
 function enhance<DbClient extends object>(
     prisma: DbClient,
-    context?: WithPolicyContext,
+    context?: EnhancementContext,
     options?: EnhancementOptions
 ): DbClient;
 ```
