@@ -11,6 +11,8 @@ ZenStack's access policies provide a protection layer around Prisma's CRUD opera
 
 Of course, you can determine the permission by executing the operation to see if it's allowed (try reading data, or mutating inside a transaction then aborting). But this comes with the cost of increased database load, slower UI rendering, and data pollution risks.
 
+Another choice is to implement permission checking logic directly inside your frontend code. However it'll be much nicer if the access policies in ZModel can be reused, so it stays as the single source of truth for access control.
+
 This guide introduces how to use ZenStack's `check` API to check permissions without accessing the database. The feature is in preview, and feedback is highly appreciated.
 
 :::danger
