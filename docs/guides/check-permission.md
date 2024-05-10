@@ -11,7 +11,7 @@ ZenStack's access policies provide a protection layer around Prisma's CRUD opera
 
 Of course, you can determine the permission by executing the operation to see if it's allowed (try reading data, or mutating inside a transaction then aborting). But this comes with the cost of increased database load, slower UI rendering, and data pollution risks.
 
-Another choice is to implement permission checking logic directly inside your frontend code. However it'll be much nicer if the access policies in ZModel can be reused, so it stays as the single source of truth for access control.
+Another choice is to implement permission checking logic directly inside your frontend code. However, it'll be much nicer if the access policies in ZModel can be reused, so it stays as the single source of truth for access control.
 
 This guide introduces how to use ZenStack's `check` API to check permissions without accessing the database. The feature is in preview, and feedback is highly appreciated.
 
@@ -35,13 +35,13 @@ Let's make the discussion more concrete by looking at an example:
 
 ```zmodel
 model Post {
-    id Int @id @default(autoincrement())
-    title String
-    author User @relation(fields: [authorId], references: [id])
-    authorId Int
-    published Boolean @default(false)
+  id Int @id @default(autoincrement())
+  title String
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int
+  published Boolean @default(false)
 
-    @@allow('read', published || authorId == auth().id)
+  @@allow('read', published || authorId == auth().id)
 }
 ```
 
@@ -79,15 +79,15 @@ Then, rerun `zenstack generate`, and the `check` API will be available on each m
 
 ```ts
 type CheckArgs = {
-    /**
-     * The operation to check for
-     */
-    operation: 'create' | 'read' | 'update' | 'delete';
+  /**
+   * The operation to check for
+   */
+  operation: 'create' | 'read' | 'update' | 'delete';
 
-    /**
-     * The optional additional constraints to impose on the model fields
-     */
-    where?: { id?: number; title?: string; published?: boolean; authorId?: number };
+  /**
+   * The optional additional constraints to impose on the model fields
+   */
+  where?: { id?: number; title?: string; published?: boolean; authorId?: number };
 }
 
 check(args: CheckArgs): Promise<boolean>;
@@ -163,6 +163,21 @@ The result will be `true` with the following variable assignments:
 
 - `published -> false`
 - `authorId -> 1`
+
+## Server Adapters and Hooks
+
+The `check` API is also available in the [RPC API Handler](../reference/server-adapters/api-handlers/rpc) and can be used with all [server adapters](../category/server-adapters).
+
+The [@zenstackhq/tanstack-query](../reference/plugins/tanstack-query) and [@zenstackhq/swr](../reference/plugins/swr) plugins also generate `useCheck[Model]` hooks for checking permissions in the frontend.
+
+```ts
+import { useCheckPost } from '~/lib/hooks';
+
+const { data: canReadDrafts } = useCheckPost({
+  operation: 'read',
+  where: { published: false } 
+});
+```
 
 ## Limitations
 
