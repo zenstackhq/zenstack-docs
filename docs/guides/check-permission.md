@@ -7,17 +7,23 @@ sidebar_position: 13
 
 ## Introduction
 
-ZenStack's access control features provide a protection layer around Prisma's CRUD operations and filter/deny access to the data automatically. However, there are cases where you simply want to check if an operation is permitted without actually executing it. For example, you might want to show or hide a button based on the user's permission.
+ZenStack's access policies provide a protection layer around Prisma's CRUD operations and filter/deny access to the data automatically. However, there are cases where you simply want to check if an operation is permitted without actually executing it. For example, you might want to show or hide a button based on the user's permission.
 
-Of course, you can determine the permission by executing the operation to see if it's allowed (try reading data, or mutating inside a transaction then aborting). But this comes with the cost of increased database load and slower UI rendering.
+Of course, you can determine the permission by executing the operation to see if it's allowed (try reading data, or mutating inside a transaction then aborting). But this comes with the cost of increased database load, slower UI rendering, and data pollution risks.
 
 This guide introduces how to use ZenStack's `check` API to check permissions without accessing the database. The feature is in preview, and feedback is highly appreciated.
 
-## The Challenge and Solution
+:::danger
 
-This section provides background about the "permission checking" problem. Feel free to directly skip to the [Usage](#usage) section if you want to try it out right away.
+Permission checking is an approximation and can be over-permissive. You MUST NOT trust it and circumvent the real access control mechanism (e.g., calling raw Prisma CRUD operations without further authorization checks).
 
-ZenStack's access policies are by design coupled with the data model, which implies that to check permission precisely, you'll have to evaluate it against the actual data. In reality, what you often need is an approximation, or in other words, a "weak" check. For example, you may want to check if the current user, given his role, can create an entity of a particular model, and if so, show the "create" button. You don't really want to guarantee that the user is allowed to create the entity with any data. What you care about is if he's allowed in some cases.
+:::
+
+
+
+## Understanding the Problem
+
+ZenStack's access policies are by design coupled with the data model, which implies that to check a permission precisely, you'll have to evaluate it against the actual data. In reality, what you often need is an approximation, or in other words, a "weak" check. For example, you may want to check if the current user, given his role, can read entities of a particular model, and if so, render the corresponding part of UI. You don't really want to guarantee that the user is allowed to read every row of that model. What you care about is if he's potentially allowed.
 
 With this in mind, "checking permission" is equivalent to answering the following question:
 
@@ -35,59 +41,30 @@ model Post {
     authorId Int
     published Boolean @default(false)
 
-    @@allow('read', published || auth().id == authorId || auth().role == 'ADMIN')
+    @@allow('read', published || authorId == auth().id)
 }
 ```
 
 The "read" policy rule can be converted to a boolean formula like:
 
-```
-OR:
-    var(published)
-    `context.user.id` == var(authorId)
-    `context.user.role` == 'ADMIN'
+```mermaid
+flowchart LR
+  OR((OR)) --> A["[published] == true"]
+  OR((OR)) --> B["[authorId] == context.user.id"]
 ```
 
 :::info
 
 - The `context` object is the second argument you pass to the `enhance` API call.
-- The `var(NAME)` symbol represents a named variable in a boolean formula.
+- A name wrapped with square brackets represents a named variable in a boolean formula.
 
 :::
 
-We can try solving for a solution for different cases:
+To check if a user can read posts, we simply need to find a solution for the `published` and `authorId` variables that make the boolean formula evaluate to `TRUE`.
 
-- Can an anonymous user read posts?
-  
-  Yes. Solution: `published = true`
+## Using the `check` API
 
-- Can `user#1` with "User" role read posts that are not published?
-  
-  :::info
-  The extra constraint imposed is `published == false`.
-  :::
-
-  Yes. Solution: `authorId = 1`, `published = false`
-
-- Can `user#1` with "User" role read unpublished posts of `user#2`?
-  
-  :::info
-  The extra constraint imposed is `published == false && authorId == 2`.
-  :::
-
-  No. No solution.
-
-- Can `user#1` with "ADMIN" role read unpublished posts of `user#2`?
-  
-  :::info
-  The extra constraint imposed is `published == false && authorId == 2`.
-  :::
-
-  Yes. The formula is constant `true` because of `context.user.role == 'ADMIN'`.
-
-## Usage
-
-To use the permission checking feature, first, enable the "generatePermissionChecker" preview flag for the "@core/enhancer" plugin in ZModel.
+ZenStack adds a `check` API to every model in the enhanced PrismaClient. The feature is still in preview, so you need to explicitly opt-in by turning on the "generatePermissionChecker" flag on the "@core/enhancer" plugin in ZModel:
 
 ```zmodel
 
@@ -98,28 +75,99 @@ plugin enhancer {
 
 ```
 
-Then, rerun `zenstack generate`, and the enhanced PrismaClient will have the extra `check` API on each model.
+Then, rerun `zenstack generate`, and the `check` API will be available on each model with the following signature (using the `Post` model as an example):
 
 ```ts
-const db = enhance(prisma, { user: getCurrentUser() });
+type CheckArgs = {
+    /**
+     * The operation to check for
+     */
+    operation: 'create' | 'read' | 'update' | 'delete';
+
+    /**
+     * The optional additional constraints to impose on the model fields
+     */
+    where?: { id?: number; title?: string; published?: boolean; authorId?: number };
+}
+
+check(args: CheckArgs): Promise<boolean>;
+```
+
+Let's see how to use it check `Post` readability for different use cases. Just to recap, the boolean formula for the "read" policy is:
+
+```mermaid
+flowchart LR
+  OR((OR)) --> A["[published] == true"]
+  OR((OR)) --> B["[authorId] == context.user.id"]
+```
+
+### 1. Can an anonymous user read posts?
+
+The scenario is to determine if the `Posts` UI tab should be visible when the current user is not logged in. We can do the checking as follows:
+
+```ts
+const db = enhance(prisma); // enhance without a user context
 await canRead = await db.post.check({ operation: 'read' });
 ```
 
-The input also has an optional where field for imposing additional constraints on model fields.
+The result will be `true` with the following variable assignments:
+
+- `published -> true`
+- `authorId -> 0`
+
+Note that the `authorId` variable can actually be any integer.
+
+### 2. Can an anonymous user read unpublished posts?
+
+The scenario is to determine if the `Drafts` UI tab should be visible when the current user is not logged in.
 
 ```ts
-await canRead = await db.post.check({ operation: 'read', where: { published: true }});
+const db = enhance(prisma); // enhance without a user context
+await canRead = await db.post.check({ operation: 'read', where: { published: false } });
 ```
 
-:::danger
+We're now adding an additional constraint `published == false` that the solver needs to consider besides the original formula:
 
-As explained in [the previous section](#the-challenge-and-solution), permission checking is an approximation and can be over-permissive. You MUST NOT trust it and circumvent the real access control mechanism (e.g., calling raw Prisma CRUD operations without further authorization checks).
+```mermaid
+flowchart LR
+  OR((OR)) --> A["[published] == true"]
+  OR((OR)) --> B["[authorId] == context.user.id"]
+  AND((AND)) --> C["[published] == false"]
+  AND((AND)) --> OR
+  style C stroke-dasharray: 5, 5
+```
 
-:::
+The result will be `false` because there's no assignments of the `published` and `authorId` variables that satisfy the formula. Note that the `context.user.id` value is undefined thus cannot be equal to `authorId`.
+
+### 3. Can `user#1` read unpublished posts
+
+The scenario is to determine if the `Drafts` UI tab should be visible for a currently logged-in user.
+
+```ts
+const db = enhance(prisma, { user: { id: 1 } }); // enhance with user context
+await canRead = await db.post.check({ operation: 'read', where: { published: false } });
+```
+
+We're now providing a value `1` to `context.user.id`, and the formula becomes:
+
+```mermaid
+flowchart LR
+  OR((OR)) --> A["[published] == true"]
+  OR((OR)) --> B["[authorId] == 1"]
+  AND((AND)) --> C["[published] == false"]
+  AND((AND)) --> OR
+  style C stroke-dasharray: 5, 5
+```
+
+
+The result will be `true` with the following variable assignments:
+
+- `published -> false`
+- `authorId -> 1`
 
 ## Limitations
 
-ZenStack uses the [logic-solver](https://www.npmjs.com/package/logic-solver) package for SAT solving. The solver is lightweighted but only supports boolean and bits (non-negative integer) types. This resulted in the following limitations:
+ZenStack uses the [logic-solver](https://www.npmjs.com/package/logic-solver) package for SAT solving. The solver is lightweighted, but only supports boolean and bits (non-negative integer) types. This resulted in the following limitations:
 
 - Only `Boolean`, `Int`, `String`, and enum types are supported.
 - Functions (e.g., `startsWith`, `contains`, etc.) are not supported.
