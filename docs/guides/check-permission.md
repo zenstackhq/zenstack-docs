@@ -21,11 +21,9 @@ Permission checking is an approximation and can be over-permissive. You MUST NOT
 
 :::
 
-
-
 ## Understanding the Problem
 
-ZenStack's access policies are by design coupled with the data model, which implies that to check a permission precisely, you'll have to evaluate it against the actual data. In reality, what you often need is an approximation, or in other words, a "weak" check. For example, you may want to check if the current user, given his role, can read entities of a particular model, and if so, render the corresponding part of UI. You don't really want to guarantee that the user is allowed to read every row of that model. What you care about is if he's potentially allowed.
+ZenStack's access policies are by design coupled with the data model, which implies that to check permission precisely, you'll have to evaluate it against the actual data. In reality, what you often need is an approximation, or in other words, a "weak" check. For example, you may want to check if the current user, given his role, can read entities of a particular model, and if so, render the corresponding part of UI. You don't really want to guarantee that the user is allowed to read every row of that model. What you care about is if he's potentially allowed.
 
 With this in mind, "checking permission" is equivalent to answering the following question:
 
@@ -66,7 +64,7 @@ To check if a user can read posts, we simply need to find a solution for the `pu
 
 ## Using the `check` API
 
-ZenStack adds a `check` API to every model in the enhanced PrismaClient. The feature is still in preview, so you need to explicitly opt-in by turning on the "generatePermissionChecker" flag on the "@core/enhancer" plugin in ZModel:
+ZenStack adds a `check` API to every model in the enhanced PrismaClient. The feature is still in preview, so you need to explicitly opt in by turning on the "generatePermissionChecker" flag on the "@core/enhancer" plugin in ZModel:
 
 ```zmodel
 
@@ -95,7 +93,7 @@ type CheckArgs = {
 check(args: CheckArgs): Promise<boolean>;
 ```
 
-Let's see how to use it check `Post` readability for different use cases. Just to recap, the boolean formula for the "read" policy is:
+Let's see how to use it to check `Post` readability for different use cases. Just to recap, the boolean formula for the "read" policy is:
 
 ```mermaid
 flowchart LR
@@ -139,7 +137,7 @@ flowchart LR
   style C stroke-dasharray: 5, 5
 ```
 
-The result will be `false` because there's no assignments of the `published` and `authorId` variables that satisfy the formula. Note that the `context.user.id` value is undefined thus cannot be equal to `authorId`.
+The result will be `false` because there are no assignments of the `published` and `authorId` variables that satisfy the formula. Note that the `context.user.id` value is undefined thus cannot be equal to `authorId`.
 
 ### 3. Can `user#1` read unpublished posts
 
@@ -160,7 +158,6 @@ flowchart LR
   AND((AND)) --> OR
   style C stroke-dasharray: 5, 5
 ```
-
 
 The result will be `true` with the following variable assignments:
 
