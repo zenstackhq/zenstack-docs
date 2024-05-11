@@ -31,6 +31,7 @@ plugin openapi {
     title = "My Todo API"
     version = "1.0.0"
     flavor = "rpc"
+    prefix = '/api'
 }
 ```
 
