@@ -472,7 +472,7 @@ export const Post = ({ content }: { content: Content }) => {
 
 export const Image = ({ content }: { content: Content }) => {
   const image = content as Image;
-  return (<Image src= {content.url || ""} alt={content.id} />);
+  return (<Image src= {image.url || ""} alt={image.id} />);
 };
 ```
 
