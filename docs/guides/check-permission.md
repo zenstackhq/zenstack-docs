@@ -168,7 +168,7 @@ The result will be `true` with the following variable assignments:
 
 The `check` API is also available in the [RPC API Handler](../reference/server-adapters/api-handlers/rpc) and can be used with all [server adapters](../category/server-adapters).
 
-The [@zenstackhq/tanstack-query](../reference/plugins/tanstack-query) and [@zenstackhq/swr](../reference/plugins/swr) plugins also generate `useCheck[Model]` hooks for checking permissions in the frontend.
+The [@zenstackhq/tanstack-query](../reference/plugins/tanstack-query) and [@zenstackhq/swr](../reference/plugins/swr) plugins have been updated to generate `useCheck[Model]` hooks for checking permissions in the frontend.
 
 ```ts
 import { useCheckPost } from '~/lib/hooks';

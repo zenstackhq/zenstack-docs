@@ -36,6 +36,35 @@ npm install --save-dev @zenstackhq/tanstack-query
 | target  | String | Target framework to generate for. Choose from "react", "vue", and "svelte".              | Yes     |         |
 | version | String | Version of TanStack Query to generate for. Choose from "v4" and "v5".                    | No      | v5      |
 
+### Hooks Signature
+
+The generated hooks have the following signature convention.
+
+- **Query Hooks**
+
+    ```ts
+    function use[Operation][Model](args?, options?);
+    ```
+
+    - `[Operation]`: query operation. E.g., "FindMany", "FindUnique", "Count".
+    - `[Model]`: the name of the model. E.g., "Post".
+    - `args`: Prisma query args. E.g., `{ where: { published: true } }`.
+    - `options`: tanstack-query options.
+
+    The `data` field returned by the hooks call contains the Prisma query result.
+
+- **Mutation Hooks**
+
+    ```ts
+    function use[Operation][Model](options?);
+    ```
+
+    - `[Operation]`: mutation operation. E.g., "Create", "UpdateMany".
+    - `[Model]`: the name of the model. E.g., "Post".
+    - `options`: TanStack-Query options.
+
+    The `mutate` and `mutateAsync` functions returned with the hooks call take the corresponding Prisma mutation args as input. E.q., `{ data: { title: 'Post1' } }`.
+
 ### Context Provider
 
 The generated hooks allow you to control their behavior by setting up context. The following options are available on the context:
