@@ -265,7 +265,7 @@ The main thing that ZenStack does internally is to translate between these two "
 
 - Inheriting from multiple `@delegate` models is not supported yet.
 
-- You cannot access base fields when calling `count`, `aggregate`, and `groupBy`. The following query is not supported:
+- You cannot access base fields when calling `count`, `aggregate`, and `groupBy` with a concrete model. The following query is not supported:
 
     ```ts
     // you can't access base fields (`published` here) when aggregating

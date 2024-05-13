@@ -113,9 +113,23 @@ You can switch back to the old behavior in the extension settings (VSCode only).
 
 We've updated the `@zenstackhq/runtime` package to be compatible with Vercel Edge Runtime and Cloudflare Workers. See [this documentation](./guides/edge) for more details.
 
-### 6. Permission Checker API 🚧
+### 6. Permission Checker API (Preview)
 
-Coming soon. Please watch [this feature request](https://github.com/zenstackhq/zenstack/issues/242) for updates.
+ZenStack's access policies prevent unauthorized users to query or mutate data. However, there are cases where you simply want to check if an operation is permitted without actually executing it. For example, you might want to show or hide a button based on the user's permission.
+
+The new permission checker API allows to check a user's permission without querying the database.
+
+```ts
+const db = enhance(prisma, { user: getCurrentUser() });
+
+// check if the current user can read published posts
+await canRead = await db.post.check({
+  operation: 'read',
+  where: { published: true }
+});
+```
+
+Please check [this guide](./guides/check-permission) for more details.
 
 ## Upgrading
 
