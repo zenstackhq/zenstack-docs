@@ -154,7 +154,7 @@ We now have a working auth system that allows users to sign up and sign in.
 
 ### Set up access control
 
-There are many ways to implement access control. People typically put the check in the API layer with imperative code. ZenStack offers a unique and powerful way to do it declaratively inside the database schema. Let's see how it work.
+There are many ways to implement access control. People typically put the check in the API layer with imperative code. ZenStack offers a unique and powerful way to do it declaratively inside the database schema. Let's see how it works.
 
 First, let's initialize the project for ZenStack:
 
