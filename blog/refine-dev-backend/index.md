@@ -13,7 +13,7 @@ image: ./cover.png
 
 [Refine.dev](https://refine.dev/) is a very powerful and popular React-based framework for building web apps with less code. It focuses on providing high-level components and hooks to cover common use cases like authentication, authorization, and CRUD. One of the main reasons for its popularity is that it allows easy integration with many different kinds of backend systems via a flexible adapter design.
 
-This post will focus on the most important type of integration: database CRUD. I'll show how easy it is, with the help of Prisma and ZenStack, to turn your database schema into a fully secured API that powers your refine app.
+This post will focus on the most important type of integration: database CRUD. I'll show how easy it is, with the help of Prisma and ZenStack, to turn your database schema into a fully secured API that powers your refine app. You'll see how we start by defining the data schema and access policies, derive an automatic CRUD API from it, and finally integrate with the Refine app via a "Data Provider."
 
 <!-- truncate -->
 
@@ -106,51 +106,9 @@ The `Account`, `Session`, and `VerificationToken` models are [required by Auth.j
 
 ### Building authentication
 
-The focus of this post will be data access and access control. However, they are only possible with an authentication component in place. We'll use simple credential-based authentication in this app. Setting it up involves three parts:
+The focus of this post will be data access and access control. However, they are only possible with an authentication system in place. We'll use simple credential-based authentication in this app. The implementation involves creating an Auth.js configuration, installing an API route to handle auth requests, and implementing a Refine "Authentication Provider".
 
-1. Configuring an Auth.js provider to verify the user's credentials.
-   
-    ```ts title="src/auth.ts"
-    const auth = NextAuth({
-      ...
-      providers: [
-        Credentials({
-          credentials: {
-            email: { type: 'email' },
-            password: { type: 'password' },
-          },
- 
-          authorize: async (credentials) => {
-            // find a user with matching email
-            const user = await prisma.user.findUnique({
-              where: { email: credentials.email },
-              select: { id: true, email: true, password: true },
-            });
- 
-            // verify password hash matches
-            if (user && (await compare(credentials.password, user.password))) {
-              return { id: user.id, email: user.email };
-            } else {
-               return null;
-            }
-          },
-        }),
-      ]
-    });
-    ```
-
-2. Installing an API route handler to process auth requests
-    
-    ```ts title="src/app/api/auth/[...nextauth]/route.ts"
-    import { handlers } from '@/auth';
-    export const { GET, POST } = handlers;
-    ```
-
-3. Implementing a Refine "Authentication Provider"
-   
-   Refine's auth provider allows you to integrate any custom authentication. You'll need to provide the implementation for routines like `register`, `login`, `logout`, etc. The completed code can be found [here](https://github.com/ymc9/refine-nextjs-zenstack/tree/main/src/providers/auth-provider).
-
-We now have a working auth system that allows users to sign up and sign in.
+I won't elaborate on the details of this part, but you can find the completed code [here](https://github.com/ymc9/refine-nextjs-zenstack/tree/main/src/providers/auth-provider). It should get the registration, login, and session management parts working.
 
 ### Set up access control
 
