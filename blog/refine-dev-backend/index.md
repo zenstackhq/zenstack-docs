@@ -3,7 +3,7 @@ title: Low-Code Backend Solution for Refine.dev Using Prisma and ZenStack
 description: This post introduces how to build a fully-secured backend API for refine.dev projects with minimum code using Prisma and ZenStack.
 tags: [refine, react, authorization]
 authors: yiming
-date: 2024-06-27
+date: 2024-05-27
 image: ./cover.png
 ---
 
