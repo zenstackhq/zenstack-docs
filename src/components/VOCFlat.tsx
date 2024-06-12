@@ -97,7 +97,7 @@ export default function VOC(): JSX.Element {
                 <Quote
                     author="Søren Bramer Schmidt"
                     company="Prisma"
-                    avatar="https://pbs.twimg.com/profile_images/710410251401629696/UB1dgaWi_400x400.jpg"
+                    avatar="https://pbs.twimg.com/profile_images/1796990572965613569/aJIPcp4r_400x400.jpg"
                     link="https://twitter.com/sorenbs/status/1709924686635892917"
                 >
                     ZenStack is an excellent example in what we have in mind when we talk about Data DX 🎉
