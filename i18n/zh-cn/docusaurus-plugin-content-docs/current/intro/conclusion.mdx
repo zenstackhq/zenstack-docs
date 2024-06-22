@@ -1,0 +1,36 @@
+---
+description: 结论
+sidebar_label: 6. 结论
+sidebar_position: 6
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+
+# 结论
+
+谢谢你坚持读完介绍，我希望你喜欢阅读。
+
+ZenStack的设计目标之一是将其功能打包成松散耦合的组件，让开发人员选择使用什么以及如何混合和匹配它们。 例如，如果你的项目是一个monorepo项目，使用的是一个“元框架”，如Next.js，你可以像下面这样在整个堆栈中使用ZenStack：
+
+<ThemedImage
+    alt="ZenStack Architecture"
+    sources={{
+        light: useBaseUrl('/img/intro/zenstack-nextjs-light.png'),
+        dark: useBaseUrl('/img/intro/zenstack-nextjs-dark.png'),
+    }}
+/>
+
+但是，您也可以只选择最适合您需求的部件：
+
+- 改进了Prisma模式，具有[多文件支持和模型继承](/docs/guides/multiple-schema)等功能。
+- 实施[多租户](/blog/multi-tenant)。
+- 一个更好的实现[软删除](/blog/soft-delete)的方法。
+- Headless[RESTful API](/blog/rest-api-on-vercel)在您选择的Node.js框架上，带有Swagger文档。
+
+后续步骤：
+
+- 查看[快速入门](/docs/category/quick-start)文档，开始使用所选的框架。
+- 在[指南](/docs/category/guides)中学习使用ZenStack实现某些目标。
+- 查看[参考资料](/docs/category/reference)以获取详细的模式语言和API文档。
