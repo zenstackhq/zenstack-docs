@@ -91,6 +91,12 @@ async function getPrisma() {
 }
 ```
 
+:::warning
+
+It may be tempting to call Supabase's `getSession` API to get the current user. However, the data returned is not validated on the server side, so it should not be trusted. You can find more details in [this GitHub issue](https://github.com/orgs/supabase/discussions/23224). Calling `getUser` instead guarantees that the return user identity is validated remotely, although it incurs an extra network request to Supabase. Supabase may resolve the performance issue in the future.
+
+:::
+
 You can then use this enhanced Prisma client for CRUD operations that you desire to be governed by the access policies you defined in your data models.
 
 Next, make sure to read [this guide](../supabase-security) to ensure your database is securely protected from HTTP requests to the supabase API.
