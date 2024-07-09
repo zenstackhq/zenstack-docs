@@ -1,6 +1,6 @@
 ---
 sidebar_position: 7
-sidebar_label: Sample Catalog
+sidebar_label: Sample Projects
 ---
 
 # A Catalog of Sample Projects
