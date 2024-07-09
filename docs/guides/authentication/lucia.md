@@ -57,29 +57,29 @@ Create `validateRequest()`. This will check for the session cookie, validate it
 
 ```tsx title='/lib/auth.ts'
 export const validateRequest = cache(
-	async (): Promise<{ user: User; session: Session } | { user: null; session: null }> => {
-		const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-		if (!sessionId) {
-			return {
-				user: null,
-				session: null
-			};
-		}
+  async (): Promise<{ user: User; session: Session } | { user: null; session: null }> => {
+    const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+    if (!sessionId) {
+      return {
+        user: null,
+        session: null
+      };
+    }
 
-		const result = await lucia.validateSession(sessionId);
-		// next.js throws when you attempt to set cookie when rendering page
-		try {
-			if (result.session && result.session.fresh) {
-				const sessionCookie = lucia.createSessionCookie(result.session.id);
-				cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-			}
-			if (!result.session) {
-				const sessionCookie = lucia.createBlankSessionCookie();
-				cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-			}
-		} catch {}
-		return result;
-	}
+    const result = await lucia.validateSession(sessionId);
+    // next.js throws when you attempt to set cookie when rendering page
+    try {
+      if (result.session && result.session.fresh) {
+        const sessionCookie = lucia.createSessionCookie(result.session.id);
+        cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+      }
+      if (!result.session) {
+        const sessionCookie = lucia.createBlankSessionCookie();
+        cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+      }
+    } catch {}
+    return result;
+  }
 );
 ```
 
@@ -120,22 +120,22 @@ By default, Lucia will not expose any database columns to the `User` type. To 
 
 ```tsx title='/lib/auth.ts'
 declare module "lucia" {
-	interface Register {
-		Lucia: typeof lucia;
-		DatabaseUserAttributes: DatabaseUserAttributes
-	}
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes
+  }
 }
 
 interface DatabaseUserAttributes {
-    userName: string;
+  userName: string;
 }
 
 export const lucia = new Lucia(adapter, {
-	getUserAttributes: (attributes) => {
-		return {
-			userName: attributes.userName
-		};
-	}
+  getUserAttributes: (attributes) => {
+    return {
+      userName: attributes.userName
+    };
+  }
 });
 ```
 
@@ -143,12 +143,12 @@ Then, you can directly access it from the result returned by `validateRequest` f
 
 ```tsx title='/app/page.tsx'
 export default async function Page() {
-	const { user } = await validateRequest();	
-	return (
-		<>
-			<h1>Hi, {user.userName}!</h1>
-			<p>Your user ID is {user.id}.</p>
-		</>
-	);
+  const { user } = await validateRequest();	
+  return (
+    <>
+      <h1>Hi, {user.userName}!</h1>
+      <p>Your user ID is {user.id}.</p>
+    </>
+  );
 }
 ```
