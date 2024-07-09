@@ -968,6 +968,10 @@ model Post {
 }
 ```
 
+:::info
+The `check()` function only supports singular relation fields and cannot be used with "to-many" relations. We may add support for it in the future.
+:::
+
 ##### contains()
 
 ```zmodel
