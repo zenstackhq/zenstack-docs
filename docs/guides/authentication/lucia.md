@@ -16,21 +16,21 @@ Lucia needs to store your users and sessions in the database. So, your ZModel de
 
 ```zmodel title='/schema.zmodel'
 model User {
-    id       String    @id @default(uuid())
-    userName String    @unique
-    password String    @omit
-    sessions Session[]
+  id       String    @id @default(uuid())
+  userName String    @unique
+  password String    @omit
+  sessions Session[]
 
-    @@allow('read', true)
-    @@allow('all', auth() == this)
+  @@allow('read', true)
+  @@allow('all', auth() == this)
 }
 
 model Session {
-    id        String   @id
-    userId    String
-    expiresAt DateTime
+  id        String   @id
+  userId    String
+  expiresAt DateTime
 
-    user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 The data field names and types in the `session` model must exactly match the ones in the above. While you can change the model names, the relation name in the session model (`Session.user`) must be the camel-case version of the user model name. For example, if the user model was named `AuthUser`, the relation must be named `Session.authUser`.
@@ -106,10 +106,10 @@ import { enhance } from '@zenstackhq/runtime';
 export const prisma = new PrismaClient();
 
 export async function getEnhancedPrisma(): Promise<PrismaClient> {
-    const { user } = await validateRequest();
-    // create a wrapper of Prisma client that enforces access policy,
-    // data validation, and @password, @omit behaviors
-    return enhance(prisma, { user: {id: user?.id!}});
+  const { user } = await validateRequest();
+  // create a wrapper of Prisma client that enforces access policy,
+  // data validation, and @password, @omit behaviors
+  return enhance(prisma, { user: {id: user?.id!}});
 }
 ```
 
