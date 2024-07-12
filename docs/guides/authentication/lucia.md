@@ -34,7 +34,7 @@ model Session {
 }
 ```
 
-The data field names and types in `session` model must exactly match the ones in the above. While you can change the model names, the relation name in the session model (`Session.user`) must be the camel-case version of the user model name. For example, if the user model was named `AuthUser`, the relation must be named `Session.authUser`.
+The data field names and types in the `session` model must exactly match the ones in the above. While you can change the model names, the relation name in the session model (`Session.user`) must be the camel-case version of the user model name. For example, if the user model was named `AuthUser`, the relation must be named `Session.authUser`.
 
 ## Prisma adapter
 
