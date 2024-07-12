@@ -10,7 +10,7 @@ sidebar_label: Lucia
 
 To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. This guide introduces tasks required for integrating ZenStack with Lucia Auth. You can find a complete example [here](https://github.com/zenstackhq/sample-luciaAuth-nextjs). 
 
-## Data Model Requirement
+## Data model requirement
 
 Lucia needs to store your users and sessions in the database. So, your ZModel definition needs to include these two models. Here is the sample schema:
 
@@ -36,7 +36,7 @@ model Session {
 
 The data field names and types in `session` model must exactly match the ones in the above. While you can change the model names, the relation name in the session model (`Session.user`) must be the camel-case version of the user model name. For example, if the user model was named `AuthUser`, the relation must be named `Session.authUser`.
 
-## Prisma Adapter
+## Prisma adapter
 
 Lucia connects to your database via an adapter, which provides a set of basic, standardized querying methods that Lucia can use. Since ZenStack is based on Prisma, you can 
 
