@@ -86,11 +86,11 @@ export const validateRequest = cache(
 This function can be used in server components and form actions to get the current session and user.
 
 ```tsx title='/app/page.tsx'
-  const { user } = await validateRequest();
+const { user } = await validateRequest();
 
-  if (!user) {
-    return redirect("/login");
-  }
+if (!user) {
+  return redirect("/login");
+}
 ```
 
 ## Create an enhanced Prisma client
