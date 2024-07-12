@@ -118,6 +118,6 @@ interface ZenStackModuleOptions {
   /**
    * A callback for getting an enhanced `PrismaClient`.
    */
-  getEnhancedPrisma: () => unknown;
+  getEnhancedPrisma: (model?: string | symbol) => unknown;
 }
 ```

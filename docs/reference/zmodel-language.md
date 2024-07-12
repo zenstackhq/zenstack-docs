@@ -914,6 +914,64 @@ function future(): Any {}
 
 Gets the "post-update" state of an entity. Only valid when used in a "update" access policy. Read more about access policies [here](#access-policy).
 
+##### check()
+
+```zmodel
+function check(field: FieldReference, operation String?): Boolean {}
+```
+
+Checks if the current user can perform the given operation on the given field.
+
+_Params_
+
+-  `field`: The field to check access for. Must be a relation field.
+-  `operation`: The operation to check access for. Can be "read", "create", "update", or "delete". If the operation is not provided, it defaults the operation of the containing policy rule.
+  
+_Example_
+
+```zmodel
+// delegating a single operation kind
+model Post {
+    id Int @id
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+
+    // delegate "read" check to the author, equivalent to
+    //     @@allow('read', check(author))
+    @@allow('read', check(author, 'read'))
+}
+```
+
+```zmodel
+// delegating all operations
+model Post {
+    id Int @id
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+
+    // delegate all access policies to the author, equivalent to:
+    //     @@allow('read', check(author))
+    //     @@allow('create', check(author))
+    //     @@allow('update', check(author))
+    //     @@allow('delete', check(author))
+    @@allow('all', check(author))
+}
+```
+
+```zmodel
+// delegating field access control
+model Post {
+    id Int @id
+    title String @allow('update', check(author))
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int
+}
+```
+
+:::info
+The `check()` function only supports singular relation fields and cannot be used with "to-many" relations. We may add support for it in the future.
+:::
+
 ##### contains()
 
 ```zmodel
