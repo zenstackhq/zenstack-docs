@@ -40,7 +40,7 @@ The data field names and types in the `session` model must exactly match the one
 
 Lucia connects to your database via an adapter, which provides a set of basic, standardized querying methods that Lucia can use.
 
-Lucia has its own Prisma adapter `@lucia-auth/adapter-prisma`, which provides a set of basic, standardized querying methods.  Since ZenStack is based on Prisma, you can use PrismaAdapter for the job:
+Lucia has its own Prisma adapter `@lucia-auth/adapter-prisma`. Since ZenStack is based on Prisma, you can use PrismaAdapter for the job:
 
 ```tsx title='/lib/auth.ts'
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
