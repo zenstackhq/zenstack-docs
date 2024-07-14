@@ -7,6 +7,8 @@ date: 2024-07-13
 image: ./cover.jpg
 ---
 
+import RecursionIssue from './recursion-issue.png';
+
 # How the "check" Function Helps Keep Your Policies DRY
 
 ![Cover Image](cover.jpg)
@@ -209,9 +211,13 @@ model Folder {
 }
 ```
 
-This will be a hard problem to solve since Prisma inherently doesn't support recursive queries (check [this issue](https://github.com/prisma/prisma/issues/3725) for details). A possible solution is to expand the recursion with a (configurable) finite levels of depth.
+This will be a hard problem to solve since Prisma inherently doesn't support recursive queries. You can check the following issue for more details:
 
-Is this something your app needs?
+<div align="center">
+  <a href="https://github.com/prisma/prisma/issues/3725"><img src={RecursionIssue} alt="Prisma recursion issue" width="600px" style={{'border-radius':'0.5rem'}} /></a>
+</div>
+
+A possible solution is to expand the recursion with a (configurable) finite levels of depth. Is this something your app needs?
 
 ### 3. Other forms of duplication?
 
