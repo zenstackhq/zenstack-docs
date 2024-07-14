@@ -51,7 +51,7 @@ model Todo {
 }
 ```
 
-As you can easily spot, the access policies for `Todo` are almost identical to those for `List`. The duplication is not only tedious to write but also error-prone to maintain. If you ever need to change the policy, you have to remember to update it in two places.
+As you can easily spot, the access policies for `Todo` are almost identical to those for `List`. The duplication is not only tedious to write but also error-prone to maintain. If you ever need to change the policy, you have to remember to update it in two places. In a real application, the rules will be more complex, and as a result, the duplication will be more severe and can sometimes get several level deep.
 
 The key to the problem is that from the access control point of view, the child model `Todo` simply "follows" the parent model `List`, which is a typical pattern in many applications. We can avoid duplication if we had a way to "delegate" the check of the child model to its parent.
 
@@ -194,9 +194,9 @@ There are two possible ways to add such support:
 
 What's your preference? Leave a comment below!
 
-### 2. Cyclic relations
+### 2. Recursive relations
 
-The `zenstack` CLI checks for cycles in the `check` call graph and reports an error if it finds one. This is needed to prevent infinite loops during evaluation. However, there are cases where cyclic delegation is intentionally needed. For example, if you want to model a Google Drive-like system, you may end up with a self-cycle like this:
+The `zenstack` CLI checks for cycles in the `check` call graph and reports an error if it finds one. This is needed to prevent infinite loops during evaluation. However, there are cases where cyclic delegation is intentionally needed, especially in the case of recursion. For example, if you want to model a Google Drive-like system, you may end up with a recursion like this:
 
 ```zmodel
 model Folder {
@@ -209,7 +209,7 @@ model Folder {
 }
 ```
 
-This will be a hard problem to solve since Prisma inherently doesn't support recursive queries. A possible solution is to expand the recursion with a (configurable) finite levels of depth.
+This will be a hard problem to solve since Prisma inherently doesn't support recursive queries (check [this issue](https://github.com/prisma/prisma/issues/3725) for details). A possible solution is to expand the recursion with a (configurable) finite levels of depth.
 
 Is this something your app needs?
 
