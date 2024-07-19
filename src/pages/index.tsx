@@ -10,7 +10,7 @@ import { description } from '../lib/content';
 import styles from './index.module.css';
 import FrameworkIntegration from '../components/FrameworkIntegration';
 import VOC from '../components/VOCFlat';
-import Sponsorship from '../components/SponsorShip';
+import Sponsorship from '../components/Sponsorship';
 
 function Header() {
     return (
