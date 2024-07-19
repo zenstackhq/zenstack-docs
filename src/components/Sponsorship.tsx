@@ -5,10 +5,6 @@ export default function Sponsorship(): JSX.Element {
             <div className="flex flex-col text-center xl:w-3/4">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl pb-20">Our Generous Sponsors</h2>
                 <div className="flex flex-auto justify-center">
-                    {/* <a href="https://www.marblism.com/" target="_blank" className="no-underline">
-                        <img src="/img/logo/marblism-logo.png" className="h-40 object-contain" alt="marblism-logo" />
-                        <h2>Marblism</h2>
-                    </a> */}
                     <Sponsor src="/img/logo/marblism-logo.png" name="Marblism" website="https://www.marblism.com/" />
                 </div>
             </div>
