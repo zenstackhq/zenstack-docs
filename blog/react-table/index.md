@@ -78,10 +78,10 @@ erDiagram
 		Int categoryId
 		Float unitPrice
 	}
-	OrderDetail }o--|| Order : order
-	OrderDetail }o--|| Product : product
+	Order ||--|{ OrderDetail : details
 	Order }o--|| Customer : customer
 	Order }o--|| Employee : employee
+	OrderDetail }o--|| Product : product
 	Product }o--|| Category : category
 
 ```
