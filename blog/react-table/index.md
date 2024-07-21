@@ -86,7 +86,7 @@ erDiagram
 
 ```
 
-A Prisma schema file is authored to reflect this database structure.
+A [Prisma schema file](https://github.com/ymc9/react-query-table-zenstack/blob/main/prisma/schema.prisma) is authored to reflect this database structure.
 
 ## The "free lunch" API
 
