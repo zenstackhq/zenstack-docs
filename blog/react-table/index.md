@@ -191,10 +191,12 @@ const columns = [
 ];
 
 export const OrderDetails = () => {
+  // fetch data with query hooks
   const { data } = useFindManyOrderDetail({
     ...queryInclude,
   });
   
+  // create a table instance
   const table = useReactTable({
     data: orders ?? [],
     columns,
@@ -207,6 +209,8 @@ We can then render the table with some basic tsx:
 
 ```tsx
 export const OrderDetails = () => {
+  ...
+
   return (
     <table>
       <thead>
@@ -320,21 +324,21 @@ This part well demonstrates the value of "headless" UI. You don't need to manage
 
 We've got a pretty cool table end-to-end working now, with roughly 200 lines of code. Less code is only one of the benefits of this combination. It also provides excellent flexibility in every layer of the stack:
 
-- Prisma's query
+- **Prisma's query**
 
     Prisma is known for its concise yet powerful query API. It allows you to do complex joins and aggregations without writing SQL. In our example, our table shows data from five tables, and we barely noticed the complexity.
 
-- ZenStack's access control
+- **ZenStack's access control**
 
     Remember I said we'll get back to the security issue? A real-world API must have an authorization mechanism with it. ZenStack's real power lies in its ability to define access control rules in the data schema. You can define rules like rejecting anonymous users or showing only the orders of the current login employee, etc. Read more details [here](/docs/the-complete-guide/part1/access-policy/).
 
-- React Query's fetching
+- **React Query's fetching**
 
-  React Query provides great flexibility around how data is fetched, cached, and invalidated. Leverage its power to build a highly responsive UI and reduce the load on the database at same time.
+    React Query provides great flexibility around how data is fetched, cached, and invalidated. Leverage its power to build a highly responsive UI and reduce the load on the database at same time.
 
-- React Table's state management
+- **React Table's state management**
   
-  React Table has every aspect of a table's state organized for you. It provides a solid pattern to follow without limiting how you render the table UI.
+    React Table has every aspect of a table's state organized for you. It provides a solid pattern to follow without limiting how you render the table UI.
 
 ## Conclusion
 
