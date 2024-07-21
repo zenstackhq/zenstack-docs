@@ -92,7 +92,7 @@ A [Prisma schema file](https://github.com/ymc9/react-query-table-zenstack/blob/m
 
 SQL databases are not meant to be consumed from the frontend. You need an API to mediate. You can build such an API in many ways, but here we'll use [ZenStack](https://zenstack.dev) to "unbuild" it. ZenStack is a full-stack toolkit built above Prisma, and one of the cool things it does is to automagically derive a backend API from the schema.
 
-Setting ZenStack up is very easy:
+Setting ZenStack up is straightforward:
 
 1. Run `npx zenstack init` to prep the project. It copies the `schema.prisma` file into `schema.zmodel` - which is the schema file used by ZenStack. ZModel is a superset of Prisma schema.
   
@@ -133,7 +133,7 @@ I know a big **🚨 NO THIS IS NOT SECURE 🚨** is flashing in your mind. Hold 
 
 Having a free API is cool, but writing `fetch` to call it is cumbersome. How about some free query hooks? Yes, add the `@zenstackhq/tanstack-query` plugin to the ZModel schema, and you'll have a set of fully typed React Query hooks generated for each model:
 
-```ts title="schema.zmodel"
+```zmodel title="schema.zmodel"
 plugin hooks {
   provider = '@zenstackhq/tanstack-query'
   target = 'react'
@@ -193,9 +193,6 @@ const columns = [
 export const OrderDetails = () => {
   const { data } = useFindManyOrderDetail({
     ...queryInclude,
-    orderBy: computeOrderBy(),
-    skip: pagination.pageIndex * pagination.pageSize,
-    take: pagination.pageSize,
   });
   
   const table = useReactTable({
@@ -206,7 +203,7 @@ export const OrderDetails = () => {
 }
 ```
 
-We can then render the table with some basic TSX:
+We can then render the table with some basic tsx:
 
 ```tsx
 export const OrderDetails = () => {
@@ -291,7 +288,6 @@ Also, update the hooks call to respect the pagination state:
 ```tsx
 const { data } = useFindManyOrderDetail({
   ...queryInclude,
-  orderBy: computeOrderBy(),
   // highlight-start
   skip: pagination.pageIndex * pagination.pageSize,
   take: pagination.pageSize,
