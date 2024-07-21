@@ -10,6 +10,7 @@ import { description } from '../lib/content';
 import styles from './index.module.css';
 import FrameworkIntegration from '../components/FrameworkIntegration';
 import VOC from '../components/VOCFlat';
+import Sponsorship from '../components/Sponsorship';
 
 function Header() {
     return (
@@ -79,6 +80,29 @@ function Section({ children, className }: { children: React.ReactNode; className
     );
 }
 
+function Logo({
+    src,
+    darkSrc,
+    darkModeBrightness,
+}: {
+    src: string;
+    darkSrc?: string;
+    darkModeBrightness?: number;
+}): JSX.Element {
+    const alt = src.split('/').pop()?.split('.')[0] ?? 'logo';
+    return (
+        <>
+            <img src={src} className="h-12 object-contain block dark:hidden" alt={alt} />
+            <img
+                src={darkSrc ?? src}
+                className="h-12 object-contain hidden dark:block"
+                style={darkModeBrightness ? { filter: `brightness(${darkModeBrightness})` } : {}}
+                alt={alt}
+            />
+        </>
+    );
+}
+
 export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
@@ -105,6 +129,9 @@ export default function Home(): JSX.Element {
                 </Section> */}
 
                 <Section className="bg-slate-50">
+                    <Sponsorship />
+                </Section>
+                <Section>
                     <VOC />
 
                     <div className="flex justify-center w-full mt-32">
