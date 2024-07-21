@@ -1,36 +1,36 @@
 ---
-title: "Rendering Prisma Queries with React Table: The Low-Code Way"
+title: "Rendering Prisma Queries With React Table: The Low-Code Way"
 description: This post introduces a low-code approach to rendering database rows loaded with Prisma ORM as a table component using React Table.
 tags: [prisma,react-table,react-query,zenstack]
 authors: yiming
-date: 2024-07-20
+date: 2024-07-21
 image: ./cover.png
 ---
 
-# Rendering Prisma Queries with React Table: The Low-Code Way
+# Rendering Prisma Queries With React Table: The Low-Code Way
 
 ![Cover Image](cover.png)
 
-[React Table](https://tanstack.com/table), or more precisely, TanStack Table, is a headless table UI library. If you're new to this kind of product, you'll probably ask "what the heck is headless UI"? Isn't UI all about **the head** after all? Until you tried something like React Table, it all starts to make sense. 
+[React Table](https://tanstack.com/table), or more precisely, TanStack Table is a headless table UI library. If you're new to this kind of product, you'll probably ask, "What the heck is headless UI"? Isn't UI all about **the head**, after all? It all starts to make sense until you try something like React Table. 
 
 <!--truncate-->
 
-Tables are one of the nastiest things to build in web UI, for two reasons. First, they are different to render well, considering the amount of data they can hold, the interactions they allow, and the need to adapt to different screen sizes. Second, their state is complex, with sorting, filtering, pagination, grouping, etc. React Table's philosophy is to solve the second problem well, and leave the first completely to you. It manages the state and logic of a table, but doesn't touch the rendering part, because:
+For two reasons, tables are one of the nastiest things to build in web UI. First, they are difficult to render well, considering the amount of data they can hold, the interactions they allow, and the need to adapt to different screen sizes. Second, their state is complex: sorting, filtering, pagination, grouping, etc. React Table's philosophy is to solve the second problem well and leave the first entirely to you. It manages the state and logic of a table but doesn't touch the rendering part because:
 
 > Building UI is a very branded and custom experience, even if that means choosing a design system or adhering to a design spec. - tanstack.com
 
-Tables are most commonly used to render database queries - in modern times, the output of an ORM. In this post, I'll introduce a way of connecting Prisma - the most popular TypeScript ORM, to React Table, with the help of React Query and ZenStack. You'll be amazed by how little code you need to write to render a full-fledged table UI.
+Tables are most commonly used to render database query results — in modern times, the output of an ORM. In this post, I'll introduce a way of connecting [Prisma](https://prisma.io) - the most popular TypeScript ORM, to React Table, with the help of [React Query](https://tanstack.com/query) and [ZenStack](/). You'll be amazed by how little code you need to write to render a full-fledged table UI.
 
 ## A full-stack setup
 
-We need a full-stack application to query a database and then render the UI. In this example, I'll use Next.js as the framework, although the approach can be applied to other similar frameworks (like Nuxt, SvelteKit, etc.), or to an application with decoupled front-end and back-end.
+We need a full-stack application to query a database and render the UI. In this example, I'll use Next.js as the framework, although the approach can be applied to other similar frameworks (like Nuxt, SvelteKit, etc.), or to an application with decoupled front-end and back-end.
 
 We can easily create a new project with `npx create-next-app`. After that, we need to install several dependencies:
 
-- Prisma: `prisma`, `@prisma/client`
-- React Table: `@tanstack/react-table`
-- React Query: `@tanstack/react-query`
-- ZenStack: `zenstack`, `@zenstackhq/runtime`, `@zenstackhq/server`, `@zenstackhq/tanstack-query`
+- Prisma - the ORM
+- ZenStack - a full-stack toolkit built above Prisma
+- React Query - the data-fetching library
+- React Table - the headless table library
 
 We'll also use the legendary "North Wind" trading dataset (created by Microsoft many, many years ago) to feed our database. Here's its ERD:
 
@@ -86,7 +86,7 @@ erDiagram
 
 ```
 
-A Prisma schema file is authored to reflect this database structure. And then you can run `npx prisma generate` to get a awesomely typed database client.
+A Prisma schema file is authored to reflect this database structure.
 
 ## The "free lunch" API
 
@@ -94,7 +94,7 @@ SQL databases are not meant to be consumed from the frontend. You need an API to
 
 Setting ZenStack up is very easy:
 
-1. Run `npx zenstack init` to prep the project. It copies the `schema.prisma` file into `schema.zmodel` - which is the schema file used to ZenStack. ZModel is a superset of Prisma schema.
+1. Run `npx zenstack init` to prep the project. It copies the `schema.prisma` file into `schema.zmodel` - which is the schema file used by ZenStack. ZModel is a superset of Prisma schema.
   
 2. Whenever you make changes to `schema.zmodel`, run `npx zenstack generate` to regenerate the Prisma schema and `PrismaClient`.
 
@@ -131,7 +131,7 @@ I know a big **🚨 NO THIS IS NOT SECURE 🚨** is flashing in your mind. Hold 
 
 ## The "free lunch" hooks
 
-Having a free API is cool, but writing `fetch` to call it is cumbersome. How about some free query hooks? Yes, you're just "one plug-in" away from it. Add the `@zenstackhq/tanstack-query` plugin to the ZModel schema, and you'll have a set of fully typed React Query hooks generated for each model:
+Having a free API is cool, but writing `fetch` to call it is cumbersome. How about some free query hooks? Yes, add the `@zenstackhq/tanstack-query` plugin to the ZModel schema, and you'll have a set of fully typed React Query hooks generated for each model:
 
 ```ts title="schema.zmodel"
 plugin hooks {
@@ -141,7 +141,7 @@ plugin hooks {
 }
 ```
 
-The hooks calls into the APIs we installed in the previous section, and they also precisely mirror `PrismaClient`'s signature:
+The hooks call into the APIs we installed in the previous section, and they also precisely mirror `PrismaClient`'s signature:
 
 ```ts
 import { useFindManyOrder } from '@/hooks/order';
@@ -156,9 +156,9 @@ const { data, isLoading, error } = useFindManyOrder({
 
 Please note that although React Query and React Table are both from TanStack, you don't have to use them together. React Table is agnostic to the data fetching mechanism. They just happen to play very well together.
 
-## Finally let's build the table
+## Finally, let's build the table
 
-Creating a basic table is straightforward, you define the columns and then initialize a table instance. We'll see hwo to do it by building a table to display order details.
+Creating a basic table is straightforward, You define the columns and then initialize a table instance with data. We'll see how to do it by building a table to display order details.
 
 ```tsx
 // the relation fields included when querying `OrderDetail`
@@ -244,7 +244,7 @@ export const OrderDetails = () => {
 }
 ```
 
-With the help of column definitions, React Table knows how to fetch data for a cell and also transforms the data as needed. You only need to focus on properly laying the table out.
+With the help of column definitions, React Table knows how to fetch data for a cell and transform it as needed. You only need to focus on properly laying the table out.
 
 ![Simple table](table-1.png)
 
@@ -252,9 +252,9 @@ What's cool about React Table is that you don't need to flatten the nested query
 
 ## Making it fancier
 
-Tables allow you do do many things besides viewing data. Let's use pagination as an example to demonstrate how to enable such interaction in our setup.
+Tables allow you to do many things besides viewing data. Let's use pagination as an example to demonstrate how to enable such interaction in our setup.
 
-React Query has built-in support from front-end pagination. However, since we're rendering database tables, we want the pagination to run at the backend. First, we define a pagination state, and set the table to use manual pagination mode (meaning that we handle the pagination ourselves):
+React Query has built-in support from front-end pagination. However, since we're rendering database tables, we want the pagination to run at the backend. First, we define a pagination state and set the table to use manual pagination mode (meaning that we handle the pagination ourselves):
 
 ```tsx
 
@@ -316,35 +316,29 @@ Finally, add navigation buttons:
 </div>
 ```
 
-This part well demonstrates the value of "headless" UI. You don't need to manage detailed pagination state anymore. Instead, provide the bare minimum logic, and let React Table handle the rest. Sorting can be implemented in the similar way. Check out the link at the end of this post for the complete code.
+This part well demonstrates the value of "headless" UI. You don't need to manage detailed pagination state anymore. Instead, provide the bare minimum logic and let React Table handle the rest. Sorting can be implemented similarly. Check out the link at the end of this post for the complete code.
 
 ![Table with pagination](table-2.png)
 
 ## Tons of flexibility
 
-We've got a pretty cool table end-to-end working now, with roughly 200 lines of code. Writing less code is not the only benefit of this combination. It also provides great flexibility in every layer of the stack:
+We've got a pretty cool table end-to-end working now, with roughly 200 lines of code. Less code is only one of the benefits of this combination. It also provides excellent flexibility in every layer of the stack:
 
 - Prisma's query
 
-    Prisma is known for its succinct yet powerful query API. It allows you to do complex joins and aggregations without writing SQL. In our example, our table shows data from five tables and we barely noticed the complexity.
+    Prisma is known for its concise yet powerful query API. It allows you to do complex joins and aggregations without writing SQL. In our example, our table shows data from five tables, and we barely noticed the complexity.
 
 - ZenStack's access control
 
-    Remember I said we'll get back to the security issue? ZenStack's real power lies in its ability to define access control rules in the data schema. That's why it introduced the ZModel schema (as a superset of Prisma schema). You can define rules like:
-
-    - Reject anonymous users
-    - A sales user can only view their own orders
-    - A manager can view all orders of his staff
-
-    Read more details [here](/docs/the-complete-guide/part1/access-policy/).
+    Remember I said we'll get back to the security issue? A real-world API must have an authorization mechanism with it. ZenStack's real power lies in its ability to define access control rules in the data schema. You can define rules like rejecting anonymous users or showing only the orders of the current login employee, etc. Read more details [here](/docs/the-complete-guide/part1/access-policy/).
 
 - React Query's fetching
 
-  React Query provides great flexibility around how data is fetched, cached, and invalidated. Leverage its power to build a highly responsive UI and reduce the load to the database at same time.
+  React Query provides great flexibility around how data is fetched, cached, and invalidated. Leverage its power to build a highly responsive UI and reduce the load on the database at same time.
 
 - React Table's state management
   
-  React Table has every aspect of a table's state organized for you. It provides a strong pattern for you to follow, without limiting how you render the table UI.
+  React Table has every aspect of a table's state organized for you. It provides a solid pattern to follow without limiting how you render the table UI.
 
 ## Conclusion
 
