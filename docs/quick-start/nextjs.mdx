@@ -101,7 +101,7 @@ npx zenstack generate && npx prisma db push
 
 ### 4. Configure NextAuth to use credential-based auth
 
-First we need to install type definitions for bcryptjs
+First, we need to install type definitions for bcryptjs
 ```bash
 npm install --save @types/bcryptjs
 ```
@@ -218,7 +218,7 @@ value (use a complex secret in production and don't check it into git):
 ZenStack has built-in support for Next.js and can provide database CRUD services
 automagically, so you don't need to write it yourself.
 
-First install the `@zenstackhq/server` and `@zenstackhq/swr` packages:
+First, install the `@zenstackhq/server` and `@zenstackhq/swr` packages:
 
 ```bash
 npm install @zenstackhq/server swr
@@ -268,7 +268,7 @@ Now we're ready to implement the signup/signin flow.
 
 ### 6. Implement Signup/Signin
 
-Firstly, NextAuth and React Query require context providers to be set up. Let's add it to `/src/pages/_app.tsx`:
+First, NextAuth and React Query require context providers to be set up. Let's add it to `/src/pages/_app.tsx`:
 
 ```tsx title='/src/pages/_app.tsx'
 import { type AppType } from "next/app";
