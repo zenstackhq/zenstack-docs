@@ -101,17 +101,27 @@ npx zenstack generate && npx prisma db push
 
 ### 4. Configure NextAuth to use credential-based auth
 
+First we need to install type definitions for bcryptjs
+```bash
+npm install --save @types/bcryptjs
+```
+
 Now let's update `/src/server/auth.ts` to the content below to
 use credentials auth and JWT-based session:
 
 ```ts title='/src/server/auth.ts'
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import type { PrismaClient } from '@prisma/client';
-import { compare } from 'bcryptjs';
-import type { GetServerSidePropsContext } from 'next';
-import NextAuth, { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { db } from './db';
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { PrismaClient } from "@prisma/client";
+import { compare } from "bcryptjs";
+import type { GetServerSidePropsContext } from "next";
+import NextAuth, {
+  getServerSession,
+  type DefaultSession,
+  type NextAuthOptions,
+} from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { db } from "./db";
+import { Adapter } from "next-auth/adapters";
 /**
  * Module augmentation for `next-auth` types.
  * Allows us to add custom properties to the `session` object and keep type
@@ -119,12 +129,12 @@ import { db } from './db';
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  **/
-declare module 'next-auth' {
-    interface Session extends DefaultSession {
-        user: {
-            id: string;
-        } & DefaultSession['user'];
-    }
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
 }
 
 /**
@@ -134,46 +144,50 @@ declare module 'next-auth' {
  * @see https://next-auth.js.org/configuration/options
  **/
 export const authOptions: NextAuthOptions = {
-    session: {
-        strategy: 'jwt',
+  session: {
+    strategy: "jwt",
+  },
+  // Include user.id on session
+  callbacks: {
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.sub!;
+      }
+      return session;
     },
-    // Include user.id on session
-    callbacks: {
-        session({ session, token }) {
-            if (session.user) {
-                session.user.id = token.sub!;
-            }
-            return session;
-        },
-    },
-    // Configure one or more authentication providers
-    adapter: PrismaAdapter(db),
-    providers: [
-        CredentialsProvider({
-            credentials: {
-                email: { type: 'email' },
-                password: { type: 'password' },
-            },
-            authorize: authorize(db),
-        }),
-    ],
+  },
+  // Configure one or more authentication providers
+  adapter: PrismaAdapter(db) as Adapter,
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: { type: "email" },
+        password: { type: "password" },
+      },
+      authorize: authorize(db),
+    }),
+  ],
 };
 
 function authorize(prisma: PrismaClient) {
-    return async (credentials: Record<'email' | 'password', string> | undefined) => {
-        if (!credentials) throw new Error('Missing credentials');
-        if (!credentials.email) throw new Error('"email" is required in credentials');
-        if (!credentials.password) throw new Error('"password" is required in credentials');
-        const maybeUser = await prisma.user.findFirst({
-            where: { email: credentials.email },
-            select: { id: true, email: true, password: true },
-        });
-        if (!maybeUser || !maybeUser.password) return null;
-        // verify the input password with stored hash
-        const isValid = await compare(credentials.password, maybeUser.password);
-        if (!isValid) return null;
-        return { id: maybeUser.id, email: maybeUser.email };
-    };
+  return async (
+    credentials: Record<"email" | "password", string> | undefined,
+  ) => {
+    if (!credentials) throw new Error("Missing credentials");
+    if (!credentials.email)
+      throw new Error('"email" is required in credentials');
+    if (!credentials.password)
+      throw new Error('"password" is required in credentials');
+    const maybeUser = await prisma.user.findFirst({
+      where: { email: credentials.email },
+      select: { id: true, email: true, password: true },
+    });
+    if (!maybeUser?.password) return null;
+    // verify the input password with stored hash
+    const isValid = await compare(credentials.password, maybeUser.password);
+    if (!isValid) return null;
+    return { id: maybeUser.id, email: maybeUser.email };
+  };
 }
 
 /**
@@ -183,10 +197,10 @@ function authorize(prisma: PrismaClient) {
  * @see https://next-auth.js.org/configuration/nextjs
  **/
 export const getServerAuthSession = (ctx: {
-    req: GetServerSidePropsContext['req'];
-    res: GetServerSidePropsContext['res'];
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
 }) => {
-    return getServerSession(ctx.req, ctx.res, authOptions);
+  return getServerSession(ctx.req, ctx.res, authOptions);
 };
 
 export default NextAuth(authOptions);
@@ -215,17 +229,17 @@ Let's mount it to the `/api/model/[...path]` endpoint. Create a `/src/pages/api/
 file and fill in the content below:
 
 ```ts title='/src/pages/api/model/[...path].ts'
-import { NextRequestHandler } from '@zenstackhq/server/next';
-import { enhance } from '@zenstackhq/runtime';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerAuthSession } from '../../../server/auth';
-import { prisma } from '../../../server/db';
+import { NextRequestHandler } from "@zenstackhq/server/next";
+import { enhance } from "@zenstackhq/runtime";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerAuthSession } from "../../../server/auth";
+import { db } from "../../../server/db";
 
 async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
-    const session = await getServerAuthSession({ req, res });
-    // create a wrapper of Prisma client that enforces access policy,
-    // data validation, and @password, @omit behaviors
-    return enhance(prisma, { user: session?.user });
+  const session = await getServerAuthSession({ req, res });
+  // create a wrapper of Prisma client that enforces access policy,
+  // data validation, and @password, @omit behaviors
+  return enhance(db, { user: session?.user });
 }
 
 export default NextRequestHandler({ getPrisma });
@@ -259,73 +273,76 @@ Now let's implement the signup/signin pages. First, create a new page `/src/page
 ```tsx title='/src/pages/signup.tsx'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import type { NextPage } from 'next';
-import { signIn } from 'next-auth/react';
-import Router from 'next/router';
-import { useState, type FormEvent } from 'react';
+import type { NextPage } from "next";
+import { signIn } from "next-auth/react";
+import Router from "next/router";
+import { useState, type FormEvent } from "react";
 import { useCreateUser } from "../lib/hooks";
 
 const Signup: NextPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const { trigger: signup } = useCreateUser();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { trigger: signup } = useCreateUser();
 
-    async function onSignup(e: FormEvent) {
-        e.preventDefault();
-        try {
-            await signup({ data: { email, password } });
-        } catch (err: any) {
-            console.error(err);
-            if (err.info?.prisma && err.info?.code === 'P2002') {
-                // P2002 is Prisma's error code for unique constraint violations
-                alert('User alread exists');
-            } else {
-                alert('An unknown error occurred');
-            }
-            return;
-        }
-
-        // signin to create a session
-        await signIn('credentials', { redirect: false, email, password });
-        await Router.push('/');
+  async function onSignup(e: FormEvent) {
+    e.preventDefault();
+    try {
+      await signup({ data: { email, password } });
+    } catch (err: any) {
+      console.error(err);
+      if (err.info?.prisma && err.info?.code === "P2002") {
+        // P2002 is Prisma's error code for unique constraint violations
+        alert("User alread exists");
+      } else {
+        alert("An unknown error occurred");
+      }
+      return;
     }
 
-    return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-            <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
-            <form className="mt-16 flex flex-col gap-8 text-2xl" onSubmit={(e) => void onSignup(e)}>
-                <div>
-                    <label htmlFor="email" className="inline-block w-32 text-white">
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.currentTarget.value)}
-                        className="ml-4 w-72 rounded border p-2"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password" className="inline-block w-32 text-white ">
-                        Password
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.currentTarget.value)}
-                        className="ml-4 w-72 rounded border p-2"
-                    />
-                </div>
-                <input
-                    type="submit"
-                    value="Create account"
-                    className="cursor-pointer rounded border border-gray-500 py-4 text-white"
-                />
-            </form>
+    // signin to create a session
+    await signIn("credentials", { redirect: false, email, password });
+    await Router.push("/");
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <h1 className="text-5xl font-extrabold text-white">Sign up</h1>
+      <form
+        className="mt-16 flex flex-col gap-8 text-2xl"
+        onSubmit={(e) => void onSignup(e)}
+      >
+        <div>
+          <label htmlFor="email" className="inline-block w-32 text-white">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            className="ml-4 w-72 rounded border p-2"
+          />
         </div>
-    );
+        <div>
+          <label htmlFor="password" className="inline-block w-32 text-white">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            className="ml-4 w-72 rounded border p-2"
+          />
+        </div>
+        <input
+          type="submit"
+          value="Create account"
+          className="cursor-pointer rounded border border-gray-500 py-4 text-white"
+        />
+      </form>
+    </div>
+  );
 };
 
 export default Signup;
@@ -353,67 +370,70 @@ It should look like this:
 Similarly, create the signin page `/src/pages/signin.tsx`:
 
 ```tsx title='/src/pages/signin.tsx'
-import type { NextPage } from 'next';
-import { signIn } from 'next-auth/react';
-import Router from 'next/router';
-import { useState, type FormEvent } from 'react';
+import type { NextPage } from "next";
+import { signIn } from "next-auth/react";
+import Router from "next/router";
+import { useState, type FormEvent } from "react";
 
 const Signin: NextPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    async function onSignin(e: FormEvent) {
-        e.preventDefault();
+  async function onSignin(e: FormEvent) {
+    e.preventDefault();
 
-        const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-        if (result?.ok) {
-            await Router.push('/');
-        } else {
-            alert('Signin failed');
-        }
+    if (result?.ok) {
+      await Router.push("/");
+    } else {
+      alert("Signin failed");
     }
+  }
 
-    return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-            <h1 className="text-5xl font-extrabold text-white">Login</h1>
-            <form className="mt-16 flex flex-col gap-8 text-2xl" onSubmit={(e) => void onSignin(e)}>
-                <div>
-                    <label htmlFor="email" className="inline-block w-32  text-white">
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.currentTarget.value)}
-                        className="ml-4 w-72 rounded border p-2"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password" className="inline-block w-32  text-white">
-                        Password
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.currentTarget.value)}
-                        className="ml-4 w-72 rounded border p-2"
-                    />
-                </div>
-                <input
-                    type="submit"
-                    value="Sign me in"
-                    className="cursor-pointer rounded border border-gray-500 py-4 text-white"
-                />
-            </form>
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <h1 className="text-5xl font-extrabold text-white">Login</h1>
+      <form
+        className="mt-16 flex flex-col gap-8 text-2xl"
+        onSubmit={(e) => void onSignin(e)}
+      >
+        <div>
+          <label htmlFor="email" className="inline-block w-32 text-white">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            className="ml-4 w-72 rounded border p-2"
+          />
         </div>
-    );
+        <div>
+          <label htmlFor="password" className="inline-block w-32 text-white">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            className="ml-4 w-72 rounded border p-2"
+          />
+        </div>
+        <input
+          type="submit"
+          value="Sign me in"
+          className="cursor-pointer rounded border border-gray-500 py-4 text-white"
+        />
+      </form>
+    </div>
+  );
 };
 
 export default Signin;
@@ -421,7 +441,7 @@ export default Signin;
 
 ### 7. Prepare the Post model
 
-Now let's create a `Post` model. We'll use it to store blog posts.
+Now let's create a `Post` model(if it already exists, simply replace it). We'll use it to store blog posts.
 
 ```zmodel title='/schema.zmodel'
 model Post {
@@ -479,11 +499,11 @@ npx zenstack generate && npx prisma db push
 Now let's replace `/src/pages/index.tsx` with the content below and use it for viewing and managing posts.
 
 ```tsx title='/src/pages/index.tsx'
-import type { Post } from '@prisma/client';
-import { type NextPage } from 'next';
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
-import Router from 'next/router';
+import type { Post } from "@prisma/client";
+import { type NextPage } from "next";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import Router from "next/router";
 import {
   useCreatePost,
   useDeletePost,
@@ -494,116 +514,125 @@ import {
 type AuthUser = { id: string; email?: string | null };
 
 const Welcome = ({ user }: { user: AuthUser }) => {
-    async function onSignout() {
-        await signOut({ redirect: false });
-        await Router.push('/signin');
-    }
-    return (
-        <div className="flex gap-4">
-            <h3 className="text-lg">Welcome back, {user?.email}</h3>
-            <button className="text-gray-300 underline" onClick={() => void onSignout()}>
-                Signout
-            </button>
-        </div>
-    );
+  async function onSignout() {
+    await signOut({ redirect: false });
+    await Router.push("/signin");
+  }
+  return (
+    <div className="flex gap-4">
+      <h3 className="text-lg">Welcome back, {user?.email}</h3>
+      <button
+        className="text-gray-300 underline"
+        onClick={() => void onSignout()}
+      >
+        Signout
+      </button>
+    </div>
+  );
 };
 
 const SigninSignup = () => {
-    return (
-        <div className="flex gap-4 text-2xl">
-            <Link href="/signin" className="rounded-lg border px-4 py-2">
-                Signin
-            </Link>
-            <Link href="/signup" className="rounded-lg border px-4 py-2">
-                Signup
-            </Link>
-        </div>
-    );
+  return (
+    <div className="flex gap-4 text-2xl">
+      <Link href="/signin" className="rounded-lg border px-4 py-2">
+        Signin
+      </Link>
+      <Link href="/signup" className="rounded-lg border px-4 py-2">
+        Signup
+      </Link>
+    </div>
+  );
 };
 
-const Posts = ({ user }: { user: AuthUser }) => {
-    // Post crud hooks
-    const { trigger: createPost } = useCreatePost();
-    const { trigger: updatePost } = useUpdatePost();
-    const { trigger: deletePost } = useDeletePost();
+const Posts = () => {
+  // Post crud hooks
+  const { trigger: createPost } = useCreatePost();
+  const { trigger: updatePost } = useUpdatePost();
+  const { trigger: deletePost } = useDeletePost();
 
-    // list all posts that're visible to the current user, together with their authors
-    const { data: posts } = useFindManyPost({
-        include: { author: true },
-        orderBy: { createdAt: 'desc' },
+  // list all posts that're visible to the current user, together with their authors
+  const { data: posts } = useFindManyPost({
+    include: { author: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  async function onCreatePost() {
+    const title = prompt("Enter post title");
+    if (title) {
+      await createPost({ data: { title } });
+    }
+  }
+
+  async function onTogglePublished(post: Post) {
+    await updatePost({
+      where: { id: post.id },
+      data: { published: !post.published },
     });
+  }
 
-    async function onCreatePost() {
-        const title = prompt('Enter post title');
-        if (title) {
-            await createPost({ data: { title } });
-        }
-    }
+  async function onDelete(post: Post) {
+    await deletePost({ where: { id: post.id } });
+  }
 
-    async function onTogglePublished(post: Post) {
-        await updatePost({
-            where: { id: post.id },
-            data: { published: !post.published },
-        });
-    }
+  return (
+    <div className="container flex flex-col text-white">
+      <button
+        className="rounded border border-white p-2 text-lg"
+        onClick={() => void onCreatePost()}
+      >
+        + Create Post
+      </button>
 
-    async function onDelete(post: Post) {
-        await deletePost({ where: { id: post.id } });
-    }
-
-    return (
-        <div className="container flex flex-col text-white">
-            <button className="rounded border border-white p-2 text-lg" onClick={() => void onCreatePost()}>
-                + Create Post
-            </button>
-
-            <ul className="container mt-8 flex flex-col gap-2">
-                {posts?.map((post) => (
-                    <li key={post.id} className="flex items-end justify-between gap-4">
-                        <p className={`text-2xl ${!post.published ? 'text-gray-400' : ''}`}>
-                            {post.title}
-                            <span className="text-lg"> by {post.author.email}</span>
-                        </p>
-                        <div className="flex w-32 justify-end gap-1 text-left">
-                            <button className="underline" onClick={() => void onTogglePublished(post)}>
-                                {post.published ? 'Unpublish' : 'Publish'}
-                            </button>
-                            <button className="underline" onClick={() => void onDelete(post)}>
-                                Delete
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+      <ul className="container mt-8 flex flex-col gap-2">
+        {posts?.map((post) => (
+          <li key={post.id} className="flex items-end justify-between gap-4">
+            <p className={`text-2xl ${!post.published ? "text-gray-400" : ""}`}>
+              {post.title}
+              <span className="text-lg"> by {post.author.email}</span>
+            </p>
+            <div className="flex w-32 justify-end gap-1 text-left">
+              <button
+                className="underline"
+                onClick={() => void onTogglePublished(post)}
+              >
+                {post.published ? "Unpublish" : "Publish"}
+              </button>
+              <button className="underline" onClick={() => void onDelete(post)}>
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 const Home: NextPage = () => {
-    const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
 
-    if (status === 'loading') return <p>Loading ...</p>;
+  if (status === "loading") return <p>Loading ...</p>;
 
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 text-white">
-                <h1 className="text-5xl font-extrabold">My Awesome Blog</h1>
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 text-white">
+        <h1 className="text-5xl font-extrabold">My Awesome Blog</h1>
 
-                {session?.user ? (
-                    // welcome & blog posts
-                    <div className="flex flex-col">
-                        <Welcome user={session.user} />
-                        <section className="mt-10">
-                            <Posts user={session.user} />
-                        </section>
-                    </div>
-                ) : (
-                    // if not logged in
-                    <SigninSignup />
-                )}
-            </div>
-        </main>
-    );
+        {session?.user ? (
+          // welcome & blog posts
+          <div className="flex flex-col">
+            <Welcome user={session.user} />
+            <section className="mt-10">
+              <Posts />
+            </section>
+          </div>
+        ) : (
+          // if not logged in
+          <SigninSignup />
+        )}
+      </div>
+    </main>
+  );
 };
 
 export default Home;

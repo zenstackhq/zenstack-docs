@@ -101,6 +101,11 @@ npx zenstack generate && npx prisma db push
 
 ### 4. Configure NextAuth to use credential-based auth
 
+First we need to install type definitions for bcryptjs
+```bash
+npm install --save @types/bcryptjs
+```
+
 Now let's update `/src/server/auth.ts` to the content below to
 use credentials auth and JWT-based session:
 
