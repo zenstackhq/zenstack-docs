@@ -268,6 +268,30 @@ Now we're ready to implement the signup/signin flow.
 
 ### 6. Implement Signup/Signin
 
+Firstly, NextAuth and React Query require context providers to be set up. Let's add it to `/src/pages/_app.tsx`:
+
+```tsx title='/src/pages/_app.tsx'
+import { type AppType } from "next/app";
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+
+import "../styles/globals.css";
+
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
+  return (
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  );
+};
+
+export default MyApp;
+```
+
+
 Now let's implement the signup/signin pages. First, create a new page `/src/pages/signup.tsx`:
 
 ```tsx title='/src/pages/signup.tsx'
