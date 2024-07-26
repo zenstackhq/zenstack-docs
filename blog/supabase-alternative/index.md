@@ -1,7 +1,7 @@
 ---
 title: Supabase RLS Alternative
-description: Show the limitation of Supabase RLS with a multi-tenancy SaaS example and introduce ZenStack as an alternative.
-tags: [supabase, rls, baas, zenstack]
+description: Show the limitation of Supabase RLS(Row Level Security) with a multi-tenancy SaaS example and introduce ZenStack as an alternative.
+tags: [supabase, rls, auth, baas, zenstack]
 authors: jiasheng
 date: 2024-07-24
 image: ./cover.png
@@ -13,12 +13,12 @@ image: ./cover.png
 
 ## A Short History of BaaS
 
-In the early days of web and mobile app development, building a backend from scratch was laborious and error-prone. Developers had to manage servers, databases, and infrastructure and ensure scalability while writing the core business logic of their applications.  Then came Backend-as-a-Service (BaaS), promising to liberate developers from this burden.
+In the early days of web and mobile app development, building a backend from scratch was laborious and error-prone. Developers had to manage servers, databases, and infrastructure and ensure scalability while writing the core business logic of their applications.  Then came BaaS(Backend-as-a-Service), promising to liberate developers from this burden.
 
 <!--truncate-->
 ### Firebase: The Pioneer
 
-Firebase was one of the first BaaS platforms to gain widespread adoption. It was acquired by Google, and at Google I/O in **2016**, it announced an expansion of its services to become a unified backend-as-a-service (BaaS) platform for mobile developers. Firebase quickly became popular among developers for its ease of use and integration with Google's ecosystem.  
+Firebase was one of the first BaaS platforms to gain widespread adoption. It was acquired by Google, and at Google I/O in **2016**, it announced an expansion of its services to become a unified BaaS platform for mobile developers. Firebase quickly became popular among developers for its ease of use and integration with Google's ecosystem.  
 
 However, as projects grew in complexity,  so did concerns about vendor lock-in and data control.  Its rigid data models and scalability issues led developers to seek more flexible and robust alternatives.
 
@@ -49,9 +49,9 @@ service cloud.firestore {
 }
 ```
 
-### Supabase: RLS
+### Supabase: RLS(Row Level Security)
 
-Since Supabase is built upon Postgres,  it could leverage PostgreSQL's robust RLS(Row-Level Security) to handle access control.  
+Since Supabase is built upon Postgres,  it could leverage PostgreSQL's robust RLS to handle access control.  
 
 ```sql
 -- owner has full access to her own posts
@@ -451,4 +451,4 @@ Software engineering is an art of trade-offs. It involves balancing time and spa
 Someone has completed the artwork in production 😉
 
 > We've launched MermaidChart's team feature using ZenStack. Much cleaner and easier to maintain than writing RLS policies or application level checks that will surely leak after some time.  
-— Sid from [MermaidChart](https://www.mermaidchart.com/)
+— Sidharth [MermaidChart](https://www.mermaidchart.com/)
