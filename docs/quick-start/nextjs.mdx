@@ -218,11 +218,11 @@ value (use a complex secret in production and don't check it into git):
 ZenStack has built-in support for Next.js and can provide database CRUD services
 automagically, so you don't need to write it yourself.
 
-First, install the `@zenstackhq/server` and `@zenstackhq/swr` packages:
+First install the `@zenstackhq/server`, `@tanstack/react-query`, and `@zenstackhq/tanstack-query` packages:
 
 ```bash
-npm install @zenstackhq/server swr
-npm install -D  @zenstackhq/swr
+npm install @zenstackhq/server@latest @tanstack/react-query
+npm install -D @zenstackhq/tanstack-query@latest
 ```
 
 Let's mount it to the `/api/model/[...path]` endpoint. Create a `/src/pages/api/model/[...path].ts`
@@ -253,7 +253,9 @@ Let's enable it by adding the following snippet at the top level to `schema.zmod
 
 ```zmodel
 plugin hooks {
-  provider = '@zenstackhq/swr'
+  provider = '@zenstackhq/tanstack-query'
+  target = 'react'
+  version = 'v5'
   output = "./src/lib/hooks"
 }
 ```
@@ -274,17 +276,22 @@ First, NextAuth and React Query require context providers to be set up. Let's ad
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "../styles/globals.css";
+
+const queryClient = new QueryClient();
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </QueryClientProvider>
   );
 };
 
@@ -306,7 +313,7 @@ import { useCreateUser } from "../lib/hooks";
 const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { trigger: signup } = useCreateUser();
+  const { mutateAsync: signup } = useCreateUser();
 
   async function onSignup(e: FormEvent) {
     e.preventDefault();
@@ -570,9 +577,9 @@ const SigninSignup = () => {
 
 const Posts = () => {
   // Post crud hooks
-  const { trigger: createPost } = useCreatePost();
-  const { trigger: updatePost } = useUpdatePost();
-  const { trigger: deletePost } = useDeletePost();
+  const { mutateAsync: createPost } = useCreatePost();
+  const { mutateAsync: updatePost } = useUpdatePost();
+  const { mutateAsync: deletePost } = useDeletePost();
 
   // list all posts that're visible to the current user, together with their authors
   const { data: posts } = useFindManyPost({
