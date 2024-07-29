@@ -121,9 +121,8 @@ const config = {
                     {
                         type: 'html',
                         position: 'left',
-                        value: `<div id="github-button">
-                        <a href='https://github.com/zenstackhq/zenstack' class="inline-flex items-center justify-center space-x-0 rounded-md text-sm  ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 group bg-gray-900 hover:bg-gray-950 transition-all duration-200 ease-in-out hover:ring-2 hover:ring-offset-2 hover:ring-gray-900 hover:no-underline">
-                            <svg
+                        value: `<div id="github-button" class="group relative">
+                        <a href='https://github.com/zenstackhq/zenstack' class="inline-flex items-center justify-center space-x-0 rounded-md text-sm  ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 group bg-gray-900 transition-all duration-200 ease-in-out hover:no-underline">                        <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
                                 height="24"
@@ -139,7 +138,7 @@ const config = {
                                 <path d="M9 18c-4.51 2-5-2-7-2"></path>
                             </svg>
                             <span id="github-text" class="text-white pr-2">Star on Github</span>
-                            <span class="flex items-center ml-2 group-hover:text-yellow-500 transition-colors duration-200 ease-in-out">
+                            <span class="flex items-center">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -150,7 +149,7 @@ const config = {
                                     stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    class=" text-yellow-500"
+                                    class=" text-yellow-500 group-hover:fill-yellow-500 transition-all duration-1000 ease-in-out"
                                 >
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                 </svg>

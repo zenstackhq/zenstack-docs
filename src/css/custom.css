@@ -46,3 +46,19 @@
         display: none;
     }
 }
+
+#github-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -100%;
+    bottom: 0;
+    width: 100%;
+    opacity: 0.1;
+    background: var(--ifm-navbar-background-color);
+    transition: right 0.5s;
+}
+
+#github-button:hover::before {
+    right: 0;
+}
