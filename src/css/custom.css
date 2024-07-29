@@ -46,3 +46,25 @@
         display: none;
     }
 }
+
+#github-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -100%;
+    bottom: 0;
+    width: 100%;
+    opacity: 0.1;
+    background: var(--ifm-navbar-background-color);
+    transition: right 0.5s;
+    pointer-events: none;
+}
+
+[data-theme='dark'] #github-button::before {
+    opacity: 0.3;
+}
+
+#github-button:hover::before {
+    right: 0;
+    pointer-events: mouse;
+}
