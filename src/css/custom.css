@@ -60,6 +60,10 @@
     pointer-events: none;
 }
 
+[data-theme='dark'] #github-button::before {
+    opacity: 0.3;
+}
+
 #github-button:hover::before {
     right: 0;
     pointer-events: mouse;

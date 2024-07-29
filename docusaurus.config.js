@@ -122,7 +122,8 @@ const config = {
                         type: 'html',
                         position: 'left',
                         value: `<div id="github-button" class="group relative">
-                        <a href='https://github.com/zenstackhq/zenstack' class="inline-flex items-center justify-center space-x-0 rounded-md text-sm  ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 group bg-gray-900 transition-all duration-200 ease-in-out hover:no-underline">                        <svg
+                        <a href='https://github.com/zenstackhq/zenstack' class="inline-flex items-center justify-center space-x-0 rounded-md text-sm  ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 group bg-gray-900 hover:bg-gray-950 transition-all duration-200 ease-in-out hover:ring-2 hover:ring-offset-2 hover:ring-gray-900 hover:no-underline">
+                        <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
                                 height="24"
