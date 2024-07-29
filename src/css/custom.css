@@ -57,8 +57,10 @@
     opacity: 0.1;
     background: var(--ifm-navbar-background-color);
     transition: right 0.5s;
+    pointer-events: none;
 }
 
 #github-button:hover::before {
     right: 0;
+    pointer-events: mouse;
 }
