@@ -186,13 +186,26 @@ Everything looks perfect, especially if you are familiar with SQL. So why do I n
 ![perfect-meme](https://github.com/user-attachments/assets/08ac420c-4f2b-4147-b4b5-a6c766ea61a3)
 ## The Problems of Supabse RLS
 
-### 1. **Separation from Application Logic**
+### 1. Separation from Application Logic
 
 As a modern developer, you know the sense of control when you can launch with a one-click. The prerequisite is to keep everything within the database. It's not just about convenience; it's about maintaining a single source of truth, ensuring consistency, and streamlining your workflow. 
 
 However, for RLS, you have to define authorization directly in the database, not in your source code. Of course, you could store it as an SQL file in your codebase, but you need to rely on SQL migration to ensure consistency. I think it’s the same reason why you seldom see people using stored procedures of databases nowadays despite all the benefits they offer.
 
-What makes the consistency even worse is that, according to the official documentation of Supabase, you have to duplicate the policy filter in your application code for performance reasons:
+What makes the consistency even worse is that you have to duplicate the policy filters in the application code. For example, if you are using the Supabase JS SDK, you have to use the two queries below to get the result:
+```tsx
+// First, get the user's spaceIds
+const { data: userSpaces } = await supabase.from('SpaceUser').select('spaceId').eq('userId', userId);
+
+// Extract spaceIds from the result
+const userSpaceIds = userSpaces.map((space) => space.spaceId);
+
+// Now, query the List table
+const { data, error } = await supabase
+    .from('List')
+    .select('*')
+```
+Why? Because otherwise, you might experience 20x slower query performance, according to the official benchmark of Supabase. 😲
 
 [Add filters to every query | Supabase Docs](https://supabase.com/docs/guides/database/postgres/row-level-security#add-filters-to-every-query)
 
@@ -318,38 +331,26 @@ What about the problems of RLS?  Let’s go through them one by one.
 
 The access policies are now defined alongside the database models.  The schema becomes the single source of truth of your backend, enabling an easier understanding of the system as a whole.
 
-Moreover, whether calling from the frontend or backend, you don’t need to use any filter regarding the authorization rules, which will be injected into queries automatically by the ZenStack runtime. 
+Moreover, whether calling from the frontend or backend, you don’t need to use any filter regarding the authorization rules, which will be injected into queries automatically by the ZenStack runtime. The application code you need to write is clean and clear:
 
 ```tsx
-   // frontend query 
-   const { data: lists } = useFindManyList(
-        {
-            where: {
-                space: {
-                    slug: router.query.slug as string,
-                },
-            },
-        }
-    );    
+   // frontend query:
+   // ZenStack generated hooks only returns the data user is allowed to read
+   const { data: lists } = useFindManyList();    
    ...
    
-   // server props  
+   // server props
    export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
     const db = await getEnhancedPrisma({ req, res });
-
-    const lists = await db.list.findMany({
-        where: {
-            space: { slug: params?.slug as string },
-        }
-    });
+    // ZenStack enhanced Prisma client only returns the data user is allowed to read
+    const lists = await db.list.findMany();
     return {
         props: { lists },
     };
 };
 ```
 
-> The `where` clause above is to get the data from current space because one user could join multiple `Space`. It’s the application behavior instead of Authorization
-> 
+> Remember the complex query you need to write for the RLS case mentioned above?
 
 ### 2. Good DX
 
