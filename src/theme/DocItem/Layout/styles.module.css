@@ -5,6 +5,8 @@
 
 @media (min-width: 997px) {
   .docItemCol {
-    max-width: 75% !important;
+      --readableMaxWidth: calc(calc(1080px*0.25)*3);
+      max-width: var(--readableMaxWidth) !important;
+      margin: 0 auto;
   }
 }
