@@ -173,7 +173,7 @@ Having the ORM instance enhanced with access control capabilities is great. We c
 
 ZenStack makes it possible by providing a set of server adapters for popular Node.js frameworks. Using it with Next.js is easy. You'll only need to create an API route handler:
 
-```ts title="src/app/model/[...path]/route.ts"
+```ts title="src/app/api/model/[...path]/route.ts"
 import { auth } from '@/auth';
 import { prisma } from '@/db';
 import { enhance } from '@zenstackhq/runtime';
