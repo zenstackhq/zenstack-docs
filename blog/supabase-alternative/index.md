@@ -184,7 +184,7 @@ curl '{SUPABASE_PROJECT_URL}/rest/v1/List?select=*' \
 Everything looks perfect, especially if you are familiar with SQL. So why do I need alternatives?
 
 ![perfect-meme](https://github.com/user-attachments/assets/08ac420c-4f2b-4147-b4b5-a6c766ea61a3)
-## The Problems of Supabse RLS
+## The Problems of Supabase RLS
 
 ### 1. Separation from Application Logic
 

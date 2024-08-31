@@ -60,7 +60,7 @@ We are grateful for the opportunities we had with Microsoft and Ptmind, where we
 We hope with the help of our tools:
 
 -   Experienced professionals will continue enjoying their knowledge and skills but will be able to move a lot faster as solo entrepreneurs or with a small team.
--   For people new to software development, it \*\*serves as an easy ladder that reduces frustration, keeps things safe, and helps people stay oriented in the vast amount of knowledge and choices in the software industry.
+-   For people new to software development, it serves as an easy ladder that reduces frustration, keeps things safe, and helps people stay oriented in the vast amount of knowledge and choices in the software industry.
 
 ## What
 
