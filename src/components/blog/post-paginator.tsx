@@ -21,7 +21,7 @@ export const PostPaginator = ({ posts, title }) => {
             )}
         >
             <div className="blog-sm:px-6 w-full">
-                <h2 className="m-0 mb-4 p-0 text-2xl font-semibold">{title}</h2>
+                <h2 className="mb-4 p-0 text-2xl font-semibold">{title}</h2>
                 <div className="flex flex-col not-prose">
                     {posts.map((post) => (
                         <Link
