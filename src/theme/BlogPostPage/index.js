@@ -48,7 +48,6 @@ function BlogPostPageContent({ children }) {
 }
 export default function BlogPostPage(props) {
     const BlogPostContent = props.content;
-    console.log('props', props);
     return (
         <BlogPostProvider content={props.content} isBlogPostPage>
             <HtmlClassNameProvider
