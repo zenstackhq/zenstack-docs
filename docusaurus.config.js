@@ -46,11 +46,7 @@ const config = {
                         },
                     },
                 },
-                blog: {
-                    showReadingTime: true,
-                    blogSidebarTitle: 'Recent posts',
-                    blogSidebarCount: 10,
-                },
+                blog: false,
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
@@ -260,6 +256,14 @@ const config = {
                 },
             };
         },
+        [
+            './src/plugins/blog-plugin.js',
+            {
+                showReadingTime: true,
+                blogSidebarTitle: 'Recent posts',
+                blogSidebarCount: 10,
+            },
+        ],
     ],
 
     markdown: {
