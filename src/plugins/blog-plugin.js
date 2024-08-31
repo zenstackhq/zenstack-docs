@@ -3,14 +3,30 @@ const utils = require('@docusaurus/utils');
 const path = require('path');
 
 const defaultBlogPlugin = blogPluginExports.default;
+const MIN_RELATED_POSTS = 3;
+
+function getMultipleRandomElement(arr, num) {
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+
+    return shuffled.slice(0, num);
+}
 
 function getRelatedPosts(allBlogPosts, metadata) {
-    const relatedPosts = allBlogPosts.filter(
+    let relatedPosts = allBlogPosts.filter(
         (post) =>
             post.metadata.frontMatter.tags
                 ?.filter((tag) => tag?.toLowerCase() != 'zenstack')
                 .some((tag) => metadata.frontMatter.tags?.includes(tag)) && post.metadata.title !== metadata.title
     );
+
+    if (relatedPosts.length < MIN_RELATED_POSTS) {
+        remainingCount = MIN_RELATED_POSTS - relatedPosts.length;
+        const remainingPosts = getMultipleRandomElement(
+            allBlogPosts.filter((post) => !relatedPosts.includes(post)),
+            remainingCount
+        );
+        relatedPosts = relatedPosts.concat(remainingPosts);
+    }
 
     const filteredPostInfos = relatedPosts.map((post) => {
         return {
@@ -49,14 +65,6 @@ async function blogPluginExtended(...pluginArgs) {
                         `${utils.docuHash(metadata.source)}.json`,
                         JSON.stringify({ ...metadata, relatedPosts }, null, 2)
                     );
-                    addRoute({
-                        path: metadata.permalink,
-                        component: '@theme/BlogPostPage',
-                        exact: true,
-                        modules: {
-                            content: metadata.source,
-                        },
-                    });
                 })
             );
         },
