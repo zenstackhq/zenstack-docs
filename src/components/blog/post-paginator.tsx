@@ -49,7 +49,18 @@ export const PostPaginator = ({ posts, title }) => {
                         >
                             <div className={clsx('font-bold', 'group-hover:underline')}>{post.title}</div>
 
-                            <p className={clsx('font-sm')}>{post.description}</p>
+                            <p
+                                className={clsx('font-sm')}
+                                style={{
+                                    display: '-webkit-box',
+                                    '-webkit-line-clamp': '3',
+                                    '-webkit-box-orient': 'vertical',
+                                    overflow: 'hidden',
+                                    'text-overflow': 'ellipsis',
+                                }}
+                            >
+                                {post.description}
+                            </p>
                         </Link>
                     ))}
                     <p className="mb-4 p-0 text-xl">
