@@ -1,7 +1,7 @@
 ---
 title: 'How to make good DX(Developer Experience): Empathize'
 description: Why DX matters and how to create great DX toolkit for developers.
-tags: [DX, zensatck]
+tags: [DX, zenstack, programming]
 authors: jiasheng
 date: 2023-03-24
 image: ./cover.png

@@ -9,17 +9,61 @@ import BlogPostPageMetadata from '@theme/BlogPostPage/Metadata';
 import TOC from '@theme/TOC';
 import Unlisted from '@theme/Unlisted';
 import GiscusComponent from '@site/src/components/GiscusComponent';
-function BlogPostPageContent({ sidebar, children }) {
+import { PostPaginator } from '@site/src/components/blog/post-paginator';
+
+function getMultipleRandomPosts(relatedPosts, number) {
+    // Create a copy of the original array to avoid modifying it
+    const weightedItems = [...relatedPosts];
+    const result = [];
+
+    // Calculate the total weight
+    let totalWeight = weightedItems.reduce((sum, item) => sum + item.relatedWeight, 0);
+
+    while (weightedItems.length > 0) {
+        // Generate a random value between 0 and the total weight
+        const randomValue = Math.random() * totalWeight;
+        let weightSum = 0;
+        let selectedIndex = -1;
+
+        // Find the item that corresponds to the random value
+        for (let i = 0; i < weightedItems.length; i++) {
+            weightSum += weightedItems[i].relatedWeight;
+            if (randomValue <= weightSum) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        // If an item was selected, add it to the result and remove it from the original array
+        if (selectedIndex !== -1) {
+            const [selectedItem] = weightedItems.splice(selectedIndex, 1);
+            result.push(selectedItem);
+            totalWeight -= selectedItem.relatedWeight;
+        }
+    }
+
+    return result.slice(0, number);
+}
+
+function BlogPostPageContent({ children }) {
     const { metadata, toc } = useBlogPost();
+    const { relatedPosts } = metadata;
+
     const { nextItem, prevItem, frontMatter, unlisted } = metadata;
     const {
         hide_table_of_contents: hideTableOfContents,
         toc_min_heading_level: tocMinHeadingLevel,
         toc_max_heading_level: tocMaxHeadingLevel,
     } = frontMatter;
+
+    const randomThreeRelatedPosts = getMultipleRandomPosts(relatedPosts, 3);
+
+    console.log('relatedPosts', relatedPosts);
+
+    //const url = '/blog/supabase-alternative/cover.png';
+
     return (
         <BlogLayout
-            sidebar={sidebar}
             toc={
                 !hideTableOfContents && toc.length > 0 ? (
                     <TOC toc={toc} minHeadingLevel={tocMinHeadingLevel} maxHeadingLevel={tocMaxHeadingLevel} />
@@ -27,7 +71,9 @@ function BlogPostPageContent({ sidebar, children }) {
             }
         >
             {unlisted && <Unlisted />}
+
             <BlogPostItem>{children}</BlogPostItem>
+            <PostPaginator title="Related Articles" posts={randomThreeRelatedPosts}></PostPaginator>
             <GiscusComponent />
             {(nextItem || prevItem) && <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />}
         </BlogLayout>
