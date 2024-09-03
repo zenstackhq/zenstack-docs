@@ -63,10 +63,10 @@ export const PostPaginator = ({ posts, title }) => {
                             </p>
                         </Link>
                     ))}
-                    <p className="mb-4 p-0 text-xl">
+                    <p className="mt-8 mb-6 p-0 text-xl font-bold">
                         🚀 Ready to build high-quality, scalable Prisma apps with built-in AuthZ and instant CRUD APIs ?
                     </p>
-                    <Link className="mb-4 p-0 text-xl" to="/docs/welcome">
+                    <Link className="mb-4 p-0 text-xl font-bold underline" to="/docs/welcome">
                         Get started with ZenStack's ultimate guide to build faster and smarter
                     </Link>
                 </div>

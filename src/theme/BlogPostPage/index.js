@@ -16,6 +16,13 @@ function getMultipleRandomPosts(relatedPosts, number) {
     const weightedItems = [...relatedPosts];
     const result = [];
 
+    if (weightedItems.length > 15) {
+        weightedItems.forEach((item) => {
+            //square the weight to increase the chance of the post being selected
+            item.relatedWeight = Math.pow(item.relatedWeight, 2);
+        });
+    }
+
     // Calculate the total weight
     let totalWeight = weightedItems.reduce((sum, item) => sum + item.relatedWeight, 0);
 
@@ -59,8 +66,6 @@ function BlogPostPageContent({ children }) {
     const randomThreeRelatedPosts = getMultipleRandomPosts(relatedPosts, 3);
 
     console.log('relatedPosts', relatedPosts);
-
-    //const url = '/blog/supabase-alternative/cover.png';
 
     return (
         <BlogLayout

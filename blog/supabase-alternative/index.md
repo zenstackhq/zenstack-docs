@@ -1,7 +1,7 @@
 ---
 title: Supabase RLS Alternative
 description: Show the limitation of Supabase RLS(Row Level Security) with a multi-tenancy SaaS example and introduce ZenStack as an alternative.
-tags: [supabase, rls, auth, authorization, baas, zenstack]
+tags: [supabase, rls, auth, authorization, baas, database, firebase, zenstack]
 authors: jiasheng
 date: 2024-07-24
 image: ./cover.png
