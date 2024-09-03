@@ -1,7 +1,7 @@
 ---
 title: 'How To Build a Scalable SaaS Backend in 10 Minutes With 100 Lines of Code'
 description: Use schema as the single source of truth for the SaaS backend
-tags: [zenstack, saas, backend, access-control, nodejs, typescript]
+tags: [zenstack, saas, backend, authorization, nodejs]
 authors: jiasheng
 date: 2023-06-21
 image: ./cover.png

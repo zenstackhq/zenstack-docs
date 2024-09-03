@@ -11,10 +11,38 @@ import Unlisted from '@theme/Unlisted';
 import GiscusComponent from '@site/src/components/GiscusComponent';
 import { PostPaginator } from '@site/src/components/blog/post-paginator';
 
-function getMultipleRandomElement(arr, num) {
-    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+function getMultipleRandomPosts(relatedPosts, number) {
+    // Create a copy of the original array to avoid modifying it
+    const weightedItems = [...relatedPosts];
+    const result = [];
 
-    return shuffled.slice(0, num);
+    // Calculate the total weight
+    let totalWeight = weightedItems.reduce((sum, item) => sum + item.relatedWeight, 0);
+
+    while (weightedItems.length > 0) {
+        // Generate a random value between 0 and the total weight
+        const randomValue = Math.random() * totalWeight;
+        let weightSum = 0;
+        let selectedIndex = -1;
+
+        // Find the item that corresponds to the random value
+        for (let i = 0; i < weightedItems.length; i++) {
+            weightSum += weightedItems[i].relatedWeight;
+            if (randomValue <= weightSum) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        // If an item was selected, add it to the result and remove it from the original array
+        if (selectedIndex !== -1) {
+            const [selectedItem] = weightedItems.splice(selectedIndex, 1);
+            result.push(selectedItem);
+            totalWeight -= selectedItem.relatedWeight;
+        }
+    }
+
+    return result.slice(0, number);
 }
 
 function BlogPostPageContent({ children }) {
@@ -28,7 +56,11 @@ function BlogPostPageContent({ children }) {
         toc_max_heading_level: tocMaxHeadingLevel,
     } = frontMatter;
 
-    const randomThreeRelatedPosts = getMultipleRandomElement(relatedPosts, 3);
+    const randomThreeRelatedPosts = getMultipleRandomPosts(relatedPosts, 3);
+
+    console.log('relatedPosts', relatedPosts);
+
+    //const url = '/blog/supabase-alternative/cover.png';
 
     return (
         <BlogLayout
@@ -39,6 +71,7 @@ function BlogPostPageContent({ children }) {
             }
         >
             {unlisted && <Unlisted />}
+
             <BlogPostItem>{children}</BlogPostItem>
             <PostPaginator title="Related Articles" posts={randomThreeRelatedPosts}></PostPaginator>
             <GiscusComponent />

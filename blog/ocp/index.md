@@ -1,6 +1,6 @@
 ---
 description: Use a real example to illustrate how to achieve good design by applying polymorphism from the database to the UI.
-tags: [prisma, orm, database, oop, design, typescript]
+tags: [orm, database, oop, design, typescript, polymorphism]
 authors: jiasheng
 image: ./cover.jpg
 date: 2024-03-28

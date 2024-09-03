@@ -22,12 +22,13 @@ export const PostPaginator = ({ posts, title }) => {
         >
             <div className="blog-sm:px-6 w-full">
                 <h2 className="mb-4 p-0 text-2xl font-semibold">{title}</h2>
-                <div className="flex flex-col not-prose">
+                <div className="flex flex-col not-prose ">
                     {posts.map((post) => (
                         <Link
                             to={post.permalink}
                             rel="dofollow"
                             key={post.permalink ?? post.id}
+                            style={{ color: 'var(--ifm-font-color-base)' }}
                             className={clsx(
                                 'flex',
                                 'flex-col',
@@ -46,17 +47,17 @@ export const PostPaginator = ({ posts, title }) => {
                                 'group'
                             )}
                         >
-                            <div
-                                to={post.permalink}
-                                rel="dofollow"
-                                className={clsx('font-bold', 'group-hover:underline')}
-                            >
-                                {post.title}
-                            </div>
+                            <div className={clsx('font-bold', 'group-hover:underline')}>{post.title}</div>
 
                             <p className={clsx('font-sm')}>{post.description}</p>
                         </Link>
                     ))}
+                    <p className="mb-4 p-0 text-xl">
+                        🚀 Ready to build high-quality, scalable Prisma apps with built-in AuthZ and instant CRUD APIs ?
+                    </p>
+                    <Link className="mb-4 p-0 text-xl" to="/docs/welcome">
+                        Get started with ZenStack's ultimate guide to build faster and smarter
+                    </Link>
                 </div>
             </div>
         </div>

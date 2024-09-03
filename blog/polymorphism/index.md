@@ -1,6 +1,6 @@
 ---
 description: This post explores different patterns for implementing polymorphism in ORMs and how ZenStack can add the missing feature into Prisma.
-tags: [prisma, orm, database]
+tags: [prisma, orm, database, polymorphism]
 authors: yiming
 date: 2023-12-21
 image: ./cover.png
