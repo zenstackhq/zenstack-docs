@@ -37,7 +37,7 @@ function getRelatedPosts(allBlogPosts, metadata) {
             authors: post.metadata.authors,
             readingTime: post.metadata.readingTime,
             date: post.metadata.date,
-            relatedWeight: post.metadata.frontMatter.tags.filter((tag) => currentTags.has(tag)).length * 3 + 1,
+            relatedWeight: post.metadata.frontMatter.tags.filter((tag) => currentTags.has(tag)).length * 4 + 1,
         };
     });
 
