@@ -16,15 +16,14 @@ function getMultipleRandomPosts(relatedPosts, number) {
     const weightedItems = [...relatedPosts];
     const result = [];
 
-    if (weightedItems.length > 15) {
-        weightedItems.forEach((item) => {
-            //square the weight to increase the chance of the post being selected
-            item.relatedWeight = Math.pow(item.relatedWeight, 2);
-        });
-    }
+    weightedItems.forEach((item) => {
+        //square the weight to increase the chance of the post being selected
+        //add a new field to avoid modify the original object
+        item.sortWeight = weightedItems.length > 15 ? Math.pow(item.relatedWeight, 2) : item.relatedWeight;
+    });
 
     // Calculate the total weight
-    let totalWeight = weightedItems.reduce((sum, item) => sum + item.relatedWeight, 0);
+    let totalWeight = weightedItems.reduce((sum, item) => sum + item.sortWeight, 0);
 
     while (weightedItems.length > 0) {
         // Generate a random value between 0 and the total weight
@@ -34,7 +33,7 @@ function getMultipleRandomPosts(relatedPosts, number) {
 
         // Find the item that corresponds to the random value
         for (let i = 0; i < weightedItems.length; i++) {
-            weightSum += weightedItems[i].relatedWeight;
+            weightSum += weightedItems[i].sortWeight;
             if (randomValue <= weightSum) {
                 selectedIndex = i;
                 break;
@@ -45,7 +44,7 @@ function getMultipleRandomPosts(relatedPosts, number) {
         if (selectedIndex !== -1) {
             const [selectedItem] = weightedItems.splice(selectedIndex, 1);
             result.push(selectedItem);
-            totalWeight -= selectedItem.relatedWeight;
+            totalWeight -= selectedItem.sortWeight;
         }
     }
 
