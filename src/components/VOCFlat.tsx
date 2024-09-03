@@ -49,9 +49,9 @@ function Quote({
                                 />
                             </svg>
                         </div>
-                        <p className="text-lg md:text-xl italic px-4 pb-6 font-medium md:leading-relaxed text-gray-600 dark:text-gray-300">
+                        <div className="text-lg md:text-xl italic px-4 pb-6 font-medium md:leading-relaxed text-gray-600 dark:text-gray-300">
                             {children}
-                        </p>
+                        </div>
                     </div>
                 </div>
                 <figcaption className="flex items-center justify-center space-x-3">
