@@ -10,6 +10,9 @@ import TOC from '@theme/TOC';
 import Unlisted from '@theme/Unlisted';
 import GiscusComponent from '@site/src/components/GiscusComponent';
 import { PostPaginator } from '@site/src/components/blog/post-paginator';
+import { LinkedinShareButton, RedditShareButton, TwitterShareButton, RedditIcon, LinkedinIcon } from 'react-share';
+import { Twitter } from './icons';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 function getMultipleRandomPosts(relatedPosts, number) {
     // Create a copy of the original array to avoid modifying it
@@ -53,9 +56,8 @@ function getMultipleRandomPosts(relatedPosts, number) {
 
 function BlogPostPageContent({ children }) {
     const { metadata, toc } = useBlogPost();
-    const { relatedPosts } = metadata;
 
-    const { nextItem, prevItem, frontMatter, unlisted } = metadata;
+    const { relatedPosts, nextItem, prevItem, frontMatter, unlisted, permalink, title, description } = metadata;
     const {
         hide_table_of_contents: hideTableOfContents,
         toc_min_heading_level: tocMinHeadingLevel,
@@ -65,6 +67,9 @@ function BlogPostPageContent({ children }) {
     const randomThreeRelatedPosts = getMultipleRandomPosts(relatedPosts, 3);
 
     console.log('relatedPosts', relatedPosts);
+    const {
+        siteConfig: { url },
+    } = useDocusaurusContext();
 
     return (
         <BlogLayout
@@ -77,6 +82,36 @@ function BlogPostPageContent({ children }) {
             {unlisted && <Unlisted />}
 
             <BlogPostItem>{children}</BlogPostItem>
+            <div className="flex items-center gap-3 pt-10 not-prose">
+                <span className="text-base">Share on</span>
+                <TwitterShareButton
+                    windowWidth={750}
+                    windowHeight={800}
+                    url={url + permalink}
+                    className="flex"
+                    title={title}
+                >
+                    <Twitter width={36} height={36} />
+                </TwitterShareButton>
+                <RedditShareButton
+                    className="flex"
+                    windowWidth={750}
+                    windowHeight={600}
+                    url={url + permalink}
+                    title={title}
+                >
+                    <RedditIcon size={36} round />
+                </RedditShareButton>
+                <LinkedinShareButton
+                    url={url + permalink}
+                    title={title}
+                    source={url}
+                    summary={description}
+                    className="flex"
+                >
+                    <LinkedinIcon size={36} round />
+                </LinkedinShareButton>
+            </div>
             <PostPaginator title="Related Articles" posts={randomThreeRelatedPosts}></PostPaginator>
             <GiscusComponent />
             {(nextItem || prevItem) && <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />}
