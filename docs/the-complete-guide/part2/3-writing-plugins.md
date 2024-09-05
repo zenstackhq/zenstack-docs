@@ -17,7 +17,8 @@ A plugin is a Node.js module that has the following exports:
 Here's what a bare minimum plugin looks like:
 
 ```ts
-import type { DMMF, PluginOptions } from '@zenstackhq/sdk';
+import type { PluginOptions } from '@zenstackhq/sdk';
+import type { DMMF } from '@zenstackhq/sdk/prisma';
 import type { Model } from '@zenstackhq/sdk/ast';
 
 export const name = 'My Plugin';
