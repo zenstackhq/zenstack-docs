@@ -4,6 +4,8 @@ sidebar_position: 7
 ---
 
 import InitTips from '../_components/_zenstack-init-tips.md';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Using With tRPC
 
@@ -33,14 +35,59 @@ First install the trpc package:
 npm install -D @zenstackhq/trpc@latest
 ```
 
-```zmodel title='/schema.zmodel'
+Then, add the following plugin configuration to your ZModel schema. Note that the configuration is different for tRPC v10 and v11:
 
+<Tabs>
+
+<TabItem value="v10" label={`tRPC v10`}>
+
+```zmodel title='/schema.zmodel'
 plugin trpc {
     provider = '@zenstackhq/trpc'
     output = 'src/server/routers/generated'
 }
+```
+</TabItem>
+
+<TabItem value="v11" label={`tRPC v11 (preview)`}>
+
+To use with tRPC v11, you need to explicitly set the "version" option to "v11" and add two extra options to let ZenStack know where to import the tRPC's router factory (named `createTRPCRouter`) and procedure factory (named `procedure`) from. For example, with the following settings:
+
+```zmodel title='/schema.zmodel'
+plugin trpc {
+    provider = '@zenstackhq/trpc'
+    output = 'src/server/routers/generated'
+    version = 'v11'
+    importCreateRouter = "../../trpc"
+    importProcedure = "../../trpc"
+}
+```
+
+The generated tRPC routers will contain code like the following:
+
+```ts
+import { createTRPCRouter } from "../../trpc";
+import { procedure } from "../../trpc";
+
+export default function createRouter() {
+  return createTRPCRouter({
+    findMany: procedure.input(...).query(...) => ...
+    ...
+  });
+}
 
 ```
+
+:::info Why is v11 more complicated?
+
+tRPC v11 removed several public TypeScript types that our previous way of code generation relied on. To get around this, we have to resort to letting the user tell us where to import the factories from so we can use them without explicitly typing them.
+
+:::
+
+</TabItem>
+
+</Tabs>
+
 
 ### 3. Setting up the tRPC context
 
@@ -73,18 +120,43 @@ npx zenstack generate
 
 You should find a bunch of tRPC routers generated in the output folder, one per each data model. A `createRouter` helper function is also generated, which returns a router instance for all models. You can use it as your top-level tRPC router, or merge it with other routers to form a more complex setup.
 
+<Tabs>
+
+<TabItem value="v10" label={`tRPC v10`}>
+
 ```ts title='/src/server/routers/_app.ts'
 import { createRouter } from './generated/routers';
 
 const t = initTRPC.context<Context>().create();
 
 export const appRouter = createRouter(t.router, t.procedure);
-
 export type AppRouter = typeof appRouter;
 ```
+
+</TabItem>
+
+<TabItem value="v11" label={`tRPC v11`}>
+
+```ts title='/src/server/routers/_app.ts'
+import { createRouter } from './generated/routers';
+
+const t = initTRPC.context<Context>().create();
+
+export const procedure = t.publicProcedure;
+export const createTRPCRouter = t.createRouter;
+
+...
+
+export const appRouter = createRouter();
+export type AppRouter = typeof appRouter;
+```
+
+</TabItem>
+
+</Tabs>
 
 _NOTE_: The ZenStack trpc plugin is based on the awesome work by [Omar Dulaimi](https://github.com/omar-dulaimi/prisma-trpc-generator).
 
 ---
 
-Please refer to the [@zenstackhq/trpc](../reference/plugins/trpc) plugin documentation for more details.
+Please refer to the [@zenstackhq/trpc](../reference/plugins/trpc) plugin documentation for more details. You can also use the [sample-todo-trpc](https://github.com/zenstackhq/sample-todo-trpc) project as a reference.

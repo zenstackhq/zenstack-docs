@@ -1643,10 +1643,10 @@ Attributes `@trim`, `@lower`, and `@upper` are actually "transformation" instead
 
 ### Model-level validation attributes
 
-You can use the `@@validate` attribute to attach validation rules to a model. 
+You can use the `@@validate` attribute to attach validation rules to a model. Use the `message` parameter to provide an optional custom error message, and the `path` parameter to provide an optional path to the field that caused the error.
 
 ```
-@@validate(_ value: Boolean, _ message: String?)
+@@validate(_ value: Boolean, _ message: String?, _ path: String[]?)
 ```
 
 Model-level rules can reference multiple fields, use relation operators (`==`, `!=`, `>`, `>=`, `<`, `<=`) to compare fields, use boolean operators (`&&`, `||`, and `!`) to compose conditions, and can use the following functions to evaluate conditions for fields:
