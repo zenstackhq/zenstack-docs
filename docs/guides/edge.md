@@ -98,7 +98,7 @@ To workaround this problem, add the following to the "package.json" file to avoi
 
 ## Cloudflare Workers
 
-You can use ZenStack-enhanced `PrismaClient` in Cloudflare Workers. Here's an example for using with a Neon database. It's recommended to import `enhance` from `@zenstackhq/runtime/edge` instead of `@zenstackhq/runtime`. Although these two modules are identical today, they may diverge in the future due to limitations of the edge runtime.
+You can use ZenStack-enhanced `PrismaClient` in Cloudflare Workers. Here's an example for using with a Neon database. Please make sure to import `enhance` from `@zenstackhq/runtime/edge` instead of `@zenstackhq/runtime`.
 
 ```ts
 import { PrismaClient } from '@prisma/client';
