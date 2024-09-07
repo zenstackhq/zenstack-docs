@@ -14,6 +14,10 @@ ZenStack's enhancement to PrismaClient not only alters its existing APIs' behavi
 
 This API is added to each model in the PrismaClient.
 
+:::warning
+The API is not supported on edge runtime (e.g., Cloudflare Workers or Vercel Edge). You'll get a runtime error when calling it.
+:::
+
 #### Description
 
 Checks if the current user is allowed to perform the specified operation on the model based on the access policies in ZModel. The check is done via pure logical inference and doesn't query the database.

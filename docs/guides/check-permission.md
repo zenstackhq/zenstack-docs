@@ -188,6 +188,7 @@ ZenStack uses the [logic-solver](https://www.npmjs.com/package/logic-solver) pac
 - Array fields are not supported.
 - Relation fields are not supported.
 - Collection predicates are not supported.
+- The API is not supported on edge runtime (e.g., Cloudflare Workers or Vercel Edge).
 
 You can still use the `check` API even if your access policies use these unsupported features. Boolean components containing unsupported features are ignored during SAT solving by being converted to free variables, which can be assigned either `true` or `false` in a solution.
 
