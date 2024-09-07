@@ -63,11 +63,6 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
-            announcementBar: {
-                id: 'v2_announcement',
-                content: '🎉 <a href="/blog/v2-stories">ZenStack V2</a> is released 🥳️!',
-            },
-
             colorMode: {
                 defaultMode: 'light',
                 respectPrefersColorScheme: false,
