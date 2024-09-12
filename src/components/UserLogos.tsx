@@ -11,7 +11,7 @@ interface UserLogoProps {
 function UserLogo({ src, name, website, className, style }: UserLogoProps): JSX.Element {
     return (
         <div className="flex flex-col items-center gap-4">
-            <img src={src} className="object-contain w-28" />
+            <img src={src} className="object-contain w-28" alt={name} />
             <a className={className} href={website} style={style}>
                 {name}
             </a>

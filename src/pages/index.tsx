@@ -81,29 +81,6 @@ function Section({ children, className }: { children: React.ReactNode; className
     );
 }
 
-function Logo({
-    src,
-    darkSrc,
-    darkModeBrightness,
-}: {
-    src: string;
-    darkSrc?: string;
-    darkModeBrightness?: number;
-}): JSX.Element {
-    const alt = src.split('/').pop()?.split('.')[0] ?? 'logo';
-    return (
-        <>
-            <img src={src} className="h-12 object-contain w-28 block dark:hidden" alt={alt} />
-            <img
-                src={darkSrc ?? src}
-                className="h-12 object-contain w-28 hidden dark:block"
-                style={darkModeBrightness ? { filter: `brightness(${darkModeBrightness})` } : {}}
-                alt={alt}
-            />
-        </>
-    );
-}
-
 export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
