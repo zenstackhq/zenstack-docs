@@ -11,6 +11,7 @@ import styles from './index.module.css';
 import FrameworkIntegration from '../components/FrameworkIntegration';
 import VOC from '../components/VOCFlat';
 import Sponsorship from '../components/Sponsorship';
+import UserLogs from '../components/UserLogos';
 
 function Header() {
     return (
@@ -71,35 +72,12 @@ function Header() {
 function Section({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
         <section
-            className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32 bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200  ${
+            className={`flex justify-center px-8 py-16 lg:px-16 lg:py-32  text-gray-800 dark:bg-gray-900 dark:text-gray-200  ${
                 className ?? ''
             }`}
         >
             <div className="w-full lg:container">{children}</div>
         </section>
-    );
-}
-
-function Logo({
-    src,
-    darkSrc,
-    darkModeBrightness,
-}: {
-    src: string;
-    darkSrc?: string;
-    darkModeBrightness?: number;
-}): JSX.Element {
-    const alt = src.split('/').pop()?.split('.')[0] ?? 'logo';
-    return (
-        <>
-            <img src={src} className="h-12 object-contain block dark:hidden" alt={alt} />
-            <img
-                src={darkSrc ?? src}
-                className="h-12 object-contain hidden dark:block"
-                style={darkModeBrightness ? { filter: `brightness(${darkModeBrightness})` } : {}}
-                alt={alt}
-            />
-        </>
     );
 }
 
@@ -116,22 +94,22 @@ export default function Home(): JSX.Element {
                     <ValueProposition />
                 </Section>
 
-                <Section className="bg-slate-50">
+                <Section className="bg-slate-50 dark:bg-slate-800">
+                    <UserLogs />
+                </Section>
+
+                <Section>
                     <ZenStackInStack />
                 </Section>
 
-                <Section>
+                <Section className="bg-slate-50 dark:bg-slate-800">
                     <FrameworkIntegration />
                 </Section>
 
-                {/* <Section className="bg-slate-50">
-                    <UseCases />
-                </Section> */}
-
-                <Section className="bg-slate-50">
+                <Section>
                     <Sponsorship />
                 </Section>
-                <Section>
+                <Section className="bg-slate-50 dark:bg-slate-800">
                     <VOC />
 
                     <div className="flex justify-center w-full mt-32">
