@@ -873,6 +873,14 @@ function cuid(): String {}
 
 Generates a globally unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec.
 
+##### nanoid()
+
+```zmodel
+function nanoid(length: Int?): String {}
+```
+
+Generates an identifier based on the [nanoid](https://github.com/ai/nanoid) spec.
+
 ##### now()
 
 ```zmodel
