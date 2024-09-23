@@ -101,6 +101,16 @@ export const trpc = createTRPCNext<AppRouter>({
 });
 ```
 
+:::info
+If your generated trpc procedures are installed at a non-top-level path, you can specify the path with the second type parameter of the `createTRPCNext` or `createTRPCReact` function.
+
+```ts
+// if the generated procedures are installed at `/crud` under the router tree
+export const trpc = createTRPCNext<AppRouter, 'crud'>({
+    ...
+});
+:::
+
 ### Example
 
 Here's an example with a blogging app:
