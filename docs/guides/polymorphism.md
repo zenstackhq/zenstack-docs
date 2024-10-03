@@ -128,7 +128,7 @@ const db = enhance(prisma, { user });
 , or by explicitly specifying the "delegate" kind:
 
 ```ts
-const db = enhance(prisma, { user }, { kinds: ['delegate'] });
+const db = enhance(prisma, { user }, { kinds: ['delegate', 'policy'] });
 ```
 
 You can then work with the inheritance hierarchy pretty much like how you deal with polymorphism in OOP:
