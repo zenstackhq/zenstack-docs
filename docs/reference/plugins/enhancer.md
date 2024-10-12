@@ -31,16 +31,19 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
-| output | String | Output directory (relative to the path of ZModel) | No       | node_modules/.zenstack |
-| compile | Boolean | If the generated TS code should be compiled to JS | No | true |
-| preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
+| output | String | Output directory (relative to the path of ZModel). This option will be deprecated in future releases in favor of the "--output" CLI option of `zenstack generate`. | No       | node_modules/.zenstack |
+| preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | false |
 
-### Example
+### Custom output directory and compilation options
 
-```zmodel title='/schema.zmodel'
-plugin enhancer {
-  provider = '@core/enhancer'
-  output = 'src/lib/zenstack'
-  compile = false
-}
+You can use the "--output" option of the `zenstack generate` CLI to specify a custom output location for the generated enhancer code:
+
+```bash
+zenstack generate --output src/lib/zenstack
+```
+
+If you want to have the code generated as TypeScript (instead of compiled to JavaScript), you can add the "--no-compile" option:
+
+```bash
+zenstack generate --no-compile --output src/lib/zenstack
 ```

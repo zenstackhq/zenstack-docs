@@ -151,11 +151,11 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 
 | Name   | Type   | Description      | Required | Default                    |
 | ------ | ------ | ---------------- | -------- | -------------------------- |
-| output | String | Output directory (relative to the path of ZModel) | No       | node_modules/.zenstack/zod |
+| output | String | Output directory (relative to the path of ZModel). This option will be deprecated in future releases in favor of the "--output" CLI option of `zenstack generate`. | No       | node_modules/.zenstack/zod |
 | modelOnly | Boolean | Only generate schemas for the models, but not for the Prisma CRUD input arguments | No | false |
 | generateModels | String, String[] | Array or comma separated string for the models to generate routers for. | No      | All models |
 | compile | Boolean | If the generated TS code should be compiled to JS | No | true |
-| preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | true if `compile` is set to false, otherwise false |
+| preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | false |
 | noUncheckedInput | Boolean | Disables schema generation for Prisma's ["Unchecked"](https://github.com/prisma/prisma/discussions/10121#discussioncomment-1621254) input types | No | false |
 | mode | String | Controls if the generated schemas should reject, strict, or passthrough unknown fields. Possible values: "strict", "strip", "passthrough" | No | "strict" |
 
@@ -181,12 +181,14 @@ import { PostCreateSchema } from '@zenstackhq/runtime/zod/models';
 PostCreateSchema.parse(data);
 ```
 
-You can turn off the `compile` option and use a custom `output` location if you want the generated Zod schema to be compiled along with your own Typescript project:
+You can use the "--output" option of the `zenstack generate` CLI to specify a custom output location for the generated Zod schemas:
 
-```zmodel title='/schema.zmodel'
-plugin zod {
-  provider = '@core/zod'
-  output = 'src/lib/zod'
-  compile = false
-}
+```bash
+zenstack generate --output src/lib/zenstack
+```
+
+If you want to have the code generated as TypeScript (instead of compiled to JavaScript), you can add the "--no-compile" option:
+
+```bash
+zenstack generate --no-compile --output src/lib/zenstack
 ```
