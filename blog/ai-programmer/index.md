@@ -1,5 +1,5 @@
 ---
-title: Programmers, Will AI Work for You, With You, or Without You?
+title: Programmers, Will AI Work For You, With You, or Without You?
 description: A thought experiment on the roles AI can play in software development.
 tags: [ai, programming]
 authors: yiming
@@ -7,7 +7,7 @@ date: 2024-10-14
 image: ./cover.png
 ---
 
-# Programmers, Will AI Work for You, With You, or Without You?
+# Programmers, Will AI Work For You, With You, or Without You?
 
 ![Cover Image](cover.png)
 > **"Programming is dead."**
