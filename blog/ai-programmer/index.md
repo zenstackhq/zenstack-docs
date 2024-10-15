@@ -15,6 +15,7 @@ image: ./cover.png
 A friend said so when he heard I was working on dev tools. It was right after LLM’s coding abilities shocked the world. He felt it pointless to continue building tools for human programmers anymore when AI is taking over this profession. You'll never be wrong by predicting without attaching a time frame. Dead when? At least for the time being, the emergence of generative AI has introduced more work for programmers, some more difficult than before.
 
 Whether AI will replace human developers is too big a topic to tackle. However, we can keep an open mind and explore different roles that AI can play in software development. Let's conduct thought experiments to imagine what each means to us.
+<!--truncate-->
 
 ## Coding Copilot
 
