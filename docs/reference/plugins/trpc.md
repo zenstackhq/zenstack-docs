@@ -28,7 +28,7 @@ npm install --save-dev @zenstackhq/trpc
 | importCreateRouter | String | Only needed when "version" is set to "v11". This option tells the code generator where to import the `createTRPCRouter` tRPC router factory object from. | Yes (v11) | |
 | importProcedure | String | Only needed when "version" is set to "v11". This option tells the code generator where to import the `procedure` tRPC procedure factory object from. | Yes (v11) | || generateModels | String, String[] | Array or comma separated string for the models to generate routers for. | No      | All models |
 | generateModelActions | String, String[] | Array or comma separated string for actions to generate for each model: `create`, `findUnique`, `update`, etc. | No      | All supported Prisma actions |
-| generateClientHelpers | String, String[] | Array or comma separated string for the types of client helpers to generate. Supported values: "react" or "next". See [here](#client-helpers) for more details. | No      | |
+| generateClientHelpers | String, String[] | Array or comma separated string for the types of client helpers to generate. Supported values: "react", "next", or "nuxt". See [here](#client-helpers) for more details. | No      | |
 | zodSchemasImport | String | Import path for the generated zod schemas. The trpc plugin relies on the `@core/zod` plugin to generate zod schemas for input validation. If you set a custom output location for the zod schemas, you can use this option to override the import path. | No      | @zenstackhq/runtime/zod |
 
 :::info
@@ -90,7 +90,7 @@ plugin trpc {
 }
 ```
 
-Use value "next" if you're using tRPC with Next.js, or "react" if using it with react-query. With that option on, the plugin generates an extra "client" folder containing helpers that do the type fixing. The only code change you need to make is instead of calling the `createTRPCNext` or `createTRPCReact` API, you call the one generated instead.
+Use value "next" if you're using tRPC with Next.js, or "react" if using it with react-query, or "nuxt" for [trpc-nuxt](https://trpc-nuxt.vercel.app/). With that option on, the plugin generates an extra "client" folder containing helpers that do the type fixing. The only code change you need to make is instead of calling the `createTRPCNext`/`createTRPCReact`/`createTRPCNuxtClient` API, you call the one generated instead.
 
 Here's an example of how to use it with Next.js:
 
@@ -102,7 +102,7 @@ export const trpc = createTRPCNext<AppRouter>({
 ```
 
 :::info
-If your generated trpc procedures are installed at a non-top-level path, you can specify the path with the second type parameter of the `createTRPCNext` or `createTRPCReact` function.
+If your generated trpc procedures are installed at a non-top-level path, you can specify the path with the second type parameter of the `createTRPCNext`, `createTRPCReact`, or `createTRPCNuxtClient` function.
 
 ```ts
 // if the generated procedures are installed at `/crud` under the router tree

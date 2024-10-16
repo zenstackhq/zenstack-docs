@@ -773,7 +773,7 @@ PATCH /:type/:id/relationships/:relationship
 1. Replacing a to-one relationship
 
     ```json
-    PUT /post/1/author
+    PUT /post/1/relationships/author
     {
         "data": { "type": "user", "id": "2" }
     }
@@ -791,11 +791,55 @@ PATCH /:type/:id/relationships/:relationship
 1. Clearing a to-one relationship
 
     ```json
-    PUT /post/1/author
+    PUT /post/1/relationships/author
     {
         "data": null
     }
     ```
+
+## Compound ID Fields
+
+Prisma allows a model to have compound ID fields, e.g.:
+
+```zmodel
+model Post {
+    id1 Int
+    id2 Int
+    @@id([id1, id2])
+}
+```
+
+The JSON:API specification doesn't have a native way to represent compound IDs. To mitigate this limitation, when returning an entity with compound IDs, ZenStack synthesizes an "id" field to carry the ID values joined with underscore:
+
+```json
+{
+    "data": {
+        "id": "1_2",
+        "attributes": {
+            "id1": 1,
+            "id2": 2,
+            ...
+        },
+        "links" : {
+            "self" : "http://localhost:3100/api/model/post/1_2"
+        },
+        ...
+    }
+}
+```
+
+You can use this ID value convension in places where an ID is needed, e.g., reading a single entity.
+
+```ts
+GET /post/1_2
+```
+
+Limitations:
+
+1. Joining ID values with underscore implies that the ID values themselves cannot contain underscores. We'll make the separator configurable in the future.
+1. Prisma allows you to create a name for the compound ID field. Such usage is not yet supported by the RESTful API handler.
+
+> *Special thanks to [Thomas Sunde Nielsen](https://github.com/thomassnielsen) for implementing this feature!*
 
 ## Serialization
 
