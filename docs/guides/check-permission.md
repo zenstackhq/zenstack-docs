@@ -194,7 +194,7 @@ You can still use the `check` API even if your access policies use these unsuppo
 
 ## Notes About Anonymous Context
 
-Access policy rules often use `auth()` and members of `auth()` (e.g., `auth().role`) in them. When a PrismaClient is enhanced in an anonymous context (calling `enhance` without context user object), neither `auth()` nor its members are unavailable. In such cases, the following evaluation rules apply:
+Access policy rules often use `auth()` and members of `auth()` (e.g., `auth().role`) in them. When a PrismaClient is enhanced in an anonymous context (calling `enhance` without context user object), neither `auth()` nor its members are available. In such cases, the following evaluation rules apply:
 
 - `auth() == null` evaluates to `true`.
 - `auth() != null` evaluates to `false`.

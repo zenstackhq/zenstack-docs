@@ -20,7 +20,7 @@ The API is not supported on edge runtime (e.g., Cloudflare Workers or Vercel Edg
 
 #### Description
 
-Checks if the current user is allowed to perform the specified operation on the model based on the access policies in ZModel. The check is done via pure logical inference and doesn't query the database.
+Checks if the current user is allowed to perform the specified operation on the model based on the access policies in ZModel. The check is done via pure logical inference and doesn't query the database. It currently only deals with model-level policies and field-level ones are ignored.
 
 Please refer to [Checking Permissions Without Hitting the Database](../guides/check-permission) for more details.
 
