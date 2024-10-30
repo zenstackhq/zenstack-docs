@@ -188,7 +188,7 @@ Everything looks perfect, especially if you are familiar with SQL. So why do I n
 
 ### 1. Separation from Application Logic
 
-As a modern developer, you know the sense of control when you can launch with a one-click. The prerequisite is to keep everything within the database. It's not just about convenience; it's about maintaining a single source of truth, ensuring consistency, and streamlining your workflow. 
+As a modern developer, you know the sense of control when you can launch with a one-click. The prerequisite is to keep everything within the codebase. It's not just about convenience; it's about maintaining a single source of truth, ensuring consistency, and streamlining your workflow. 
 
 However, for RLS, you have to define authorization directly in the database, not in your source code. Of course, you could store it as an SQL file in your codebase, but you need to rely on SQL migration to ensure consistency. I think it’s the same reason why you seldom see people using stored procedures of databases nowadays despite all the benefits they offer.
 
