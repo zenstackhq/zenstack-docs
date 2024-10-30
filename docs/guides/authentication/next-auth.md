@@ -6,7 +6,7 @@ sidebar_label: Auth.js (NextAuth)
 
 # Integrating With Auth.js (NextAuth)
 
-[NextAuth](https://next-auth.js.org/) is a comprehensive framework for implementing authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
+[NextAuth](https://authjs.dev/) is a comprehensive framework for implementing authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
 
 To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. This guide introduces tasks required for integrating ZenStack with NextAuth. You can find a complete example [here](https://github.com/zenstackhq/sample-todo-nextjs ':target=blank').
 
@@ -31,7 +31,7 @@ model User {
 }
 ```
 
-You can find the detailed database model requirements [here](https://next-auth.js.org/adapters/models ':target=blank').
+You can find the detailed database model requirements [here](https://authjs.dev/getting-started/adapters/prisma#schema ':target=blank').
 
 ### Adapter
 
@@ -54,7 +54,7 @@ export default NextAuth(authOptions);
 
 ### Authorize users for credentials-based auth
 
-If you use [`CredentialsProvider`](https://next-auth.js.org/providers/credentials ':target=blank'), i.e. email/password based auth, you need to implement an `authorize` function for verifying credentials against the database.
+If you use [`CredentialsProvider`](https://authjs.dev/getting-started/authentication/credentials#credentials-provider ':target=blank'), i.e. email/password based auth, you need to implement an `authorize` function for verifying credentials against the database.
 
 This is standard Prisma stuff, and the following is just a quick example of how to do it:
 
