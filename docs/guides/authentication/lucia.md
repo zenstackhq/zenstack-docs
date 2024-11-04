@@ -4,7 +4,11 @@ sidebar_position: 5
 sidebar_label: Lucia
 ---
 
-# Integrating With Lucia
+# Integrating With Lucia (Deprecated)
+
+:::info
+Lucia's is [not in active development anymore](https://github.com/lucia-auth/lucia/discussions/1714).
+:::
 
 [Lucia](https://lucia-auth.com/) is an auth library for your server that abstracts away the complexity of handling sessions. It is a good choice if you need to add custom logic to the auth flow or use email and password authentication.  
 
