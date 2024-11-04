@@ -175,6 +175,22 @@ model User {
 
 ZenStack comes with a [VSCode extension](https://marketplace.visualstudio.com/items?itemName=zenstack.zenstack) and a [JetBrains IDE plugin](https://plugins.jetbrains.com/plugin/23397-zenstack-language-tools). You can find more information about IDE support [here](../../guides/ide).
 
+:::tip Documentation
+
+ZModel supports both line comments (`//`) and block comments (`/* ... */`). Comments starting with triple slashes (`///`) are treated as documentation: they show up as hover tooltip in IDEs, and they are passed along to the generated Prisma schema.
+
+```zmodel
+/// A user model
+model User {
+    id String @id
+    
+    /// The user's email
+    email String @unique
+}
+```
+
+:::
+
 ### Full Documentation
 
 Check out the [ZModel Language](../../reference/zmodel-language) reference documentation for a complete language description.

@@ -1850,3 +1850,36 @@ model Profile {
     userId String @unique
 }
 ```
+
+## Comments
+
+ZModel supports both line comments (starting with `//`) and block comments (starting with `/*` and ending with `*/`). Comments on declarations (models, enums, fields, etc.) starting with triple slashes (`///`) are treated as documentation:
+
+- They show up as hover tooltips in IDEs.
+- They are passed along to the generated Prisma schema.
+
+```zmodel
+/// A user model
+model User {
+    id String @id
+
+    /// The user's email
+    email String @unique
+}
+```
+
+You can also use JSDoc-style comments as documentation, however they are not passed along to the generated Prisma schema.
+
+```zmodel
+/**
+ * A user model
+ */
+model User {
+    id String @id
+
+    /**
+     * The user's email
+     */
+    email String @unique
+}
+```
