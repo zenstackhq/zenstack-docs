@@ -196,3 +196,13 @@ const profile = ProfileSchema.parse({
   address: { state: 'WA', city: 'Seattle', zip: '98019' }
 });
 ```
+
+## Limitations
+
+This feature is in preview and has the following limitations:
+
+1. Types cannot inherit from other types.
+2. Models cannot inherit from types.
+3. JSON field members cannot be used in access policies.
+
+We would like to continue gathering feedback and address these limitations in future releases.
