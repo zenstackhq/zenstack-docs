@@ -15,6 +15,8 @@ SQL databases provide us with many benefits, the most important of which is stro
 
 However, once in a while, we want to break free from such strong guarantees for valid reasons. You may have some tiny objects that you want to attach to the main entities (e.g., metadata of an image) without formalizing them into a separate table. Or you need to store records with many possible sparse fields but want to avoid creating wide tables.
 
+<!-- truncate -->
+
 Prisma's JSON type provides a generic escape hatch for such scenarios. It allows storing arbitrary data and gives you a generic `JsonValue` type in the query results.
 
 ```zmodel title="schema.prisma"
@@ -164,4 +166,4 @@ const images = await db.image.findMany({
 });
 ```
 
-Is it useful, or can it be confusing (as it looks the same as relation filters)? Let us know by leaving a comment below.
+Is it useful, or can it be confusing (as it looks the same as relation filters)? Let us know by leaving a comment below. You can also learn more about this feature in the [official guide](https://zenstack.dev/docs/guides/typing-json).
