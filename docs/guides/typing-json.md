@@ -65,6 +65,8 @@ model User {
 
 Strongly typed JSON fields must be annotated with the `@json` attribute. The purpose is to make them easily distinguishable from relational fields.
 
+The feature is only supported for PostgreSQL database for now.
+
 :::
 
 ## `PrismaClient` typing
