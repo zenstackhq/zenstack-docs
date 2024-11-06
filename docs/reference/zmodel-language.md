@@ -23,14 +23,14 @@ We made that choice to extend the Prisma schema for several reasons:
 
 :::
 
-However, the standard capability of Prisma schema doesn't allow us to build the functionalities we want in a natural way, so we made a few extensions to the language by adding the following:
+However, the standard capability of Prisma schema doesn't allow us to build the functionalities we want in a natural way, so we made several extensions to the language by adding the following:
 
 1. Custom attributes
 1. Custom attribute functions
 1. Built-in attributes and functions for defining access policies
 1. Built-in attributes for defining field validation rules
 1. Utility attributes like `@password` and `@omit`
-1. Multi-schema files support 
+1. Multi-schema files support
 
 Some of these extensions have been asked for by the Prisma community for some time, so we hope that ZenStack can be helpful even just as an extensible version of Prisma.
 
@@ -244,13 +244,14 @@ Models represent the business entities of your application. A model inherits all
 -  **[abstract]**:
 
     Optional. If present, the model is marked as abstract would not be mapped to a database table. Abstract models are only used as base classes for other models.
+
 -   **[NAME]**:
 
     Name of the model. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
 
 -   **[FIELD]**:
 
-    Arbitrary number of fields. See [next section](#field) for details.
+    Arbitrary number of fields. See [Field](#field) for details.
 
 -   **[ABSTRACT_MODEL_NAME]**:
     
@@ -286,6 +287,49 @@ model User {
 }
 ```
 
+## Type
+
+Types provide a way to modeling object shapes without mapping them to a database table. The use cases of "types" include:
+
+- Typing JSON fields in models.
+- Typing [plugin](#plugin) options.
+- Interfacing with data models from external sources (auth providers like [Clerk](https://clerk.com), payment providers like [Stripe](https://stripe.com), etc.).
+
+### Syntax
+```zmodel
+type [NAME] {
+    [FIELD]*
+}
+```
+
+-   **[NAME]**:
+
+    Name of the model. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+
+-   **[FIELD]**:
+
+    Arbitrary number of fields. See [Field](#field) for details.
+
+### Example
+
+```zmodel
+type Profile {
+    email String @email
+    name String
+}
+
+model User {
+    id String @id
+    profile Profile? @json
+}
+```
+
+### Limitations
+
+- Inheritance is not supported for types yet. A type cannot inherit from another type. A model cannot extend a type.
+- Type cannot have type-level attributes like `@@validate`. However, fields in a type can have field-level attributes.
+
+We may address these limitations in future versions.
 
 ## Attribute
 
@@ -651,6 +695,14 @@ attribute @omit()
 ```
 
 Indicates that the field should be omitted when read from the generated services. Commonly used together with `@password` attribute.
+
+##### @json
+
+```zmodel
+attribute @json()
+```
+
+Marks a field to be strong-typed JSON. The field's type must be a [Type](#type) declaration.
 
 ##### @prisma.passthrough
 
@@ -1105,12 +1157,20 @@ You can find examples of custom attributes and functions in [ZModel Standard Lib
 
 ## Field
 
-Fields are typed members of models.
+Fields are typed members of models and types.
 
 ### Syntax
 
 ```zmodel
 model Model {
+    [FIELD_NAME] [FIELD_TYPE] (FIELD_ATTRIBUTES)?
+}
+```
+
+Or
+
+```zmodel
+type Type {
     [FIELD_NAME] [FIELD_TYPE] (FIELD_ATTRIBUTES)?
 }
 ```
@@ -1121,7 +1181,7 @@ model Model {
 
 -   **[FIELD_TYPE]**
 
-    Type of the field. Can be a scalar type or a reference to another model.
+    Type of the field. Can be a scalar type, a reference to another model if the field belongs to a [model](#model), or a reference to another type if it belongs to a [type](#type).
 
     The following scalar types are supported:
 
@@ -1788,5 +1848,38 @@ model Profile {
     id String @id
     user @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
     userId String @unique
+}
+```
+
+## Comments
+
+ZModel supports both line comments (starting with `//`) and block comments (starting with `/*` and ending with `*/`). Comments on declarations (models, enums, fields, etc.) starting with triple slashes (`///`) are treated as documentation:
+
+- They show up as hover tooltips in IDEs.
+- They are passed along to the generated Prisma schema.
+
+```zmodel
+/// A user model
+model User {
+    id String @id
+
+    /// The user's email
+    email String @unique
+}
+```
+
+You can also use JSDoc-style comments as documentation, however they are not passed along to the generated Prisma schema.
+
+```zmodel
+/**
+ * A user model
+ */
+model User {
+    id String @id
+
+    /**
+     * The user's email
+     */
+    email String @unique
 }
 ```
