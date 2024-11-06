@@ -203,6 +203,7 @@ const profile = ProfileSchema.parse({
 
 This feature is in preview and has the following limitations:
 
+1. Only PostgreSQL database is supported.
 1. Types cannot inherit from other types.
 1. Models cannot inherit from types.
 1. Types and abstract models are conceptually similar and they should probably be consolidated.
