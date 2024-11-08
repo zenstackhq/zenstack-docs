@@ -677,3 +677,15 @@ will be:
 ```
 
 You can use the generated `getQueryKey` function to compute it.
+
+## FAQ
+
+### Next.js error "createContext" is not a function
+
+If you see an error like:
+
+```plain
+Error in Next.js: "TypeError: (0 , react__WEBPACK_IMPORTED_MODULE_0__.createContext) is not a function"
+```
+
+It's usually due to you're using the hooks in a React server component. Make sure to add the `'use client;'` directive at the top of your component file.
