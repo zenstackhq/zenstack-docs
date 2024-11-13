@@ -23,6 +23,7 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 | generateClient | Boolean | Whether to run `prisma generate` after generation | No       | true                   |
 | generateArgs | String | Command line arguments appended to the `prisma generate` call, e.g., "--no-engine". Please note that the "--schema" option is automatically passed, and you shouldn't provide it explicitly. | No       |                    |
 | format         | Boolean | Whether to run `prisma format` after generation   | No       | true                  |
+| customAttributesAsComments | Boolean | Whether to generate non-Prisma attributes (e.g., `@@allow`) as comments in the Prisma schema | No | false |
 
 ### Example
 
