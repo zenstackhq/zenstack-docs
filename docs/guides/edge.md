@@ -123,4 +123,5 @@ export default {
 Cloudflare's [D1 database](https://developers.cloudflare.com/d1/) is not yet supported by ZenStack due to its lack of support for interactive transactions.
 :::
 
-ZenStack currently doesn't have adapters for edge-first server frameworks like [hono](https://hono.dev/). Please create a [feature request](https://github.com/zenstackhq/zenstack/issues/new?template=feature_request.md&title=%5BFeature+Request%5D) if you have a need for it.
+If you need a more sophisticated backend running on Cloudflare Workers, [Hono](https://hono.dev/) is a great choice. Check [how you can use ZenStack with Hono](https://zenstack.dev/docs/reference/server-adapters/hono).
+```
