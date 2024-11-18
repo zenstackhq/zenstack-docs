@@ -25,7 +25,7 @@ The following code shows an example blog post schema:
 
 ```zmodel
 type User {
-    id String @id
+  id String @id
 }
 
 model Post {
