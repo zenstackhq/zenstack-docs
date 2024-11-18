@@ -93,7 +93,7 @@ await db.user.create({
 //   profile: {
 //     name: string;
 //     age: number;
-//     address: {
+//     address?: {
 //       state: string;
 //       city: string;
 //       zip: string;

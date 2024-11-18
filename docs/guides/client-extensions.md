@@ -5,7 +5,7 @@ sidebar_position: 11
 
 # Using With Prisma Client Extensions
 
-[Prisma Client Extension](https://www.prisma.io/docs/orm/prisma-client/client-extensions) is a mechanism for extending the interface and functionality of Prisma Client. This guide introduces two ways of using ZenStack with client extensions and their implications.
+[Prisma Client Extension](https://www.prisma.io/docs/orm/prisma-client/client-extensions) is a mechanism for extending the interface and functionality of Prisma Client.
 
 We'll use the following ZModel as a reference throughout this guide:
 
@@ -98,11 +98,11 @@ Currently there's a limitation that computed fields are not governed by field-le
 
 ## Installing extensions to an enhanced Prisma Client
 
-Such a setup DOES NOT WORK as you would expect in most cases, so it should generally be avoided. For example,
+Since v2.9.0, installing client extensions to an enhanced Prisma Client should generate the same result as doing it the opposite way - i.e., call `enhance` on an extended Prisma Client, as explained in the previous section.
 
 ```ts
-const enhanced = enhance(prisma);
-const db = enhanced.$extends({
+const db = enhance(prisma);
+const extended = db.$extends({
   model: {
     post: {
       async getFeeds() {
@@ -113,26 +113,6 @@ const db = enhanced.$extends({
   },
 });
 
-const feeds = await db.post.getFeeds();
+const feeds = await extended.post.getFeeds();
+// `feeds` will only contain published posts
 ```
-
-The `getFeeds()` call will return all posts (both published and unpublished ones). This is due to how Prisma internally implements the client extensions. Although you're calling `$extends` on an enhanced client, inside the extension, the context (returned by `Prisma.getExtensionContext(this)`) bypasses ZenStack and directly calls into the original Prisma client.
-
-You can refactor the code to make it work by explicitly referencing the enhanced client in the extension:
-
-```ts
-const enhanced = enhance(prisma);
-const db = enhanced.$extends({
-  model: {
-    post: {
-      async getFeeds() {
-          return enhanced.post.findMany();
-      },
-    },
-  },
-});
-
-const feeds = await db.post.getFeeds();
-```
-
-It may or may not be practical, depending on the structure of your code base.

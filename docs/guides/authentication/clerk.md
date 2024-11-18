@@ -17,16 +17,15 @@ First, follow Clerk's [quick start guides](https://clerk.com/docs/quickstarts/ov
 
 ### Adjust your ZModel
 
-Since Clerk manages both user authentication and storage, you don't need to store users in your database anymore. However, since the `auth()` function is resolved to the `User` model in ZModel, you still need to define it in your schema. The trick here is to mark the `User` model as ignored so Prisma doesn't map it to a database table.
+Since Clerk manages both user authentication and storage, you don't need to store users in your database anymore. However, you still need to provide a type that the `auth()` function can resolve to. Instead of using a regular model, we can declare a `type` instead:
 
-You can include any field you want in the `User` model, as long as you provide the same set of fields in the context object used for creating the enhanced Prisma client.
+You can include any field you want in the `User` type, as long as you provide the same set of fields in the context object used for creating the enhanced Prisma client.
 
 The following code shows an example blog post schema:
 
 ```zmodel
-model User {
+type User {
     id String @id
-    @@ignore
 }
 
 model Post {
@@ -45,7 +44,7 @@ model Post {
 }
 ```
 
-If you choose to [synchronize user data to your database](https://clerk.com/docs/users/sync-data-to-your-backend), you can model the `User` model as a regular Prisma model without putting the `@@ignore` attribute there.
+If you choose to [synchronize user data to your database](https://clerk.com/docs/users/sync-data-to-your-backend), you can define `User` as a regular `model` since it's then backed by a database table.
 
 ### Create an enhanced Prisma client
 
@@ -63,10 +62,10 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from '../lib/db';
 
 async function getPrisma() {
-  const authObject = auth();
+  const authObject = await auth();
   // create a wrapper of Prisma client that enforces access policy
   return enhance(prisma, {
-    user: authObject ? { id: authObject.userId } : undefined,
+    user: authObject.userId ? { id: authObject.userId } : undefined,
   });
 }
 ```
