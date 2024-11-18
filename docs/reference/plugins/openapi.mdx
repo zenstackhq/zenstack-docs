@@ -15,17 +15,18 @@ npm install --save-dev @zenstackhq/openapi
 
 ### Options
 
-| Name            | Type   | Description                                                                   | Required | Default                |
-| --------------- | ------ | ----------------------------------------------------------------------------- | -------- | ---------------------- |
-| output          | String | Output file path (with suffix .yaml or .json, relative to the path of ZModel)                                 | Yes      |                        |
-| flavor          | String | API flavor: "rpc" or "rest". See [here](../server-adapters/api-handlers/) for more details.                                       | No       | rpc                   |
-| specVersion     | String | OpenAPI specification version                                                 | No       | 3.1.0                  |
-| title           | String | API title                                                                     | No       | ZenStack Generated API |
-| version         | String | API version                                                                   | No       | 1.0.0                  |
-| prefix          | String | API path prefix, e.g., '/api'                                                 | No       |                        |
-| description     | String | API description                                                               | No       |                        |
-| summary         | String | API summary                                                                   | No       |                        |
-| securitySchemes | Object | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
+| Name             | Type    | Description                                                                   | Required | Default                |
+| ---------------- | ------- | ----------------------------------------------------------------------------- | -------- | ---------------------- |
+| output           | String  | Output file path (with suffix .yaml or .json, relative to the path of ZModel)                                 | Yes      |                        |
+| flavor           | String  | API flavor: "rpc" or "rest". See [here](../server-adapters/api-handlers/) for more details.                                       | No       | rpc                   |
+| specVersion      | String  | OpenAPI specification version                                                 | No       | 3.1.0                  |
+| title            | String  | API title                                                                     | No       | ZenStack Generated API |
+| version          | String  | API version                                                                   | No       | 1.0.0                  |
+| prefix           | String  | API path prefix, e.g., '/api'                                                 | No       |                        |
+| description      | String  | API description                                                               | No       |                        |
+| summary          | String  | API summary                                                                   | No       |                        |
+| securitySchemes  | Object  | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
+| omitInputDetails | Boolean | **Only valid for "rpc" flavor.** If true, the output spec will not contain detailed structures for query/mutation input fields like `where`, `select`, `data`, etc. These fields will be typed as generic objects. Use this option to reduce the size of the generated spec. | No       | false                  |
 
 #### API flavor
 

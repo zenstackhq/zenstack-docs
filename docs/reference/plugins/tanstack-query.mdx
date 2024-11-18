@@ -30,11 +30,12 @@ npm install --save-dev @zenstackhq/tanstack-query
 
 ### Options
 
-| Name    | Type   | Description                                             | Required | Default |
-| ------- | ------ | ------------------------------------------------------- | -------- | ------- |
-| output  | String | Output directory (relative to the path of ZModel)                                        | Yes     |         |
-| target  | String | Target framework to generate for. Choose from "react", "vue", and "svelte".              | Yes     |         |
-| version | String | Version of TanStack Query to generate for. Choose from "v4" and "v5".                    | No      | v5      |
+| Name     | Type    | Description                                             | Required | Default |
+| -------- | ------- | ------------------------------------------------------- | -------- | ------- |
+| output   | String  | Output directory (relative to the path of ZModel)                                        | Yes     |         |
+| target   | String  | Target framework to generate for. Choose from "react", "vue", and "svelte".              | Yes     |         |
+| version  | String  | Version of TanStack Query to generate for. Choose from "v4" and "v5".                    | No      | v5      |
+| portable | Boolean | Include TypeScript types needed to compile the generated code in the output directory. Useful when you output into another project that doesn't reference Prisma and ZenStack. You'll still need to install the "@zenstackhq/tanstack-query" package in that project. | No      | false   |
 
 ### Hooks Signature
 
