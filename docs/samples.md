@@ -66,3 +66,11 @@ You can use [this blog post](https://zenstack.dev/blog/model-authz) as an introd
     - Decoupled frontend and backend with monorepo
     - Backend: ZenStack + Express + GitHub SSO
     - Frontend: React + TanStack-Query + TanStack-Router + MUI5 + Vite
+
+- [Cloudflare Pages + Worker](https://github.com/kirankunigiri/zenstack-ui) by [Kiran](https://github.com/kirankunigiri)
+  
+    - Decoupled frontend and backend on Cloudflare
+    - Hono for backend (Cloudflare Worker)
+    - React SPA for frontend (Cloudflare Pages)
+    - This repo is also a cool demo of the [ZenStack UI](https://www.npmjs.com/package/zenstack-ui) package made by Kiran.
+  
