@@ -75,6 +75,21 @@ model Comment {
 }
 ```
 
+:::info Inheriting from multiple bases
+
+You can inherit from multiple abstract models from a single model. For example:
+
+```zmodel
+abstract model Base1 { ... }
+
+abstract model Base2 { ... }
+
+model Post extends Base1, Base2 { ... }
+```
+:::
+
+```tsx
+
 ## Multiple Schema Files
 
 You can split your schema file into multiple files and use `import` statements to include the file you needed.  When running `zenstack generate`, it recursively traverses all the imported models and combine them into a single model.  For instance, you can split the above schema file into two files below:
