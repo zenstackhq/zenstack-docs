@@ -51,6 +51,8 @@ Clerk can be used with any JavaScript framework, but its support for Next.js see
 - [Prisma](https://prisma.io): the ORM
 - [ZenStack](https://zenstack.dev): the access control layer on top of Prisma
 
+You can find the link of the completed project at the end of the post.
+
 ## Adding organization management
 
 I assume you've created a Next.js project and set up the basic Clerk sign-up/sign-in flow following [the guide](https://clerk.com/docs/quickstarts/nextjs). Also, make sure you've[ enabled the "Organization" feature](https://clerk.com/docs/organizations/overview) in Clerk's dashboard.
@@ -352,7 +354,7 @@ export async function getUserDb() {
 }
 ```
 
-We'll build the UI using React Server Components (RSC) and consistently use the `getUserDb()` helper to access the database with access control enforcement.
+Let's build the UI using [React Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components) (RSC) and [Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations). We'll also consistently use the `getUserDb()` helper to access the database with access control enforcement.
 
 Here's the RSC that renders the todo lists for the current user (with styling omitted):
 
@@ -436,3 +438,6 @@ The components that manage Todo items are not shown for brevity, but the ideas a
 ## Conclusion
 
 Authentication and authorization are two essential components of most applications. They can be especially challenging for multi-tenant ones. This post demonstrated how the work can be significantly simplified and streamlined by combining Clerk's "Organization" feature and ZenStack's access control capabilities. The end result is a secure application with great flexibility and little boilerplate code.
+
+Clerk also supports defining [custom roles and permissions](https://clerk.com/docs/organizations/roles-permissions) (still Beta) for organizations. Although not covered in this post, with some tweaking, you should be able to sync them through webhooks and then define access policies based on them. That way, you can manage permissions with Clerk's dashboard and have ZenStack enforce them at runtime.
+
