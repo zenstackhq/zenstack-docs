@@ -67,12 +67,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en">
         <body>
-          <header className="p-4">
+          <header>
             <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
-              <div className="flex justify-between">
+              <div>
                 // highlight-next-line
                 <OrganizationSwitcher />
                 <UserButton />
@@ -280,10 +280,17 @@ As mentioned, ZenStack allows you to model both data and access control in a sin
 Although authorization is a distinct concept from authentication, it usually depends on authentication to work. For example, to determine if the current user has access to a list, a verdict must be made based on the user's id, current organization, and role in the organization. To access such information, let's first declare a type to express it:
 
 ```zmodel title="/schema.zmodel"
+/// The shape of `auth()`
 type Auth {
-  userId String  @id
-  orgId  String?
-  role   Role?
+  /// Current user's ID
+  userId         String  @id
+
+  /// User's current organization ID
+  currentOrgId   String?
+
+  /// User's role in the current organization
+  currentOrgRole Role?
+
   @@auth
 }
 ```
@@ -298,10 +305,10 @@ model List {
   @@deny('all', auth() == null)
 
   // tenant segregation: deny access if the user's current org doesn't match
-  @@deny('all', auth().orgId != orgId)
+  @@deny('all', auth().currentOrgId != orgId)
 
   // owner/admin has full access
-  @@allow('all', auth().userId == ownerId || auth().role == ADMIN)
+  @@allow('all', auth().userId == ownerId || auth().currentOrgRole == ADMIN)
 
   // can be read by org members if not private
   @@allow('read', !private)
@@ -332,8 +339,8 @@ export async function getUserDb() {
   const user = userId
     ? {
         userId,
-        orgId,
-        role:
+        currentOrgId: orgId,
+        currentOrgRole:
           orgRole === "org:admin"
             ? Role.ADMIN
             : orgRole === "org:member"
