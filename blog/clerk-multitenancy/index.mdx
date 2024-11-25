@@ -1,5 +1,5 @@
 ---
-title: "Simplified Multi-Tenancy Development With Clerk's \"Organization\""
+title: "Building Multi-Tenant Apps Using Clerk's \"Organization\" and Next.js"
 description: Clerk's "organization" feature provides a powerful pre-built tenant management experience. Let's see how we can easily create a full-fledged multi-tenant application with it.
 tags: [auth, clerk, multi-tenancy]
 authors: yiming
@@ -7,7 +7,7 @@ date: 2024-11-24
 image: ./cover.png
 ---
 
-# Simplified Multi-Tenancy Development With Clerk's \"Organization\"
+# Building Multi-Tenant Apps Using Clerk's \"Organization\" and Next.js
 
 ![Cover Image](cover.png)
 
@@ -96,18 +96,16 @@ With this one-liner, you'll have a set of fully working UI components for managi
 
 ## Setting up the database
 
-Our user and organization data are stored on Clerk's side. We need to store the todo lists and items in our own database. Also, since the todo lists have relationships with users and organizations, to properly define a relational data model, we still want to replicate the most basic user and organization information to our database.
+Our user and organization data are stored on Clerk's side. We need to store the todo lists and items in our own database. In this section, we'll set up Prisma and ZenStack and create the database schema.
 
-In this section, we'll set up Prisma and ZenStack and create the database schema. The following section will talk about how to sync data from Clerk to the database.
-
-We'll start with installing the necessary packages:
+Let's start with installing the necessary packages:
 
 ```bash
 npm install --save-dev prisma zenstack
 npm install @prisma/client @zenstackhq/runtime
 ```
 
-Then, we can create the database schema. Please note that we're creating a **schema.zmodel** file (as a replacement of "schema.prisma"). The [ZModel language](/docs/the-complete-guide/part1/zmodel) is a superset of Prisma schema language, allowing you to model both the data schema and access control policies. In this section, we'll only focus on the data schema part.
+Then we can create the database schema. Please note that we're creating a **schema.zmodel** file (as a replacement of "schema.prisma"). The [ZModel language](/docs/the-complete-guide/part1/zmodel) is a superset of Prisma schema language, allowing you to model both the data schema and access control policies. In this section, we'll only focus on the data modeling part.
 
 ```zmodel title="/schema.zmodel"
 datasource db {
@@ -119,63 +117,13 @@ generator js {
   provider = "prisma-client-js"
 }
 
-enum Role {
-  ADMIN
-  MEMBER
-}
-
-// Subset of Clerk's user data
-model User {
-  id                 String                   @id
-  email              String?
-  name               String?
-
-  // the user's memberships in organizations
-  memberships        OrganizationMembership[]
-
-  // the organizations the user owns
-  ownedOrganizations Organization[]
-
-  // the todo lists the user owns
-  lists              List[]
-}
-
-// Subset of Clerk's organization data
-model Organization {
-  id          String                   @id
-  name        String
-
-  // the members of the organization
-  memberships OrganizationMembership[]
-
-  // the todo lists in organization
-  lists       List[]
-
-  // the owner of the organization
-  owner       User                     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  ownerId     String
-}
-
-// Subset of Clerk's organization membership data
-// Join table between User and Organization
-model OrganizationMembership {
-  id     String       @id
-  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  org    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  orgId  String
-  role   Role
-}
-
 // Todo list
 model List {
   id        String        @id @default(cuid())
   createdAt DateTime      @default(now())
   title     String
   private   Boolean       @default(false)
-  org       Organization? @relation(fields: [orgId], references: [id], onDelete: Cascade)
   orgId     String?
-  owner     User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId   String
   todos     Todo[]
 }
@@ -205,76 +153,6 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 ```
 
-## Syncing Clerk data
-
-We've defined tables for users and organizations in our database. Now it's time to sync them from Clerk. The best way to do it is via webhooks. [Clerk's guide](https://clerk.com/docs/integrations/webhooks/sync-data) provides very detailed instructions on how to set up webhooks and how to test the reception locally. In this post, we're only showing the part of the code that handles the webhook payload.
-
-```ts title="src/app/api/webhook/route.ts"
-import { prisma } from "~/server/db";
-
-export async function POST(req: Request) {
-  // the implementation of `parseWebhookEvent` is omitted, see clerk's guide for details
-  const evt = parseWebhookEvent(req);
-
-  switch (evt.type) {
-    case "user.created": {
-      await prisma.user.create({
-        data: {
-          id: evt.data.id,
-          email: evt.data.email_addresses?.[0]?.email_address,
-          name: evt.data.first_name,
-        },
-      });
-      break;
-    }
-
-    case "organization.created":
-      await prisma.organization.create({
-        data: {
-          id: evt.data.id,
-          name: evt.data.name,
-          ownerId: evt.data.created_by,
-        },
-      });
-      break;
-
-    case "organizationMembership.created":
-      await prisma.organizationMembership.create({
-        data: {
-          id: evt.data.id,
-          userId: evt.data.public_user_data.user_id,
-          orgId: evt.data.organization.id,
-          role: evt.data.role === "org:admin" ? "ADMIN" : "MEMBER",
-        },
-      });
-      break;
-
-    case "organizationMembership.updated":
-      await prisma.organizationMembership.update({
-        where: {
-          id: evt.data.id,
-        },
-        data: {
-          role: evt.data.role === "org:admin" ? "ADMIN" : "MEMBER",
-        },
-      });
-      break;
-
-    case "organizationMembership.deleted":
-      await prisma.organizationMembership.delete({
-        where: {
-          id: evt.data.id,
-        },
-      });
-      break;
-  }
-
-  return new Response("Webhook received", { status: 200 });
-}
-```
-
-The webhook handler replicates the necessasry subset of user, organization, and organization membership data to our database as the changes happen on Clerk side. You should also handle "user.update", "user.deleted", etc. events in a similar way.
-
 ## Implementing access control
 
 As mentioned, ZenStack allows you to model both data and access control in a single schema. Let's see how we can entirely implement our authorization requirements with it. The rules are defined with the `@@allow` and `@@deny` attributes. Access is rejected by default unless explicitly granted with an `@@allow` rule.
@@ -282,15 +160,15 @@ As mentioned, ZenStack allows you to model both data and access control in a sin
 Although authorization is a distinct concept from authentication, it usually depends on authentication to work. For example, to determine if the current user has access to a list, a verdict must be made based on the user's id, current organization, and role in the organization. To access such information, let's first declare a type to express it:
 
 ```zmodel title="/schema.zmodel"
-/// The shape of `auth()`
+// The shape of `auth()`
 type Auth {
-  /// Current user's ID
+  // Current user's ID
   userId         String  @id
 
-  /// User's current organization ID
+  // User's current organization ID
   currentOrgId   String?
 
-  /// User's role in the current organization
+  // User's role in the current organization
   currentOrgRole Role?
 
   @@auth
@@ -310,7 +188,7 @@ model List {
   @@deny('all', auth().currentOrgId != orgId)
 
   // owner/admin has full access
-  @@allow('all', auth().userId == ownerId || auth().currentOrgRole == ADMIN)
+  @@allow('all', auth().userId == ownerId || auth().currentOrgRole == 'org:admin')
 
   // can be read by org members if not private
   @@allow('read', !private)
@@ -337,19 +215,14 @@ export async function getUserDb() {
   // get the current user's information from Clerk
   const { userId, orgId, orgRole } = await auth();
 
-  // create an enhanced Prisma Client with proper context
+  // create an enhanced Prisma Client with proper user context
   const user = userId
     ? {
         userId,
         currentOrgId: orgId,
-        currentOrgRole:
-          orgRole === "org:admin"
-            ? Role.ADMIN
-            : orgRole === "org:member"
-              ? Role.MEMBER
-              : undefined,
+        currentOrgRole: orgRole
       }
-    : undefined;
+    : undefined; // anonymous
   return enhance(prisma, { user });
 }
 ```
@@ -367,7 +240,6 @@ export default async function TodoLists() {
   // enhanced PrismaClient automatically filters out
   // the lists that the user doesn't have access to
   const lists = await db.list.findMany({
-    include: { owner: true },
     orderBy: { updatedAt: "desc" },
   });
 
@@ -380,10 +252,7 @@ export default async function TodoLists() {
         <ul>
           {lists?.map((list) => (
             <Link href={`/lists/${list.id}`} key={list.id}>
-              <li>
-                {list.title}
-                {list.private && (<span>Private</span>)}
-              </li>
+              <li>{list.title}</li>
             </Link>
           ))}
         </ul>
@@ -393,7 +262,7 @@ export default async function TodoLists() {
 }
 ```
 
-A client component that creates a new list by calling into server actions:
+A client component that creates a new list by calling into a server action:
 
 ```tsx title="src/components/CreateList.tsx"
 "use client";
@@ -437,7 +306,7 @@ The components that manage Todo items are not shown for brevity, but the ideas a
 
 ## Conclusion
 
-Authentication and authorization are two essential components of most applications. They can be especially challenging for multi-tenant ones. This post demonstrated how the work can be significantly simplified and streamlined by combining Clerk's "Organization" feature and ZenStack's access control capabilities. The end result is a secure application with great flexibility and little boilerplate code.
+Authentication and authorization are two cornerstones of most applications. They can be especially challenging to build for multi-tenant ones. This post demonstrated how the work can be significantly simplified and streamlined by combining Clerk's "Organization" feature and ZenStack's access control capabilities. The end result is a secure application with great flexibility and little boilerplate code.
 
-Clerk also supports defining [custom roles and permissions](https://clerk.com/docs/organizations/roles-permissions) (still Beta) for organizations. Although not covered in this post, with some tweaking, you should be able to sync them through webhooks and then define access policies based on them. That way, you can manage permissions with Clerk's dashboard and have ZenStack enforce them at runtime.
+Clerk also supports defining [custom roles and permissions](https://clerk.com/docs/organizations/roles-permissions) (still Beta) for organizations. Although not covered in this post, with some tweaking, you should be able to leverage it to define access policies. That way, you can manage permissions with Clerk's dashboard and have ZenStack enforce them at runtime.
 
