@@ -697,6 +697,44 @@ Relationships can also be manipulated directly. See [Manipulating Relationships]
     ```
 
 
+### Upserting a resource
+
+JSON:API didn't specify a convention for "upsert" operations. ZenStack uses a variation of the "create" operation to represent "upsert", and uses the request meta to indicate the intention. See details in [examples](#examples-10).
+
+```
+POST /:type
+```
+
+#### Status codes
+
+- 201: The request was successful and the resource was created.
+- 200: The request was successful and the resource was updated.
+- 400: The request was malformed.
+- 403: The request was forbidden.
+- 404: The requested resource type does not exist.
+
+#### Examples
+
+```json
+POST /user
+{
+    "data": {
+        "type": "user",
+        "attributes": {
+            "id": 1,
+            "name": "Emily",
+            "email": "emily@zenstack.dev"
+        }
+    },
+    "meta": {
+        "operation": "upsert",
+        "matchFields": ["id"],
+    }
+}
+```
+
+The `meta.operation` field must be "upsert", and the `meta.matchFields` field must be an array of field names that are used to determine if the resource already exists. If an existing resource is found, "update" operation is conducted, otherwise "create". The `meta.matchFields` fields must be unique fields, and they must have corresponding entries in `data.attributes`.
+
 ### Deleting a resource
 
 A resource can be deleted using the following endpoint:
