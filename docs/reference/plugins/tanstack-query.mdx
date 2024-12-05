@@ -52,7 +52,10 @@ The generated hooks have the following signature convention.
     - `args`: Prisma query args. E.g., `{ where: { published: true } }`.
     - `options`: tanstack-query options.
 
-    The `data` field returned by the hooks call contains the Prisma query result.
+    The hook function returns a standard TanStack Query [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result, plus an added `queryKey` field.
+    
+    - The `data` field contains the Prisma query result.
+    - The `queryKey` field is the query key used to cache the query result. It can be used to manipulate the cache directly or [cancel the query](#query-cancellation).
 
 - **Mutation Hooks**
 
@@ -64,7 +67,7 @@ The generated hooks have the following signature convention.
     - `[Model]`: the name of the model. E.g., "Post".
     - `options`: TanStack-Query options.
 
-    The `mutate` and `mutateAsync` functions returned with the hooks call take the corresponding Prisma mutation args as input. E.q., `{ data: { title: 'Post1' } }`.
+    The hook function returns a standard TanStack Query [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) result. The `mutate` and `mutateAsync` functions returned take the corresponding Prisma mutation args as input. E.q., `{ data: { title: 'Post1' } }`.
 
 ### Context Provider
 
@@ -678,6 +681,27 @@ will be:
 ```
 
 You can use the generated `getQueryKey` function to compute it.
+
+The query hooks also return the query key as part of the result object.
+
+```ts
+const { data, queryKey } = useFindUniqueUser({ where: { id: '1' } });
+```
+
+### Query Cancellation
+
+You can use TanStack Query's [`queryClient.cancelQueries`](https://tanstack.com/query/latest/docs/reference/QueryClient#queryclientcancelqueries) API to cancel a query. The easiest way to do this is to use the `queryKey` returned by the query hook.
+
+```ts
+const queryClient = useQueryClient();
+const { queryKey } = useFindUniqueUser({ where: { id: '1' } });
+
+function onCancel() {
+    queryClient.cancelQueries({ queryKey, exact: true });
+}
+```
+
+When a cancellation occurs, the query state is reset and the ongoing `fetch` call to the CRUD API is aborted.
 
 ## FAQ
 
