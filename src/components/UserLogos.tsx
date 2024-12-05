@@ -55,6 +55,12 @@ export default function UserLogs(): JSX.Element {
                         website="https://www.techlockdown.com/"
                         className="text-gray-500 hover:text-gray-500"
                     />
+                    <UserLogo
+                        src="/img/logo/carrot.jpeg"
+                        name="Carrot"
+                        website="https://carrot.tech/"
+                        style={{ color: 'rgb(231, 235, 93)' }}
+                    />
                 </div>
             </div>
         </div>
