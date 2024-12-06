@@ -6,123 +6,83 @@ sidebar_label: Auth.js (NextAuth)
 
 # Integrating With Auth.js (NextAuth)
 
-[Auth.js](https://authjs.dev/) is a comprehensive framework for implementing authentication in Next.js projects. It offers a pluggable mechanism for configuring how user data is persisted.
+[Auth.js](https://authjs.dev/) is a comprehensive framework for implementing authentication in full-stack projects. It offers a pluggable mechanism for configuring identity providers and storage systems.
 
-To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. This guide introduces tasks required for integrating ZenStack with Auth.js. You can find a complete example [here](https://github.com/zenstackhq/sample-todo-nextjs ':target=blank').
+How authentication is integrated with ZenStack is centered around extracting the current user from the authentication system and using it to create an enhanced `PrismaClient`. This guide briefly introduces the general flow. It uses Next.js (app router) to illustrate, but the same principles apply to other frameworks.
 
-### Data model requirement
+You can find a complete sample project [here](https://github.com/zenstackhq/sample-todo-nextjs-tanstack).
 
-Auth.js is agnostic about the underlying database type, but it requires specific table structures, depending on how you configure it. Therefore, your ZModel definitions should reflect these requirements. A sample `User` model is shown here (to be used with `CredentialsProvider`):
+## Preparation
 
-```zmodel title='/schema.zmodel'
-model User {
-    id String @id @default(cuid())
-    email String @unique @email
-    emailVerified DateTime?
-    password String @password @omit
-    name String?
-    image String? @url
+It's assumed that you've already set up a Next.js project following Auth.js's [guide](https://authjs.dev/getting-started), including creating an auth configuration, setting up auth providers, installing a storage adapter, and configuring Next.js middleware.
 
-    // open to signup
-    @@allow('create', true)
+Follow the [installation guide](https://zenstack.dev/docs/install) to install ZenStack in your project.
 
-    // full access by oneself
-    @@allow('all', auth() == this)
+Since you're using ZenStack in the project, you'll almost certainly use the [Prisma Adapter](https://authjs.dev/getting-started/adapters/prisma) with Auth.js. Please follow its guide to configure the ZModel schema properly.
+
+## Integrating with ZenStack
+
+Auth.js provides a unified `auth()` backend API (returned by the [`NextAuth`](https://authjs.dev/reference/nextjs#nextauthresult) function) to retrieve the current validated login user. You can pass it to ZenStack's [`enhance()`](../../reference/runtime-api.md#enhance) API to create an enhanced `PrismaClient` that automatically enforces access policies.
+
+The following sections illustrate various ways of using it.
+
+### Using enhanced `PrismaClient` in server components
+
+```ts title='src/app/some-page/page.tsx'
+import { auth } from '~/auth';
+import { prisma } from '~/db';
+import Post from '~/components/Post';
+
+export default function Page() {
+  const authObj = await auth();
+  const db = enhance(prisma, { user: authObj?.user });
+  const posts = await db.post.findMany()
+
+  return (
+    <div>
+      {posts.map((post) => (
+        <Post key={post.id} value={post} />
+      ))}
+    </div>
+  );
 }
 ```
 
-You can find the detailed database model requirements [here](https://authjs.dev/getting-started/adapters/prisma#schema ':target=blank').
+### Using enhanced `PrismaClient` in route handler
 
-### Adapter
+```ts title='src/app/api/list-posts/route.ts'
+import { auth } from '~/auth';
+import { prisma } from '~/db';
 
-Adapter is a Auth.js mechanism for hooking in custom persistence of auth-related entities, like User, Account, etc. Since ZenStack is based on Prisma, you can use PrismaAdapter for the job:
-
-```ts title='/src/pages/api/auth/[...nextauth].ts'
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import NextAuth, { type NextAuthOptions } from 'next-auth';
-import { prisma } from "../../../server/db/client";
-
-export const authOptions: NextAuthOptions = {
-    // install Prisma adapter
-    // highlight-next-line
-    adapter: PrismaAdapter(prisma),
-    ...
-};
-
-export default NextAuth(authOptions);
-```
-
-### Authorize users for credentials-based auth
-
-If you use [`CredentialsProvider`](https://authjs.dev/getting-started/authentication/credentials#credentials-provider ':target=blank'), i.e. email/password based auth, you need to implement an `authorize` function for verifying credentials against the database.
-
-This is standard Prisma stuff, and the following is just a quick example of how to do it:
-
-```ts title='/src/pages/api/auth/[...nextauth].ts'
-import { prisma } from "../../../server/db/client";
-
-export const authOptions: NextAuthOptions = {
-    ...
-    providers: [
-        CredentialsProvider({
-            credentials: {
-                email: {
-                    label: 'Email Address',
-                    type: 'email',
-                },
-                password: {
-                    label: 'Password',
-                    type: 'password',
-                },
-            },
-
-            authorize: authorize(prisma),
-        }),
-    ]
-};
-
-function authorize(prisma: PrismaClient) {
-  return async (credentials: Record<"email" | "password", string> | undefined) => {
-    if (!credentials) throw new Error("Missing credentials");
-    if (!credentials.email) throw new Error('"email" is required in credentials');
-    if (!credentials.password) throw new Error('"password" is required in credentials');
-
-    const maybeUser = await prisma.user.findFirst({
-      where: { email: credentials.email },
-      select: { id: true, email: true, password: true },
-    });
-
-    if (!maybeUser || !maybeUser.password) return null;
-
-    const isValid = await compare(credentials.password, maybeUser.password);
-    if (!isValid) {
-      return null;
-    }
-
-    return { id: maybeUser.id, email: maybeUser.email };
-  };
+export async function GET(request: Request) {
+  const authObj = await auth();
+  const db = enhance(prisma, { user: authObj?.user });
+  return db.post.findMany()
 }
 ```
 
-### Create an enhanced Prisma client
+### Mounting automatic CRUD API
 
-You can create an enhanced Prisma client which automatically validates access policies, field validation rules etc., during CRUD operations. For more details, please refer to [ZModel Language](../../reference/zmodel-language) reference.
+You also can use ZenStack's [Next.js server adapter](../../reference/server-adapters/next.mdx) to serve a complete set of CRUD API automatically.
 
-To create such a client with a standard setup, call the `enhance` API with a regular Prisma client and the current user (fetched with Auth.js API). Here's an example:
-
-```ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
+```ts title='src/app/api/model/[...path]/route.ts'
 import { enhance } from '@zenstackhq/runtime';
-import { authOptions } from '../../pages/api/auth/[...nextauth]';
-import { prisma } from '../../../server/db/client';
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import { auth } from '~/auth';
+import { prisma } from '~/db';
 
-async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
-    const session = await getServerSession(req, res, authOptions);
-    // create a wrapper of Prisma client that enforces access policy,
-    // data validation, and @password, @omit behaviors
-    return enhance(prisma, { user: session?.user });
+async function getPrisma() {
+  const authObj = await auth();
+  return enhance(prisma, { user: authObj?.user });
 }
-```
 
-You can then use this enhanced Prisma client for CRUD operations that you desire to be governed by the access policies you defined in your data models.
+const handler = NextRequestHandler({ getPrisma, useAppDir: true });
+
+export {
+  handler as DELETE,
+  handler as GET,
+  handler as PATCH,
+  handler as POST,
+  handler as PUT
+};
+```
