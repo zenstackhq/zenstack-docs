@@ -8,9 +8,9 @@ sidebar_label: Auth0
 
 This guide provides simple examples of using Auth0 authentication with ZenStack. While Auth0 offers various authentication methods, this guide assumes you understand Auth0's authentication basics and can obtain a user object after authentication.
 
-## Enhancing the prisma client
+## The basic premise of applying a custom session object to ZenStack.
 
-The basic premise of applying a custom session object to ZenStack.
+This section explains how to apply a custom session object to ZenStack by creating a user object and providing it to the enhance function when creating the Prisma client.
 
 Create a user object and provide it to the enhance function when creating the Prisma client.
 
@@ -44,7 +44,7 @@ export const getPrismaJWT = async (req) => {
     const token = toString(req.headers.get('authorization')).replace('Bearer ', '');
     const res = await jose.jwtVerify(token, jwks, {
       issuer: `${process.env.AUTH0_ISSUER_BASE_URL}/`,
-      audience: process.env.AUTH0_TWIST_API_AUDIENCE,
+      audience: process.env.AUTH0_AUDIENCE,
       algorithms: ['RS256'],
     });
   
