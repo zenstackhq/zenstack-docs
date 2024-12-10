@@ -6,8 +6,7 @@ sidebar_label: Auth0
 
 # Integrating With Auth0
 
-
-This guide aims to give some simple examples of using Auth0 to provide authentication when used in conjunction with ZenStack. It will not take into account the different types of authentication that Auth0 offers. The premise is that you have and understanding of Auth0's method of authentication and are able to produce an object as a result of authenticating a user with Auth0. 
+This guide provides simple examples of using Auth0 authentication with ZenStack. While Auth0 offers various authentication methods, this guide assumes you understand Auth0's authentication basics and can obtain a user object after authentication.
 
 ## Enhancing the prisma client
 
