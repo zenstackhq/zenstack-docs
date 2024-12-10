@@ -154,7 +154,7 @@ In this case, the Auth type is what provide authentication, not the User model, 
 // Specify the auth type
 type Auth {
   id             String      @id
-  @@auth    // And decorate it
+  @@auth         // And decorate it with @@auth to tell ZenStack to use this as the session object
 }
 
 // add your user model as a regular model
@@ -163,6 +163,7 @@ model User {
   name             String?
   email            String?
 
+  // You can now use the Auth object, populated by Auth0, to write policies
   @@allow('create, read, update, delete', auth().id == this.id)
 }
 ```
