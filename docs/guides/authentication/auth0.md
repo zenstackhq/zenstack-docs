@@ -1,7 +1,7 @@
 ---
 description: Integrating with Auth0.
 sidebar_position: 6
-sidebar_label: 🚧 Auth0
+sidebar_label: Auth0
 ---
 
 # Integrating With Auth0
@@ -97,7 +97,7 @@ const currentUser = async (req) => {
   
   return {
     id: session.user.sub,
-    dbUserExists: !isNull(dbUser),    // Cause onboarding behavior 
+    dbUserExists: !isNull(dbUser),    // If the user doesn't exist in the database, this variable can be set in the session
   };
 };
 
@@ -107,6 +107,45 @@ export const getPrisma = async (req) => {
   return enhance(user);
 };
 ```
+
+You can use the result of this token to redirect a user to an onboarding flow, such as a signup form:
+
+```ts
+app.get('/', async (req, res) => {
+  const user = await currentUser(req);
+  if (!user.dbUserExists) {
+    res.redirect('/onboarding');
+  }
+  res.send('hello user');
+});
+```
+
+and create a user record using the ID from the Auth0 session, here's a small example using the Auth0 React SDK:
+
+```ts
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const Profile = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { trigger, isMutating } = useCreateUser();
+
+  const createUser = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get('name');
+
+    await trigger({
+      data: {
+        id: user.sub,
+        name: name,
+      },
+    });
+  }, [trigger, user])
+
+  return <UserForm onSubmit={createUser}/>
+};
+```
+
 
 When the client is created, the database is queried using the contents of the Auth0 token.
 
