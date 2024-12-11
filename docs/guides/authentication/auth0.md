@@ -142,6 +142,9 @@ const Profile = () => {
       // create a new user
       await fetch('/api/create-user', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
             id: user.sub,
             name: name,
