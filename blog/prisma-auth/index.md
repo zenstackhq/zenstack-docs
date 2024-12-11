@@ -277,7 +277,7 @@ model Post {
 
 Check out the following post for more details:
 
-[Soft Delete: Implementation Issues in Prisma and Solution in Zenstack](https://zenstack.dev/blog/soft-delete)
+[Soft Delete: Implementation Issues in Prisma and Solution in ZenStack](https://zenstack.dev/blog/soft-delete)
 
 ## Advanced Topics
 

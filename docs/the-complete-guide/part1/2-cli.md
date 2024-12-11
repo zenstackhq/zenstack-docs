@@ -369,7 +369,7 @@ Installed ZenStack Packages:
     zenstack                    x.y.z
     @zenstackhq/runtime         x.y.z
 ✔ Checking npm registry
-You are using the latest version of Zenstack.
+You are using the latest version of ZenStack.
 ```
 
 ### ZenStack CLI & Prisma CLI

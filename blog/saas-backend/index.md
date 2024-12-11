@@ -206,7 +206,7 @@ localhost:3000/api/post/slack
 
 After that, if you try to access the Post endpoint again, the result won’t contain the “Join Slack” post anymore. If you are interested in how it works under the hook, check out another post for it:
 
-[Soft Delete: Implementation Issues in Prisma and Solution in Zenstack](https://zenstack.dev/blog/soft-delete)
+[Soft Delete: Implementation Issues in Prisma and Solution in ZenStack](https://zenstack.dev/blog/soft-delete)
 
 ## Last
 

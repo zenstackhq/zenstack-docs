@@ -1,5 +1,5 @@
 ---
-title: Building an Admin Console With Minimum Code Using React-Admin, Prisma, and Zenstack
+title: Building an Admin Console With Minimum Code Using React-Admin, Prisma, and ZenStack
 description: This post introduces how to build a fully-secured admin console with minimum code using React-Admin, Prisma, and ZenStack.
 tags: [react, prisma, react-admin]
 authors: yiming
@@ -7,7 +7,7 @@ date: 2024-03-11
 image: ./cover.png
 ---
 
-# Building an Admin Console With Minimum Code Using React-Admin, Prisma, and Zenstack
+# Building an Admin Console With Minimum Code Using React-Admin, Prisma, and ZenStack
 
 ![Cover Image](cover.png)
 

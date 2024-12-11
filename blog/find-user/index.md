@@ -124,7 +124,7 @@ Once again, a peek time and is still going up. 😄
 
 ZenStack could also generate the tRPC route, which is based on the awesome work of [Omar Dulaimi](https://github.com/omar-dulaimi/prisma-trpc-generator). We showed our gratitude by buying some coffee for him. he gave us a star later. One of his followers noticed it and decided to check out ZenStack. The first thing he said in our Discord was:
 
-> Zenstack seems like a dream come true
+> ZenStack seems like a dream come true
 
 After talking with him, we found out that he is the perfect match for our ideal user portrait. And he reported 3 bugs we might never be able to find by ourselves just on the first day. Isn't it incredible how a small action can create such a positive impact, much like the butterfly effect?😄
 
