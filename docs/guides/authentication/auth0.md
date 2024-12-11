@@ -82,8 +82,7 @@ You can add what you need to this variable and set the types for it as referred 
 
 You may want to keep a record of User's in your own database.
 
-You can create your application in such a way that a lack of the user existing in the managed database triggers a process to create one, such as a user onboarding flow. 
-
+When a user doesn't exist in your database, your application can trigger an onboarding flow to create one:
 ```ts
 const currentUser = async (req) => {
   // Get your auth0 auth session
@@ -134,26 +133,26 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
-  const { trigger, isMutating } = useCreateUser();
 
   const createUser = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const name = formData.get('name');
 
-    await trigger({
-      data: {
-        id: user.sub,
-        name: name,
-      },
-    });
-  }, [trigger, user])
+    try {
+      // create a new user
+      await fetch('/api/create-user', {
+          method: 'POST',
+          body: JSON.stringify({
+            id: user.sub,
+            name: name,
+          }),
+        });
+    } catch(error){...}
 
   return <UserForm onSubmit={createUser}/>
 };
 ```
-
-
-When the client is created, the database is queried using the contents of the Auth0 token.
+After this, the user id stored in your database is the same with Auth0 identifier. 
 
 In this case, the Auth type is what provide authentication, not the User model, for example: 
 
