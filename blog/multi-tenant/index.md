@@ -1,5 +1,5 @@
 ---
-title: Multi-Tenancy Implementation Approaches With Prisma and Zenstack
+title: Multi-Tenancy Implementation Approaches With Prisma and ZenStack
 description: Compare and discuss different approaches for implementing Multi-Tenant architecture
 tags: [zenstack, prisma, saas, architecture]
 authors: jiasheng
@@ -7,7 +7,7 @@ date: 2023-03-18
 image: ./cover.png
 ---
 
-# Multi-Tenancy Implementation Approaches With Prisma and Zenstack
+# Multi-Tenancy Implementation Approaches With Prisma and ZenStack
 
 ![Cover Image](cover.png)
 
