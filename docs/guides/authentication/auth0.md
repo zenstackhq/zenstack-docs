@@ -6,13 +6,15 @@ sidebar_label: Auth0
 
 # Integrating With Auth0
 
-This guide provides simple examples of using Auth0 authentication with ZenStack. While Auth0 offers various authentication methods, this guide assumes you understand Auth0's authentication basics and can obtain a user object after authentication.
+> This guide is contributed by [Sinan Güçlü](https://github.com/Driptap).
+
+This guide provides simple examples of using [Auth0](https://auth0.com/) authentication with ZenStack. While Auth0 offers various authentication methods, this guide assumes you understand Auth0's authentication basics and can obtain a user object after authentication.
 
 ## The basic premise of applying a custom session object to ZenStack.
 
 This section explains how to apply a custom session object to ZenStack by creating a user object and providing it to the enhance function when creating the Prisma client.
 
-Create a user object and provide it to the enhance function when creating the Prisma client.
+Create a user object and provide it to the `enhance` function when creating the Prisma client.
 
 ```ts
 export const getPrisma = async (req) => {
@@ -23,10 +25,10 @@ export const getPrisma = async (req) => {
 
 You can provide a type in the ZModel to express what the contents of the user object is.
 
-```prisma
+```zmodel
 type Auth {
-  id             String      @id
-  specialKey     String
+  id         String @id
+  specialKey String
   @@auth
 }
 ```
@@ -63,13 +65,13 @@ export const getPrismaJWT = async (req) => {
 
 This would populate your `auth()` in the Zmodel with the object you've just created from auth0; enabling checks like:
 
-```prisma
+```zmodel
 @@allow('read, update, create', auth().id == this.id)
 ```
 
 or
 
-```prisma
+```zmodel
 @@allow('read, update, create', auth().specialKey == 'SUPERMAN')
 ```
 
@@ -84,19 +86,24 @@ You can create your application in such a way that a lack of the user existing i
 
 ```ts
 const currentUser = async (req) => {
-  const session = await getSession(req);  // get your auth0 auth session
+  // Get your auth0 auth session
+  const session = await getSession(req); 
 
   if (!session?.user.sub) { 
-    throw new Error('UNAUTHENTICATED');      // Throw an error if the user isn't authenticated
+    // Throw an error if the user isn't authenticated
+    throw new Error('UNAUTHENTICATED');
   }
 
-  const dbUser = await prisma.user.findUnique({    // Find the user in the db
+  // Find the user in the db
+  const dbUser = await prisma.user.findUnique({ 
     where: { id: session.user.sub },
   }); 
   
   return {
     id: session.user.sub,
-    dbUserExists: !isNull(dbUser),    // If the user doesn't exist in the database, this variable can be set in the session
+    // If the user doesn't exist in the database, this variable 
+    // can be set in the session
+    dbUserExists: !isNull(dbUser),
   };
 };
 
@@ -150,11 +157,13 @@ When the client is created, the database is queried using the contents of the Au
 
 In this case, the Auth type is what provide authentication, not the User model, for example: 
 
-```prisma
+```zmodel
 // Specify the auth type
 type Auth {
   id             String      @id
-  @@auth         // And decorate it with @@auth to tell ZenStack to use this as the session object
+  // And decorate it with @@auth to tell ZenStack to use this
+  // as the session object  
+  @@auth
 }
 
 // add your user model as a regular model
