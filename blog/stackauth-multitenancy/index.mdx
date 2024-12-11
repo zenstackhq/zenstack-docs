@@ -46,10 +46,12 @@ The target application we'll build is a Todo List. Its core functionalities are 
   - Regular members have full access to the todo lists they own.
   - Regular members can view the other members' todo lists and manage their content, as long as the list is not private.
 
-Besides Next.js and StackAuth, we'll build the app with two other essential pieces of weapon:
+The essential weapons we'll use to build the app are:
 
-- [Prisma](https://prisma.io): the ORM
-- [ZenStack](https://zenstack.dev): the access control layer on top of Prisma
+- [Next.js](https://nextjs.org/): the full-stack framework
+- [StackAuth](https://stack-auth.com/): user authentication and team management
+- [Prisma](https://prisma.io): the ORM that we use to talk to the database
+- [ZenStack](https://zenstack.dev): the authorization layer above Prisma that handles data segregation and access control
 
 You can find the link of the completed project at the end of the post.
 
@@ -88,6 +90,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 With this one-liner, you'll have a set of fully working UI components for managing teams and choosing an active one!
 
 ![Team Management](./team-management.png)
+
+Although StackAuth made it effortless to add "teams" feature into an app, it's up to you to determine how to use the user and team information to control data access. We'll see how to connect it with Prisma/ZenStack to achieve proper authorization.
 
 ## Setting up the database
 
