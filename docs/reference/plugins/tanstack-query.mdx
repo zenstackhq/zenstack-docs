@@ -183,6 +183,31 @@ provideHooksContext({
 
 </Tabs>
 
+:::info Notes about Next.js app router
+
+Next.js's app router renders components as React Server Components (RSC) by default. React context providers are not supported in RSC. If you're configuring the context providers in such a setup, please make sure to wrap them inside a client component, or set the containing layout as client component.
+
+```tsx title='providers.tsx'
+'use client';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Provider as ZenStackHooksProvider } from "@/hooks/generated";
+import type { ReactNode } from 'react';
+
+const queryClient = new QueryClient();
+
+export default function Providers({ children }: { children: ReactNode }) {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <ZenStackHooksProvider value={{ endpoint: '/api/model' }}>
+                {children}
+            </ZenStackHooksProvider>
+        </QueryClientProvider>
+    );
+}
+```
+:::
+
 ### Example
 
 Here's a quick example with a ReactJs blogging app. You can find a fully functional Todo app example [here](https://github.com/zenstackhq/sample-todo-nextjs-tanstack).
