@@ -501,7 +501,9 @@ model TodoList {
 }
 ```
 
-#### 6. If a user can read a list, he has full access to its Todo items
+#### 6. A user as full access to `Todo` if he can read its parent `TodoList`
+
+A model can use its relations to define access rules. The `check()` helper allows you to directly delegate permission check to a relation.
 
 ```zmodel title="/schema.zmodel"
 model Todo {
@@ -516,7 +518,7 @@ model Todo {
 Make sure to rerun `npx zenstack generate` after changing ZModel.
 :::
 
-## Finally, the UI
+## Finally, the Todo list UI
 
 With the CRUD APIs secured and frontend hooks generated, implementing the UI for managing `TodoList`s becomes very straightforward. I'm only showing part of the implementation here.
 
