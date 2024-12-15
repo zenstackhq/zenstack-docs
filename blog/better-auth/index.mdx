@@ -503,7 +503,7 @@ model TodoList {
 
 #### 6. A user as full access to `Todo` if he can read its parent `TodoList`
 
-A model can use its relations to define access rules. The `check()` helper allows you to directly delegate permission check to a relation.
+We've managed to protect the `TodoList` model, and rules for the `Todo` model are yet to be defined. Fortunately, ZenStack allows you to reference relations in policy rules. The `check()` helper allows you to directly delegate permission check to a relation (here `Todo` -> `TodoList`).
 
 ```zmodel title="/schema.zmodel"
 model Todo {
@@ -524,6 +524,8 @@ With the CRUD APIs secured and frontend hooks generated, implementing the UI for
 
 ```tsx title="/app/dashboard/todo-lists-card.tsx"
 export default function TodoListsCard() {
+  // Note that you don't need to filter for the current user and the active organization
+  // because the ZModel rules have taken care of it
   const { data: todoLists } = useFindManyTodoList({
     orderBy: { createdAt: 'desc' },
   });
