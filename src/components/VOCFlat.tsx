@@ -105,7 +105,7 @@ export default function VOC(): JSX.Element {
                 <Quote
                     author="Nikolas Burk"
                     company="Prisma"
-                    avatar="https://unavatar.io/twitter/nikolasburk"
+                    avatar="https://pbs.twimg.com/profile_images/1539606936966012929/vRvuh5cx_400x400.jpg"
                     link="https://twitter.com/nikolasburk/status/1625066262555504641"
                 >
                     <div className="text-left text-lg">
