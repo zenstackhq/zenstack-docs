@@ -94,3 +94,5 @@ async function getPrisma(req: NextApiRequest) {
 ---
 
 You can find a working sample project for Next.js [here](https://github.com/zenstackhq/docs-tutorial-clerk). Use the "main" branch for app router, and the "pages-router" branch for pages router.
+
+Check out [this blog post](../../../blog/clerk-multitenancy/) for a more sophisticated multi-tenant setup.
