@@ -4,12 +4,12 @@ description: Introduce a ZenStack markdown plugin that generates documentation f
 tags: [ai, vercel, documentation]
 authors: jiasheng
 date: 2024-12-23
-image: ./cover.webp
+image: ./cover.png
 ---
 
 # Code as Doc: Automate by Vercel AI SDK and ZenStack for Free
 
-![Cover Image](cover.webp)
+![Cover Image](cover.png)
 
 ## Few developers like writing document
 
