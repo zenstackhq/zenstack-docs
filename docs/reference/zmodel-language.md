@@ -1518,7 +1518,21 @@ A field can also contain an arbitrary number of policy rules. The logic of combi
 
 Please note the difference between model-level and field-level rules. Model-level access are by-default denied, while field-level access are by-default allowed.
 
-### Pre-update vs. post-update
+### "Create" rules
+
+The "create" policy rules should be understood as: **if an entity were to be created, would it satisfy the rules**. Or, in other words, the rules are checked "post create".
+
+An entity creating process works like the following:
+
+1. Initiate a transaction and create the entity.
+2. In the same transaction, try to read the created entity with the "create" rules as filter, and see if it succeeds.
+3. If the read fails, the transaction is rolled back; otherwise it's committed.
+
+The "post-create check" semantic allows the rules to access relations of the entity being created since they are only accessible after the create happens. For simple cases, ZenStack may apply optimizations to reject a create request without initiating a transaction, but generally speaking the "post-create check" semantic is the correct way to think about it.
+
+We may introduce a "pre-create" policy type in the future.
+
+### "Pre-update" vs." post-update" rules
 
 When an access policy rule is applied to a mutate operation, the entities under operation have a "pre" and "post" state. For a "create" rule, its "pre" state is empty, so the rule implicitly refers to the "post" state. For a "delete" rule, its "post" state is empty, so the rule implicitly refers to the "pre" state.
 
