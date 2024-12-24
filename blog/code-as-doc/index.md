@@ -7,6 +7,10 @@ date: 2024-12-23
 image: ./cover.png
 ---
 
+<Head>
+    <link rel="canonical" href="https://dev.to/zenstack/code-as-doc-automate-by-vercel-ai-sdk-and-zenstack-for-free-1ch4" />
+</Head>
+
 # Code as Doc: Automate by Vercel AI SDK and ZenStack for Free
 
 ![Cover Image](cover.png)
