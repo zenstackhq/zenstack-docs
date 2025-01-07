@@ -11,12 +11,12 @@ ZenStack's field encryption feature helps you add an extra layer of protection t
 
 ## Basic Usage
 
-To use the feature, simply mark the fields you want to encrypt with the `@encrypt` attribute in ZModel:
+To use the feature, simply mark the fields you want to encrypt with the `@encrypted` attribute in ZModel:
 
 ```zmodel
 model User {
   id         String @id @default(cuid())
-  someSecret String @encrypt
+  someSecret String @encrypted
 }
 ```
 
