@@ -702,7 +702,37 @@ Indicates that the field should be omitted when read from the generated services
 attribute @json()
 ```
 
-Marks a field to be strong-typed JSON. The field's type must be a [Type](#type) declaration.
+##### @encrypted
+
+```zmodel
+attribute @encrypted()
+```
+
+Marks a field to be encrypted during write and decrypted when read.
+
+```zmodel
+model User {
+    id Int @id
+    someSecret String @encrypted
+}
+```
+
+Using the attribute requires the "encryption" enhancement kind to be enabled when calling `enhance`, and the `encryption` settings provided in the enhancement options:
+
+```ts
+
+function getEncryptionKey(): Uint8Array {
+    // return a 32-byte key
+}
+
+const db = enhance(prisma, { user }, {
+    encryption: {
+        encryptionKey: getEncryptionKey()
+    }
+});
+```
+
+See [Encrypting Field](../guides/field-encryption.md) for more details.
 
 ##### @prisma.passthrough
 
