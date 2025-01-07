@@ -109,7 +109,7 @@ We've heard your feedback: the way how Prisma formats the schema code makes it m
 
 You can switch back to the old behavior in the extension settings (VSCode only).
 
-### 5. Edge Runtime Support (Preview)
+### 5. Edge Runtime Support
 
 We've updated the `@zenstackhq/runtime` package to be compatible with Vercel Edge Runtime and Cloudflare Workers. See [this documentation](./guides/edge) for more details.
 
