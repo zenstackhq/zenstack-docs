@@ -107,11 +107,11 @@ Let us know if you have security concerns about this behavior, and we can consid
 
 When you enable encryption on an existing field with data, you need to migrate the old data into encrypted form. Although ZenStack doesn't have a built-in data migration feature, it provides the infrastructure needed to implement a script.
 
-#### 1. Asynchronously encrypt existing data
+**1. Asynchronously encrypt existing data**
 
 As mentioned in the previous section, the way the default encryption handles decryption failures allows you to encrypt existing data asynchronously without taking your service down.
 
-#### 2. Using the default encrypter
+**2. Using the default encrypter**
 
 The `@zenstackhq/runtime` package exports an `Encrypter` class that you can use to encrypt data into the format compatible with what the enhanced PrismaClient expects:
 
