@@ -54,6 +54,16 @@ type TransactionIsolationLevel =
     | 'Snapshot'
     | 'Serializable';
 
+type SimpleEncryption = {
+    encryptionKey: Uint8Array;
+    decryptionKeys?: Uint8Array[];
+}
+
+type CustomEncryption = {
+    encrypt: (model: string, field: FieldInfo, plain: string) => Promise<string>;
+    decrypt: (model: string, field: FieldInfo, cipher: string) => Promise<string>;
+};
+
 type EnhancementOptions = {
     kinds?: EnhancementKind[];
     logPrismaQuery?: boolean;
@@ -61,6 +71,7 @@ type EnhancementOptions = {
     transactionMaxWait?: number;
     transactionTimeout?: number;
     transactionIsolationLevel?: TransactionIsolationLevel;
+    encryption?: SimpleEncryption | CustomEncryption;
 };
 ```
 
@@ -72,6 +83,7 @@ type EnhancementOptions = {
 | transactionMaxWait        | The `maxWait` option (in ms) passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
 | transactionTimeout        | The `timeout` option (in ms) passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
 | transactionIsolationLevel | The `isolationLevel` option passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
+| encryption | Field encryption settings. Only required when using the [field encryption](../guides/field-encryption.md) feature. |                         |
 
 #### Enhancement Kinds
 
@@ -96,6 +108,10 @@ Here are the kinds of enhancements available:
 - `omit`
 
     Automatically omits fields marked with the `@omit` attribute from read results.
+
+- `encryption`
+
+    Transparently encrypt and decrypt fields marked with the `@encrypted` attribute. See [this guide](../guides/field-encryption.md) for more details.
 
 #### Example
 
