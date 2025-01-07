@@ -702,7 +702,37 @@ Indicates that the field should be omitted when read from the generated services
 attribute @json()
 ```
 
-Marks a field to be strong-typed JSON. The field's type must be a [Type](#type) declaration.
+##### @encrypted
+
+```zmodel
+attribute @encrypted()
+```
+
+Marks a field to be encrypted during write and decrypted when read.
+
+```zmodel
+model User {
+    id Int @id
+    someSecret String @encrypted
+}
+```
+
+Using the attribute requires the "encryption" enhancement kind to be enabled when calling `enhance`, and the `encryption` settings provided in the enhancement options:
+
+```ts
+
+function getEncryptionKey(): Uint8Array {
+    // return a 32-byte key
+}
+
+const db = enhance(prisma, { user }, {
+    encryption: {
+        encryptionKey: getEncryptionKey()
+    }
+});
+```
+
+See [Encrypting Field](../guides/field-encryption.md) for more details.
 
 ##### @prisma.passthrough
 
@@ -1092,7 +1122,7 @@ Check if the given field (list) contains every element of the search list.
 
 Equivalent to Prisma's [hasEvery](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hasevery) operator.
 
-##### hasSome
+##### hasSome()
 
 ```zmodel
 function hasSome(field: Any[], search: Any[]): Boolean {}
@@ -1102,7 +1132,7 @@ Check if the given field (list) contains at least one element of the search list
 
 Equivalent to Prisma's [hasSome](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#hassome) operator.
 
-##### isEmpty
+##### isEmpty()
 
 ```zmodel
 function isEmpty(field: Any[]): Boolean {}
@@ -1111,6 +1141,26 @@ function isEmpty(field: Any[]): Boolean {}
 Check if the given field (list) is empty.
 
 Equivalent to Prisma's [isEmpty](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#isempty) operator.
+
+##### currentModel()
+
+```zmodel
+function currentModel(casing: String?): String {}
+```
+
+Can only be used in access policy expressions. Return the name of the model for which the policy rule is defined. If the rule is inherited to a sub model, this function returns the name of the sub model.
+
+The optional "casing" parameter can be used to control the casing of the returned name. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
+
+##### currentOperation()
+
+```zmodel
+function currentOperation(casing: String?): String {}
+```
+
+Can only be used in access policy expressions. Return the operation for which the policy rule is defined for - "create", "read", "update", or "delete". Note that a rule with "all" operation is expanded to "create", "read", "update", and "delete" rules, and the function returns corresponding value for each expanded version.
+
+The optional "casing" parameter can be used to control the casing of the returned name. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
 
 ### Examples
 
