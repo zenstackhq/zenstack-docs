@@ -950,10 +950,10 @@ Generates a globally unique identifier based on the UUID spec.
 ##### cuid()
 
 ```zmodel
-function cuid(): String {}
+function cuid(version: Int?): String {}
 ```
 
-Generates a globally unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec.
+Generates a unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec. Pass `2` as an argument to use [cuid2](https://github.com/paralleldrive/cuid2).
 
 ##### nanoid()
 
@@ -962,6 +962,14 @@ function nanoid(length: Int?): String {}
 ```
 
 Generates an identifier based on the [nanoid](https://github.com/ai/nanoid) spec.
+
+##### ulid()
+
+```zmodel
+function ulid(): String {}
+```
+
+Generates a unique identifier based on the [ULID](https://github.com/ulid/spec) spec.
 
 ##### now()
 
