@@ -81,7 +81,7 @@ We can use data validation to improve our app's robustness in many places. Two s
    ```zmodel
     model Space {
          ...
-         slug String @unique @regex('^[0-9a-zA-Z_\-]{4,16}$')
+         slug String @unique @regex('^[0-9a-zA-Z]{4,16}$')
     }
     ```
 
