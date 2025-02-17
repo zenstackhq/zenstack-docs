@@ -88,7 +88,6 @@ model Post extends Base1, Base2 { ... }
 ```
 :::
 
-```tsx
 
 ## Multiple Schema Files
 
