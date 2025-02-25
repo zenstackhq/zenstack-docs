@@ -57,3 +57,7 @@ Yes, ZenStack has integrations with VSCode and JetBrains IDEs. Please see [here]
 ### Does ZenStack work with Prisma Client Extensions?
 
 The short answer is it works in most cases. Please refer to [this guide](./guides/client-extensions) for more details.
+
+### Does the order in which access policies are defined matter?
+
+No. See [here](./the-complete-guide/part1/4-access-policy/4.1-model-level.md#evaluation-of-model-level-policies) for how access polices are evaluated.
