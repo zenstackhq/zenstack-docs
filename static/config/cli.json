@@ -2,9 +2,9 @@
     "notifications": [
         {
             "id": 1,
-            "title": "Help us understand your needs",
-            "url": "https://zenstack.dev",
-            "active": false
+            "title": "Share your ideas on how AI can help you with the schema",
+            "url": "https://github.com/zenstackhq/zenstack/discussions/2009",
+            "active": true
         }
     ]
 }
