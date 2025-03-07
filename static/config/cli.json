@@ -2,8 +2,8 @@
     "notifications": [
         {
             "id": 1,
-            "title": "Share your ideas on how AI can help you with the schema",
-            "url": "https://github.com/zenstackhq/zenstack/discussions/2009",
+            "title": "💡 How can the AI copilot help you with the schema? ",
+            "url": "https://dub.sh/zenstack",
             "active": true
         }
     ]
