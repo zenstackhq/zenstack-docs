@@ -25,7 +25,7 @@ In this chapter, we'll use the CLI to scaffold our Todo sample project. You can 
 You can initialize an existing TypeScript project using the `zenstack init` command. To save some typing, we'll first use the "try-prisma" utility to create a simple TypeScript CLI project.
 
 ```bash
-npx try-prisma@latest -p . -n my-todo-app -t typescript/script --install npm
+npx try-prisma@latest -n my-todo-app -t orm/script --install npm
 cd my-todo-app
 ```
 
