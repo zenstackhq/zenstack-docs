@@ -6,12 +6,15 @@ interface UserLogoProps {
     website: string;
     className?: string;
     style?: React.CSSProperties;
+    imageStyle?: React.CSSProperties;
+    darkSrc?: string;
 }
 
 function UserLogo({ src, name, website, className, style }: UserLogoProps): JSX.Element {
     return (
         <div className="flex flex-col items-center gap-4">
-            <img src={src} className="object-contain w-28" alt={name} />
+            <img src={src} className="object-contain w-28 dark:hidden" alt={name} style={imageStyle} />
+            <img src={darkSrc ?? src} className="object-contain hidden dark:block w-28" alt={name} style={imageStyle} />
             <a className={className} href={website} style={style}>
                 {name}
             </a>
@@ -22,7 +25,7 @@ function UserLogo({ src, name, website, className, style }: UserLogoProps): JSX.
 export default function UserLogs(): JSX.Element {
     return (
         <div className="flex justify-center w-full">
-            <div className="flex flex-col text-center xl:w-3/4">
+            <div className="flex flex-col text- center xl:w-3/4">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl pb-20">Used and Loved by</h2>
                 <div className="flex flex-wrap justify-evenly gap-8 items-end w-full font-bold">
                     <UserLogo
@@ -60,6 +63,14 @@ export default function UserLogs(): JSX.Element {
                         name="Carrot"
                         website="https://carrot.tech/"
                         style={{ color: 'rgb(231, 235, 93)' }}
+                    />
+                    <UserLogo
+                        src="/img/logo/brainbase.svg"
+                        darkSrc="/img/logo/brainbase_dark.svg"
+                        name="Brainbase"
+                        website="https://usebrainbase.com/"
+                        style={{ color: 'rgb(59, 59, 59)' }}
+                        imageStyle={{ padding: '0.6em' }}
                     />
                 </div>
             </div>
