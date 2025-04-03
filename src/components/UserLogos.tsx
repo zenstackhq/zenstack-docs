@@ -10,7 +10,7 @@ interface UserLogoProps {
     darkSrc?: string;
 }
 
-function UserLogo({ src, name, website, className, style }: UserLogoProps): JSX.Element {
+function UserLogo({ src, name, website, className, style, imageStyle, darkSrc }: UserLogoProps): JSX.Element {
     return (
         <div className="flex flex-col items-center gap-4">
             <img src={src} className="object-contain w-28 dark:hidden" alt={name} style={imageStyle} />
