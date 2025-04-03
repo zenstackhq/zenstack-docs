@@ -25,7 +25,7 @@ function UserLogo({ src, name, website, className, style, imageStyle, darkSrc }:
 export default function UserLogs(): JSX.Element {
     return (
         <div className="flex justify-center w-full">
-            <div className="flex flex-col text- center xl:w-3/4">
+            <div className="flex flex-col text-center xl:w-3/4">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl pb-20">Used and Loved by</h2>
                 <div className="flex flex-wrap justify-evenly gap-8 items-end w-full font-bold">
                     <UserLogo
