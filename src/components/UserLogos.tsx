@@ -12,7 +12,7 @@ interface UserLogoProps {
 
 function UserLogo({ src, name, website, className, style, imageStyle, darkSrc }: UserLogoProps): JSX.Element {
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 w-[calc(50%-1rem)] sm:w-[calc(25%-1.5rem)]  2xl:w-auto">
             <img src={src} className="object-contain w-28 dark:hidden" alt={name} style={imageStyle} />
             <img src={darkSrc ?? src} className="object-contain hidden dark:block w-28" alt={name} style={imageStyle} />
             <a className={className} href={website} style={style}>
