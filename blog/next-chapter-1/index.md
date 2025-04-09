@@ -113,6 +113,8 @@ These should minimize the need for code changes during the upgrade. However, it 
 
 One fuzzy area is Prisma's client extensions. Given the many limitations of its design, we're not sure if making a compatible implementation is a good idea. We'll share more thoughts about extensibility in the follow-up posts.
 
+We also understand that not everyone can jump onto the new major version soon after it's out. The support of V2 will continue for an extended period of time, until V3 is ready for adoption by the majority.
+
 ### Why Kysely?
 
 Kysely is a very popular, strongly typed SQL query builder. Using it as the database access layer can address several limitations mentioned previously.
