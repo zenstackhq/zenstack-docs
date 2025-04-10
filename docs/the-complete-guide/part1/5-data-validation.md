@@ -86,6 +86,10 @@ We can use data validation to improve our app's robustness in many places. Two s
     }
     ```
 
+:::info
+The argument of the `@regex` attribute is a regular expression string, so regex character escapes like `\d`, `\w` need to be double escaped as `\\d`, `\\w`.
+:::
+
 Rerun generation and start REPL:
 
 ```bash
