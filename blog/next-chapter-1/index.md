@@ -1,5 +1,5 @@
 ---
-title: ZenStack - The Next Chapter (Part I)
+title: ZenStack - The Next Chapter (Part I. Overview)
 description: Looking into the future of ZenStack.
 tags: [zenstack]
 authors: yiming
@@ -7,7 +7,7 @@ image: ./cover.png
 date: 2025-04-08
 ---
 
-# ZenStack - The Next Chapter (Part I)
+# ZenStack - The Next Chapter (Part I. Overview)
 
 ![Cover Image](./cover.png)
 
@@ -126,7 +126,6 @@ Kysely is a very popular, strongly typed SQL query builder. Using it as the data
 3. Kysely's expression builder can be used as a generic extensibility mechanism (more about this in the next post).
 
 One question we repeatedly got was, "Why not build above Drizzle, given its rising popularity?". Drizzle is an excellent ORM that addresses some of Prisma's issues. However, the primary decision factor is the abstraction level. ZenStack needs a simple yet flexible database access layer as a foundation. Kysely satisfies this criterion perfectly, while Prisma, Drizzle, and other ORMs are too high-level and comprehensive.
-
 
 ## Tell us what you think
 
