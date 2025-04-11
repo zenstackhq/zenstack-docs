@@ -3,13 +3,13 @@ title: ZenStack - The Next Chapter (Part II. An Extensible ORM)
 description: This post explores how ZenStack V3 will become a more extensible ORM.
 tags: [zenstack]
 authors: yiming
-image: ./cover.png
+image: ../next-chapter-1/cover.png
 date: 2025-04-10
 ---
 
 # ZenStack - The Next Chapter (Part II. An Extensible ORM)
 
-![Cover Image](./cover.png)
+![Cover Image](../next-chapter-1/cover.png)
 
 In the [previous post](../next-chapter-1/index.md), we discussed the general plan for ZenStack v3 and the big refactor. This post will explore the extensibility opportunities the new architecture brings to the core ORM.
 
