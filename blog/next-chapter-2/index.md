@@ -15,7 +15,7 @@ In the [previous post](../next-chapter-1/index.md), we discussed the general pla
 
 <!-- truncate -->
 
-## High-Level CRUD and Low-Level Query Builder
+## Query Builder
 
 While continuing to provide the fully typed CRUD API like `PrismaClient` (`findMany`, `create`, etc.), using [Kysely](https://kysely.dev/) as the underlying data access layer allows us to easily offer a low-level, query-builder style API too.
 
