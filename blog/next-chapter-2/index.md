@@ -130,7 +130,7 @@ const client = new ZenStackClient({
   procs: {
     signUp: async (client, args) => {
       // create user
-      const user = tx.user.create({ data: { email: args.email, name: args.name } });
+      const user = await client.user.create({ data: { email: args.email, name: args.name } });
       // send a welcome email
       await sendWelcomeEmail(user.email);
       return user;
