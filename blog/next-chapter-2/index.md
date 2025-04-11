@@ -104,7 +104,7 @@ Another benefit of having the computed fields declared in ZModel is that it'll b
 
 ## Custom Procedures
 
-An ORM provides a set of data access primitives that allow applications to compose them into higher-level operations with business meaning. Such composition can be encapsulated in many ways: utility functions, application services, database stored procedures, etc. ZenStack v3 will introduce a new `procedure` construct to allow defining such encapsulation in ZModel.
+An ORM provides a set of data access primitives that allow applications to compose them into higher-level operations with business meaning. Such composition can be encapsulated in many ways: utility functions, application services, database stored procedures, etc. ZenStack v3 will introduce a new `proc` construct to allow defining such encapsulation in ZModel.
 
 ```zmodel
 model User {
