@@ -54,7 +54,7 @@ One major limitation of Prisma and ZenStack v2 is the lack of real "computed fie
 
 ZenStack v3 is determined to solve this problem. It'll introduce a new `@computed` attribute that allows you to define computed fields in ZModel.
 
-```prisma
+```zmodel
 model User {
   id Int @id
   posts[] Post
@@ -93,7 +93,7 @@ const users = await client.user.findMany({
 
 Since the fields are declared in ZModel, you can use it in access policies as well:
 
-```prisma
+```zmodel
 model User {
   ...
   @@deny('delete', postCount > 0)
@@ -106,7 +106,7 @@ Another benefit of having the computed fields declared in ZModel is that it'll b
 
 An ORM provides a set of data access primitives that allow applications to compose them into higher-level operations with business meaning. Such composition can be encapsulated in many ways: utility functions, application services, database stored procedures, etc. ZenStack v3 will introduce a new `procedure` construct to allow defining such encapsulation in ZModel.
 
-```prisma
+```zmodel
 model User {
   id Int @id
   email String @unique
