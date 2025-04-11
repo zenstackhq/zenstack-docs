@@ -1,5 +1,5 @@
 Prism.languages.zmodel = Prism.languages.extend('clike', {
-    keyword: /\b(?:datasource|enum|generator|model|type|abstract|import|extends|attribute|view|plugin)\b/,
+    keyword: /\b(?:datasource|enum|generator|model|type|abstract|import|extends|attribute|view|plugin|proc)\b/,
     'type-class-name': /(\b()\s+)[\w.\\]+/,
 });
 
