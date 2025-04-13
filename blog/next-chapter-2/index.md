@@ -1,7 +1,7 @@
 ---
 title: ZenStack - The Next Chapter (Part II. An Extensible ORM)
 description: This post explores how ZenStack V3 will become a more extensible ORM.
-tags: [zenstack]
+tags: [zenstack, v3]
 authors: yiming
 image: ../next-chapter-1/cover.png
 date: 2025-04-10
@@ -21,10 +21,10 @@ While continuing to provide the fully typed CRUD API like `PrismaClient` (`findM
 
 ```ts
 // CRUD API (the same as PrismaClient)
-await db.user.findMany({ include: { posts: true } });
+await client.user.findMany({ include: { posts: true } });
 
 // Query builder API (backed by Kysely)
-await db.$qb.selectFrom('User')
+await client.$qb.selectFrom('User')
   .leftJoin('Post', 'Post.authorId', 'User.id')
   .select(['User.id', 'User.email', 'Post.title'])
   .execute()
@@ -35,7 +35,7 @@ Both the CRUD API and the query builder API are automatically inferred from the 
 What's even more powerful is that you can blend query builder into CRUD calls. For complex queries, you can still enjoy the terse syntax of the CRUD API, and mix in the query builder for extra expressiveness. Here's an example:
 
 ```ts
-await db.user.findMany({
+await client.user.findMany({
   where: {
     age: { gt: 18 },
     // "eb" is a Kysely expression builder
