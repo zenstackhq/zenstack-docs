@@ -1,7 +1,7 @@
 ---
 title: ZenStack - The Next Chapter (Part I. Overview)
 description: Looking into the future of ZenStack.
-tags: [zenstack]
+tags: [zenstack, v3]
 authors: yiming
 image: ./cover.png
 date: 2025-04-08
