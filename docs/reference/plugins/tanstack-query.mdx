@@ -422,6 +422,18 @@ const onCreate = () => {
     </div>
 </template>
 ```
+:::tip
+ If the query parameters are not constant, you need to wrap the query in a `computed` to make it reactive.
+```ts
+const queryParams = computed(() => ({
+    where: { 
+        space: { slug: route.params.slug as string }, 
+        id: meQuery.data.value?.userId 
+    },
+}));
+const { data: posts } = useFindManyPost(queryParams);
+```
+:::
 
 </TabItem>
 
