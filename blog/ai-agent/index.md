@@ -1,7 +1,7 @@
 ---
 title: How to Build AI Agents to Enhance  SaaS With Minimal Code and Effort?
 description: A thought experiment on the roles AI can play in software development.
-tags: [ai, saas]
+tags: [ai, saas, agent, authorization]
 authors: jiasheng
 date: 2025-05-19
 image: ./cover.png
@@ -19,17 +19,17 @@ The conversation started with a question from Bill Gurley about whether Satya wa
 
 <!--truncate-->
 
-> I think, ****the notion that business applications exist, that’s probably where they’ll all collapse, right in the agent era**,** because if you think about it, right, **they are essentially CRUD databases with a bunch of business logic.**The business logic is all going to these agents, and these agents are going to be multi repo CRUD
+>  I think, the notion that business applications exist, that's probably where they'll all collapse, right in the agent era because if you think about it, right, they are essentially **CRUD databases with a bunch of business logic. The business logic is all going to these agents**, and these agents are going to be multi repo CRUD
 > 
 
 Some people might assume he suggested that AI agents could or would replace SaaS. However, if you watch the entire podcast, you'll understand that he's actually discussing how AI agents will transform SaaS rather than replace it: 
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=9NtsnzRFJ_o&t=2770s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9NtsnzRFJ_o?si=8jAuPYCPYzg1j7-4&amp;start=2770" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 How? Let me share an example from my experience. At my previous company, we used Trello for project management. I was impressed by its clean and efficient UX design. 
 
-![trello](https://github.com/user-attachments/assets/53a04803-25c6-485f-b0de-37d0b61c6168)
+![trello](https://github.com/user-attachments/assets/72af641a-25a5-4554-a07f-a6fe8bced243)
 
 However, one drawback that consistently bothered me was the lack of flexibility in performing queries.  For instance:
 
@@ -62,11 +62,12 @@ My previous company tried to integrate a chat agent into their SaaS product, and
 
 The fundamental issue seems to be that the current infrastructure is not friendly enough for AI agents, as Bill questioned Satya. So, what type of infrastructure would be suitable for AI?
 
-## **Schema-First Fit AI-First**
+## Schema-First Fit AI-First
 
 Among all the discussions regarding Satya’s statement:
 
-*They are essentially CRUD databases with a bunch of business logic**.** The business logic is all going to these agents.*
+> **They are essentially CRUD databases with a bunch of business logic**.The business logic is all going to these agents.
+>
 
 Many people focus solely on the business logic that will be handled by the agent, often neglecting the essential prerequisite: **the CRUD database**. In other words, AI must accurately and precisely translate the business logic to the CRUD operation to ensure success. This is where the challenges arise, as illustrated in the previous example.  It seems there is a missing layer that focuses on 'what' rather than 'how' to make AI better work: **a schema**.  AI excels at declarative schemas over imperative code.   Therefore, if we could make the CRUD database a well-designed schema for AI to manipulate,  that could provide a robust foundation for the mission to be done. 
 
@@ -106,14 +107,13 @@ Based on the schema, ZenStack automatically generates well-structured, type-safe
 
 I know talk is cheap, so let me show you the code!
 
-# Building an AI Chatbot from Scratch
+## Building an AI Chatbot from Scratch
 
 Let’s build an AI chatbot for a Todo app to address the pain points of Trello earlier. To keep this concise, I'll focus on the key steps. You can find the link to the completed project on GitHub at the end of the post.  Here is the final outcome:
 
-![zenstack-ai-chatbot](https://github.com/user-attachments/assets/4dce1624-2d8e-464a-bf92-bdfed461e424)
+![zenstack-ai-chatbot](https://github.com/user-attachments/assets/abd5750c-ebc4-4fd3-85f1-286c4e2659e7)
 
-### Stacks
-
+Here is the tech stack we are using:
 - [Next.js](https://nextjs.org/) - React framework
 - [ZenStack](https://zenstack.dev/) - Full-stack toolkit with access control
 - [NextAuth](https://next-auth.js.org/) - Authentication for Next.js
@@ -211,15 +211,13 @@ The tasks here are configuring `NextAuth` to use credential-based auth and creat
 
 ### 4. Implement the chatbot logic with Vercel AI SDK and ZenStack
 
-We will primarily utilize the AI SDK to develop the chatbot. It not only standardizes integration across various LLM providers but also offers a range of hooks for creating chat and generative user interfaces.   With that, building a chatbot with real-time message streaming requires just a few lines of code.  Here is the official doc for it:
+We will primarily utilize the AI SDK to develop the chatbot. It not only standardizes integration across various LLM providers but also offers a range of hooks for creating chat and generative user interfaces.   With that, building a chatbot with real-time message streaming requires just a few lines of code.  Here is the [official doc](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot).
 
-[Chatbot](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot)
-
-Simply put,  it provides a `userChat` hook for the client and a corresponding server endpoint in `src/app/chat/route.ts`.  I will skip the UI part and focus on implementing the endpoint, which is essentially the complete functionality of this bot.
+Simply put, it provides a `userChat` hook for the client and a corresponding server endpoint in `src/app/chat/route.ts`.  I will skip the UI part and focus on implementing the endpoint, which is essentially the complete functionality of this bot.
 
 Every AI agent typically consists of two components: **Tools and Prompts**. As previously discussed, **Tools** in this context refer to the CRUD APIs of the database. So let’s see how it is getting implemented. 
 
-The AI SDK allows Zod Schema to be used to define the parameters of the Tool.  So, have you noticed a Zod plugin defined in the `schema.zmodel`?
+The AI SDK allows Zod Schema to be used to define the parameters of the Tool.  So, have you noticed a Zod plugin defined in the `schema.zmodel` ?
 
 ```tsx
 plugin zod {
@@ -283,13 +281,9 @@ async function createToolsFromZodSchema(prisma: PrismaClient) {
     }
   }
 ```
-
-<aside>
-💡
-
+:::info
 To minimize the tool count and alleviate the AI's workload, we offer only four fundamental operations: "findMany," "createMany," "deleteMany," and "updateMany.”
-
-</aside>
+:::
 
 The `execute` function inside is quite simple, just invoke the corresponding prisma client API function using the passed in `PrismaClient` object.  Here comes the most crucial part,  which is also the most exciting part of ZenStack:
 
@@ -321,4 +315,6 @@ Here is the final project that you can run directly:
 
 [https://github.com/jiashengguo/zenstack-ai-chatbot](https://github.com/jiashengguo/zenstack-ai-chatbot)
 
-The benefit is that you can easily test this AI chat agent for your own application — all you need to do is customize `schema.zmodel` to fit your application.  I would love to hear your feedback on it
+The benefit is that you can easily test this AI chat agent for your own application — all you need to do is customize `schema.zmodel` to fit your application.  
+
+I would love to hear your feedback on it!
