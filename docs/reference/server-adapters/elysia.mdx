@@ -1,7 +1,7 @@
 ---
 title: Elysia
 description: Adapter for integrating with Elysia
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 import ErrorHandling from './_error-handling.md';
@@ -36,7 +36,7 @@ const app = new Elysia({ prefix: '/api' });
 app.group('/crud', (app) =>
     app.use(
         createElysiaHandler({
-            getPrisma: () => enhance(prisma, { user:getCurrentUser() }),
+            getPrisma: (context) => enhance(prisma, { user: getCurrentUser(context) }),
             basePath: '/api/crud',
         })
     )
