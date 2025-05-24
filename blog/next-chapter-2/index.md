@@ -183,4 +183,4 @@ Combined with access policies, custom procedures provide a powerful way to encap
 
 ZenStack v3 will be a big step forward in terms of extensibility and flexibility. The new architecture allows us to provide a more powerful and expressive ORM experience while still maintaining simplicity and ease of use.
 
-In the next post, we'll continue to explore how the new plugin system will allow you to make deep customizations to ZenStack in a clean and maintainable way.
+In the [next post](../next-chapter-3/index.md), we'll continue to explore how the new plugin system will allow you to make deep customizations to ZenStack in a clean and maintainable way.
