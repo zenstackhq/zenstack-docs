@@ -116,6 +116,8 @@ plugin myplugin {
 }
 ```
 
+> This option is contributed by [chunkerchunker](https://github.com/chunkerchunker).
+
 ### Publishing a Plugin
 
 If your plugin is specific to your project, you can implement it inside the project and load it with a relative path in the ZModel. No publishing is needed. We'll see how to do that in the next section.
