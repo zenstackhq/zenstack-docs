@@ -105,6 +105,19 @@ model Foo {
 }
 ```
 
+### Execution Order
+
+By default, when you run `zenstack generate`, ZenStack's built-in plugins are executed before all user plugins, ensuring Prisma schema is generated and the DMMF can be passed to the user plugins. When necessary (although rare), you can front-load your plugin and let it run before the built-in ones by setting the `preprocessor` option to `true` in the plugin declaration:
+
+```zmodel
+plugin myplugin {
+    provider = './myplugin'
+    preprocessor = true
+}
+```
+
+> This option is contributed by [chunkerchunker](https://github.com/chunkerchunker).
+
 ### Publishing a Plugin
 
 If your plugin is specific to your project, you can implement it inside the project and load it with a relative path in the ZModel. No publishing is needed. We'll see how to do that in the next section.
