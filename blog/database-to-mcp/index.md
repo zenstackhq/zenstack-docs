@@ -9,9 +9,12 @@ image: ./cover.png
 
 # Turning Your Database Into an MCP Server With Auth
 
+![Cover Image](cover.png)
+
 # MCP is trending,  But…
 
 MCP(Model Context Protocol) is undoubtedly one of the most exciting trends in AI now. Not only is everyone talking about it, but everyone is also rushing to develop their version to secure a seat at the table of the AI era. Don't feel so?  Guess how many MCP servers are listed in [MCP Server Directory](https://www.pulsemcp.com/servers) ?
+<!--truncate-->
 
 The number is 4,684 now, and remember, MCP is just a six-month-old baby.   However, have you noticed the one and only filter on the left:
 
@@ -21,7 +24,7 @@ Guess how many remain after applying this filter? Only 59—approximately 1% of 
 
 MCP was initially conceived primarily as a protocol for local execution, where AI models could interact with local tools and data sources running on the same machine, like the example MCP FileSystem and Fetch listed in the official doc. It means you must install and run the MCP server on your local machine, regardless of whether the underlying transport is stdio or HTTP SSE. This design choice made sense in the early days, as it simplified security concerns and reduced latency. The protocol's simplicity made it perfect for developers to experiment with AI tool integration on their personal machines. However, as MCP gained traction and the AI ecosystem evolved, the need for secure remote execution became increasingly apparent:
 
-<div align='center'>
+<div width='577' align='center'>
 [![Kent-Tweet](https://github.com/user-attachments/assets/57d5af77-6bd6-493b-adc9-f625af8563c5)](https://x.com/kentcdodds/status/1907218594624372868)
 </div>
 
