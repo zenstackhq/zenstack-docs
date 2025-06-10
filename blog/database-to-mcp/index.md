@@ -157,19 +157,19 @@ You can find the final running project below:
 
 Use the below script to initialize a project with Prisma and Express:
 
-```tsx
+```bash
 npx try-prisma@latest -t orm/express -n blog-app-mcp
 ```
 
 Install the MCP SDK,  bcrypt(used to hash password):
 
-```tsx
+```bash
 npm install @modelcontextprotocol/sdk, bcrypt, @types/bcrypt
 ```
 
 Initialize ZenStack:
 
-```tsx
+```bash
 npx zenstack@latest init
 ```
 
