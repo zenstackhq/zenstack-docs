@@ -11,7 +11,7 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-## MCP is trending,  But…
+## MCP is trending in AI,  But…
 
 MCP(Model Context Protocol) is undoubtedly one of the most exciting trends in AI now. Not only is everyone talking about it, but everyone is also rushing to develop their version to secure a seat at the table of the AI era. Don't feel so?  Guess how many MCP servers are listed in [MCP Server Directory](https://www.pulsemcp.com/servers) ?
 <!--truncate-->
