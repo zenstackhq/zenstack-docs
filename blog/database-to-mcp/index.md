@@ -11,7 +11,7 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-# MCP is trending,  But…
+## MCP is trending,  But…
 
 MCP(Model Context Protocol) is undoubtedly one of the most exciting trends in AI now. Not only is everyone talking about it, but everyone is also rushing to develop their version to secure a seat at the table of the AI era. Don't feel so?  Guess how many MCP servers are listed in [MCP Server Directory](https://www.pulsemcp.com/servers) ?
 <!--truncate-->
@@ -53,7 +53,7 @@ Kent raises the same concern in his tweet:
 > All the examples I see so far have the user generate a token and then put that token in the MCP configuration. Is that the best we have right now? I was hoping to find an example of an MCP client that supported an OAuth flow with a hosted MCP server.
 > 
 
-# The Advent of Authorization for MCP
+## The Advent of Authorization for MCP
 
 The MCP is young but is growing very fast. The OAuth support was introduced in March 2025, around the time he was 3 months old. Here are the Authorization flow steps in the [official specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization):
 
@@ -82,7 +82,7 @@ After adding the above MCP configuration, the MCP client will automatically open
 
 With this modern MCP server, you can stop worrying about the PM or CEO showing up at your desk asking for help connecting to the MCP server of some SaaS product your company uses. Trust me, it happens. 😂
 
-# MCP is a good enhancement for SaaS
+## MCP is a good enhancement for SaaS
 
 With the seamless experience of OAuth support, many companies are eager to provide an MCP server to enhance their existing product or service, especially within the SaaS landscape. Balancing flexibility and simplicity is always a core challenge for SaaS  - too many buttons overwhelm users, too few constrain power users.   For instance, I always love the clean and efficient UX/UI design of Trello:
 
@@ -96,13 +96,13 @@ However, it pricks me every time for certain routine jobs.
 
 Trello doesn’t provide a direct way to show the answer; you have to do the math manually.   This is where the MCP-LLM duo could provide a great solution to let user use natural language to get their job done.    I think that’s the actual point that Microsoft CEO Satya Nadella was trying to convey in his presumed “SaaS is dead” interview.
 
-# Two Approaches to Building an MCP Server
+## Two Approaches to Building an MCP Server
 
-## 1. Relying on the Existing API
+### 1. Relying on the Existing API
 
 This seems like the obvious choice. However,  since those APIs were most likely designed a long time before the LLM was born, they might not be suitable for the LLM to consume.  One thing is that the semantics of the parameters and return data might not be self-explanatory enough for the LLM to understand; The other thing is that the API might not be flexible enough to provide the functionality to support what the user wants to achieve. 
 
-## 2. Start from Scratch
+### 2. Start from Scratch
 
 For those considering this approach, the biggest concern is probably time.   Don’t worry,  we never really build from scratch, do we?  The MCP is evolving fast, and so is the whole ecosystem. Let me show you the modern stack that could dramatically reduce the code you need to write to speed it up.
 
@@ -145,7 +145,7 @@ For those considering this approach, the biggest concern is probably time.   Don
     Based on the ZModel schema, ZenStack automatically creates well-structured, type-safe, and authorized CRUD APIs for your database. MCP's core value lies in its tools, which fundamentally consist of schema definitions and executable operations—specifically, the CRUD operations on your database for most SaaS applications. ZenStack can generate both directly from its schema, which can be safely called by LLM thanks to the access control policy. Thus, your primary task is to define the schema, and ZenStack manages everything else.
     
 
-# Building an MCP Server from Scratch
+## Building an MCP Server from Scratch
 
 So let me walk you through the process of turning your database into an MCP server with OAuth-based authentication and authorization from scratch. I will use the blog post mentioned above as a sample; you can adapt it for your app, and all you need to do is change the ZModel schema accordingly.  
 
@@ -153,7 +153,7 @@ You can find the final running project below:
 
 [https://github.com/jiashengguo/zenstack-mcp-auth](https://github.com/jiashengguo/zenstack-mcp-auth)
 
-## Initialize the Project
+### Initialize the Project
 
 Use the below script to initialize a project with Prisma and Express:
 
@@ -173,7 +173,7 @@ Initialize ZenStack:
 npx zenstack@latest init
 ```
 
-## Auth
+### Auth
 
 To support the OAuth, the server needs to store the following information:
 
@@ -244,7 +244,7 @@ export class AuthMiddleware {
 }
 ```
 
-### PasswordAuthProvider
+#### PasswordAuthProvider
 
 Here are the three functions that will actually be called, corresponding to the three necessary endpoints  mentioned above:
 
@@ -337,7 +337,7 @@ return {
 };
 ```
 
-## Stateful Multi-connections **Streamable HTTP Server**
+### Stateful Multi-connections Streamable HTTP Server
 
 After the MCP client gets the access token,  each time it communicates with the server through the main endpoint, it will put the access token in the Authorization header.  The server should use it to verify the client and get the client’s identity.    Let’s choose the conventional `/mcp` endpoint as the main endpoint and `getFlexibleAuthMiddleware` to do so. 
 
@@ -382,11 +382,11 @@ else {
 await transport.handleRequest(req, res, req.body);
 ```
 
-## Tool
+### Tool
 
 We will fully rely on the ZenStack to do the job.   Remember the two parts of the Tool: schema and execution. 
 
-### Schema
+#### Schema
 
 ZenStack has a native Zod plugin to generate the Zod schema for its CRUD API.  We can enable it by adding the one below to the `schema.zmodel` :
 
@@ -420,7 +420,7 @@ declare type PostInputSchemaType = {
 
 So each operation for each model will become a Tool of our MCP server. 
 
-### Execution
+#### Execution
 
 The execution of each function is very straightforward; just dynamically invoke the function with the argument generated by the LLM.   Therefore, the whole Tool creating logic is simply one lambda expression in less than 30 lines of code:
 
@@ -481,7 +481,7 @@ There is another benefit that since these Tools are actually the standard Prisma
 - Second, the API's flexibility allows one single call to access multiple models (database tables), enabling LLMs to efficiently navigate complex data relationships and perform sophisticated queries across different entities without requiring separate API calls or complex orchestration logic.
 - Third, Prisma has been widely adopted for years, providing a rich ecosystem of documentation, examples, and community usage that LLMs can learn from—greatly increasing the chance of generating correct and context-aware code.
 
-# Test
+## Test
 
 The sample project includes seed data for you to play around with. Simply run the below command to make it ready:
 
