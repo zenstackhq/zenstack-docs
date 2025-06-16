@@ -82,7 +82,7 @@ After adding the above MCP configuration, the MCP client will automatically open
 
 With this modern MCP server, you can stop worrying about the PM or CEO showing up at your desk asking for help connecting to the MCP server of some SaaS product your company uses. Trust me, it happens. 😂
 
-## MCP is a good enhancement for SaaS
+## MCP Is a Good Enhancement for SaaS
 
 With the seamless experience of OAuth support, many companies are eager to provide an MCP server to enhance their existing product or service, especially within the SaaS landscape. Balancing flexibility and simplicity is always a core challenge for SaaS  - too many buttons overwhelm users, too few constrain power users.   For instance, I always love the clean and efficient UX/UI design of Trello:
 
