@@ -64,4 +64,29 @@ No. See [here](./the-complete-guide/part1/4-access-policy/4.1-model-level.md#eva
 
 ### Is Prisma's new "prisma-client" generator supported?
 
-No. The feature was add in [Prisma 6.6](https://github.com/prisma/prisma/releases/tag/6.6.0) but it's still in early access. We plan to work on it when Prisma pushes it to GA.
+Yes, since v2.16.0. The "prisma-client" generator is introduced in [Prisma 6.6](https://github.com/prisma/prisma/releases/tag/6.6.0). When it's used, Prisma requires you to specify an output folder explicitly, and will generate TypeScript source files (instead of compiled JavaScript files) into the folder. The files should be compiled with your source tree, and you should import `PrismaClient` from that folder instead of `@prisma/client`.
+
+Similarly, you'll need to use the "--output" option when running `zenstack generate` to generate ZenStack files into your source tree and get them compiled together with your source code. And you should import the `enhance` function from there.
+
+ZModel:
+```zmodel
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma/client"
+  moduleFormat = "cjs"
+}
+```
+
+Running `zenstack generate`:
+```bash
+npx zenstack generate --output ./generated/zenstack
+```
+
+App code:
+```ts
+import { PrismaClient } from './generated/prisma/client';
+import { enhance } from './generated/zenstack/enhance';
+
+const prisma = new PrismaClient();
+const db = enhance(prisma, ...);
+```

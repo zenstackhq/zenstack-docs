@@ -64,6 +64,10 @@ type CustomEncryption = {
     decrypt: (model: string, field: FieldInfo, cipher: string) => Promise<string>;
 };
 
+type ValidationOptions = {
+    inputOnlyValidationForUpdate?: boolean;
+};
+
 type EnhancementOptions = {
     kinds?: EnhancementKind[];
     logPrismaQuery?: boolean;
@@ -72,6 +76,7 @@ type EnhancementOptions = {
     transactionTimeout?: number;
     transactionIsolationLevel?: TransactionIsolationLevel;
     encryption?: SimpleEncryption | CustomEncryption;
+    validation?: ValidationOptions;
 };
 ```
 
@@ -84,6 +89,7 @@ type EnhancementOptions = {
 | transactionTimeout        | The `timeout` option (in ms) passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
 | transactionIsolationLevel | The `isolationLevel` option passed to `prisma.$transaction()` call for transactions initiated by ZenStack. |  Database default                       |
 | encryption | Field encryption settings. Only required when using the [field encryption](../guides/field-encryption.md) feature. |                         |
+| validation.inputOnlyValidationForUpdate | By default, ZenStack validates an entity after "update" operation to ensure the final result satisfies validation rules as a whole. This implies if the record under update doesn't satisfy the rules prior to update, the update operation will fail even if the fields causing validation errors are not affected by the operation. You can set this option to `true` to let ZenStack only validate data contained in the input args. | false |
 
 #### Enhancement Kinds
 
