@@ -29,12 +29,12 @@ const FeatureList: FeatureItem[] = [
         ),
     },
     {
-        title: 'E2E Type Safety',
-        img: '/img/type-safety.png',
+        title: 'AI Friendly',
+        img: '/img/ai-friendly.png',
         description: (
             <>
-                No more duplicating type definitions and syncing changes. Use one single toolkit to generate types for
-                your entire stack and enjoy flawless auto-completion.
+                Schema-first reduces code complexity, helping AI understand better with fewer hallucinations. 
+                Schema serves as a single source of truth for AI integration.
             </>
         ),
     },

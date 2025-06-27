@@ -4,7 +4,6 @@ import ValueProposition from '@site/src/components/ValueProposition';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
-import { Typewriter } from 'react-simple-typewriter';
 import ZenStackInStack from '../components/ZenStackInStack';
 import { description } from '../lib/content';
 import styles from './index.module.css';
@@ -17,18 +16,19 @@ function Header() {
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
             <div className="w-full flex justify-center">
-                <div className="w-full xl:container grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 text-white dark:text-gray-800">
-                    <div className="w-full text-left flex flex-col items-start">
-                        <h1 className="hero__title font-bold text-3xl md:text-5xl xl:text-6xl mb-8 lg:mb-8 lg:leading-[70px] whitespace-nowrap">
-                            <span className="inline-block 2xl:hidden leading-relaxed">Database to </span>
-                            <span className="hidden 2xl:inline-block leading-relaxed">From Database to </span>{' '}
-                            <span>
-                                <Typewriter words={['API', 'Service', 'UI']} loop={true} />
+                <div className="w-full xl:container flex justify-center text-white dark:text-gray-800">
+                    <div className="w-full max-w-4xl text-center flex flex-col items-center px-4">
+                        <h1 className="hero__title font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-6 sm:mb-8 lg:mb-12 leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight 2xl:leading-tight">
+                            <span className="inline-block text-white dark:text-black">
+                                Schema-First Full‑Stack Toolkit
                             </span>
-                            {','}
-                            <br /> In Minutes
+                            <br className="hidden sm:block" />
+                            <span className="sm:hidden"> </span>
+                            <span className="inline-block mt-2 sm:mt-0 text-black dark:text-white font-extrabold">
+                                with Clean & Scalable Authorization
+                            </span>
                         </h1>
-                        <p className="hero__subtitle font-semi-bold text-base lg:text-2xl mx-auto mb-8 lg:mb-8 lg:leading-relaxed text-gray-100 dark:text-gray-700">
+                        <p className="hero__subtitle font-semi-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 lg:mb-12 leading-relaxed text-gray-100 dark:text-gray-700 max-w-none sm:max-w-2xl text-center">
                             A TypeScript toolkit that enhances Prisma ORM with flexible Authorization and
                             auto-generated, type-safe APIs/hooks, simplifying full-stack development
                         </p>
@@ -40,28 +40,6 @@ function Header() {
                                 Get Started →
                             </Link>
                         </div>
-                    </div>
-                    <div className="w-full h-full mx-auto flex justify-end">
-                        <div className="block: xl:hidden w-full relative pt-[56%]">
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                src="https://www.youtube.com/embed/dI8LeuFTr9c?autoplay=1mute=1"
-                                title="ZenStack Introduction"
-                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay"
-                                allowFullScreen
-                                className="absolute inset-0 rounded-xl shadow-xl"
-                            ></iframe>
-                        </div>
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            src="https://www.youtube.com/embed/dI8LeuFTr9c?autoplay=1&mute=1"
-                            title="ZenStack Introduction"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="hidden xl:block shadow-xl rounded-xl"
-                        ></iframe>
                     </div>
                 </div>
             </div>
@@ -85,7 +63,7 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout
-            title={`${siteConfig.title} - Simplified Full-Stack Development with Prisma ORM`}
+            title={`${siteConfig.title}:Full-Stack ToolKit with Authorization on Prisma ORM`}
             description={description}
         >
             <Header />
