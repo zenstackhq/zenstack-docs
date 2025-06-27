@@ -63,7 +63,7 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout
-            title={`${siteConfig.title}:Full-Stack ToolKit with Authorization on Prisma ORM`}
+            title={`${siteConfig.title}:Full-Stack Toolkit with Authorization on Prisma ORM`}
             description={description}
         >
             <Header />
