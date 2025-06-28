@@ -25,6 +25,7 @@
             "source": "/docs/intro/frontend",
             "destination": "/docs/the-complete-guide/part4/",
             "permanent": true
-        }
+        },
+        { "source": "/docs/guides/authentication/:path*", "destination": "/docs/quick-start/authentication/:path*", "permanent": true }
     ]
 }
