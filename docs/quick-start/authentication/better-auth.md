@@ -35,7 +35,7 @@ npx @better-auth/cli generate
 
 Follow the [installation guide](https://zenstack.dev/docs/install) to install ZenStack in your project. 
 
-Integration with ZenStack is all about obtaining the user's identity and utilizing it to create an enhanced `PrismaClient`. On the server side,  Better Auth exposes that through `api` object of the `auth` instance.  For example, here is how to get that in Next.js:
+Integration with ZenStack is all about obtaining the user's identity and utilizing it to create an enhanced `PrismaClient`. On the server side,  Better Auth exposes that through the `api` object of the `auth` instance.  For example, here is how to get that in Next.js:
 
 ```tsx
 import { betterAuth } from "better-auth";
@@ -62,7 +62,7 @@ const db = enhance(prisma, { user: {id: userId} });
 
 ## Organization Plugin Support
 
-Better Auth has a powerful plugin system allows you to add new features that contribute extensions across the entire stack - data model, backend API, and frontend hooks. A good example is the [Organization plugin](https://www.better-auth.com/docs/plugins/organization), which sets the foundation for implementing multi-tenant apps with access control.
+Better Auth has a powerful plugin system that allows you to add new features that contribute extensions across the entire stack - data model, backend API, and frontend hooks. A good example is the [Organization plugin](https://www.better-auth.com/docs/plugins/organization), which sets the foundation for implementing multi-tenant apps with access control.
 
 After enabling the Organization plugin and running the CLI to generate the additional models and fields in the schema, you can use the code below on the server side to get the organization info together with the user identity:
 
@@ -78,7 +78,7 @@ After enabling the Organization plugin and running the CLI to generate the addit
     organizationRole = myMember?.role;
   }
   
-  // user identiy with organization info
+  // user identity with organization info
   const userContext = {
     userId: session.userId,
     organizationId,
@@ -90,7 +90,7 @@ After enabling the Organization plugin and running the CLI to generate the addit
 The Better Auth CLI will only update the `schema.prisma` file, if you add the Organization plugin after installing the ZenStack, you need to copy the change to `schema.zmodel` too. 
 :::
 
-Then you could pass this whole user context info to the `enhanced` client: 
+Then you can pass the full `userContext` object to the `enhanced` client: 
 
 ```tsx
 const db = enhance(prisma, { user: userContext });
