@@ -72,12 +72,12 @@ const config = {
                 {
                     name: 'keywords',
                     content:
-                        'authorization,auth,prisma,orm,web development,webdev,full-stack,api,type-safe,acl,rls,saas',
+                        'authorization,auth,prisma,orm,web development,webdev,full-stack,api,type-safe,acl,rls,saas,ai',
                 },
                 {
                     name: 'description',
                     content:
-                        'A TypeScript toolkit that enhances Prisma ORM with flexible Authorization and auto-generated, type-safe APIs/hooks, simplifying full-stack development',
+                        'A schema-first TypeScript toolkit that enhances Prisma ORM with flexible Authorization and auto-generated, type-safe APIs/hooks, simplifying full-stack development and AI friendly',
                 },
             ],
 
@@ -95,9 +95,9 @@ const config = {
                         label: 'Get Started',
                     },
                     {
-                        to: 'docs/category/reference',
+                        to: 'docs/the-complete-guide',
                         position: 'left',
-                        label: 'Reference',
+                        label: 'Handbook',
                     },
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
