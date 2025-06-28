@@ -37,22 +37,27 @@ Follow the [installation guide](https://zenstack.dev/docs/install) to install 
 
 Integration with ZenStack is all about obtaining the user's identity and utilizing it to create an enhanced `PrismaClient`. On the server side,  Better Auth exposes that through the `api` object of the `auth` instance.  For example, here is how to get that in Next.js:
 
-```tsx
 import { betterAuth } from "better-auth";
 import { headers } from "next/headers";
- 
+import { PrismaClient } from "@prisma/client";
+import { enhance } from "@zenstackhq/runtime";
+
+const prisma = new PrismaClient();
+
 export const auth = betterAuth({
     //...
-})
- 
+});
+
 // calling get session on the server
-const {session} = await auth.api.getSession({
-    headers: await headers() // some endpoint might require headers
+const { session } = await auth.api.getSession({
+    headers: headers(), // some endpoints might require headers
 });
 
 // get the userId from session data
 const userId = session.userId;
-```
+
+// create the enhanced client
+const db = enhance(prisma, { user: { id: userId } });
 
 Then you can pass it to ZenStack's [`enhance()`](https://zenstack.dev/docs/reference/runtime-api#enhance) API to create an enhanced `PrismaClient` that automatically enforces access policies.
 
