@@ -3,7 +3,7 @@ description: Encrypting Fields
 sidebar_position: 16
 ---
 
-# Encrypting Fields (Preview)
+# Encrypting Fields
 
 > *This awesome feature is contributed by [Eugen Istoc](https://github.com/genu) and inspired by [prisma-field-encryption](https://github.com/47ng/prisma-field-encryption).*
 

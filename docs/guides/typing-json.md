@@ -3,7 +3,7 @@ description: Typing JSON fields
 sidebar_position: 15
 ---
 
-# Typing JSON Fields (Preview)
+# Typing JSON Fields
 
 > The design and implementation are inspired by [prisma-json-types-generator](https://github.com/arthurfiorette/prisma-json-types-generator).
 
