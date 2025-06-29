@@ -1,6 +1,6 @@
 ---
 description: Guide to securely integrating Supabase with ZenStack - how to prevent unauthorized access.
-sidebar_position: 3
+sidebar_position: 11
 sidebar_label: Secure Supabase with ZenStack
 ---
 

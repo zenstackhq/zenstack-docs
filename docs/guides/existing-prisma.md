@@ -1,6 +1,6 @@
 ---
 description: Steps for migrating from existing Prisma projects.
-sidebar_position: 4
+sidebar_position: 2
 ---
 
 # Migrating Existing Prisma Projects

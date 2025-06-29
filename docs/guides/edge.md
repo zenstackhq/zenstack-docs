@@ -1,6 +1,6 @@
 ---
 description: Guide for deploying ZenStack to edge runtime.
-sidebar_position: 12
+sidebar_position: 14
 ---
 
 # Deploying to Edge Runtime

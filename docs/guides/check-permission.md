@@ -1,6 +1,6 @@
 ---
 description: Checking permissions without hitting the database.
-sidebar_position: 13
+sidebar_position: 15
 ---
 
 # Checking Permissions Without Hitting the Database (Preview)

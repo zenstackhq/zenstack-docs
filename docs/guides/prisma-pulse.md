@@ -1,6 +1,6 @@
 ---
 description: Using ZenStack with Prisma Pulse.
-sidebar_position: 14
+sidebar_position: 16
 ---
 
 # Using with Prisma Pulse (Preview)
