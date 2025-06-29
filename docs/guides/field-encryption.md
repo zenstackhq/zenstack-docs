@@ -1,6 +1,6 @@
 ---
 description: Encrypting Fields
-sidebar_position: 16
+sidebar_position: 6
 ---
 
 # Encrypting Fields

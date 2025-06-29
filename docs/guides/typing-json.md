@@ -1,6 +1,6 @@
 ---
 description: Typing JSON fields
-sidebar_position: 15
+sidebar_position: 5
 ---
 
 # Typing JSON Fields
