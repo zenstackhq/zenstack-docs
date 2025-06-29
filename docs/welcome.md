@@ -15,7 +15,7 @@ Some of the most common use cases of ZenStack include:
 - Multi-tenant SaaS
 - Applications with complex access control requirements
 - CRUD-intensive API or web apps
-- AI agents perform CRUD operations on databases
+- AI agents handle CRUD database operations
 
 ZenStack is not opinionated about your choice of framework. It can be used with any of them.
 
