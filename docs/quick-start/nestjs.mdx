@@ -69,8 +69,8 @@ model Post {
   updatedAt DateTime @updatedAt()
   title String
   published Boolean @default(false)
-  author User @relation(fields: [authorId], references: [id])
-  authorId Int @default(auth().id)
+  author User? @relation(fields: [authorId], references: [id])
+  authorId Int?
 }
 ```
 
