@@ -73,4 +73,15 @@ You can use [this blog post](https://zenstack.dev/blog/model-authz) as an introd
     - Hono for backend (Cloudflare Worker)
     - React SPA for frontend (Cloudflare Pages)
     - This repo is also a cool demo of the [ZenStack UI](https://www.npmjs.com/package/zenstack-ui) package made by Kiran.
+ 
+- [Multiboard](https://github.com/olliethedev/multiboard) by [olliethedev](https://github.com/olliethedev)
+
+    - Minimal Kanban task mangement platform
+    - Authentication with Better Auth
+    - Login + Logout + Account UI with Better Auth UI
+    - Multi-tenant organizations
+    - Next.js + shadcn/ui
+    - Emails with Resend
+    - Forms with AutoForm
+    - Api Docs with Scalar
   
