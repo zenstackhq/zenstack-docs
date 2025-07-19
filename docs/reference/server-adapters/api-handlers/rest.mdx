@@ -84,6 +84,22 @@ The factory function accepts an options object with the following fields:
 
   Optional. A `number` field representing the default page size for listing resources and relationships. Defaults to 100. Set to Infinity to disable pagination.
 
+- modelNameMapping
+
+  Optional. An `Record<string, string>` value that provides a mapping from model names (as defined in ZModel) to URL path names. This is useful for example when you want to use plural names in URL endpoints:
+  
+  ```ts
+  // endpoint for accessing User model will then be ".../users"
+  RestApiHandler({
+      modelNameMapping: {
+          User: 'users'
+      }
+  })
+  ```
+
+  The mapping can be partial. You only need to specify the model names that you want to override. If a mapping is provided, only the mapped url path is valid, and accessing to unmapped path will be denied.
+
+
 ## Endpoints and Features
 
 The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following sections list the endpoints and features are implemented. The examples refer to the following schema modeling a blogging app:

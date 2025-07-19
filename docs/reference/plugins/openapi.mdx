@@ -27,6 +27,7 @@ npm install --save-dev @zenstackhq/openapi
 | summary          | String  | API summary                                                                   | No       |                        |
 | securitySchemes  | Object  | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
 | omitInputDetails | Boolean | **Only valid for "rpc" flavor.** If true, the output spec will not contain detailed structures for query/mutation input fields like `where`, `select`, `data`, etc. These fields will be typed as generic objects. Use this option to reduce the size of the generated spec. | No       | false                  |
+| modelNameMapping | Object  | **Only effective for "rest" flavor.** See [here](#model-name-mapping) for more details. | No       |                        |
 
 #### API flavor
 
@@ -63,6 +64,22 @@ plugin openapi {
 The names of the configured security schemes will be added to the root `security` field and inherited by all operations. The plugin also respects the access policy rules defined in the schema. If a operation is fully open (e.g., `create` operation with `@@allow('create', true)` rule), an empty security array will be added to the operation to mark it as unprotected.
 
 You can override the security scheme for a specific model or operation by using the `@@openapi.meta` attribute.
+
+#### Model name mapping
+
+The `modelNameMapping` option is an object that maps ZModel model names to OpenAPI resource names. This is useful for example when you want to use plural names in URL endpoints. It's only effective for the `rest` flavor. The mapping can be partial. You only need to specify the model names that you want to override.
+
+```zmodel
+plugin openapi {
+    provider = '@zenstackhq/openapi'
+    prefix = '/api'
+    modelNameMapping = {
+        User: 'users'
+    }
+}
+```
+
+With the above configuration, the `User` operations will be generated under `/api/users` instead of `/api/user`.
 
 ### Attributes
 
