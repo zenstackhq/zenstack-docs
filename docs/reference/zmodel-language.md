@@ -757,12 +757,27 @@ model User {
 }
 ```
 
-wil be translated to the following Prisma schema:
+will be translated to the following Prisma schema:
 
 ```zmodel
 model User {
     id Int @id @default(autoincrement())
     name String @unique
+}
+```
+
+##### @meta
+
+```zmodel
+attribute @meta(_ name: String, _ value: Any)
+```
+
+Adds arbitrary metadata to a field. The metadata can be accessed by custom plugins for code generation, or at runtime from the `modelMeta` object exported from `@zenstackhq/runtime/model-meta`. The `value` parameter can be an arbitrary literal expression, including object literals.
+
+```zmodel
+model User {
+    id Int @id
+    name String @meta(name: "description", value: "The name of the user")
 }
 ```
 
@@ -927,13 +942,28 @@ model User {
 }
 ```
 
-wil be translated to the following Prisma schema:
+will be translated to the following Prisma schema:
 
 ```zmodel
 model User {
     id Int @id @default(autoincrement())
     name String
     @@unique([name])
+}
+```
+
+##### @@meta
+
+```zmodel
+attribute @meta(_ name: String, _ value: Any)
+```
+
+Adds arbitrary metadata to a field. The metadata can be accessed by custom plugins for code generation, or at runtime from the `modelMeta` object exported from `@zenstackhq/runtime/model-meta`. The `value` parameter can be an arbitrary literal expression, including object literals.
+
+```zmodel
+model User {
+    id Int @id
+    @@meta('description', 'This is a user model')
 }
 ```
 
