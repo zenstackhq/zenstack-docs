@@ -19,12 +19,12 @@ function Header() {
                 <div className="w-full xl:container flex justify-center text-white dark:text-gray-800">
                     <div className="w-full max-w-4xl text-center flex flex-col items-center px-4">
                         <h1 className="hero__title font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-6 sm:mb-8 lg:mb-12 leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight 2xl:leading-tight">
-                            <span className="inline-block text-white dark:text-black">
+                            <span className="inline-block text-white dark:text-gray-800">
                                 Schema-First Full‑Stack Toolkit
                             </span>
                             <br className="hidden sm:block" />
                             <span className="sm:hidden"> </span>
-                            <span className="inline-block mt-2 sm:mt-0 text-black dark:text-white font-extrabold">
+                            <span className="inline-block mt-2 sm:mt-0 text-gray-800 dark:text-white font-extrabold">
                                 with Clean & Scalable Authorization
                             </span>
                         </h1>
