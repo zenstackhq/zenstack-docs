@@ -1,0 +1,31 @@
+---
+sidebar_position: 100
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+# API Handlers
+
+ZenStack supports two API styles: ***rpc*** and ***rest***:
+
+- ***rpc*** style API directly mirrors Prisma client's API, thus provides endpoints like `[model]/findMany`, `[model]/create`, etc. Its input and output data format also aligns with that of Prisma client.
+
+- ***rest*** style API is designed to be more RESTful, thus provides endpoints like `[model]`, `[model]/[id]`, `[model]/[id]/relationships/[relationship]`, etc. It uses [JSON:API](https://jsonapi.org/) as its data format.
+
+API handlers are framework-agnostic and deals with canonicalized request and response objects. It's the responsibility of the server adapters to translate the framework-specific request and response types. You can use either of these two API handlers with any server adapter.
+
+The following diagram illustrates their relationships with server adapters.
+
+<ThemedImage
+    alt="ZModel Generation"
+    sources={{
+        light: useBaseUrl('/img/intro/api-handler-light.png'),
+        dark: useBaseUrl('/img/intro/api-handler-dark.png'),
+    }}
+/>
+
+Checkout the reference pages for detailed information about these API handlers:
+
+- [RPC API Handler](./rpc)
+- [RESTful API Handler](./rest)

@@ -44,6 +44,10 @@ const config = {
                             label: '1.x',
                             banner: 'none',
                         },
+                        '3.x': {
+                            label: '3.0 Alpha',
+                            banner: 'none',
+                        },
                     },
                 },
                 blog: false,
