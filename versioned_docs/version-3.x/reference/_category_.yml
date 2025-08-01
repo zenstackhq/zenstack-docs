@@ -1,0 +1,7 @@
+position: 6
+label: Reference
+collapsible: true
+collapsed: true
+link:
+    type: generated-index
+    title: Reference

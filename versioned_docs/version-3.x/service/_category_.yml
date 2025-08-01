@@ -1,0 +1,7 @@
+position: 4
+label: Query as a Service
+collapsible: true
+collapsed: true
+link:
+    type: generated-index
+    title: Query as a Service
