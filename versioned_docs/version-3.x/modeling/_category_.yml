@@ -1,7 +1,7 @@
-position: 3
-label: Writing Schema
+position: 2
+label: Data Modeling
 collapsible: true
 collapsed: true
 link:
     type: generated-index
-    title: Writing Schema
+    title: Data Modeling

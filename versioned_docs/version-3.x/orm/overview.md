@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-description: Introduction to ZenStack ORM
+description: ZenStack ORM overview
 ---
 
-# Introduction
+# Overview
 
 ZenStack ORM is a schema-first ORM for modern TypeScript applications. It learnt from the prior arts and aims to provide an awesome developer experience by combining the best ingredients into a cohesive package.
 
-## Key Facts
+## Key Features
 
 ### [Prisma](https://prisma.io/orm)-Compatible Schema Language
 
