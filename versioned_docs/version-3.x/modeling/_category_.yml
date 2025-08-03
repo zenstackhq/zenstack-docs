@@ -2,6 +2,3 @@ position: 2
 label: Data Modeling
 collapsible: true
 collapsed: true
-link:
-    type: generated-index
-    title: Data Modeling

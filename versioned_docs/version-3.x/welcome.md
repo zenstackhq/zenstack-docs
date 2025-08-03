@@ -23,6 +23,6 @@ Inside the package you'll find:
   That provides a full-fledged data API without the need to code it up. [🔗](./service/)
 
 - #### Utilities
-  For deriving artifacts like Zod schemas, frontend hooks, OpenAPI specs, etc., from the schema. [🔗](./utilities/)
+  For deriving artifacts like Zod schemas, frontend hooks, OpenAPI specs, etc., from the schema. [🔗](./category/utilities)
 
 > *ZenStack originated as an extension to Prisma ORM. V3 is a complete rewrite that removed Prisma as a runtime dependency and replaced it with an implementation built from the scratch ("scratch" = [Kysely](https://kysely.dev/) 😆). On its surface, it continues to use a "Prisma-superset" schema language and a query API compatible with PrismaClient.*

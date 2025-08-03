@@ -7,7 +7,7 @@ interface ZModelVsPSLProps {
 
 const ZModelVsPSL: FC<ZModelVsPSLProps> = ({ children }) => {
     return (
-        <Admonition type="info" title="🔋 ZModel vs PSL">
+        <Admonition type="info" title="🔋 ZModel vs Prisma Schema">
             {children}
         </Admonition>
     );

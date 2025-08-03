@@ -2,6 +2,3 @@ position: 4
 label: Migration
 collapsible: true
 collapsed: true
-link:
-    type: generated-index
-    title: Migration
