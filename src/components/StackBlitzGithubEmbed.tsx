@@ -4,18 +4,29 @@ import sdk from '@stackblitz/sdk';
 interface StackBlitzGithubEmbedProps {
     repoPath: string;
     height?: string;
+    openFile?: string;
+    startScript?: string;
+    clickToLoad?: boolean;
 }
 
-const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({ repoPath, height = '600px' }) => {
+const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
+    repoPath,
+    height = '600px',
+    openFile = 'main.ts',
+    clickToLoad = false,
+    startScript,
+}) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (containerRef.current) {
             sdk.embedGithubProject(containerRef.current, repoPath, {
-                openFile: 'main.ts',
+                openFile,
                 height,
                 view: 'editor',
-                forceEmbedLayout: true,
+                hideNavigation: true,
+                startScript,
+                clickToLoad,
             });
         }
     }, [repoPath, height]);

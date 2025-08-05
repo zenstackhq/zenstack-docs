@@ -5,7 +5,7 @@ description: ZModel overview
 
 import ZModelVsPSL from '../_components/ZModelVsPSL';
 
-# Overview
+# Data Modeling Overview
 
 ZenStack uses a schema language named **ZModel** to define data models and their related aspects. We know that designing a good schema language is difficult, and we know it's even more difficult to convince people to learn a new one. So we made the decision to design ZModel as a superset of the [Prisma Schema Language (PSL)](https://www.prisma.io/docs/orm/prisma-schema), which is one of the best data modeling language out there.
 

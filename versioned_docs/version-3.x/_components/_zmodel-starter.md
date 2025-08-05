@@ -6,7 +6,7 @@
 
   model User {
     id       String @id @default(cuid())
-    email    String @unique @email @length(6, 32)
+    email    String @unique
     posts    Post[]
   }
 
@@ -14,7 +14,7 @@
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    title     String   @length(1, 256)
+    title     String
     content   String
     published Boolean  @default(false)
     author    User     @relation(fields: [authorId], references: [id])

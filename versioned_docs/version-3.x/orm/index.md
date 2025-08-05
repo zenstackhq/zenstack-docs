@@ -3,34 +3,17 @@ sidebar_position: 1
 description: ZenStack ORM overview
 ---
 
+import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
+
 # Overview
 
-ZenStack ORM is a schema-first ORM for modern TypeScript applications. It learnt from the prior arts and aims to provide an awesome developer experience by combining the best ingredients into a cohesive package.
+ZenStack ORM is a schema-first ORM for modern TypeScript applications. It learnt from the prior arts and strives to provide an awesome developer experience by combining the best ingredients into a cohesive package.
 
 ## Key Features
 
-### [Prisma](https://prisma.io/orm)-Compatible Schema Language
+### [Prisma](https://prisma.io/orm)-compatible query API
 
-The schema language used by ZenStack (called ZModel) is a superset of Prisma schema language. Every valid Prisma schema can be used with ZenStack unchanged. In addition, ZModel added many important extensions to the language to improve the developer experience and enable advanced features.
-
-```zmodel
-model User {
-    id String @id @default(cuid())
-    email String @unique
-    posts Post[]
-}
-
-model Post {
-    id String @id @default(cuid())
-    title String @length(1, 256)
-    author User @relation(fields: [authorId], references: [id])
-    authorId String
-}
-```
-
-### [Prisma](https://prisma.io/orm)-Compatible Query API
-
-Although ZenStack has a completely different implementation (based on [Kysely](https://kysely.dev/)), it replicated Prisma ORM's query API so that you can use it pretty much as a drop-in replacement. Even if you're not a Prisma user, the query API is very intuitive and easy to learn.
+ZenStack v3 is inspired by Prisma ORM but it has a completely different implementation (based on [Kysely](https://kysely.dev/)). On the surface, it replicated Prisma ORM's query API so that you can use it pretty much as a drop-in replacement. Even if you're not a Prisma user, the query API is very intuitive and easy to learn.
 
 ```ts
 await db.user.findMany({
@@ -46,7 +29,7 @@ await db.user.findMany({
 });
 ```
 
-### Low-Level Query-Builder Powered by [Kysely](https://kysely.dev/)
+### Low-level query builder powered by [Kysely](https://kysely.dev/)
 
 ORM APIs are concise and pleasant, but they have their limitations. When you need extra power, you can fall back to the low-level query builder API powered by [Kysely](https://kysely.dev/) - limitless expressiveness, full type safety, and zero extra setup.
 
@@ -58,17 +41,17 @@ await db.$qb
     .execute();
 ```
 
-### Access Control
+### Access control
 
 ZenStack ORM comes with a powerful built-in access control system. You can define access rules right inside the schema. The rules are enforced at runtime via query injection, so it doesn't rely on any database specific row-level security features.
 
-```zmodel
+```zmodel"
 model Post {
-    id        String @id @default(cuid())
-    title.    String @length(1, 256)
+    id        Int     @id
+    title     String  @length(1, 256)
     published Boolean @default(false)
-    author    User @relation(fields: [authorId], references: [id])
-    authorId  String
+    author    User    @relation(fields: [authorId], references: [id])
+    authorId  Int
 
     // no anonymous access
     @@deny('all', auth() == null)
@@ -81,14 +64,14 @@ model Post {
 }
 ```
 
-### Polymorphic Models
+### Polymorphic models
 
 Real-world applications often involves storing polymorphic data which is notoriously complex to model and query. ZenStack does the heavy-lifting for you so you can model an inheritance hierarchy with simple annotations, and query them with perfect type safety.
 
-```zmodel
-model Asset {
-    id    String @id @default(cuid())
-    title String @length(1, 256)
+```zmodel title="zenstack/schema.zmodel"
+model Content {
+    id    Int    @id
+    name  String @length(1, 256)
     type  String
 
     // the ORM uses the `type` field to determine to which concrete model
@@ -96,12 +79,12 @@ model Asset {
     @@delegate(type)
 }
 
-model Post extends Asset {
+model Post extends Content {
     content String
 }
 ```
 
-```ts
+```ts title="main.ts"
 const asset = await db.asset.findFirst();
 if (asset.type === 'Post') {
     // asset's type is narrowed down to `Post`
@@ -111,10 +94,24 @@ if (asset.type === 'Post') {
 }
 ```
 
-### Straightforward and Light-Weighted
+### Straightforward and light-Weighted
 
 Compared to Prisma and previous versions of ZenStack, v3 is more straightforward and light-weighted.
 
 - No runtime dependency to Prisma, thus no overhead of Rust/WASM query engines.
 - No magic generating into `node_modules`. You fully control how the generated code is compiled and bundled.
 - Less code generation, more type inference.
+
+## Documentation Conventions
+
+### Sample playground
+
+Throughout the documentation we'll use [StackBlitz](https://stackblitz.com/) to provide interactive code samples. StackBlitz's [WebContainers](https://webcontainers.io/) is an awesome technology that allows you to run a Node.js environment inside the browser. The embedded samples use the [sql.js](https://github.com/sql-js/sql.js) (a WASM implementation of SQLite) for WebContainers compatibility, which is not suitable for production use.
+
+### If you already know Prisma
+
+Although ZenStack ORM has a Prisma-compatible query API, the documentation doesn't assume prior knowledge of using Prisma. However, readers already familiar with Prisma can quickly skim through most of the content and focus on the differences. The documentation uses the following callout to indicate major differences between ZenStack ORM and Prisma:
+
+<ZenStackVsPrisma>
+Explanation of some key differences between ZenStack and Prisma ORM.
+</ZenStackVsPrisma>

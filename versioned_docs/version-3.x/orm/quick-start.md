@@ -14,7 +14,7 @@ import PackageExec from '../_components/PackageExec.tsx';
 All v3 packages are currently published under the "@next" tag.
 :::
 
-There are multiple ways to start using ZenStack.
+There are several ways to start using ZenStack ORM.
 
 ## 1. Creating a project from scratch
 
