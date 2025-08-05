@@ -15,7 +15,7 @@ If you're already familiar with PSL, you'll find yourself at home with ZModel. H
 ZModel uses the explicit `import` syntax for composing multi-file schemas.
 </ZModelVsPSL>
 
-Don't worry if you've never used Prima before. This section will introduce all aspects of ZModel, so no prior knowledge is required.
+Don't worry if you've never used Prisma before. This section will introduce all aspects of ZModel, so no prior knowledge is required.
 
 A very simple ZModel schema looks like this:
 
