@@ -4,6 +4,7 @@ description: Find API
 ---
 
 import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import GithubCodeBlock from '@site/src/components/GithubCodeBlock';
 import SelectIncludeOmit from './_select-include-omit.md';
 
 # Find
@@ -29,6 +30,10 @@ The `find` series of APIs are used to query records from the database. It has th
 - `findFirstOrThrow`
     
     Similar to `findFirst`, but throws an error if no record is found.
+
+Throughout this section all samples are based on the following ZModel schema:
+
+<GithubCodeBlock repoPath="zenstackhq/v3-doc-orm-find" file="zenstack/schema.zmodel" />
 
 ## Basic usage
 
