@@ -59,7 +59,7 @@ const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
     } else {
         return (
             <>
-                <Tabs>
+                <Tabs groupId="interactive-sample">
                     <TabItem value="interactive" label="Interactive Sample" default>
                         <div className="italic text-sm mb-1">
                             Click{' '}
