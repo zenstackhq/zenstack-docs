@@ -38,9 +38,13 @@ const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
 
     useEffect(() => {
         if (containerRef.current) {
-            sdk.embedGithubProject(containerRef.current, repoPath, options);
+            setTimeout(() => {
+                // docusaurus seems to recreate the tab after mounting, give it a
+                // chance to complete
+                sdk.embedGithubProject(containerRef.current, repoPath, options);
+            }, 0);
         }
-    }, [repoPath, height]);
+    }, [repoPath, height, containerRef]);
 
     const PlainCode = () => (
         <>
@@ -54,9 +58,9 @@ const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
         return <PlainCode />;
     } else {
         return (
-            <Tabs>
-                <TabItem value="interactive" label="Interactive Sample" default>
-                    <div>
+            <>
+                <Tabs>
+                    <TabItem value="interactive" label="Interactive Sample" default>
                         <div className="italic text-sm mb-1">
                             Click{' '}
                             <a href="#" onClick={() => sdk.openGithubProject(repoPath, options)}>
@@ -65,12 +69,14 @@ const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
                             to pop out if the embed doesn't load an interactive terminal.
                         </div>
                         <div ref={containerRef} style={{ width: '100%', height }} />
-                    </div>
-                </TabItem>
-                <TabItem value="static" label="Plain Code">
-                    <PlainCode />
-                </TabItem>
-            </Tabs>
+                    </TabItem>
+                    <TabItem value="static" label="Plain Code">
+                        <PlainCode />
+                    </TabItem>
+                </Tabs>
+
+                <div></div>
+            </>
         );
     }
 };

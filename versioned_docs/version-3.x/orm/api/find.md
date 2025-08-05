@@ -47,13 +47,13 @@ The API provides a very flexible set of filtering options. We've put it into a [
 
 Use the `sort` field to control the sort field, direction, and null field placement. Sorting is not supported for `findUnique` and `findUniqueOrThrow`.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="sort.ts" startScript="generate,sort" clickToLoad={true} />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="sort.ts" startScript="generate,sort" />
 
 ## Pagination
 
 You can use two strategies for pagination: offset-based or cursor-based. Pagination is not supported for `findUnique` and `findUniqueOrThrow`.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="pagination.ts" startScript="generate,pagination" clickToLoad={true} />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="pagination.ts" startScript="generate,pagination" />
 
 ## Field selection
 
@@ -61,10 +61,10 @@ You can use the following fields to control what fields are returned in the resu
 
 <SelectIncludeOmit />
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="selection.ts" startScript="generate,selection" clickToLoad={true} />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="selection.ts" startScript="generate,selection" />
 
 ## Finding distinct rows
 
 You can use the `distinct` field to find distinct rows based on specific fields. One row for each unique combination of the specified fields will be returned. The implementation uses SQL `DISTINCT ON` if it's supported by the dialect, otherwise falls back to in-memory deduplication.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="distinct.ts" startScript="generate,distinct" clickToLoad={true} />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-find" openFile="distinct.ts" startScript="generate,distinct" />
