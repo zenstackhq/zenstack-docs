@@ -99,6 +99,21 @@ The factory function accepts an options object with the following fields:
 
   The mapping can be partial. You only need to specify the model names that you want to override. If a mapping is provided, only the mapped url path is valid, and accessing to unmapped path will be denied.
 
+- externalIdMapping
+
+  Optional. An `Record<string, string>` value that provides a mapping from model names (as defined in ZModel) to unique contraint name. This is useful when you for example want to expose natural keys in place of a surrogate keys:
+
+  ```ts
+  // Expose tags by unique name and not by ID, ie. /tag/blue intead of /tag/id
+  RestApiHandler({
+      externalIdMapping: {
+          Tag: 'name'
+      }
+  })
+  ```
+
+  Currentlly it is not possible to use custom index names. This also works for compound unique contraints just like for [compound IDs](#compound-id-fields).
+
 
 ## Endpoints and Features
 
