@@ -13,13 +13,13 @@ ZenStack is built with the belief that most applications should use the data mod
 
 Inside the package you'll find:
 
-- #### An intuitive schema language
+- #### Intuitive schema language
   That helps you model data, relation, access control, and more, in one place. [🔗](./modeling/)
 
-- #### A powerful ORM
+- #### Powerful ORM
   With awesomely-typed API, built-in access control, and unmatched flexibility. [🔗](./orm/)
 
-- #### A Query-as-a-Service layer
+- #### Query-as-a-Service
   That provides a full-fledged data API without the need to code it up. [🔗](./service/)
 
 - #### Utilities
