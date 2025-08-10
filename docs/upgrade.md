@@ -3,7 +3,7 @@ description: How to upgrade to ZenStack v2
 
 slug: /upgrade-v2
 sidebar_label: Upgrading to V2
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
