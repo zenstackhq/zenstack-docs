@@ -3,16 +3,11 @@ sidebar_position: 3
 description: how to filter entities
 ---
 
-import GithubCodeBlock from '@site/src/components/GithubCodeBlock';
 import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
 
 # Filter
 
 Filtering is an important topic because it's involved in many ORM operations, for example when you find records, selecting relations, and updating or deleting multiple records.
-
-Throughout this section all samples are based on the following ZModel schema:
-
-<GithubCodeBlock repoPath="zenstackhq/v3-doc-orm-filter" file="zenstack/schema.zmodel" />
 
 ## Basic filters
 
