@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 2
 description: Using the CLI
 ---
 
@@ -7,7 +7,7 @@ import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
 
 # Using the CLI
 
-ZenStack CLI is a command-line tool that takes the ZModel schema as input and complete different tasks for you. It's included in the "@zenstackhq/cli" package, and can be invoked with either `zen` or `zenstack` command.
+ZenStack CLI is a command-line tool that takes the ZModel schema as input and complete different tasks for you. It's included in the "@zenstackhq/cli" package, and can be invoked with either `zen` or `zenstack` command (they are equivalent).
 
 In the context of ORM, the CLI compiles ZModel into a TypeScript representation, which can in turn be used to create a type-safe ORM client.
 
@@ -20,3 +20,5 @@ The `generate` command outputs the following TypeScript files in the same folder
 - `schema.ts`: TypeScript representation of the ZModel schema, used by the ORM client to understand the database's structure and infer types.
 - `models.ts`: Exports types for all models, types, and enums defined in the schema.
 - `input.ts`: Export types that you can use to type the arguments passed to the ORM client methods, such as `findMany`, `create`, etc.
+
+Refer to the [CLI Reference](../reference/cli.md) for the full list of commands and options.

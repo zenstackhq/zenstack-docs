@@ -1,7 +1,7 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 sidebar_label: Query API
-title: Query API Overview
+title: Query API
 ---
 
 ZenStack ORM's query API provides a powerful and high-level way to interact with your database with awesome type safety. The API is a superset of [Prisma ORM's query API](https://www.prisma.io/docs/orm/prisma-client/queries), so if you are familiar with Prisma, you will feel right at home. If not, it's intuitive and easy to learn.

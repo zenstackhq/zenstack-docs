@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 description: Quick start guide
 ---
 
@@ -60,8 +60,10 @@ You can also always configure a project manually with the following steps:
 
   <PackageExec command="zen generate" />
 
-## 4. Custom schema and output paths
+:::info
 
 By default, ZenStack CLI loads the schema from `zenstack/schema.zmodel`. You can change this by passing the `--schema` option. TypeScript files are by default generated to the same directory as the schema file. You can change this by passing the `--output` option.
 
 You can choose to either commit the generated TypeScript files to your source control, or add them to `.gitignore` and generate them on the fly in your CI/CD pipeline.
+
+:::

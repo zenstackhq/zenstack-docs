@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 3
 description: Creating a database client
 ---
 
@@ -16,7 +16,7 @@ Unlike Prisma, ZenStack doesn't bundle any database driver. You're responsible f
 
 The `zen generate` command compiles the ZModel schema into TypeScript code, which we can in turn use to initialize a type-safe database client. ZenStack uses Kysely to handle the low-level database operations, so the client is initialize with a [Kysely dialect](https://kysely.dev/docs/dialects) - an object that encapsulates database details.
 
-The samples below only shows creating a client using SQLite (via [better-sqlite3](https://github.com/WiseLibs/better-sqlite3)) and PostgreSQL (via [node-postgres](https://github.com/brianc/node-postgres)), however you can also use any other Kysely dialects for these two types of databases.
+The samples below only show creating a client using SQLite (via [better-sqlite3](https://github.com/WiseLibs/better-sqlite3)) and PostgreSQL (via [node-postgres](https://github.com/brianc/node-postgres)), however you can also use any other Kysely dialects for these two types of databases.
 
 <Tabs>
 
