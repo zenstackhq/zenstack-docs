@@ -3,9 +3,14 @@ sidebar_position: 5
 description: Query builder API
 ---
 
+import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
 import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
 
 # Query Builder API
+
+<ZenStackVsPrisma>
+Query builder API is a major feature that sets ZenStack apart from Prisma.
+</ZenStackVsPrisma>
 
 The [Query API](./api/) introduced in the previous sections provide a powerful and intuitive way to query databases. However, complex applications usually have use cases that outgrow its capabilities. For typical ORMs, this is where you leave the comfort zone and resort to writing SQL.
 

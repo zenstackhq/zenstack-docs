@@ -3,6 +3,7 @@ sidebar_position: 3
 description: how to filter entities
 ---
 
+import ZenStackVsPrisma from '../../_components/ZenStackVsPrisma';
 import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
 
 # Filter
@@ -77,6 +78,10 @@ Filtering on Json fields is work in progress and will be available soon.
 :::
 
 ## Query builder filters
+
+<ZenStackVsPrisma>
+The ability to mix SQL query builder into ORM filters is a major improvement over Prisma.
+</ZenStackVsPrisma>
 
 ZenStack v3 is implemented on top of [Kysely](https://kysely.dev/), and it leverages Kysely's powerful query builder API to extend the filtering capabilities. You can use the `$expr` operator to define a boolean expression that can express almost everything that can be expressed in SQL.
 
