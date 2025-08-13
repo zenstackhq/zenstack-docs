@@ -5,7 +5,7 @@ description: ZenStack ORM overview
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
 
-# Overview
+# ORM Overview
 
 ZenStack ORM is a schema-first ORM for modern TypeScript applications. It learnt from the prior arts and strives to provide an awesome developer experience by combining the best ingredients into a cohesive package.
 
