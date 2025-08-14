@@ -10,7 +10,7 @@ import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
 
 Entity mutation hooks allow you to intercept entity mutation operations, i.e., "create", "update", and "delete". They are triggered regardless of whether the operations are performed through the ORM queries or the query builder API.
 
-To create an entity mutation hook plugin, call the `$use` method with an object containing the following optional keys:
+To create an entity mutation hook plugin, call the `$use` method with an `onEntityMutation` key containing an object with the following fields (all optional):
 
 - `beforeEntityMutation`
     A callback function that is called before the entity mutation operation. It receives a context object containing:
@@ -37,6 +37,10 @@ To create an entity mutation hook plugin, call the `$use` method with an object 
     The callback should return an object indicating if the operation should be intercepted and whether entities should be loaded. If this callback is not provided, by default, all mutation operations are intercepted, but entities are not loaded.
 
 If a mutation happens inside a transaction, the `afterEntityMutation` callback is called after the transaction is committed.
+
+:::info
+Update and delete triggered by cascading operations are not captured by the entity mutation hooks.
+:::
 
 :::warning
 Be very careful about opting in to load before and after mutation entities. Batch mutations can result in a large number of entities being loaded and incur significant performance overhead.

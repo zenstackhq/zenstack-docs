@@ -21,4 +21,8 @@ To create a Kysely query hook plugin, call the `$use` method with an object cont
 
 ## Samples
 
+:::info
+Kysely's `QueryNode` objects are low-level and not easy to process. ZenStack will provide helpers to facilitate common tasks in the future.
+:::
+
 <StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="plugins/kysely-query-hooks.ts" startScript="generate,kysely-query-hooks" />
