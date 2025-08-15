@@ -22,4 +22,4 @@ As its name suggests, query API hooks are only triggered by ORM query calls, not
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="plugins/kysely-query-hooks.ts" startScript="generate,kysely-query-hooks" />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="plugins/query-api-hooks.ts" startScript="generate,query-api-hooks" />
