@@ -18,5 +18,5 @@ The `create` series of APIs are used to create new records in the database. It h
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-create" />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="create.ts" startScript="generate,create" />
 

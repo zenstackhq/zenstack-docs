@@ -47,4 +47,4 @@ const db = new ZenStackClient(schema, {
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="computed-fields.ts" startScript="generate,computed-fields" />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-computed-fields" />

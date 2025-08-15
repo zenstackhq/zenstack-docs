@@ -12,7 +12,7 @@ ZenStack uses a schema language named **ZModel** to define data models and their
 If you're already familiar with PSL, you'll find yourself at home with ZModel. However, we'd still recommend that you skim through this section to learn about the important extensions we made to PSL. Please pay attention to callouts like the following one:
 
 <ZModelVsPSL>
-ZModel uses the explicit `import` syntax for composing multi-file schemas.
+ZModel allows both single quote and double quote for string literals.
 </ZModelVsPSL>
 
 Don't worry if you've never used Prisma before. This section will introduce all aspects of ZModel, so no prior knowledge is required.

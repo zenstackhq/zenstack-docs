@@ -85,10 +85,10 @@ model Post extends Content {
 ```
 
 ```ts title="main.ts"
-const asset = await db.asset.findFirst();
-if (asset.type === 'Post') {
-    // asset's type is narrowed down to `Post`
-    console.log(asset.content);
+const content = await db.content.findFirstOrThrow();
+if (content.type === 'Post') {
+    // content's type is narrowed down to `Post`
+    console.log(content.content);
 } else {
     // other asset type
 }

@@ -21,13 +21,13 @@ You can filter on scalar fields with values or operators as supported by the fie
 
 A filter object can contain multiple field filters, and they are combined with `AND` semantic. You can also use the `AND`, `OR`, and `NOT` logical operators to combine filter objects to form a complex filter.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-filter" openFile="basic.ts" startScript="generate,basic" />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="filter/basic.ts" startScript="generate,filter:basic" />
 
 ## Relation filters
 
 Filters can be defined on conditions over relations. For one-to-one relations, you can filter on their fields directly. For one-to-many relations, use the "some", "every", or "none" operators to build a condition over a list of records.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-filter" openFile="relation.ts" startScript="generate,relation" />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="filter/relation.ts" startScript="generate,filter:relation" />
 
 ## List filters
 
@@ -63,10 +63,6 @@ await db.post.findMany({
 });
 
 await db.post.findMany({
-  where: { topics: { hasNone: ['webdev', 'typescript'] } } 
-});
-
-await db.post.findMany({
   where: { topics: { isEmpty: true } } 
 });
 ```
@@ -87,4 +83,4 @@ ZenStack v3 is implemented on top of [Kysely](https://kysely.dev/), and it lever
 
 The `$expr` operator can be used together with other filter operators, so you can keep most of your filters simple and only reach to the query builder level for complicated components.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-filter" openFile="query-builder.ts" startScript="generate,query-builder" />
+<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="filter/query-builder.ts" startScript="generate,filter:query-builder" />
