@@ -26,7 +26,7 @@ npm install --save-dev @zenstackhq/openapi
 | description      | String  | API description                                                               | No       |                        |
 | summary          | String  | API summary                                                                   | No       |                        |
 | securitySchemes  | Object  | Security schemes for the API. See [here](#security-schemes) for more details. | No       |                        |
-| includeOpenApiIgnored | Boolean  | If true, models tagged with `@openapi.ignore` are included in the generated spec.  | No       | false                  |
+| includeOpenApiIgnored | Boolean  | If true, models tagged with `@@openapi.ignore` are included in the generated spec.  | No       | false                  |
 | omitInputDetails | Boolean | **Only valid for "rpc" flavor.** If true, the output spec will not contain detailed structures for query/mutation input fields like `where`, `select`, `data`, etc. These fields will be typed as generic objects. Use this option to reduce the size of the generated spec. | No       | false                  |
 | modelNameMapping | Object  | **Only effective for "rest" flavor.** See [here](#model-name-mapping) for more details. | No       |                        |
 
@@ -183,15 +183,15 @@ model User {
     By default, ignored models are excluded from the spec. If you set the plugin option `includeOpenApiIgnored = true`, they will be included.
     This is useful when you want to generate two different specs, for example a public spec for customers and an internal spec for your team (which may include additional internal models).
 
-    You can configure the plugin twice with different outputs:
+    You can configure the plugin twice with different outputs and distinct block names:
 
     ```zmodel
-    plugin openapi {
+    plugin openapiPublic {
         provider = '@zenstackhq/openapi'
         output = './openapi-public.yaml'
     }
 
-    plugin openapi {
+    plugin openapiInternal {
         provider = '@zenstackhq/openapi'
         output = './openapi-internal.yaml'
         includeOpenApiIgnored = true
