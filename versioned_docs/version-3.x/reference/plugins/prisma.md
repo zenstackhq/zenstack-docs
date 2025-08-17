@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 sidebar_label: "@core/prisma"
+description: Generating Prisma schema from ZModel
 ---
 
 # @core/prisma

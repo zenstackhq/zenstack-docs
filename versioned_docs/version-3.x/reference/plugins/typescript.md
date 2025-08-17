@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 sidebar_label: "@core/typescript"
+description: Generating TypeScript code from ZModel
 ---
 
 # @core/typescript
