@@ -3,11 +3,11 @@ sidebar_position: 5
 description: Relations in ZModel
 ---
 
-# Relations
+# Relation
 
 Relation is a fundamental concept in relational databases. It connect models into a graph, and allows you to query interconnected data efficiently. In ZModel, relations are modeled using the `@relation` attribute. For most cases it involves one side of the relation defining a foreign key field that references the primary key of the other side. By convention, we call the model that defines the foreign key the "owner" side.
 
-## One-to-one relations
+## One-to-one relation
 
 A typical one-to-one relation looks like this:
 
@@ -64,7 +64,7 @@ model Profile {
 }
 ```
 
-## One-to-many relations
+## One-to-many relation
 
 A typical one-to-many relation looks like this:
 
@@ -83,7 +83,7 @@ model Post {
 
 It's modeled pretty much the same way as one-to-one relations, except that the "non-owner" side (here `User.posts`) is a of list of the other side's model type.
 
-## Many-to-many relations
+## Many-to-many relation
 
 Many-to-many relations are modeled in the database through a join table - which forms a many-to-one relation with each of the two sides.
 
@@ -148,7 +148,7 @@ model UserPost {
 
 Since the join table is explicitly defined, when using the ORM, you'll need to involve it in your queries with an extra level of nesting.
 
-## Self relations
+## Self relation
 
 Self relations are cases where a model has a relation to itself. They can be one-to-one, one-to-many, or many-to-many.
 
