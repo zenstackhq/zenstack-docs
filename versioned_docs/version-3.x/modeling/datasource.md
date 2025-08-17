@@ -9,7 +9,7 @@ import ZModelVsPSL from '../_components/ZModelVsPSL';
 
 # Data Source
 
-The `datasource` block provides information about the database your application uses. The ORM relies on it to determine the proper SQL dialect to use when generating queries. If you use [Migration](../migration/), it must also have a `url` field that specifies the database connection string, so that the migration engine knows how to connect to the database. The `env` function can be used to reference environment variables so you can keep sensitive information out of the code.
+The `datasource` block provides information about the database your application uses. The ORM relies on it to determine the proper SQL dialect to use when generating queries. If you use [Migration](../orm/migration.md), it must also have a `url` field that specifies the database connection string, so that the migration engine knows how to connect to the database. The `env` function can be used to reference environment variables so you can keep sensitive information out of the code.
 
 Each ZModel schema must have exactly one `datasource` block.
 

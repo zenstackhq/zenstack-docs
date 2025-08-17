@@ -9,9 +9,8 @@ Congratulations! You have learned all the essentials of data model with ZenStack
 
 In the following parts, you'll learn how to put the schema into use and let it drive many aspects of your application, including:
 
-- [Creating an ORM to query the database](../orm/)
-- [Evolving database schema with migrations](../migration/)
+- [Using ORM to query the database](../orm/)
 - [Exposing a data API with Query-as-a-Service](../service/)
-- [Driving other useful utilities](../service/)
+- [Deriving other useful utilities](../service/)
 
 Let's continue our journey with ZenStack!
