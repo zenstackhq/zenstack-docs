@@ -15,10 +15,4 @@ You can try running the `npx zen generate` command in the following playground a
 
 <StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-quick-start" openFile="zenstack/schema.zmodel" />
 
-The `generate` command outputs the following TypeScript files in the same folder of the schema file:
-
-- `schema.ts`: TypeScript representation of the ZModel schema, used by the ORM client to understand the database's structure and infer types.
-- `models.ts`: Exports types for all models, types, and enums defined in the schema.
-- `input.ts`: Export types that you can use to type the arguments passed to the ORM client methods, such as `findMany`, `create`, etc.
-
-Refer to the [CLI Reference](../reference/cli.md) for the full list of commands and options.
+The `generate` command generates several TypeScript files from the ZModel schema that support both development-time typing and runtime access to the schema. For more details of the generated code, please refer to the [@core/typescript plugin](../reference/plugins/typescript.md) documentation.

@@ -119,4 +119,4 @@ The ORM hides the delegate complexities and provides a simple polymorphic view t
 1. Creating a concrete model record automatically creates the base model record with the same id and proper discriminator field.
 2. Querying with the base model will return entities with concrete model fields.
 
-We'll revisit the topic in details in the [ORM](../orm/) part.
+We'll revisit the topic in details in the [ORM](../orm/polymorphism.md) part.

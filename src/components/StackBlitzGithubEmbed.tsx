@@ -60,7 +60,10 @@ const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
         return (
             <>
                 <Tabs groupId="interactive-sample">
-                    <TabItem value="interactive" label="Interactive Sample" default>
+                    <TabItem value="static" label="Plain Code" default>
+                        <PlainCode />
+                    </TabItem>
+                    <TabItem value="interactive" label="Interactive Sample">
                         <div className="italic text-sm mb-1">
                             Click{' '}
                             <a href="#" onClick={() => sdk.openGithubProject(repoPath, options)}>
@@ -69,9 +72,6 @@ const StackBlitzGithubEmbed: React.FC<StackBlitzGithubEmbedProps> = ({
                             to pop out if the embed doesn't load an interactive terminal.
                         </div>
                         <div ref={containerRef} style={{ width: '100%', height }} />
-                    </TabItem>
-                    <TabItem value="static" label="Plain Code">
-                        <PlainCode />
                     </TabItem>
                 </Tabs>
 

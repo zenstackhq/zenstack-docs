@@ -24,6 +24,19 @@ plugin myPlugin {
 }
 ```
 
+:::info
+In fact, the `zen generate` command is entirely implemented with plugins. The ZModel -> TypeScript generation is supported by the built-in `@core/typescript` plugin, which can be explicitly declared if you wish:
+
+```zmodel
+plugin typescript {
+  provider = '@core/typescript'
+  output = '../generated'
+}
+```
+
+Please refer to the [Plugin References](../category/plugins) for the full list of built-in plugins.
+:::
+
 A plugin declaration involves three parts:
 
 1. A unique name

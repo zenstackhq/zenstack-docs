@@ -1,7 +1,7 @@
-position: 6
+position: 4
 label: Plugins
 collapsible: true
 collapsed: true
 link:
     type: generated-index
-    title: Plugins
+    title: Plugin Reference
