@@ -5,7 +5,7 @@ description: Relations in ZModel
 
 # Relation
 
-Relation is a fundamental concept in relational databases. It connect models into a graph, and allows you to query interconnected data efficiently. In ZModel, relations are modeled using the `@relation` attribute. For most cases it involves one side of the relation defining a foreign key field that references the primary key of the other side. By convention, we call the model that defines the foreign key the "owner" side.
+Relation is a fundamental concept in relational databases. It lets you connect models into a graph, and allows you to query interconnected data efficiently. In ZModel, relations are modeled using the `@relation` attribute. For most cases, it involves one side of the relation defining a foreign key field that references the primary key of the other side. By convention, we call the model that holds the foreign key the "owner" side.
 
 ## One-to-one relation
 
@@ -24,7 +24,7 @@ model Profile {
 }
 ```
 
-The `Profile` model holds the foreign key `userId` and is the owner of the relation. The pk-fk association is established by the `@relation` attribute, where the `fields` parameters specifies the foreign key field(s) and the `references` parameter specifies the primary key field(s) of the other side.
+The `Profile` model holds the foreign key `userId` and is the owner of the relation. The pk-fk association is established by the `@relation` attribute, where the `fields` parameter specifies the foreign key field(s) and the `references` parameter specifies the primary key field(s) of the other side.
 
 In one-to-one relations, the "non-owner" side must declare the relation field as optional (here `User.profile`), because there's no way to guarantee a `User` row always has a corresponding `Profile` row at the database level. The owner side can be either optional or required.
 
@@ -81,17 +81,17 @@ model Post {
 }
 ```
 
-It's modeled pretty much the same way as one-to-one relations, except that the "non-owner" side (here `User.posts`) is a of list of the other side's model type.
+It's modeled pretty much the same way as one-to-one relations, except that the "non-owner" side (here `User.posts`) is a list of the other side's model type.
 
 ## Many-to-many relation
 
-Many-to-many relations are modeled in the database through a join table - which forms a many-to-one relation with each of the two sides.
+Many-to-many relations are modeled in the database through a join table, which forms a many-to-one relation with each of the two sides.
 
 In ZModel, there are two ways to model many-to-many relations: implicitly or explicitly.
 
 ### Implicit many-to-many
 
-An implicit many-to-many relation simply defines both sides of the relation as lists of the other side's model type, without defining a join table explicitly.
+An implicit many-to-many relation simply defines both sides of the relation as lists of the other side's model type, without modeling a join table explicitly.
 
 ```zmodel
 model User {
@@ -150,7 +150,7 @@ Since the join table is explicitly defined, when using the ORM, you'll need to i
 
 ## Self relation
 
-Self relations are cases where a model has a relation to itself. They can be one-to-one, one-to-many, or many-to-many.
+Self-relations are cases where a model has a relation to itself. They can be one-to-one, one-to-many, or many-to-many.
 
 ### One-to-one
 
@@ -189,7 +189,7 @@ Quick notes:
 
 ### Many-to-many
 
-Defining an implicit many-to-many self relation is very straightforward.
+Defining an implicit many-to-many self-relation is very straightforward.
 
 ```zmodel
 model Employee {

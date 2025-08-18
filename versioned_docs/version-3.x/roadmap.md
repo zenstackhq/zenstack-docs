@@ -7,5 +7,6 @@ sidebar_position: 11
 - [ ] Access Control
 - [ ] Data Validation
 - [ ] Zod integration
+- [ ] Performance benchmark
 - [ ] Query-as-a-Service (automatic CRUD API)
 - [ ] Json filter

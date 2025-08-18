@@ -5,7 +5,7 @@ description: Models in ZModel
 
 # Model
 
-The `model` construct is the core of ZModel. It defines the structure of your data and their relations. A model represents a domain entity, and is mapped to a database table.
+The `model` construct is the core of ZModel. It defines the structure of your data and relations. A model represents a domain entity and is mapped to a database table.
 
 ## Defining models
 
@@ -30,7 +30,7 @@ model User {
 }
 ```
 
-If your model needs a composite id, you can use the `@@id` model-level attribute to specify it:
+If your model needs a composite ID, you can use the `@@id` model-level attribute to specify it:
 
 ```zmodel
 model City {
@@ -73,7 +73,7 @@ Each model field must at least have a name and a type. A field can be typed in o
    - Bytes
    - Unsupported
   
-   The `Unsupported` type is for defining fields of types not supported by the ORM, however letting the migration engine know how to create the field in the database.
+   The `Unsupported` type is for defining fields of types not supported by the ORM; however, it lets the migration engine know how to create the field in the database.
 
    ```zmodel
    // from Prisma docs
@@ -104,6 +104,7 @@ Each model field must at least have a name and a type. A field can be typed in o
 3. Model
     
     It'll then form a relation. We'll cover that topic [later](./relation).
+
     ```zmodel
     model Post {
         id      Int @id
@@ -114,7 +115,7 @@ Each model field must at least have a name and a type. A field can be typed in o
     ```
 4. Custom type
    
-   ZenStack allows you to define custom types in the schema and use that to type Json fields. This will be covered in more details in the [Custom Types](./custom-type) section.
+   ZenStack allows you to define custom types in the schema and use them to type JSON fields. This will be covered in more detail in the [Custom Types](./custom-type) section.
 
    ```zmodel
    type Address {
@@ -131,7 +132,7 @@ Each model field must at least have a name and a type. A field can be typed in o
    }
    ```
 
-A field can be set optional by adding the `?` suffix to its type, or list by adding the `[]` suffix. However, a field cannot be both optional and a list at the same time.
+A field can be set as optional by adding the `?` suffix to its type, or list by adding the `[]` suffix. However, a field cannot be both optional and a list at the same time.
 
 ```zmodel
 model User {
@@ -163,7 +164,7 @@ model User {
 
 ## Native type mapping
 
-Besides giving field a type, you can also specify the native database type to use with the `@db.` series of attributes.
+Besides giving a field a type, you can also specify the native database type to use with the `@db.` series of attributes.
 
 ```zmodel
 model User {
@@ -173,18 +174,9 @@ model User {
 }
 ```
 
-These attributes control what data type is used when the migration engine maps the schema to DDL. You can find a full list of native type attributes in the [ZModel Language Reference](../reference/zmodel-language).
+These attributes control what data type is used when the [migration engine](../orm/migration.md) maps the schema to DDL. You can find a complete list of native type attributes in the [ZModel Language Reference](../reference/zmodel-language).
 
 ## Name mapping
 
-Quite often you want to use a different naming scheme for your models and fields than the database. You can achieve that with the `@map` attribute. The ORM respects the mapping when generation queries, and the migration engine uses it to generate the DDL.
+Quite often, you want to use a different naming scheme for your models and fields than the database. You can achieve that with the `@map` attribute. The ORM respects the mapping when generating queries, and the migration engine uses it to generate the DDL.
 
-```zmodel
-model User {
-    // highlight-next-line
-    id   Int    @id
-    name String @map("full_name")
-
-    @@map("users")
-}
-```

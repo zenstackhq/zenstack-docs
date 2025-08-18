@@ -7,7 +7,7 @@ import ZModelVsPSL from '../_components/ZModelVsPSL';
 
 # Attribute
 
-Attributes allow you to attach metadata to models and fields. As you've seen in the previous sections, they are used for many purposes, like adding unique constraints, mapping names, etc. Attributes are also indispensable for modeling relations between models.
+Attributes allow you to attach metadata to models and fields. As you've seen in the previous sections, they are used for many purposes, such as adding unique constraints and mapping names. Attributes are also indispensable for modeling relations between models.
 
 ## Naming conventions
 
@@ -28,9 +28,9 @@ model User {
 Prisma schema doesn't allow users to define custom attributes, while ZModel allows it and uses it as a key mechanism for extensibility.
 </ZModelVsPSL>
 
-ZModel comes with a rich set of attributes that you can use directly. See [ZModel Language Reference](../reference/zmodel-language.md) for a complete list. You can also define your own custom attributes for specific purposes. Attributes are defined with a list of typed parameters. Parameters can named (default) or positional. Positional parameters can be passed with or without an explicit name. Parameters can also be optional.
+ZModel comes with a rich set of attributes that you can use directly. See [ZModel Language Reference](../reference/zmodel-language.md) for a complete list. You can also define your own custom attributes for specific purposes. Attributes are defined with a list of typed parameters. Parameters can be named (default) or positional. Positional parameters can be passed with or without an explicit name. Parameters can also be optional.
 
-Here's an example for how the `@unique` attribute is defined:
+Here's an example of how the `@unique` attribute is defined:
 
 ```zmodel
 attribute @unique(map: String?, length: Int?, sort: SortOrder?)
