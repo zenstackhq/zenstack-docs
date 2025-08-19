@@ -17,7 +17,7 @@ datasource NAME {
 
 -   **NAME**:
 
-    Name of the data source. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`. Name is only informational and serves no other purposes.
+    Name of the data source. Must be a valid identifier. Name is only informational and serves no other purposes.
 
 -   **`provider`**:
 

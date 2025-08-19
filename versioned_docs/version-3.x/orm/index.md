@@ -48,7 +48,7 @@ ZenStack ORM comes with a powerful built-in access control system. You can defin
 ```zmodel
 model Post {
     id        Int     @id
-    title     String  @length(1, 256)
+    title     String
     published Boolean @default(false)
     author    User    @relation(fields: [authorId], references: [id])
     authorId  Int
@@ -71,7 +71,7 @@ Real-world applications often involves storing polymorphic data which is notorio
 ```zmodel
 model Content {
     id    Int    @id
-    name  String @length(1, 256)
+    name  String
     type  String
 
     // the ORM uses the `type` field to determine to which concrete model

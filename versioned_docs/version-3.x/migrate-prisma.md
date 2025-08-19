@@ -159,7 +159,7 @@ ZenStack has its own CLI plugin system and doesn't support Prisma custom generat
     }
     ```
 
-2. Run a`prisma generate` command after `zen generate` with the prisma schema as input.
+2. Run a `prisma generate` command after `zen generate` with the prisma schema as input.
    
    ```json
    {
@@ -175,7 +175,7 @@ ZenStack has its own [runtime plugin mechanism](./orm/plugins/) and doesn't plan
 
 **1. Query extension**
 
-[Query extension](https://www.prisma.io/docs/orm/prisma-client/client-extensions/query) allows you to intercepts ORM query calls.
+[Query extension](https://www.prisma.io/docs/orm/prisma-client/client-extensions/query) allows you to intercept ORM query calls.
 
 Suppose you have an extension like:
 
@@ -258,4 +258,4 @@ export const db = new ZenStackClient(schema, {
 });
 ```
 
-The biggest difference is ZenStack's computed fields are evaluated on the database side, which much more efficient and flexible than client-side computation. Read more in the [Computed Fields](./orm/computed-fields.md) documentation.
+A key difference is that ZenStack's computed fields are evaluated on the database side, which much more efficient and flexible than client-side computation. Read more in the [Computed Fields](./orm/computed-fields.md) documentation.

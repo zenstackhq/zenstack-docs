@@ -20,7 +20,7 @@ type NAME {
 
 -   **NAME**:
 
-    Name of the model. Needs to be unique in the entire model. Needs to be a valid identifier matching regular expression `[A-Za-z][a-za-z0-9_]\*`.
+    Name of the model. Needs to be unique in the entire model. Must be a valid identifier.
 
 -   **FIELD**:
 

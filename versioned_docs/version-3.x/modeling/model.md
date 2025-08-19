@@ -21,7 +21,7 @@ model User {
 }
 ```
 
-The simplest models are just a collection of fields. A model must be uniquely identifiable by some of its fields. For most cases, you'll have a field marked with the `@id` attribute (more about [attributes](./attribute) later). 
+The simplest models are just a collection of fields. A model must be uniquely identifiable by some of its fields. In most cases, you'll have a field marked with the `@id` attribute (more about [attributes](./attribute) later). 
 
 ```zmodel
 model User {
@@ -115,7 +115,7 @@ Each model field must at least have a name and a type. A field can be typed in o
     ```
 4. Custom type
    
-   ZenStack allows you to define custom types in the schema and use them to type JSON fields. This will be covered in more detail in the [Custom Type](./custom-type) section.
+   ZenStack allows you to define custom types in the schema and use them to type JSON fields. This is covered in more detail in the [Custom Type](./custom-type) section.
 
    ```zmodel
    type Address {
@@ -144,7 +144,7 @@ model User {
 }
 ```
 
-A default value can be specified for a field with the `@default` attribute. The value can be a literal, or a supported function call, including:
+A default value can be specified for a field with the `@default` attribute. The value can be a literal, an enum value, or a supported function call, including:
 
 - `now()`: returns the current timestamp
 - `cuid()`: returns a CUID
@@ -156,8 +156,8 @@ A default value can be specified for a field with the `@default` attribute. The 
 
 ```zmodel
 model User {
-    id        Int  @id @default(autoincrement())
-    role      Role @default("USER")
+    id        Int      @id @default(autoincrement())
+    role      Role     @default(USER)
     createdAt DateTime @default(now())
 }
 ```

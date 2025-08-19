@@ -25,7 +25,7 @@ It may be tempting to use mixins to share the common fields, however it's not an
 - There's no efficient and clean way to query all content types together (e.g., all content owned by a user).
 - Consequently, whenever you add a new content type, you'll need to modify the `User` model, and probably lots of query code too.
 
-A true solution involves having a in-database model of polymorphism, where we really have a `Content` table that serves as an intermediary between `User` and the concrete content types. This is what ZModel polymorphism is about.
+A true solution involves having an in-database model of polymorphism, where we really have a `Content` table that serves as an intermediary between `User` and the concrete content types. This is what ZModel polymorphism is about.
 
 :::info
 There are [two main ways](https://www.prisma.io/docs/orm/prisma-schema/data-model/table-inheritance) to model polymorphism in relational databases: single-table inheritance (STI) and multi-table inheritance (MTI, aka. "Delegate Types"). ZModel only supports MTI.
@@ -99,12 +99,12 @@ erDiagram
     Video ||--|| Content: delegates
 ```
 
-There are two special things about polymorphic base model:
+There are two special things about a polymorphic base model:
 
 1. It must have a "discriminator" field that stores the concrete model type that it should "delegate" to. In the example above, the `type` field serves this purpose. It can be named anything you like, but must be of `String` or enum type.
 2. It must have a `@@delegate` attribute. The attribute serves two purposes: it indicates that the model is a base model, and it designates the discriminator field with its parameter.
 
-You can also have a deep hierarchy involving multiple level of base models. Just need to make sure each base model has its own discriminator field and `@@delegate` attribute. Extending from multiple base models directly is not supported.
+You can also have a deep hierarchy involving multiple levels of base models. Just need to make sure each base model has its own discriminator field and `@@delegate` attribute. Extending from multiple base models directly is not supported.
 
 ## Migration behavior
 
