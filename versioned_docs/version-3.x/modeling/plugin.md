@@ -25,7 +25,7 @@ plugin myPlugin {
 ```
 
 :::info
-In fact, the `zen generate` command is entirely implemented with plugins. The ZModel -> TypeScript generation is supported by the built-in `@core/typescript` plugin, which can be explicitly declared if you wish:
+In fact, the `zen generate` command is entirely implemented with plugins. The ZModel -> TypeScript generation is supported by the built-in `@core/typescript` plugin which runs automatically. You can explicitly declare it if you wish:
 
 ```zmodel
 plugin typescript {
@@ -40,7 +40,7 @@ Please refer to the [Plugin References](../category/plugins) for the full list o
 A plugin declaration involves three parts:
 
 1. A unique name
-2. A `provider` field that specifies where to load the plugin from. It can be a built-in plugin (like `@core/prisma` here), a local folder, or an npm package.
+2. A `provider` field that specifies where to load the plugin from. It can be a built-in plugin (like `@core/prisma` here), a local JavaScript module, or an NPM package name.
 3. Plugin-specific configuration options, such as `output` in this case.
 
 A plugin can have the following effects to ZModel:

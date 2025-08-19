@@ -137,7 +137,7 @@ values to the ID values of the created records based on the sequence.
 function dbgenerated(expr: String): Any {}
 ```
 
-Represents default values that cannot be expressed in the Prisma schema (such as random()).
+Represents default values that cannot be expressed in ZModel (such as random()).
 
 ### auth()
 

@@ -28,7 +28,7 @@ It may be tempting to use mixins to share the common fields, however it's not an
 A true solution involves having a in-database model of polymorphism, where we really have a `Content` table that serves as an intermediary between `User` and the concrete content types. This is what ZModel polymorphism is about.
 
 :::info
-There are [two main ways](https://www.prisma.io/docs/orm/prisma-schema/data-model/table-inheritance) to model polymorphism in relational databases: single-table inheritance (STI) and multi-table inheritance (MTI, aka. delegate types). ZModel only supports MTI.
+There are [two main ways](https://www.prisma.io/docs/orm/prisma-schema/data-model/table-inheritance) to model polymorphism in relational databases: single-table inheritance (STI) and multi-table inheritance (MTI, aka. "Delegate Types"). ZModel only supports MTI.
 :::
 
 ## Modeling polymorphism
@@ -83,17 +83,17 @@ erDiagram
     }
     User ||--o{ Content: owns
     Post {
-        id Int PK
+        id Int PK,FK
         content String
     }
     Post ||--|| Content: delegates
     Image {
-        id Int PK
+        id Int PK,FK
         data Bytes
     }
     Image ||--|| Content: delegates
     Video {
-        id Int PK
+        id Int PK,FK
         url String
     }
     Video ||--|| Content: delegates

@@ -22,7 +22,7 @@ To type a JSON field, define a custom type in ZModel, use it as the field's type
 
 ```zmodel
 model User {
-    id      Int @id
+    id      Int  @id
     address Json
 }
 ```
@@ -44,7 +44,7 @@ model User {
 ```
 
 :::info
-The `@json` attribute serves no purpose other than to indicate (for readability) that the field is a JSON field, not a relation to another model.
+The `@json` attribute serves no purpose today other than to indicate (for readability) that the field is a JSON field, not a relation to another model. We may extend it in the future for fine-tuning the JSON field's behavior.
 :::
 
 The migration engine still sees the field as a plain JSON field. However, the ORM client enforces its structure and takes care of properly typing the query results. We'll revisit this topic in the [ORM part](../orm/typed-json.md).

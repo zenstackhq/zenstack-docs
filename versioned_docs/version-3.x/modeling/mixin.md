@@ -21,10 +21,10 @@ Very often you'll find many of your models share quite a few common fields. It's
 
 ```zmodel
 model User {
-    id        String @id
+    id        String   @id
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    email     String @unique
+    email     String   @unique
 }
 
 model Post {

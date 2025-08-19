@@ -28,7 +28,7 @@ model User {
 Prisma schema doesn't allow users to define custom attributes, while ZModel allows it and uses it as a key mechanism for extensibility.
 </ZModelVsPSL>
 
-ZModel comes with a rich set of attributes that you can use directly. See [ZModel Language Reference](../category/zmodel-language) for a complete list. You can also define your own custom attributes for specific purposes. Attributes are defined with a list of typed parameters. Parameters can be named (default) or positional. Positional parameters can be passed with or without an explicit name. Parameters can also be optional.
+ZModel comes with a rich set of attributes that you can use directly. See [ZModel Language Reference](../reference/zmodel/attribute#predefined-attributes) for a complete list. You can also define your own attributes for specific purposes. Attributes are defined with a list of typed parameters. Parameters can be named (default) or positional. Positional parameters can be passed with or without an explicit name. Parameters can also be optional.
 
 Here's an example of how the `@unique` attribute is defined:
 
@@ -45,3 +45,5 @@ model Foo {
     z String @unique(map: 'z_unique', length: 10) // named parameter
 }
 ```
+
+Read the [ZModel Language Reference](../reference/zmodel/attribute#syntax) for more details on how to define and use attributes.

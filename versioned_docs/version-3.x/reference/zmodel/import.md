@@ -12,7 +12,7 @@ ZModel allows to import other ZModel files. This is useful when you want to spli
 import IMPORT_SPEC
 ```
 
-- *IMPORT_SPEC**: 
+- **IMPORT_SPEC**: 
 
     Path to the ZModel file to be imported. It can be:
     

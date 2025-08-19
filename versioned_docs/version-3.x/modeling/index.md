@@ -9,13 +9,13 @@ import ZModelVsPSL from '../_components/ZModelVsPSL';
 
 ZenStack uses a schema language named **ZModel** to define data models and their related aspects. We know that designing a good schema language is difficult, and we know it's even more challenging to convince people to learn a new one. We therefore decided to design ZModel as a superset of the [Prisma Schema Language (PSL)](https://www.prisma.io/docs/orm/prisma-schema), one of the best data modeling languages available.
 
-If you're already familiar with PSL, you'll find yourself at home with ZModel. However, we recommend that you skim through this section to learn about the essential extensions we made to PSL. Please pay attention to callouts like the following one:
+If you're already familiar with PSL, you'll find yourself at home with ZModel. However, we recommend that you skim through this section to learn about the essential extensions we made to PSL. Please pay attention to callouts like the following:
 
 <ZModelVsPSL>
 ZModel allows both single quotes and double quotes for string literals.
 </ZModelVsPSL>
 
-Don't worry if you've never used Prisma before. This section will introduce all aspects of ZModel, so no prior knowledge is required.
+Don't worry if you've never used Prisma before. This part of documentation will introduce all aspects of ZModel, so no prior knowledge is required.
 
 A simplest ZModel schema looks like this:
 

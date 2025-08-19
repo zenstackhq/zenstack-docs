@@ -38,5 +38,5 @@ datasource db {
 Currently, only PostgreSQL and SQLite are supported. MySQL will be supported in a future release. There's no plan for other relational database types or NoSQL databases.
 
 <ZModelVsPSL>
-ZenStack's ORM runtime doesn't rely on the `url` information to connect to the database. Instead, you provide the information when constructing an ORM client — more on this in the [ORM](../orm/) section.
+ZenStack's ORM runtime doesn't rely on the `url` information to connect to the database. Instead, you provide the information when constructing an ORM client — more on this in the [ORM](../orm/) part.
 </ZModelVsPSL>

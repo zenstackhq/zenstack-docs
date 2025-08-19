@@ -7,7 +7,7 @@ import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
 
 # ORM Overview
 
-ZenStack ORM is a schema-first ORM for modern TypeScript applications. It learnt from the prior arts and strives to provide an awesome developer experience by combining the best ingredients into a cohesive package.
+ZenStack ORM is a schema-first ORM for modern TypeScript applications. It learnt from the prior arts and strives to provide an excellent developer experience and incredible flexibility by combining the best ingredients into a cohesive package.
 
 ## Key Features
 
@@ -45,7 +45,7 @@ await db.$qb
 
 ZenStack ORM comes with a powerful built-in access control system. You can define access rules right inside the schema. The rules are enforced at runtime via query injection, so it doesn't rely on any database specific row-level security features.
 
-```zmodel"
+```zmodel
 model Post {
     id        Int     @id
     title     String  @length(1, 256)
@@ -68,7 +68,7 @@ model Post {
 
 Real-world applications often involves storing polymorphic data which is notoriously complex to model and query. ZenStack does the heavy-lifting for you so you can model an inheritance hierarchy with simple annotations, and query them with perfect type safety.
 
-```zmodel title="zenstack/schema.zmodel"
+```zmodel
 model Content {
     id    Int    @id
     name  String @length(1, 256)
@@ -106,7 +106,7 @@ Compared to Prisma and previous versions of ZenStack, v3 is more straightforward
 
 ### Sample playground
 
-Throughout the documentation we'll use [StackBlitz](https://stackblitz.com/) to provide interactive code samples. StackBlitz's [WebContainers](https://webcontainers.io/) is an awesome technology that allows you to run a Node.js environment inside the browser. The embedded samples use the [sql.js](https://github.com/sql-js/sql.js) (a WASM implementation of SQLite) for WebContainers compatibility, which is not suitable for production use.
+Throughout the documentation we'll use [StackBlitz](https://stackblitz.com/) to provide interactive samples alongside with static code snippets. StackBlitz's [WebContainers](https://webcontainers.io/) is an awesome technology that allows you to run a Node.js environment inside the browser. The embedded samples use the [sql.js](https://github.com/sql-js/sql.js) (a WASM implementation of SQLite) for WebContainers compatibility, which is not suitable for production use. Feel free to make changes and try things out in the playground.
 
 ### If you already know Prisma
 

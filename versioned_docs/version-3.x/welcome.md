@@ -7,7 +7,7 @@ sidebar_position: 1
 
 # Welcome
 
-Welcome to ZenStack - the modern data layer for your TypeScript application!
+Welcome to ZenStack - the data layer for modern TypeScript applications.
 
 ZenStack is built with the belief that most applications should use the data model as their center pillar. If that model is well-designed, it can serve as the single source of truth throughout the app's lifecycle and be used to derive many other aspects of the app. The result is a smaller, more cohesive code base that scales well as your team grows while maintaining a high level of developer experience.
 

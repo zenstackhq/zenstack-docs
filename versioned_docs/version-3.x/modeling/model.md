@@ -5,7 +5,7 @@ description: Models in ZModel
 
 # Model
 
-The `model` construct is the core of ZModel. It defines the structure of your data and relations. A model represents a domain entity and is mapped to a database table.
+The `model` construct is the core of ZModel. It defines the structure of your data and relations. A model represents a domain entity and is backed by a database table.
 
 ## Defining models
 
@@ -73,7 +73,7 @@ Each model field must at least have a name and a type. A field can be typed in o
    - Bytes
    - Unsupported
   
-   The `Unsupported` type is for defining fields of types not supported by the ORM; however, it lets the migration engine know how to create the field in the database.
+   The `Unsupported` type is for defining fields of types not supported by the ORM. It lets the migration engine know how to create the field in the database.
 
    ```zmodel
    // from Prisma docs
@@ -115,7 +115,7 @@ Each model field must at least have a name and a type. A field can be typed in o
     ```
 4. Custom type
    
-   ZenStack allows you to define custom types in the schema and use them to type JSON fields. This will be covered in more detail in the [Custom Types](./custom-type) section.
+   ZenStack allows you to define custom types in the schema and use them to type JSON fields. This will be covered in more detail in the [Custom Type](./custom-type) section.
 
    ```zmodel
    type Address {
@@ -174,9 +174,15 @@ model User {
 }
 ```
 
-These attributes control what data type is used when the [migration engine](../orm/migration.md) maps the schema to DDL. You can find a complete list of native type attributes in the [ZModel Language Reference](../category/zmodel-language).
+These attributes control what data type is used when the [migration engine](../orm/migration.md) maps the schema to DDL. You can find a complete list of native type attributes in the [ZModel Language Reference](../reference/zmodel/attribute#native-type-mapping-attributes).
 
 ## Name mapping
 
-Quite often, you want to use a different naming scheme for your models and fields than the database. You can achieve that with the `@map` attribute. The ORM respects the mapping when generating queries, and the migration engine uses it to generate the DDL.
+Quite often, you want to use a different naming scheme for your models and fields than the database. You can achieve that with the `@map` and `@@map` attribute. The ORM respects the mapping when generating queries, and the migration engine uses it to generate the DDL.
 
+```zmodel
+model User {
+    id Int @id @map('_id')    
+    @@map('users')
+}
+```
