@@ -8,9 +8,9 @@ import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
 
 ## Introduction
 
-Kysely query hooks are the lowest level of interceptor in the plugin system. Since ZenStack eventually delegates all database access to Kysely, these hooks allow you to inspect and alter all SQL queries before they are sent to the database, regardless of whether they originate from the ORM query API or the query builder API.
+Kysely query hooks are the lowest level of interceptors in the plugin system. Since ZenStack eventually delegates all database access to Kysely, these hooks allow you to inspect and modify all SQL queries before they are sent to the database, regardless of whether they originate from the ORM query API or the query builder API.
 
-This mechanism gives you great power to entirely control the ORM's behavior. One good example is the [access policy](../access-control/) - the access policy enforcement is entirely achieved via intercepting the Kysely queries.
+This mechanism gives you great power to control the ORM's behavior entirely. One good example is the [access policy](../access-control/) - the access policy enforcement is entirely achieved via intercepting the Kysely queries.
 
 To create a Kysely query hook plugin, call the `$use` method with an object containing a `onKyselyQuery` callback. The callback is triggered before each Kysely query is executed. It receives a context object containing:
 

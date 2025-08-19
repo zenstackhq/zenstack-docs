@@ -27,14 +27,14 @@ ZenStack v3 currently only supports PostgreSQL and SQLite databases.
 
 ### 1. Project dependencies
 
-ZenStack v3 doesn't depend on Prisma at runtime. Its CLI has a peer dependency to the `prisma` package for migration related commands. The most straightforward way is to follow these steps:
+ZenStack v3 doesn't depend on Prisma at runtime. Its CLI has a peer dependency on the `prisma` package for migration related commands. The most straightforward way is to follow these steps:
 
 - Remove `prisma` and `@prisma/client` from your project dependencies.
 - Install ZenStack packages
     
     <PackageInstall dependencies={['@zenstackhq/runtime@next']} devDependencies={['@zenstackhq/cli@next']} />
 
-- Install database driver
+- Install a database driver
   
     ZenStack doesn't bundle database drivers. Install the appropriate driver for your database:
 
@@ -56,7 +56,7 @@ You don't need to explicitly install `prisma` package because the `@zenstackhq/c
 
 ### 2. Migrate your schema
 
-If you have a single `schema.prisma` file, you can move and rename it to `zenstack/schema.zmodel`. No change should be necessary because every valid Prisma schema is also a valid ZModel schema. The only optional change you can consider to make is to remove the Prisma client generator block since it doesn't have any effect in ZenStack:
+If you have a single `schema.prisma` file, you can move and rename it to `zenstack/schema.zmodel`. No change should be necessary because every valid Prisma schema is also a valid ZModel schema. The only optional change you can consider making is to remove the Prisma client generator block since it doesn't have any effect in ZenStack:
 
 ```zmodel
 generator client {
@@ -64,7 +64,7 @@ generator client {
 }
 ```
 
-If you use Prisma's [multi-schema feature](https://www.prisma.io/docs/orm/prisma-schema/overview/location#multi-file-prisma-schema), you'll need to explicitly use the `import` statement to merge related schema file into a whole graph. See [Multi-file Schema](./modeling/multi-file.md) for details.
+If you use Prisma's [multi-schema feature](https://www.prisma.io/docs/orm/prisma-schema/overview/location#multi-file-prisma-schema), you'll need to explicitly use the `import` statement to merge related schema files into a whole graph. See [Multi-file Schema](./modeling/multi-file.md) for details.
 
 ### 3. Update generation command
 
@@ -144,11 +144,11 @@ In your `package.json` scripts, replace the Prisma `db` and `migrate` commands w
 
 ## Other Considerations
 
-Now let's check the areas less straightforward to migrate.
+Now, let's check the areas that are less straightforward to migrate.
 
 ### Prisma custom generators
 
-ZenStack has its own plugin system and doesn't support Prisma custom generators. However, you can continue running them with the following two steps:
+ZenStack has its own CLI plugin system and doesn't support Prisma custom generators. However, you can continue running them with the following two steps:
 
 1. Use the [@core/prisma](./reference/plugins/prisma.md) plugin to generate a Prisma schema from ZModel.
    
@@ -210,7 +210,7 @@ const extDb = db.$use({
 });
 ```
 
-You can also use the special `$allModels` and `$allOperations` keys to apply the plugin to all models and operations like when using Prisma client extensions.
+You can also use the special `$allModels` and `$allOperations` keys to apply the plugin to all models and operations, like when using Prisma client extensions.
 
 **2. Result extension**
 
@@ -235,7 +235,7 @@ const extPrisma = prisma.$extends({
 });
 ```
 
-You can replace it with a ZenStack computed fields with changes in ZModel and database client instantiation.
+You can replace it with a ZenStack computed field, which involves changes in ZModel and database client instantiation.
 
 ```zmodel title="zenstack/schema.zmodel"
 model User {
@@ -258,4 +258,4 @@ export const db = new ZenStackClient(schema, {
 });
 ```
 
-The biggest difference is ZenStack's computed fields are evaluated on the database side - much more efficient and flexible than client-side computation. Read more in the [Computed Fields](./orm/computed-fields.md) documentation.
+The biggest difference is ZenStack's computed fields are evaluated on the database side, which much more efficient and flexible than client-side computation. Read more in the [Computed Fields](./orm/computed-fields.md) documentation.

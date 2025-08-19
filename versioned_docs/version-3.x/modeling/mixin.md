@@ -8,14 +8,14 @@ import ZModelVsPSL from '../_components/ZModelVsPSL';
 # Mixin
 
 <ZModelVsPSL>
-Mixin is a ZModel concept and don't exist in PSL.
+Mixin is a ZModel concept and doesn't exist in PSL.
 </ZModelVsPSL>
 
 :::info
 Mixin was previously known as "abstract inheritance" in ZenStack v2. It's renamed and changed to use the `with` keyword to distinguish from polymorphic model inheritance.
 :::
 
-Very often you'll find many of your models share quite a few common fields. It's tedious and error-prone to repeat them. As a rescue, you can put those fields into custom types, and "mix-in" them into your models.
+Very often you'll find many of your models share quite a few common fields. It's tedious and error-prone to repeat them. As a rescue, you can put those fields into custom types and "mix-in" them into your models.
 
 ***Before:***
 
@@ -25,6 +25,13 @@ model User {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     email     String @unique
+}
+
+model Post {
+    id        String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    title     String
 }
 ```
 
@@ -39,6 +46,10 @@ type BaseFieldsMixin {
 
 model User with BaseFieldsMixin {
     email String @unique
+}
+
+model Post with BaseFieldsMixin {
+    title String
 }
 ```
 

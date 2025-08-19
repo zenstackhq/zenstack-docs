@@ -26,8 +26,6 @@ type Address {
 
 Custom types are defined exactly like models, with the exception that they cannot contain fields that are relations to other models. They can, however, contain fields that are other custom types.
 
-There are two ways to use custom types:
-
 ```zmodel
 type Address {
     street  String
@@ -41,6 +39,8 @@ type UserProfile {
     address Address?
 }
 ```
+
+There are two ways to use custom types:
 
 - [Mixin](./mixin.md)
 - [Strongly typed JSON fields](./strong-typed-json.md)
