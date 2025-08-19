@@ -25,7 +25,7 @@ plugin PLUGIN_NAME {
 
 -   **OPTION**
 
-    A plugin configuration option, in form of "[NAME] = [VALUE]". Option values can be literal, array, or object. 
+    A plugin configuration option, in form of "NAME = VALUE". Option values can be literal, array, or object. 
 
 ## Example
 
