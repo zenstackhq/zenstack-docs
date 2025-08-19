@@ -43,4 +43,4 @@ type UserProfile {
 There are two ways to use custom types:
 
 - [Mixin](./mixin.md)
-- [Strongly typed JSON fields](./strong-typed-json.md)
+- [Strongly typed JSON fields](./typed-json.md)

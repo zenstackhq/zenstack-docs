@@ -24,7 +24,7 @@ type NAME {
 
 -   **FIELD**:
 
-    Arbitrary number of fields. See [Field](./field.md) for details.
+    Arbitrary number of fields. See [Field](./data-field.md) for details.
 
 -   **ATTRIBUTE**:
 

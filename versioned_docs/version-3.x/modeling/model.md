@@ -174,7 +174,7 @@ model User {
 }
 ```
 
-These attributes control what data type is used when the [migration engine](../orm/migration.md) maps the schema to DDL. You can find a complete list of native type attributes in the [ZModel Language Reference](../reference/zmodel-language).
+These attributes control what data type is used when the [migration engine](../orm/migration.md) maps the schema to DDL. You can find a complete list of native type attributes in the [ZModel Language Reference](../category/zmodel-language).
 
 ## Name mapping
 

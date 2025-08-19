@@ -20,7 +20,7 @@ model NAME (with MIXIN_NAME(,MIXIN_NAME)*)? (extends BASE_NAME)? {
 
 -   **FIELD**:
 
-    Arbitrary number of fields. See [Field](./field.md) for details.
+    Arbitrary number of fields. See [Field](./data-field.md) for details.
 
 -   **ATTRIBUTE**:
 
