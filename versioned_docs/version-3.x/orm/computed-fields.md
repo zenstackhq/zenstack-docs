@@ -30,15 +30,33 @@ model User {
 Then, when creating a `ZenStackClient`, provide the implementation of the field using the Kysely query builder.
 
 ```ts
-import { ZenStackClient } from '@zenstackhq/runtime';
-
 const db = new ZenStackClient(schema, {
   ...
   computedFields: {
     User: {
       postCount: (eb) => 
         eb.selectFrom('Post')
-          .whereRef('Post.authorId', '=', 'User.id')
+          .whereRef('Post.authorId', '=', 'id')
+          .select(({fn}) => fn.countAll<number>().as('count')),
+    },
+  },
+});
+```
+
+The computed field callback is also passed with a second `context` argument containing other useful information related to the current query. For example, you can use the `currentModel` property to refer to the containing model and use it to qualify field names in case of conflicts.
+
+```ts
+import { sql } from 'kysely';
+
+const db = new ZenStackClient(schema, {
+  ...
+  computedFields: {
+    User: {
+      postCount: (eb, { currentModel }) => 
+        eb.selectFrom('Post')
+          // the `currentModel` context property gives you a name that you can
+          // use to address the containing model (here `User`) at runtime
+          .whereRef('Post.authorId', '=', sql.ref(currentModel, 'id'))
           .select(({fn}) => fn.countAll<number>().as('count')),
     },
   },
