@@ -1,9 +1,8 @@
 ---
-sidebar_position: 16
-description: Schema migration introduction
+sidebar_position: 17
 ---
 
-# Database Schema Migration
+# Database Migration
 
 Database schema migration is a crucial aspect of application development. It helps you keep your database schema in sync with your data model and ensures deployments are smooth and predictable. ZenStack provides migration tools that create migration scripts based on the ZModel schema and apply them to the database.
 

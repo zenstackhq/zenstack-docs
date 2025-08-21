@@ -10,3 +10,4 @@ sidebar_position: 11
 - [ ] Performance benchmark
 - [ ] Query-as-a-Service (automatic CRUD API)
 - [ ] Json filter
+- [ ] Custom procedures
