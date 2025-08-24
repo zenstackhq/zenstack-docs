@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Kysely Query Hooks
 
@@ -25,4 +25,4 @@ To create a Kysely query hook plugin, call the `$use` method with an object cont
 Kysely's `QueryNode` objects are low-level and not easy to process. ZenStack will provide helpers to facilitate common tasks in the future.
 :::
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="plugins/kysely-query-hooks.ts" startScript="generate,kysely-query-hooks" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="plugins/kysely-query-hooks.ts" startScript="generate,kysely-query-hooks" />

@@ -3,7 +3,7 @@ sidebar_position: 9
 description: Transaction API
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Transaction
 
@@ -40,4 +40,4 @@ const [user, post] = await db.$transaction(async (tx) => {
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-transaction" openFile="main.ts" startScript="generate,dev" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="transaction.ts" startScript="generate,transaction" />

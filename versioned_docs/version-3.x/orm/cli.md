@@ -3,7 +3,7 @@ sidebar_position: 2
 description: Using the CLI
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Using the CLI
 
@@ -13,6 +13,6 @@ In the context of ORM, the CLI compiles ZModel into a TypeScript representation,
 
 You can try running the `npx zen generate` command in the following playground and inspect the TypeScript code generated inside the "zenstack" folder.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-quick-start" openFile="zenstack/schema.zmodel" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-quick-start" openFile="zenstack/schema.zmodel" />
 
 The `generate` command generates several TypeScript files from the ZModel schema that support both development-time typing and runtime access to the schema. For more details of the generated code, please refer to the [@core/typescript plugin](../reference/plugins/typescript.md) documentation.

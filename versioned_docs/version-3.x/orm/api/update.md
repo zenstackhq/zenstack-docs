@@ -3,7 +3,7 @@ sidebar_position: 4
 description: Update API
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Update
 
@@ -16,7 +16,7 @@ Update to records can be done with the following methods:
 
 ## Updating scalar fields
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-update" openFile="scalar.ts" startScript="generate,scalar" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="update/scalar.ts" startScript="generate,update:scalar" />
 
 In additional to the standard way of updating fields, list fields support the following operators:
 
@@ -45,4 +45,4 @@ THe `update` and `upsert` methods are very powerful in that they allow you to fr
 
 `updateMany` and `updateManyAndReturn` only support updating scalar fields.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-update" openFile="relation.ts" startScript="generate,relation" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="update/relation.ts" startScript="generate,update:relation" />

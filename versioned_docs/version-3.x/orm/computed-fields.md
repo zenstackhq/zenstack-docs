@@ -4,7 +4,7 @@ description: Computed fields in ZModel
 ---
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Computed Fields
 
@@ -65,4 +65,4 @@ const db = new ZenStackClient(schema, {
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-computed-fields" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-computed-fields" />

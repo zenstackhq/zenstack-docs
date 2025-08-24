@@ -3,7 +3,7 @@ sidebar_position: 8
 description: GroupBy API
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # GroupBy
 
@@ -40,4 +40,4 @@ The `having` field can be used to filter the aggregated results. Two types of fi
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-groupBy" openFile="main.ts" startScript="generate,dev" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="group-by.ts" startScript="generate,group-by" />

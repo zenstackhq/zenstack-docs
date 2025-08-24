@@ -4,8 +4,7 @@ description: Strongly typed JSON fields
 ---
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
-import GithubCodeBlock from '@site/src/components/GithubCodeBlock';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Strongly Typed JSON
 
@@ -20,6 +19,5 @@ ZModel allows you to define custom types and use them to [type JSON fields](../m
 
 ## Samples
 
-<GithubCodeBlock repoPath="zenstackhq/v3-doc-orm-typed-json" file="zenstack/schema.zmodel"/>
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-typed-json" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-typed-json" codeFiles={['zenstack/schema.zmodel', 'main.ts']} />

@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Query API Hooks
 
@@ -22,4 +22,4 @@ As its name suggests, query API hooks are only triggered by ORM query calls, not
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="plugins/query-api-hooks.ts" startScript="generate,query-api-hooks" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="plugins/query-api-hooks.ts" startScript="generate,query-api-hooks" />

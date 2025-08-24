@@ -3,7 +3,7 @@ sidebar_position: 5
 description: Delete API
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Delete
 
@@ -17,4 +17,4 @@ You can also delete records as part of an `update` operation from a relation. Se
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-delete" openFile="main.ts" startScript="generate,main" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="delete.ts" startScript="generate,delete" />

@@ -4,8 +4,7 @@ description: Polymorphic models
 ---
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
-import GithubCodeBlock from '@site/src/components/GithubCodeBlock';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Polymorphic Models
 
@@ -31,6 +30,4 @@ The ORM query API hides all the complexity of managing polymorphic models for yo
 
 The schema used in the sample involves a base model and three concrete models:
 
-<GithubCodeBlock repoPath="zenstackhq/v3-doc-orm-polymorphism" file="zenstack/schema.zmodel"/>
-
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-polymorphism" openFile="main.ts" startScript="generate,dev" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-polymorphism" codeFiles={['zenstack/schema.zmodel', 'main.ts']} startScript="generate,dev" />

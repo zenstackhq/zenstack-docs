@@ -3,7 +3,7 @@ sidebar_position: 1
 description: Quick start guide
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 import ZModelStarter from '../_components/_zmodel-starter.md';
 import PackageInstall from '../_components/PackageInstall.tsx';
 import PackageExec from '../_components/PackageExec.tsx';
@@ -26,7 +26,7 @@ npm create zenstack@next my-project
 
 Or simply use the following playground to experience it inside the browser.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-quick-start" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-quick-start" />
 
 ## 2. Adding to an existing project
 

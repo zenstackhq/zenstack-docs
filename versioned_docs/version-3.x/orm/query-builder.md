@@ -4,7 +4,7 @@ description: Query builder API
 ---
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Query Builder API
 
@@ -24,4 +24,4 @@ Besides building full queries, the query builder API can also be embedded inside
 
 The samples assume you have a basic understanding of Kysely.
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="query-builder.ts" startScript="generate,query-builder" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="query-builder.ts" startScript="generate,query-builder" />

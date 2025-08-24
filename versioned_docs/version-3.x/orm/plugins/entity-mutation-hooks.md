@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Entity Mutation Hooks
 
@@ -48,4 +48,4 @@ Be very careful about opting in to load before and after mutation entities. Batc
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="plugins/entity-mutation-hooks.ts" startScript="generate,entity-mutation-hooks" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="plugins/entity-mutation-hooks.ts" startScript="generate,entity-mutation-hooks" />

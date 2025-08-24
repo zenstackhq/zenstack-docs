@@ -3,7 +3,7 @@ sidebar_position: 2
 description: Create API
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Create
 
@@ -18,5 +18,5 @@ The `create` series of APIs are used to create new records in the database. It h
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="create.ts" startScript="generate,create" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="create.ts" startScript="generate,create" />
 

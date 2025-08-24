@@ -3,7 +3,7 @@ sidebar_position: 7
 description: Aggregate API
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Aggregate
 
@@ -19,4 +19,4 @@ You can also use `where`, `orderBy`, `skip`, and `take` to control what records 
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm-aggregate" openFile="main.ts" startScript="generate,dev" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="aggregate.ts" startScript="generate,aggregate" />

@@ -3,7 +3,7 @@ sidebar_position: 15
 description: TypeScript types derived from the ZModel schema
 ---
 
-import StackBlitzGithubEmbed from '@site/src/components/StackBlitzGithubEmbed';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Schema-Inferred Types
 
@@ -23,4 +23,4 @@ Most of the time, you don't need to explicitly type the input and output of the 
 
 ## Samples
 
-<StackBlitzGithubEmbed repoPath="zenstackhq/v3-doc-orm" openFile="inferred-types.ts" startScript="generate" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="inferred-types.ts" startScript="generate" />
