@@ -45,7 +45,7 @@ const config = {
                             banner: 'none',
                         },
                         '3.x': {
-                            label: '3.0 Alpha',
+                            label: '3.0 Beta',
                             banner: 'none',
                         },
                     },

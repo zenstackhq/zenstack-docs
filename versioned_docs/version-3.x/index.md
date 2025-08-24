@@ -1,6 +1,5 @@
 ---
 description: Welcome to ZenStack
-slug: /welcome
 sidebar_label: Welcome
 sidebar_position: 1
 ---
