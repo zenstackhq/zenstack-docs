@@ -259,3 +259,15 @@ export const db = new ZenStackClient(schema, {
 ```
 
 A key difference is that ZenStack's computed fields are evaluated on the database side, which much more efficient and flexible than client-side computation. Read more in the [Computed Fields](./orm/computed-fields.md) documentation.
+
+## Feature Gap
+
+Here's a list of Prisma features that are not supported in ZenStack v3:
+
+| Feature | Planned | Notes |
+|---------|-------------| --- |
+| [Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions) | No | Replaced with ZenStack runtime plugins |
+| [JSON Filters](https://www.prisma.io/docs/orm/reference/prisma-client-reference#json-filters) | Yes | |
+| [Full-Text Search](https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search) | Yes | |
+| [Comparing Columns](https://www.prisma.io/docs/orm/reference/prisma-client-reference#compare-columns-in-the-same-table) | Yes | |
+| [Postgres Multi-Schema](https://www.prisma.io/docs/orm/prisma-schema/data-model/multi-schema) | Yes | |
