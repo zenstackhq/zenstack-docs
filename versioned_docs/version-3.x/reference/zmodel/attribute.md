@@ -110,7 +110,7 @@ model User {
 
 Attribute can be declared with a list of parameters and applied with a comma-separated list of arguments.
 
-Arguments are mapped to parameters by position or by name. For example, for the `@default` attribute declared as:
+Arguments are mapped to parameters by position or by name. Parameter names prefixed with `_ ` are positional and arguments for such parameters can be provided without their names. For example, for the `@default` attribute declared as:
 
 ```zmodel
 attribute @default(_ value: ContextType)

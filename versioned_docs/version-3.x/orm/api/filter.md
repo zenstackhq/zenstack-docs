@@ -14,20 +14,14 @@ Filtering is an important topic because it's involved in many ORM operations, fo
 
 You can filter on scalar fields with values or operators as supported by the field type. The following filter operators are available.
 
-- `equals` `not`: all scalar fields.
+- `equals` `not`: all scalar fields
 - `in` `notIn`: all scalar fields
-- `contains` `startsWith` `endsWith`: String fields
-- `lt` `lte` `gt` `gte`: String, Int, BigInt, Float, Decimal, and Date fields
+- `contains` `startsWith` `endsWith`: `String` fields
+- `lt` `lte` `gt` `gte`: `String`, `Int`, `BigInt`, `Float`, `Decimal`, and `Date` fields
 
 A filter object can contain multiple field filters, and they are combined with `AND` semantic. You can also use the `AND`, `OR`, and `NOT` logical operators to combine filter objects to form a complex filter.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="filter/basic.ts" startScript="generate,filter:basic" />
-
-## Relation filters
-
-Filters can be defined on conditions over relations. For one-to-one relations, you can filter on their fields directly. For one-to-many relations, use the "some", "every", or "none" operators to build a condition over a list of records.
-
-<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="filter/relation.ts" startScript="generate,filter:relation" />
 
 ## List filters
 
@@ -72,6 +66,12 @@ await db.post.findMany({
 :::info WORK IN PROGRESS
 Filtering on Json fields is work in progress and will be available soon.
 :::
+
+## Relation filters
+
+Filters can be defined on conditions over relations. For one-to-one relations, you can filter on their fields directly. For one-to-many relations, use the "some", "every", or "none" operators to build a condition over a list of records.
+
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="filter/relation.ts" startScript="generate,filter:relation" />
 
 ## Query builder filters
 

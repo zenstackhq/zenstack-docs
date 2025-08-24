@@ -27,7 +27,7 @@ const StackBlitzGithub: React.FC<StackBlitzGithubProps> = ({
 
     return (
         <>
-            <div className="mb-1">
+            <div className="mb-1 italic text-sm">
                 Click{' '}
                 <a href="#" onClick={() => sdk.openGithubProject(repoPath, options)}>
                     here

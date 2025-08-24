@@ -40,7 +40,7 @@ The API provides a very flexible set of filtering options. We've put it into a [
 
 ## Sorting
 
-Use the `sort` field to control the sort field, direction, and null field placement. Sorting is not supported for `findUnique` and `findUniqueOrThrow`.
+Use the `orderBy` field to control the sort field, direction, and null field placement. Sorting is not supported for `findUnique` and `findUniqueOrThrow`.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="find/sort.ts" startScript="generate,find:sort" />
 

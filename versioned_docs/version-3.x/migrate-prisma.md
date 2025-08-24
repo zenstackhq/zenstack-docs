@@ -88,7 +88,7 @@ Replace `new PrismaClient()` with `new ZenStackClient(schema, ...)` where `schem
 
 ```ts title='db.ts'
 import { ZenStackClient } from '@zenstackhq/runtime';
-import { schema } from '@/zenstack/schema';
+import { schema } from './zenstack/schema';
 import { PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 
@@ -108,7 +108,7 @@ export const db = new ZenStackClient(schema, {
 import { ZenStackClient } from '@zenstackhq/runtime';
 import { SqliteDialect } from 'kysely';
 import SQLite from 'better-sqlite3';
-import { schema } from '@/zenstack/schema';
+import { schema } from './zenstack/schema';
 
 export const db = new ZenStackClient(schema, {
   dialect: new SqliteDialect({

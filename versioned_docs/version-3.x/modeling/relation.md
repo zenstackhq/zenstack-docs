@@ -32,14 +32,17 @@ Relations can also be explicitly named, and it's useful to disambiguate relation
 
 ```zmodel
 model User {
-    id        Int      @id
-    profile   Profile? @relation('UserProfile')
+    id             Int      @id
+    profile        Profile? @relation('UserProfile')
+    privateProfile Profile? @relation('UserPrivateProfile')
 }
 
 model Profile {
-    id        Int  @id
-    user      User @relation('UserProfile', fields: [userId], references: [id])
-    userId    Int  @unique
+    id            Int  @id
+    user          User @relation('UserProfile', fields: [userId], references: [id])
+    userId        Int  @unique
+    userPrivate   User @relation('UserPrivateProfile', fields: [userPrivateId], references: [id])
+    userPrivateId Int  @unique
 }
 ```
 
@@ -146,7 +149,7 @@ model UserPost {
 }
 ```
 
-Since the join table is explicitly defined, when using the ORM, you'll need to involve it in your queries with an extra level of nesting.
+Since the join table is explicitly defined, when using the ORM, you'll need to involve it in your queries with an extra level of nesting. Albeit the complexity, an explicit join table gives you the flexibility, e.g., to have extra fields.
 
 ## Self relation
 
@@ -158,7 +161,7 @@ Self-relations are cases where a model has a relation to itself. They can be one
 model Employee {
     id       Int       @id
     mentorId Int?      @unique
-    mentor   Employee? @relation('Mentorship',   fields: [mentorId], references: [id])
+    mentor   Employee? @relation('Mentorship', fields: [mentorId], references: [id])
     mentee   Employee? @relation('Mentorship')
 }
 ```
@@ -167,7 +170,7 @@ Quick notes:
 
 - Both sides of the relation are defined in the same model.
 - Both relation fields need to have `@relation` attributes with matching names.
-- One side (here `mentor`) has a foreign key field (`mentorId`) that references the primary key.
+- One side has a foreign key field (`mentorId`) that references the primary key.
 - The foreign key field is marked `@unique` to guarantee one-to-one.
 
 ### One-to-many
@@ -184,7 +187,7 @@ model Employee {
 Quick notes:
 - Both sides of the relation are defined in the same model.
 - Both relation fields need to have `@relation` attributes with matching names.
-- One side (here `manager`) has a foreign key field (`managerId`) that references the primary key.
+- One side has a foreign key field (`managerId`) that references the primary key.
 - The owner side (`Employee.manager`) can be either optional or required based on your needs.
 
 ### Many-to-many
@@ -204,15 +207,15 @@ You can also define an explicit one by modeling the join table explicitly.
 ```zmodel
 model Employee {
   id      Int          @id
-  mentors Mentorship[] @relation('Mentorship')
-  mentees Mentorship[] @relation('Mentorship')
+  mentors Mentorship[] @relation('Mentor')
+  mentees Mentorship[] @relation('Mentee')
 }
 
 model Mentorship {
   mentorId Int
   menteeId Int
-  mentor   Employee @relation('Mentorship', fields: [mentorId], references: [id])
-  mentee   Employee @relation('Mentorship', fields: [menteeId], references: [id])
+  mentor   Employee @relation('Mentor', fields: [mentorId], references: [id])
+  mentee   Employee @relation('Mentee', fields: [menteeId], references: [id])
 
   @@id([mentorId, menteeId])
 }
@@ -247,16 +250,14 @@ enum ReferentialAction {
 -   `Cascade`
 
     -   **onDelete**: deleting a referenced record will trigger the deletion of referencing record.
-
     -   **onUpdate**: updates the relation scalar fields if the referenced scalar fields of the dependent record are updated.
 
 -   `Restrict`
-
     -   **onDelete**: prevents the deletion if any referencing records exist.
     -   **onUpdate**: prevents the identifier of a referenced record from being changed.
 
 -   `NoAction`
-
+  
     Similar to 'Restrict', the difference between the two is dependent on the database being used.
 
 -   `SetNull`
@@ -265,6 +266,7 @@ enum ReferentialAction {
     -   **onUpdate**: when updating the identifier of a referenced object, the scalar fields of the referencing objects will be set to NULL.
 
 -   `SetDefault`
+
     -   **onDelete**: the scalar field of the referencing object will be set to the fields default value.
     -   **onUpdate**: the scalar field of the referencing object will be set to the fields default value.
 

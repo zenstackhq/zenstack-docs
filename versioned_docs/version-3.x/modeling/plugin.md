@@ -41,7 +41,7 @@ A plugin declaration involves three parts:
 
 1. A unique name
 2. A `provider` field that specifies where to load the plugin from. It can be a built-in plugin (like `@core/prisma` here), a local JavaScript module, or an NPM package name.
-3. Plugin-specific configuration options, such as `output` in this case.
+3. Plugin-specific configuration options, such as `output` in this case. Options are solely interpreted by the plugin implementation.
 
 A plugin can have the following effects to ZModel:
 

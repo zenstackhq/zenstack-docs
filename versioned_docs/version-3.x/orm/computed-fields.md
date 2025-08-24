@@ -34,9 +34,13 @@ const db = new ZenStackClient(schema, {
   ...
   computedFields: {
     User: {
+      // equivalent SQL:
+      // `(SELECT COUNT(*) AS "count" FROM "Post" WHERE "Post"."authorId" = "User"."id")`
       postCount: (eb) => 
         eb.selectFrom('Post')
           .whereRef('Post.authorId', '=', 'id')
+          // the `as('count')` part is required because every Kysely selection 
+          // needs to have a name
           .select(({fn}) => fn.countAll<number>().as('count')),
     },
   },

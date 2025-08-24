@@ -11,7 +11,7 @@ Update to records can be done with the following methods:
 
 - `update` - Update a single, unique record.
 - `updateMany` - Update multiple records that match the query criteria.
-- `updateManyAndReturn` - Similar to `updateMany`, but returns the updated records
+- `updateManyAndReturn` - Similar to `updateMany`, but returns the updated records.
 - `upsert` - Update a single, unique record, or create it if it does not exist.
 
 ## Updating scalar fields
@@ -41,7 +41,7 @@ await db.post.update({
 
 ## Manipulating relations
 
-THe `update` and `upsert` methods are very powerful in that they allow you to freely manipulate relations. You can create, connect, disconnect, update, and delete relations in a single operation. You can also reach deeply into indirect relations.
+The `update` and `upsert` methods are very powerful in that they allow you to freely manipulate relations. You can create, connect, disconnect, update, and delete relations in a single operation. You can also reach deeply into indirect relations.
 
 `updateMany` and `updateManyAndReturn` only support updating scalar fields.
 

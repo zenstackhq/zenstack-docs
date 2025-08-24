@@ -82,6 +82,10 @@ model Content {
 model Post extends Content {
     content String
 }
+
+model Video extends Content {
+    url      String
+}
 ```
 
 ```ts title="main.ts"
@@ -94,13 +98,14 @@ if (content.type === 'Post') {
 }
 ```
 
-### Straightforward and light-Weighted
+### Straightforward, light-weighted, flexible
 
-Compared to Prisma and previous versions of ZenStack, v3 is more straightforward and light-weighted.
+Compared to Prisma and previous versions of ZenStack, v3 is more straightforward, light-weighted, and flexible.
 
 - No runtime dependency to Prisma, thus no overhead of Rust/WASM query engines.
 - No magic generating into `node_modules`. You fully control how the generated code is compiled and bundled.
 - Less code generation, more type inference.
+- A plugin system that allows you to extend ZenStack at the schema, CLI, and runtime levels.
 
 ## Documentation Conventions
 

@@ -24,7 +24,7 @@ Run the following command to scaffold a new project with a pre-configured minima
 npm create zenstack@next my-project
 ```
 
-Or simply use the following playground to experience it inside the browser.
+Or simply use the interactive playground to experience it inside the browser.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-quick-start" />
 
@@ -38,7 +38,7 @@ Then create a `zenstack/schema.zmodel` file in the root of your project. You can
 
 <ZModelStarter />
 
-Finally, run `zen generate` to compile the schema into TypeScript.
+Finally, run `zen generate` to compile the schema into TypeScript. Optionally, run `zen db push` to push the schema to the database.
 
 <PackageExec command="zen generate" />
 
