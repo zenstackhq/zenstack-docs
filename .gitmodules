@@ -1,0 +1,18 @@
+[submodule "code-repos/zenstackhq/v3-doc-orm"]
+	path = code-repos/zenstackhq/v3-doc-orm
+	url = https://github.com/zenstackhq/v3-doc-orm.git
+[submodule "code-repos/zenstackhq/v3-doc-orm-computed-fields"]
+	path = code-repos/zenstackhq/v3-doc-orm-computed-fields
+	url = https://github.com/zenstackhq/v3-doc-orm-computed-fields.git
+[submodule "code-repos/zenstackhq/v3-doc-orm-computed-polymorphism"]
+	path = code-repos/zenstackhq/v3-doc-orm-computed-polymorphism
+	url = https://github.com/zenstackhq/v3-doc-orm-polymorphism.git
+[submodule "code-repos/zenstackhq/v3-doc-orm-typed-json"]
+	path = code-repos/zenstackhq/v3-doc-orm-typed-json
+	url = https://github.com/zenstackhq/v3-doc-orm-typed-json.git
+[submodule "code-repos/zenstackhq/v3-doc-quick-start"]
+	path = code-repos/zenstackhq/v3-doc-quick-start
+	url = https://github.com/zenstackhq/v3-doc-quick-start.git
+[submodule "code-repos/zenstackhq/v3-doc-orm-polymorphism"]
+	path = code-repos/zenstackhq/v3-doc-orm-polymorphism
+	url = https://github.com/zenstackhq/v3-doc-orm-polymorphism.git
