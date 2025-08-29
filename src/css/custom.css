@@ -75,11 +75,6 @@
         display: none;
     }
 
-    /* force display of right items in the toggle menu */
-    .navbar__item.navbar__item--right {
-        display: block !important;
-    }
-
     .navbar__toggle {
         display: inherit;
     }
