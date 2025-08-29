@@ -18,16 +18,16 @@ function Header() {
             <div className="w-full flex justify-center">
                 <div className="w-full xl:container flex justify-center text-white dark:text-gray-800">
                     <div className="w-full max-w-4xl text-center flex flex-col items-center px-4">
-                        <h1 className="hero__title font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-6 sm:mb-8 lg:mb-12 leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight 2xl:leading-tight">
+                        <h1 className="hero__title font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-6 sm:mb-8 lg:mb-12 leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight 2xl:leading-tight">
                             <span className="inline-block text-white dark:text-gray-800">
                                 Modern Data Layer for TypeScript Applications
                             </span>
                         </h1>
-                        <p className="hero__subtitle font-semi-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 lg:mb-12 leading-relaxed text-gray-100 dark:text-gray-700 max-w-none sm:max-w-2xl text-center">
+                        <p className="hero__subtitle font-semi-bold text-base sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 lg:mb-12 leading-relaxed text-gray-100 dark:text-gray-700 max-w-none sm:max-w-2xl text-center">
                             Intuitive data modeling, type-safe ORM, built-in access control, automatic query services,
                             and more.
                         </p>
-                        <div className={styles.buttons}>
+                        <div className="flex flex-wrap justify-center gap-4">
                             <Link
                                 className="button button--secondary button--lg lg:text-2xl lg:px-8 lg:py-4"
                                 to="/docs/3.x"
@@ -37,7 +37,7 @@ function Header() {
                             <a
                                 href="https://stackblitz.com/~/github.com/zenstackhq/v3-doc-quick-start?file=zenstack%2fschema.zmodel&file=main.ts&view=editor&showSidebar=0&hideNavigation=1&hideExplorer=1"
                                 target="_blank"
-                                className="button button--outline button--lg border-solid lg:text-2xl lg:px-8 lg:py-4 ml-4 hover:text-gray-200 dark:hover:text-gray-600"
+                                className="button button--outline button--lg border-solid lg:text-2xl lg:px-8 lg:py-4 hover:text-gray-200 dark:hover:text-gray-600"
                             >
                                 Open Playground
                             </a>

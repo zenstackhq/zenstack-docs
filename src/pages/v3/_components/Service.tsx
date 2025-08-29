@@ -14,11 +14,11 @@ export default function Service(): JSX.Element {
                 </h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 mt-4">
-                <div className="p-8 text-lg">
-                    <span className="text-2xl font-semibold text-gray-800">
+                <div className="md:p-4 lg:p-8 text-lg">
+                    <h3 className="hidden md:block text-2xl font-semibold">
                         Thanks to the ORM's built-in access control, you get an HTTP query service for free
-                    </span>
-                    <ul className="text-xl flex flex-col gap-2 mt-4 list-none">
+                    </h3>
+                    <ul className="md:text-xl flex flex-col gap-2 lg:mt-4 list-none p-0 lg:p-6">
                         <li>🚀 Fully mirrors the ORM API</li>
                         <li>🚀 Seamlessly integrates with popular frameworks</li>
                         <li>🚀 Works with any authentication solution</li>
@@ -27,7 +27,7 @@ export default function Service(): JSX.Element {
                         </li>
                         <li>🚀 Highly customizable</li>
                     </ul>
-                    <span className="text-xl">
+                    <span className="lg:text-xl">
                         <p>
                             Since the ORM is protected with access control, ZenStack can directly map it to an HTTP
                             service. ZenStack provides out-of-the-box integrations with popular frameworks including
@@ -40,10 +40,11 @@ export default function Service(): JSX.Element {
                         </p>
                     </span>
                 </div>
-                <Tabs>
-                    <TabItem label="Server Code" value="server">
-                        <CodeBlock language="ts" title="Next.js Example" className="p-2 text-lg">
-                            {`import { NextRequestHandler } from '@zenstackhq/server/next';
+                <div className="hidden md:block">
+                    <Tabs>
+                        <TabItem label="Server Code" value="server">
+                            <CodeBlock language="ts" title="Next.js Example" className="p-2 xl:text-lg">
+                                {`import { NextRequestHandler } from '@zenstackhq/server/next';
 import { db } from './db'; // ZenStackClient instance
 import { getSessionUser } from './auth';
 
@@ -68,39 +69,40 @@ export {
   handler as PATCH,
   handler as DELETE,
 };
-`}
-                        </CodeBlock>
-                    </TabItem>
-                    <TabItem label="Client Code" value="client">
-                        <CodeBlock language="tsx" title="React Example" className="p-4 text-lg">
-                            {`import { schema } from './zenstack';
+                    `}
+                            </CodeBlock>
+                        </TabItem>
+                        <TabItem label="Client Code" value="client">
+                            <CodeBlock language="tsx" title="React Example" className="p-4 xl:text-lg">
+                                {`import { schema } from './zenstack';
 import { useQueryHooks } from '@zenstackhq/query/react';
 
 export function UserPosts({ userId }: { userId: number }) {
   // use auto-generated hook to query user with posts
   const { user: userHooks } = useQueryHooks(schema);
   const { data, isLoading } = userHooks.useFindUnique({
-    where: { id: userId },
-    include: { posts: true }
+  where: { id: userId },
+  include: { posts: true }
   });
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <p>{data?.email}'s Posts</p>
-      <ul>
-        {data?.posts.map((post) => (
-          <li key={post.id}>{post.title}</li>
-        ))}
-      </ul>
-    </div>
+  <div>
+    <p>{data?.email}'s Posts</p>
+    <ul>
+    {data?.posts.map((post) => (
+      <li key={post.id}>{post.title}</li>
+    ))}
+    </ul>
+  </div>
   );
 }
-`}
-                        </CodeBlock>
-                    </TabItem>
-                </Tabs>
+                    `}
+                            </CodeBlock>
+                        </TabItem>
+                    </Tabs>
+                </div>
             </div>
         </div>
     );

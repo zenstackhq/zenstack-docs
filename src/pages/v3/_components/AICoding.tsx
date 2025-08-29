@@ -55,7 +55,7 @@ export default function AICoding(): JSX.Element {
     return (
         <div className="flex flex-col items-start lg:items-center w-full">
             <div className="w-full">
-                <h2 className="flex flex-col lg:flex-row text-2xl md:text-3xl lg:text-4xl items-center justify-center pb-4">
+                <h2 className="flex flex-col lg:flex-row text-2xl md:text-3xl lg:text-4xl items-center justify-center text-center pb-4">
                     Perfect Match for AI-Assisted Programming
                 </h2>
             </div>

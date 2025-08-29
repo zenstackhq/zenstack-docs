@@ -68,3 +68,25 @@
     right: 0;
     pointer-events: mouse;
 }
+
+@media (max-width: 1200px) {
+    .navbar__items--right,
+    .navbar__items--left {
+        display: none;
+    }
+
+    /* force display of right items in the toggle menu */
+    .navbar__item.navbar__item--right {
+        display: block !important;
+    }
+
+    .navbar__toggle {
+        display: inherit;
+    }
+}
+
+@media (min-width: 1201px) {
+    .navbar__toggle {
+        display: none;
+    }
+}
