@@ -105,6 +105,11 @@ const config = {
                     },
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
+                        to: 'v3',
+                        position: 'left',
+                        label: 'V3 Beta 🚀',
+                    },
+                    {
                         href: 'https://discord.gg/Ykhr738dUe',
                         label: 'Discord',
                         position: 'right',
