@@ -3,12 +3,12 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
-import AICoding from './AICoding';
+import AICoding from './_components/AICoding';
+import Notes from './_components/Notes';
+import ORM from './_components/ORM';
+import SchemaLanguage from './_components/SchemaLanguage';
+import Service from './_components/Service';
 import styles from './index.module.css';
-import Notes from './Notes';
-import ORM from './ORM';
-import SchemaLanguage from './SchemaLanguage';
-import Service from './Service';
 
 const description = `ZenStack v3 is a powerful data layer for modern TypeScript applications. It provides an intuitive data modeling language, a fully type-safe ORM, built-in access control and data validation, and automatic data query service that seamlessly integrates with popular frameworks like Next.js and Nuxt.`;
 
