@@ -18,7 +18,7 @@ Computed fields are "virtual" fields that do not physically exist in the databas
 
 ## Defining Computed Fields
 
-Defining a computed fields involves two steps. First, add the field in the ZModel schema to a model and annotate it with an extra `@computed` attribute.
+Defining a computed field involves two steps. First, add the field in the ZModel schema to a model and annotate it with the `@computed` attribute.
 
 ```zmodel
 model User {

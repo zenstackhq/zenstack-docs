@@ -42,7 +42,7 @@ export default function Service(): JSX.Element {
                 </div>
                 <Tabs>
                     <TabItem label="Server Code" value="server">
-                        <CodeBlock language="ts" title="Next.js Example" className="p-4 text-lg">
+                        <CodeBlock language="ts" title="Next.js Example" className="p-2 text-lg">
                             {`import { NextRequestHandler } from '@zenstackhq/server/next';
 import { db } from './db'; // ZenStackClient instance
 import { getSessionUser } from './auth';

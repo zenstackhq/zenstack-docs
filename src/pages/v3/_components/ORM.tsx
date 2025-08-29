@@ -8,7 +8,7 @@ export default function ORM(): JSX.Element {
                     <div className="flex items-center">Flexible and Awesomely Typed ORM</div>
                 </h2>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-2 mt-4">
                 <CodeBlock language="ts" className="p-4 text-lg">
                     {`import { schema } from './zenstack';
 import { ZenStackClient } from '@zenstackhq/runtime';

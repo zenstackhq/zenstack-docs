@@ -10,8 +10,8 @@ const FeatureList: FeatureItem[] = [
         img: '/img/access-control.png',
         description: (
             <>
-                With data models, relations, validation rules, and access control policies all defined in one place,
-                LLMs can easily get a coherent understanding of the entire application.
+                When LLMs see a self-contained, non-ambiguous, and well-defined application model, their inference works
+                more efficiently and effectively.
             </>
         ),
     },
@@ -30,8 +30,8 @@ const FeatureList: FeatureItem[] = [
         img: '/img/ai-friendly.png',
         description: (
             <>
-                By deriving many crucial artifacts from the schema, ZenStack eliminates boilerplate and helps you
-                maintain a slim code base that is easier for AI to work with.
+                By deriving artifacts from the schema instead of implementing them, ZenStack helps you maintain a slim
+                code base that is easier for AI to digest.
             </>
         ),
     },

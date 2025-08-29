@@ -25,7 +25,7 @@ export default function SchemaLanguage(): JSX.Element {
                         Migrating a Prisma schema is as simple as file renaming.
                     </span>
                 </div>
-                <CodeBlock language="zmodel" className="p-4 text-lg">
+                <CodeBlock language="zmodel" className="p-2 text-lg">
                     {`model User {
   id        Int    @id
   email     String @unique @email // constraint and validation

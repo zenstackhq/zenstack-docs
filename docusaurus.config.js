@@ -103,12 +103,12 @@ const config = {
                         position: 'left',
                         label: 'Handbook',
                     },
-                    { to: '/blog', label: 'Blog', position: 'left' },
                     {
                         to: 'v3',
                         position: 'left',
                         label: 'V3 Beta 🚀',
                     },
+                    { to: '/blog', label: 'Blog', position: 'left' },
                     {
                         href: 'https://discord.gg/Ykhr738dUe',
                         label: 'Discord',
@@ -199,6 +199,23 @@ const config = {
                             {
                                 label: 'GitHub',
                                 href: 'https://github.com/zenstackhq/zenstack',
+                            },
+                        ],
+                    },
+                    {
+                        title: 'FlatIcon Credits',
+                        items: [
+                            {
+                                label: 'Endure',
+                                href: 'https://www.flaticon.com/free-icons/endure',
+                            },
+                            {
+                                label: 'Diagram by Kiranshastry',
+                                href: 'https://www.flaticon.com/free-icons/diagram',
+                            },
+                            {
+                                href: 'https://www.flaticon.com/free-icons/database',
+                                label: 'Database by kerismaker',
                             },
                         ],
                     },

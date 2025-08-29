@@ -4,10 +4,10 @@ import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
 import AICoding from './_components/AICoding';
-import Notes from './_components/Notes';
 import ORM from './_components/ORM';
-import SchemaLanguage from './_components/SchemaLanguage';
+import SchemaLanguage from './_components/Schema';
 import Service from './_components/Service';
+import ValueProps from './_components/ValueProps';
 import styles from './index.module.css';
 
 const description = `ZenStack v3 is a powerful data layer for modern TypeScript applications. It provides an intuitive data modeling language, a fully type-safe ORM, built-in access control and data validation, and automatic data query service that seamlessly integrates with popular frameworks like Next.js and Nuxt.`;
@@ -20,7 +20,7 @@ function Header() {
                     <div className="w-full max-w-4xl text-center flex flex-col items-center px-4">
                         <h1 className="hero__title font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-6 sm:mb-8 lg:mb-12 leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight 2xl:leading-tight">
                             <span className="inline-block text-white dark:text-gray-800">
-                                The Data Layer for Modern TypeScript Applications
+                                Modern Data Layer for TypeScript Applications
                             </span>
                         </h1>
                         <p className="hero__subtitle font-semi-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 lg:mb-12 leading-relaxed text-gray-100 dark:text-gray-700 max-w-none sm:max-w-2xl text-center">
@@ -32,8 +32,15 @@ function Header() {
                                 className="button button--secondary button--lg lg:text-2xl lg:px-8 lg:py-4"
                                 to="/docs/3.x"
                             >
-                                Get Started →
+                                Check V3 Docs →
                             </Link>
+                            <a
+                                href="https://stackblitz.com/~/github.com/zenstackhq/v3-doc-quick-start?file=zenstack%2fschema.zmodel&file=main.ts&view=editor&showSidebar=0&hideNavigation=1&hideExplorer=1"
+                                target="_blank"
+                                className="button button--outline button--lg border-solid lg:text-2xl lg:px-8 lg:py-4 ml-4 hover:text-gray-200 dark:hover:text-gray-600"
+                            >
+                                Open Playground
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -61,18 +68,22 @@ export default function Home(): JSX.Element {
             <Header />
             <main className="flex flex-col">
                 <Section>
+                    <ValueProps />
+                </Section>
+
+                <Section className="bg-slate-50 dark:bg-slate-800">
                     <SchemaLanguage />
                 </Section>
 
-                <Section className="bg-slate-50 dark:bg-slate-800">
+                <Section>
                     <ORM />
                 </Section>
 
-                <Section>
+                <Section className="bg-slate-50 dark:bg-slate-800">
                     <Service />
                 </Section>
 
-                <Section className="bg-slate-50 dark:bg-slate-800">
+                <Section>
                     <AICoding />
                     <div className="flex justify-center w-full mt-16">
                         <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs/3.x">
@@ -81,9 +92,9 @@ export default function Home(): JSX.Element {
                     </div>
                 </Section>
 
-                <Section>
+                {/* <Section>
                     <Notes />
-                </Section>
+                </Section> */}
             </main>
         </Layout>
     );
