@@ -11,12 +11,19 @@ export default function ORM(): JSX.Element {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-2 mt-4">
                 <CodeBlock language="ts" className="p-4 hidden md:block xl:text-lg">
                     {`import { schema } from './zenstack';
-import { ZenStackClient } from '@zenstackhq/runtime';
+import {
+  ZenStackClient,
+  AccessControlPlugin
+} from '@zenstackhq/runtime';
 
-const db = new ZenStackClient(schema, { ... });
+const db = new ZenStackClient(schema, { ... })
+  // install access control plugin to enforce policies
+  .$use(new AccessControlPlugin())
+  // set current user context
+  .$setAuth(...);
 
 // high-level query API
-const usersWithPosts = await db.user.findUnique({
+const userWithPosts = await db.user.findUnique({
   where: { id: userId },
   include: { posts: true }
 });

@@ -39,7 +39,7 @@ export default function SchemaLanguage(): JSX.Element {
 }
 
 model Post {
-  id        Int
+  id        Int     @id
   title     String  @length(1, 255)
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])

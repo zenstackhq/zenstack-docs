@@ -24,9 +24,7 @@ Run the following command to scaffold a new project with a pre-configured minima
 npm create zenstack@next my-project
 ```
 
-Or simply use the interactive playground to experience it inside the browser.
-
-<StackBlitzGithub repoPath="zenstackhq/v3-doc-quick-start" />
+Or simply use the [interactive playground](https://stackblitz.com/~/github.com/zenstackhq/v3-doc-quick-start) to experience it inside the browser.
 
 ## 2. Adding to an existing project
 

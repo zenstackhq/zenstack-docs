@@ -9,7 +9,7 @@ sidebar_label: CLI
 ## Usage
 
 ```
-zenstack [options] [command]
+zen [options] [command]
 
 ζ ZenStack is the data layer for modern TypeScript apps.
 
@@ -36,7 +36,7 @@ Commands:
 Run code generation plugins.
 
 ```bash
-Usage: zenstack generate [options]
+Usage: zen generate [options]
 
 Run code generation plugins.
 
@@ -44,6 +44,7 @@ Options:
   --schema <file>      schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
                        specified in package.json.
   -o, --output <path>  default output directory for code generation
+  --silent             suppress all output except errors (default: false)
   -h, --help           display help for command
 ```
 
@@ -52,7 +53,7 @@ Options:
 Run database schema migration related tasks.
 
 ```bash
-Usage: zenstack migrate [options] [command]
+Usage: zen migrate [options] [command]
 
 Run database schema migration related tasks.
 
@@ -77,7 +78,7 @@ For development only. Do not use this command in production.
 :::
 
 ```bash
-Usage: zenstack migrate dev [options]
+Usage: zen migrate dev [options]
 
 Create a migration from changes in schema and apply it to the database.
 
@@ -99,7 +100,7 @@ Never run this command in production. It will drop all data in the database.
 :::
 
 ```bash
-Usage: zenstack migrate reset [options]
+Usage: zen migrate reset [options]
 
 Reset your database and apply all migrations, all data will be lost.
 
@@ -116,7 +117,7 @@ Options:
 Deploy your pending migrations to your production/staging database.
 
 ```bash
-Usage: zenstack migrate deploy [options]
+Usage: zen migrate deploy [options]
 
 Deploy your pending migrations to your production/staging database.
 
@@ -132,7 +133,7 @@ Options:
 Check the status of your database migrations.
 
 ```bash
-Usage: zenstack migrate status [options]
+Usage: zen migrate status [options]
 
 Check the status of your database migrations.
 
@@ -148,7 +149,7 @@ Options:
 Resolve issues with database migrations in deployment databases.
 
 ```bash
-Usage: zenstack migrate resolve [options]
+Usage: zen migrate resolve [options]
 
 Resolve issues with database migrations in deployment databases.
 
@@ -166,7 +167,7 @@ Options:
 Manage your database schema during development.
 
 ```bash
-Usage: zenstack db [options] [command]
+Usage: zen db [options] [command]
 
 Manage your database schema during development.
 
@@ -183,7 +184,7 @@ Commands:
 Push the state from your schema to your database.
 
 ```bash
-Usage: zenstack db push [options]
+Usage: zen db push [options]
 
 Push the state from your schema to your database.
 
@@ -200,7 +201,7 @@ Options:
 Get information of installed ZenStack packages.
 
 ```bash
-Usage: zenstack info [options] [path]
+Usage: zen info [options] [path]
 
 Get information of installed ZenStack.
 
@@ -216,7 +217,7 @@ Options:
 Initialize an existing project for ZenStack.
 
 ```bash
-Usage: zenstack init [options] [path]
+Usage: zen init [options] [path]
 
 Initialize an existing project for ZenStack.
 
@@ -232,7 +233,7 @@ Options:
 Check a ZModel schema for syntax or semantic errors.
 
 ```bash
-Usage: zenstack check [options]
+Usage: zen check [options]
 
 Check a ZModel schema for syntax or semantic errors.
 

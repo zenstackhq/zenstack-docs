@@ -76,8 +76,8 @@ erDiagram
 	}
     Content {
         id Int PK
-		name String
-        createdAt Date
+        name String
+        createdAt DateTime
         ownerId Int FK
         type String
     }

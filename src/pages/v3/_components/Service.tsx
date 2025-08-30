@@ -27,7 +27,7 @@ export default function Service(): JSX.Element {
                         </li>
                         <li>🚀 Highly customizable</li>
                     </ul>
-                    <span className="lg:text-xl">
+                    <div className="lg:text-xl">
                         <p>
                             Since the ORM is protected with access control, ZenStack can directly map it to an HTTP
                             service. ZenStack provides out-of-the-box integrations with popular frameworks including
@@ -38,7 +38,7 @@ export default function Service(): JSX.Element {
                             derived from the schema, allowing you to make type-safe queries to the service without
                             writing a single line of code.
                         </p>
-                    </span>
+                    </div>
                 </div>
                 <div className="hidden md:block">
                     <Tabs>
@@ -64,7 +64,7 @@ const handler = NextRequestHandler({ getClient });
 
 export {
   handler as GET,
-  handler as PUT
+  handler as PUT,
   handler as POST,
   handler as PATCH,
   handler as DELETE,
