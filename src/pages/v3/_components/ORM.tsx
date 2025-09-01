@@ -45,8 +45,12 @@ const userPostJoin = await db
                     <ul className="md:text-xl flex flex-col gap-2 lg:mt-4 list-none p-0 lg:p-6">
                         <li>🔋 High-level ORM query API</li>
                         <li>🔋 Low-level SQL query builder API</li>
-                        <li>🔋 Access control enforcement</li>
-                        <li>🔋 Runtime data validation</li>
+                        <li>
+                            🔋 Access control enforcement <span className="text-sm">coming soon</span>
+                        </li>
+                        <li>
+                            🔋 Runtime data validation <span className="text-sm">coming soon</span>
+                        </li>
                         <li>🔋 Computed fields and custom procedures</li>
                         <li>🔋 Plugin system for tapping into various lifecycle events</li>
                     </ul>

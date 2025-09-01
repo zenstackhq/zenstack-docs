@@ -67,6 +67,12 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
+            announcementBar: {
+                id: 'v3_beta',
+                content:
+                    'ZenStack v3 Beta is released 🚀. The new version has replaced Prisma with a brand new query engine. <a href="/v3">Check it out</a>',
+                isCloseable: true,
+            },
             colorMode: {
                 defaultMode: 'light',
                 respectPrefersColorScheme: false,
