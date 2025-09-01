@@ -8,12 +8,12 @@ sidebar_label: CLI
 
 ## Usage
 
-```
+```text
 zen [options] [command]
 
 ζ ZenStack is the data layer for modern TypeScript apps.
 
-Documentation: https://zenstack.dev.
+Documentation: https://zenstack.dev/docs/3.x
 
 Options:
   -v --version        display CLI version
