@@ -12,7 +12,8 @@
         "serve": "docusaurus serve",
         "write-translations": "docusaurus write-translations",
         "write-heading-ids": "docusaurus write-heading-ids",
-        "typecheck": "tsc"
+        "typecheck": "tsc",
+        "pull-submodules": "git submodule foreach git pull origin main"
     },
     "dependencies": {
         "@algolia/client-search": "^4.22.1",
@@ -22,12 +23,15 @@
         "@docusaurus/theme-mermaid": "3.4.0",
         "@giscus/react": "^2.4.0",
         "@mdx-js/react": "^3.0.1",
+        "@stackblitz/sdk": "^1.11.0",
         "autoprefixer": "^10.4.13",
         "clsx": "^1.2.1",
+        "is-mobile": "^5.0.0",
         "postcss": "^8.4.21",
         "prism-react-renderer": "^2.3.1",
         "prism-svelte": "^0.5.0",
         "prismjs": "^1.29.0",
+        "raw-loader": "^4.0.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-icons": "^5.0.1",

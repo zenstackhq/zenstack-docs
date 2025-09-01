@@ -44,6 +44,10 @@ const config = {
                             label: '1.x',
                             banner: 'none',
                         },
+                        '3.x': {
+                            label: '3.0 Beta',
+                            banner: 'none',
+                        },
                     },
                 },
                 blog: false,
@@ -63,6 +67,12 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
+            announcementBar: {
+                id: 'v3_beta',
+                content:
+                    'ZenStack v3 Beta is released 🚀. The new version has replaced Prisma with a brand new query engine. <a href="/v3">Check it out</a>',
+                isCloseable: true,
+            },
             colorMode: {
                 defaultMode: 'light',
                 respectPrefersColorScheme: false,
@@ -98,6 +108,11 @@ const config = {
                         to: 'docs/the-complete-guide',
                         position: 'left',
                         label: 'Handbook',
+                    },
+                    {
+                        to: 'v3',
+                        position: 'left',
+                        label: 'V3 Beta 🚀',
                     },
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
@@ -190,6 +205,23 @@ const config = {
                             {
                                 label: 'GitHub',
                                 href: 'https://github.com/zenstackhq/zenstack',
+                            },
+                        ],
+                    },
+                    {
+                        title: 'FlatIcon Credits',
+                        items: [
+                            {
+                                label: 'Endure',
+                                href: 'https://www.flaticon.com/free-icons/endure',
+                            },
+                            {
+                                label: 'Diagram by Kiranshastry',
+                                href: 'https://www.flaticon.com/free-icons/diagram',
+                            },
+                            {
+                                href: 'https://www.flaticon.com/free-icons/database',
+                                label: 'Database by kerismaker',
                             },
                         ],
                     },
