@@ -47,7 +47,7 @@ app.use('/api/rpc-custom', async (req: Request, res: Response) => {
     const url = req.protocol + '://' + req.get('host') + req.originalUrl;
     const searchParams = new URL(url).searchParams;
     const query = Object.fromEntries(searchParams);
-    const handler = RPCHandler();
+    const handler = RPCApiHandler();
 
     const { status, body } = await handler({
         method: req.method,
