@@ -622,9 +622,9 @@ When including related resources, the response data takes the form of [Compound 
 
 #### Sparse Fieldsets
 
-You can use the `fields[type]` query parameter to only include specified fields in the response. The value of the parameter is a comma-separated list of fields names.
+You can use the `fields[type]` query parameter to only include specified fields in the response. The value of the parameter is a comma-separated list of field names.
 
-See the JSON:API specification for more details [Sparse Fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets) and thier [Examples](https://jsonapi.org/examples/#sparse-fieldsets)
+See the JSON:API specification for more details [Sparse Fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets) and their [Examples](https://jsonapi.org/examples/#sparse-fieldsets)
 
 ##### Examples
 
@@ -637,7 +637,7 @@ See the JSON:API specification for more details [Sparse Fieldsets](https://jsona
 1. Also works with includes or relationships
 
     ```ts
-    GET /api/post?include=author&fields[post]=title,viewCount?fields[author]=email
+    GET /api/post?include=author&fields[post]=title,viewCount&fields[author]=email
     ```
 
 ### Creating a resource
