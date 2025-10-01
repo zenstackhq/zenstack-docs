@@ -620,6 +620,26 @@ When including related resources, the response data takes the form of [Compound 
     GET /api/post?include=author,comments
     ```
 
+#### Sparse Fieldsets
+
+You can use the `fields[type]` query parameter to only include specified fields in the response. The value of the parameter is a comma-separated list of field names.
+
+See the JSON:API specification for more details [Sparse Fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets) and their [Examples](https://jsonapi.org/examples/#sparse-fieldsets)
+
+##### Examples
+
+1. Simple select
+
+    ```ts
+    GET /api/post?fields[post]=title,viewCount
+    ```
+
+1. Also works with includes or relationships
+
+    ```ts
+    GET /api/post?include=author&fields[post]=title,viewCount&fields[author]=email
+    ```
+
 ### Creating a resource
 
 A new resource can be created using the following endpoint:
