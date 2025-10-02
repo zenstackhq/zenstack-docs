@@ -8,6 +8,8 @@ description: Generating TypeScript code from ZModel
 
 The `@core/typescript` plugin generates TypeScript code from ZModel. The generated code is used to access the schema at runtime, as well as type declarations at development time.
 
+**Note:** This plugin runs automatically when you execute `zenstack generate`, even if not explicitly declared in your schema. You only need to declare it if you want to customize its options.
+
 ## Options
 
 - `output`: Specifies the output directory for the generated TypeScript code. If a relative path is provided, it will be resolved relative to the ZModel schema.
