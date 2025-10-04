@@ -30,7 +30,7 @@ Or simply use the [interactive playground](https://stackblitz.com/~/github.com/z
 
 To add ZenStack to an existing project, run the CLI `init` command to install dependencies and create a sample schema:
 
-<PackageExec command="zenstack@next init" />
+<PackageExec command="@zenstackhq/cli@next init" />
 
 Then create a `zenstack/schema.zmodel` file in the root of your project. You can use the following sample schema to get started:
 
