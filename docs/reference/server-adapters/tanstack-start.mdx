@@ -1,0 +1,66 @@
+---
+title: TanStack Start
+description: Adapter for integrating with TanStack Start
+sidebar_position: 9
+---
+
+import ErrorHandling from './_error-handling.md';
+import AdapterOptions from './_options.mdx';
+import UsingAPI from './_using-api.mdx'
+
+# TanStack Start Adapter
+
+The `@zenstackhq/server/tanstack-start` module provides a quick way to install API routes onto a [TanStack Start](https://tanstack.com/start) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+
+TanStack Start is a full-stack React framework powered by TanStack Router, offering full-document SSR, streaming, server functions, and bundling capabilities.
+
+### Installation
+
+```bash
+npm install @zenstackhq/server
+```
+
+### Mounting the API
+
+You can use the `TanStackStartHandler` to create a handler for your API routes. TanStack Start uses file-based routing, so you'll typically create a catch-all route to handle all CRUD operations:
+
+```ts title='app/routes/api/$.ts'
+import { createFileRoute } from '@tanstack/react-router'
+import { TanStackStartHandler } from '@zenstackhq/server/tanstack-start'
+import { enhance } from '@zenstackhq/runtime'
+import { prisma } from '~/server/db'
+
+// create an enhanced Prisma client with user context
+function getPrisma() {
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    return enhance(prisma, { user: getSessionUser() });
+}
+
+const handler = TanStackStartHandler({
+    getPrisma
+})
+
+export const Route = createFileRoute('/api/$')({
+    server: {
+        handlers: {
+            GET: handler,
+            POST: handler,
+            PUT: handler,
+            PATCH: handler,
+            DELETE: handler,
+        }
+    }
+})
+```
+
+The TanStack Start handler takes the following options to initialize:
+
+<AdapterOptions getPrisma='() => unknown | Promise<unknown>' />
+
+### Using the API
+
+<UsingAPI />
+
+<ErrorHandling />
+
