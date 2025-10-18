@@ -264,6 +264,10 @@ model Model {
 
 ## Predefined attributes
 
+:::info
+Attributes related to input validation are documented in a [separate page](./input-validation.md).
+:::
+
 ### @@id
 
 ```zmodel

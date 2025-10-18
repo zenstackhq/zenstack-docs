@@ -82,6 +82,10 @@ Parameter's type can also carry the following suffix:
 
 ## Predefined functions
 
+:::info
+Functions related to input validation are documented in a [separate page](./input-validation.md).
+:::
+
 ### uuid()
 
 ```zmodel
