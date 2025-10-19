@@ -4,7 +4,7 @@ import GithubCodeBlock from './GithubCodeBlock';
 
 interface StackBlitzGithubProps {
     repoPath: string;
-    openFile?: string;
+    openFile?: string | string[];
     codeFiles?: string[];
     startScript?: string;
 }
@@ -15,14 +15,16 @@ const StackBlitzGithub: React.FC<StackBlitzGithubProps> = ({
     codeFiles: plainCodeFiles = undefined,
     startScript,
 }) => {
+    const openFiles = Array.isArray(openFile) ? openFile : openFile ? openFile.split(',') : [];
+
     const options = {
-        openFile,
+        openFile: openFiles ? openFiles.join(',') : undefined,
         view: 'editor',
         startScript,
     } as const;
 
     if (!plainCodeFiles) {
-        plainCodeFiles = [openFile];
+        plainCodeFiles = [...openFiles];
     }
 
     return (

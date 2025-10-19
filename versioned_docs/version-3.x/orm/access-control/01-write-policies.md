@@ -18,9 +18,9 @@ plugin policy {
 
 ## Rule Types
 
-Policies can be defined as whitelist rule using the `@@allow` attribute or blacklist rule using `@@deny`.
+Policies can be defined as whitelist rules using the `@@allow` attribute or blacklist rules using `@@deny`.
 
-Here's a quick example. Don't worry about the details yet. We'll cover the CRUD operations and rule expressions in details later.
+Here's a quick example. Don't worry about the details yet. We'll cover the CRUD operations and rule expressions later.
 
 ```zmodel
 model User {
@@ -55,8 +55,8 @@ model Post {
 You can write as many policy rules as you want for a model. The order of the rules doesn't matter. ZenStack determines whether a CRUD operation is allowed using the following logic:
 
 1. If any `@@deny` rule evaluates to true, it's denied.
-1. If any `@@allow` rule evaluates to true, it's allowed.
-1. Otherwise, it's denied (secure by default).
+2. If any `@@allow` rule evaluates to true, it's allowed.
+3. Otherwise, it's denied (secure by default).
 
 ## Operation Types
 
@@ -76,7 +76,7 @@ Policy rules are expressed in terms of what CRUD operations they govern.
 
 - `post-update`
 
-    A special operation type to expression conditions that should hold **after** an entity is updated. See [Post-Update Policies](./post-update.md) for details.
+    A special operation type to express conditions that should hold **after** an entity is updated. See [Post-Update Policies](./post-update.md) for details.
 
 - `delete`
   
@@ -95,16 +95,18 @@ ZModel supports an intuitive expression language that's very similar to JavaScri
 - Literals like strings, numbers, and booleans
 - Comparisons with `==`, `>`, etc.
 - Logical combinations with `&&`, `||`, etc.
-- References to current model's fields like `published`
+- References to the current model's fields, like `published`
 
-They provide the basic building blocks for composing complex policy rules. Functions are a extensibility mechanism that allows encapsulating specific semantics (e.g., getting the current user). Function calls are expressions so they can be combined with other expressions using operators.
+They provide the basic building blocks for composing complex policy rules.
+
+Functions are an extensibility mechanism that allows encapsulating specific semantics (e.g., getting the current user). Function calls are expressions, so they can be combined with other expressions using operators.
 
 The following sections will cover some of the functions and expression types that are specifically designed for writing policy rules. See [Functions](../../reference/zmodel/07-function.md) and [Expression](../../reference/zmodel/08-expression.md) reference for more details. Refer to the [@zenstackhq/plugin-policy](../../reference/plugins/policy.md) documentation for functions available for writing policies.
 
 
 ## Accessing Current User
 
-The most common type of access control rules are those that concern the current user. The built-in `auth()` function is designed to access the current user. `auth()` returns an object, and its type is inferred from the ZModel schema with the following rules:
+The most common type of access control rules concerns the current user. The built-in `auth()` function is designed to access the current user. `auth()` returns an object, and its type is inferred from the ZModel schema with the following rules:
 
 1. If there's a `model` or `type` annotated with the `@@auth` attribute, it'll be used as the type of `auth()`.
 2. Otherwise, if there's a `model` or `type` named "User" (case sensitive), it'll be used.
@@ -134,9 +136,9 @@ model Post {
 
 So the big question becomes: Where does the value of `auth()` come from?
 
-ZenStack isn't an authentication framework, so it doesn't know how to fetch the current login user. You are responsible for providing that piece of information. We'll cover it in the next part where we talk about access control's runtime aspect. For now, just assume `auth()` gives you the **validated** current user info.
+ZenStack isn't an authentication library, so it doesn't know how to fetch the current login user. You are responsible for providing that piece of information. We'll cover it in the next part, where we talk about the runtime aspect of access control. For now, assume `auth()` gives you the **validated** current user info.
 
-If you don't provide the current user, `auth()` will return `null`, and you can use it to write rules for anonymous users like:
+If you don't provide the current user, `auth()` will return `null`, and you can use it to write rules for anonymous users, like:
 
 ```zmodel
 @@deny('all', auth() == null)
@@ -144,7 +146,7 @@ If you don't provide the current user, `auth()` will return `null`, and you can 
 
 ## Accessing Relations
 
-You can achieve a lot by writing policies using model's simple fields, however, real-world access control often involves relations. For example:
+You can achieve a lot by writing policies using a model's simple fields; however, real-world access control often involves relations. For example:
 
 > A user can only create posts if his profile is verified, where "Profile" is a relation of "User".
 
@@ -152,7 +154,7 @@ ZenStack's policy really shines when it comes to how flexible it is in traversin
 
 ### To-One Relations
 
-Accessing to-one relation is straightforward, simply use dot notation use relation's field, and you can chain as deeply as you need:
+Accessing to-one relation is straightforward, simply use dot notation to use the relation's field, and you can chain as deeply as you need:
 
 ```zmodel
 model User {
@@ -204,9 +206,9 @@ You can nest collection predicate expressions to build deep to-many relation tra
 
 ## Special Notes About `create`
 
-There're limitations with what relations can be accessed in `create` rules, because such rules are evaluated before the record is created, and at that time, relations are not accessible yet.
+There are limitations on what relations can be accessed in `create` rules, because such rules are evaluated before the record is created. At that time, relations are not accessible yet.
 
-As a result, `create` rules can only access "owned" relations - those relations that have foreign keys defined in the model where the rule is defined. For example, the following is allowed:
+As a result, `create` rules can only access "owned" relations - those relations that have foreign keys defined in the model where the rule is defined. During create, if the foreign key fields are set, the relations are accessible. For example, the following is allowed:
 
 ```zmodel
 model Profile {
@@ -250,7 +252,7 @@ model Profile {
 }
 ```
 
-You can use the `check()` function to directly delegate the policy check to the related entity:
+You can use the `check()` function to delegate the policy check to the related entity directly:
 
 ```zmodel
 model User {
@@ -267,7 +269,7 @@ model Profile {
 }
 ```
 
-You can make it even more concise by omitting the second argument and infer it from the context:
+You can make it even more concise by omitting the second argument and inferring it from the context:
 
 ```zmodel
 model Profile {

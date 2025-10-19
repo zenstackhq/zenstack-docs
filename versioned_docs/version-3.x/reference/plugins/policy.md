@@ -4,11 +4,11 @@ sidebar_position: 3
 
 # @zenstackhq/plugin-policy
 
-The `@zenstackhq/plugin-policy` plugin provides a set of ZModel declarations and a ORM runtime plugin to enable access control features. See [Access Control](../../orm/access-control/index.md) for more details.
+The `@zenstackhq/plugin-policy` plugin provides a set of ZModel declarations and an ORM runtime plugin to enable access control features. See [Access Control](../../orm/access-control/index.md) for more details.
 
 ## ZModel Declarations
 
-The plugin contributes a set of ZModel attributes and functions for defining access control policies. To use them, you need to add the plugin declaration in your ZModel schema:
+The plugin contributes a set of ZModel attributes and functions for defining access control policies. To use them, you need to enable the plugin in your ZModel schema:
 
 ```zmodel
 plugin policy {
@@ -76,7 +76,7 @@ The following functions can be used in policy conditions:
     }
     ```
 
-    Checks the field value starts with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
+    Checks if the field value starts with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
 
 - `endsWith()`
 
@@ -85,7 +85,7 @@ The following functions can be used in policy conditions:
     }
     ```
 
-    Checks the field value ends with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
+    Checks if the field value ends with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
 
 - `has()`
 
@@ -121,9 +121,27 @@ The following functions can be used in policy conditions:
 
     Checks if the list field value is empty.
 
+- `currentModel()`
+
+    ```zmodel
+    function currentModel(casing: String?): String {}
+    ```
+
+    Returns the name of the model for which the policy rule is defined. If the rule is inherited to a sub model, this function returns the name of the sub model.
+        - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
+
+- `currentOperation()`
+
+    ```zmodel
+    function currentOperation(casing: String?): String {}
+    ```
+
+    Returns the operation for which the policy rule is defined for. Note that a rule with "all" operation is expanded to "create", "read", "update", and "delete" rules, and the function returns corresponding value for each expanded version.
+        - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
+
 ## Runtime Plugin
 
-The plugin exports a runtime plugin `PolicyPlugin` that can be installed to the ORM client to enable access control enforcement.
+The plugin exports a runtime plugin `PolicyPlugin` that can be installed on the ORM client to enable access control enforcement.
 
 ```ts
 import { ZenStackClient } from '@zenstackhq/runtime';

@@ -4,13 +4,13 @@ sidebar_position: 6
 
 # Access Control
 
-ZenStack's intuitive schema and type-safe API make it a good choice of ORM, and the built-in access control makes it a great one.
+ZenStack's intuitive schema and type-safe API make it a good choice of ORM, and its built-in access control makes it a great one.
 
 ## Overview
 
-Most applications are designed around three interconnected essential aspects: authentication, data query, and access control (aka authorization). We've covered data query in the previous parts, and this part is dedicated to access control.
+Most applications are designed around three interconnected essential aspects: authentication, data query, and access control (aka authorization). We've covered data query in the previous parts, and this part is dedicated to access control and its relation to authentication.
 
-Common wisdom considers access control to be "business logic" and thus should be implemented in the service or API layer. On the contrary, ZenStack views it as an integral part of the data model, because most of the time, "business-oriented" rules boil down to "who can CRUD which piece of data". Having them colocated with the data model reduces redundancy, ensures consistency, and improves maintainability. As a result, you have a lower chance of "leaking permissions" when the application grows in complexity.
+Traditional wisdom considers access control to be "business logic" and thus should be implemented in the service or API layer. On the contrary, ZenStack views it as an integral part of the data model, because most of the time, "business-oriented" rules boil down to "who can CRUD which piece of data". Having them colocated with the data model reduces redundancy, ensures consistency, and improves maintainability. As a result, you have a lower chance of "leaking permissions" when the application grows in complexity.
 
 ZenStack's access control approach is straightforward:
 
