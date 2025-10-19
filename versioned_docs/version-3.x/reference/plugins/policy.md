@@ -128,7 +128,8 @@ The following functions can be used in policy conditions:
     ```
 
     Returns the name of the model for which the policy rule is defined. If the rule is inherited to a sub model, this function returns the name of the sub model.
-        - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
+        
+      - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
 
 - `currentOperation()`
 
@@ -137,7 +138,8 @@ The following functions can be used in policy conditions:
     ```
 
     Returns the operation for which the policy rule is defined for. Note that a rule with "all" operation is expanded to "create", "read", "update", and "delete" rules, and the function returns corresponding value for each expanded version.
-        - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
+        
+      - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
 
 ## Runtime Plugin
 
