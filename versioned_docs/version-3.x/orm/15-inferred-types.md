@@ -1,5 +1,4 @@
 ---
-sidebar_position: 15
 description: TypeScript types derived from the ZModel schema
 ---
 

@@ -3,3 +3,132 @@ sidebar_position: 3
 ---
 
 # @zenstackhq/plugin-policy
+
+The `@zenstackhq/plugin-policy` plugin provides a set of ZModel declarations and a ORM runtime plugin to enable access control features. See [Access Control](../../orm/access-control/index.md) for more details.
+
+## ZModel Declarations
+
+The plugin contributes a set of ZModel attributes and functions for defining access control policies. To use them, you need to add the plugin declaration in your ZModel schema:
+
+```zmodel
+plugin policy {
+    provider = '@zenstackhq/plugin-policy'
+}
+```
+
+### Attributes
+
+Use the following model-level attributes to define access control policies:
+
+- `@@allow`
+
+    ```zmodel
+    attribute @@allow(_ operation: String, _ condition: Boolean)
+    ```
+
+    Defines an access policy that allows a set of operations when the given condition is true.
+     - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
+     - `condition`: a boolean expression that controls if the operation should be allowed.
+  
+- `@@deny`
+  
+    ```zmodel
+    attribute @@deny(_ operation: String, _ condition: Boolean)
+    ```
+
+    Defines an access policy that denies a set of operations when the given condition is true.
+     - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
+     - `condition`: a boolean expression that controls if the operation should be denied.
+
+### Functions
+
+The following functions can be used in policy conditions:
+
+- `auth()`
+
+    ```zmodel
+    function auth(): User {}
+    ```
+
+    Gets the current login user. The return type of the function is the `User` model defined in the current ZModel.
+
+- `now()`
+
+    ```zmodel
+    function now(): DateTime {}
+    ```
+
+    Gets the current datetime.
+
+- `contains()`
+
+    ```zmodel
+    function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {
+    }
+    ```
+
+    Checks if the field value contains the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
+
+- `startsWith()`
+
+    ```zmodel
+    function startsWith(field: String, search: String, caseInSensitive: Boolean?): Boolean {
+    }
+    ```
+
+    Checks the field value starts with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
+
+- `endsWith()`
+
+    ```zmodel
+    function endsWith(field: String, search: String, caseInSensitive: Boolean?): Boolean {
+    }
+    ```
+
+    Checks the field value ends with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
+
+- `has()`
+
+    ```zmodel
+    function has(field: Any[], search: Any): Boolean {}
+    ```
+
+    Checks if the list field value has the given search value.
+
+- `hasSome()`
+
+    ```zmodel
+    function hasSome(field: Any[], search: Any[]): Boolean {
+    }
+    ```
+
+    Checks if the list field value has at least one element of the search list
+
+- `hasEvery()`
+
+    ```zmodel
+    function hasEvery(field: Any[], search: Any[]): Boolean {}
+    ```
+
+    Checks if the list field value has all elements of the search list.
+
+
+- `isEmpty()`
+
+    ```zmodel
+    function isEmpty(field: Any[]): Boolean {}
+    ```
+
+    Checks if the list field value is empty.
+
+## Runtime Plugin
+
+The plugin exports a runtime plugin `PolicyPlugin` that can be installed to the ORM client to enable access control enforcement.
+
+```ts
+import { ZenStackClient } from '@zenstackhq/runtime';
+import { PolicyPlugin } from '@zenstackhq/plugin-policy';
+
+const db = new ZenStackClient(...);
+const authDb = db.$use(new PolicyPlugin());
+```

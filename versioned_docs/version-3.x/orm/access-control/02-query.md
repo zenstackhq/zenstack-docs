@@ -105,3 +105,4 @@ Here are some **IMPORTANT LIMITATIONS** about access control enforcement:
 
 ## Implementation Notes
 
+ZenStack v3's ORM is built above Kysely. Regardless you use the ORM API or the query-builder one, queries are eventually transformed into Kysely's SQL AST, and then compiled down to SQL and sent to the database for execution. The access control enforcement is implemented by transforming the AST and injecting proper filters.

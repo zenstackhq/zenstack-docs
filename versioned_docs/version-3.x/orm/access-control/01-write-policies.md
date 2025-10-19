@@ -99,7 +99,7 @@ ZModel supports an intuitive expression language that's very similar to JavaScri
 
 They provide the basic building blocks for composing complex policy rules. Functions are a extensibility mechanism that allows encapsulating specific semantics (e.g., getting the current user). Function calls are expressions so they can be combined with other expressions using operators.
 
-The following sections will cover some of the functions and expression types that are specifically designed for writing policy rules. Refer to [Functions](../../reference/zmodel/07-function.md) and [Expression](../../reference/zmodel/08-expression.md) reference for more details.
+The following sections will cover some of the functions and expression types that are specifically designed for writing policy rules. See [Functions](../../reference/zmodel/07-function.md) and [Expression](../../reference/zmodel/08-expression.md) reference for more details. Refer to the [@zenstackhq/plugin-policy](../../reference/plugins/policy.md) documentation for functions available for writing policies.
 
 
 ## Accessing Current User

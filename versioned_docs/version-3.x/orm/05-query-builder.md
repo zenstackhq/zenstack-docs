@@ -1,5 +1,4 @@
 ---
-sidebar_position: 5
 description: Query builder API
 ---
 

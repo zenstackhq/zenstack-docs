@@ -1,5 +1,4 @@
 ---
-sidebar_position: 14
 description: Setup logging
 ---
 
