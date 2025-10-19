@@ -1,4 +1,5 @@
 ---
+sidebar_position: 12
 description: Strongly typed JSON fields
 ---
 

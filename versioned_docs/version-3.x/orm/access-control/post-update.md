@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Post-Update Rules
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';

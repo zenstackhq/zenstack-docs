@@ -1,4 +1,5 @@
 ---
+sidebar_position: 16
 description: ORM Errors
 ---
 
@@ -10,7 +11,7 @@ The ORM uses the following error classes from `@zenstackhq/runtime` to represent
 
 This error is thrown when the argument passed to the ORM methods is invalid, e.g., missing required fields, or containing unknown fields. The `cause` property is set to the original error thrown during validation.
 
-If [input validation](../orm/Validation.md) is used, this error is also thrown when the validation rules are violated.
+If [input validation](../orm/validation.md) is used, this error is also thrown when the validation rules are violated.
 
 ## `NotFoundError`
 

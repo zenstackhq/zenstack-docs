@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Querying with Access Control
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';

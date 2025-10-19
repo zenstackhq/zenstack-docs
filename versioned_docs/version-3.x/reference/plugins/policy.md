@@ -27,8 +27,8 @@ Use the following model-level attributes to define access control policies:
     ```
 
     Defines an access policy that allows a set of operations when the given condition is true.
-     - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
-     - `condition`: a boolean expression that controls if the operation should be allowed.
+      - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
+      - `condition`: a boolean expression that controls if the operation should be allowed.
   
 - `@@deny`
   
@@ -37,8 +37,8 @@ Use the following model-level attributes to define access control policies:
     ```
 
     Defines an access policy that denies a set of operations when the given condition is true.
-     - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
-     - `condition`: a boolean expression that controls if the operation should be denied.
+      - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
+      - `condition`: a boolean expression that controls if the operation should be denied.
 
 ### Functions
 

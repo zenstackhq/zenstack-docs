@@ -68,7 +68,7 @@ The `in` keyword can be used to check if a value exists in a list. E.g., `value 
 
 ### Function Calls
 
-Functions can be called using the standard syntax: `functionName(arg1, arg2, ...)`. See [Functions](./07-function.md) for the list of available functions.
+Functions can be called using the standard syntax: `functionName(arg1, arg2, ...)`. See [Functions](./function.md) for the list of available functions.
 
 ### Null
 

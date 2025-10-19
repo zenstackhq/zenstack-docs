@@ -221,7 +221,7 @@ model Mentorship {
 }
 ```
 
-## Referential Actions
+## Referential Action
 
 When defining a relation, you can use referential action to control what happens when one side of a relation is updated or deleted by setting the `onDelete` and `onUpdate` parameters in the `@relation` attribute.
 

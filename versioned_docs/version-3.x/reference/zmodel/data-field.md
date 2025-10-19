@@ -28,7 +28,7 @@ type Type {
 
 -   **FIELD_TYPE**
 
-    Type of the field. Can be a scalar type, a reference to another model or type if the field belongs to a [model](#model), or a reference to another type if it belongs to a [type](#type).
+    Type of the field. Can be a scalar type, a reference to another model or type if the field belongs to a [model](./model.md), or a reference to another type if it belongs to a [type](./type.md).
 
     The following scalar types are supported:
 

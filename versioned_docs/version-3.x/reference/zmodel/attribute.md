@@ -437,8 +437,8 @@ _Params_:
 | name       | The name of the relationship                                                   |
 | fields     | A list of fields defined in the current model                                  |
 | references | A list of fields of the model on the other side of the relation                |
-| onDelete   | Referential action to take on delete. See details [here](#referential-action). |
-| onUpdate   | Referential action to take on update. See details [here](#referential-action). |
+| onDelete   | Referential action to take on delete. See details [here](../../modeling/relation.md#referential-action). |
+| onUpdate   | Referential action to take on update. See details [here](../../modeling/relation.md#referential-action). |
 
 ### @map
 
