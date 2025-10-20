@@ -60,7 +60,7 @@ The short answer is it works in most cases. Please refer to [this guide](./guide
 
 ### Does the order in which access policies are defined matter?
 
-No. See [here](./the-complete-guide/part1/4-access-policy/4.1-model-level.md#evaluation-of-model-level-policies) for how access polices are evaluated.
+No. See [here](./the-complete-guide/part1/4-access-policy/4.1-model-level.md#evaluation-of-model-level-policies) for how access policies are evaluated.
 
 ### Is Prisma's new "prisma-client" generator supported?
 

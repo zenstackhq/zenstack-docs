@@ -16,3 +16,9 @@
 [submodule "code-repos/zenstackhq/v3-doc-orm-polymorphism"]
 	path = code-repos/zenstackhq/v3-doc-orm-polymorphism
 	url = https://github.com/zenstackhq/v3-doc-orm-polymorphism.git
+[submodule "code-repos/zenstackhq/v3-doc-orm-validation"]
+	path = code-repos/zenstackhq/v3-doc-orm-validation
+	url = https://github.com/zenstackhq/v3-doc-orm-validation.git
+[submodule "code-repos/zenstackhq/v3-doc-orm-policy"]
+	path = code-repos/zenstackhq/v3-doc-orm-policy
+	url = https://github.com/zenstackhq/v3-doc-orm-policy.git

@@ -19,5 +19,4 @@ ZModel allows you to define custom types and use them to [type JSON fields](../m
 
 ## Samples
 
-
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-typed-json" codeFiles={['zenstack/schema.zmodel', 'main.ts']} />
