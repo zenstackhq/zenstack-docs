@@ -4,10 +4,12 @@ sidebar_position: 11
 
 # Roadmap
 
-- [ ] Access Control
-- [ ] Data Validation
-- [ ] Zod integration
+This is a list of major features that are planned for the future releases of ZenStack v3. Although no specific timeline is promised, the order roughly represents the priority of these features.
+
+- [x] Access Control
+- [x] Data Validation
 - [ ] Performance benchmark
+- [ ] Zod integration
 - [ ] Query-as-a-Service (automatic CRUD API)
-- [ ] Json filter
+- [ ] TanStack Query integration
 - [ ] Custom procedures
