@@ -13,3 +13,6 @@ This is a list of major features that are planned for the future releases of Zen
 - [ ] Query-as-a-Service (automatic CRUD API)
 - [ ] TanStack Query integration
 - [ ] Custom procedures
+- [ ] Field encryption
+- [ ] Soft delete
+- [ ] Audit trail
