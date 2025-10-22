@@ -13,7 +13,7 @@ Please understand ORM performance is a complex topic because different applicati
 
 ### Repository
 
-https://github.com/zenstackhq/orm-benchmarks
+[zenstackhq/orm-benchmarks](https://github.com/zenstackhq/orm-benchmarks)
 
 ### Configuration Notes
 
