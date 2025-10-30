@@ -158,6 +158,7 @@ This plugin is built-in to ZenStack and does not need to be installed separately
 | preserveTsFiles | Boolean | If the generated TS files should be preserved (after compiled to JS) | No | false |
 | noUncheckedInput | Boolean | Disables schema generation for Prisma's ["Unchecked"](https://github.com/prisma/prisma/discussions/10121#discussioncomment-1621254) input types | No | false |
 | mode | String | Controls if the generated schemas should reject, strict, or passthrough unknown fields. Possible values: "strict", "strip", "passthrough" | No | "strict" |
+| version | String | The Zod version to target. Possible values: "v3", "v4" | No | "v3" |
 
 :::info
 When the `generateModels` option is used to specify a list of models to generate, the plugin will also recursively traverse and include all models that are referenced by the specified models. This can result in more code being generated than you expect.
