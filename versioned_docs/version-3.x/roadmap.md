@@ -8,10 +8,11 @@ This is a list of major features that are planned for the future releases of Zen
 
 - [x] Access Control
 - [x] Data Validation
-- [ ] Performance benchmark
-- [ ] Zod integration
-- [ ] Query-as-a-Service (automatic CRUD API)
+- [x] Performance benchmark
+- [x] Query-as-a-Service (automatic CRUD API)
 - [ ] TanStack Query integration
+- [ ] Zod utility
+- [ ] Custom functions
 - [ ] Custom procedures
 - [ ] Field encryption
 - [ ] Soft delete

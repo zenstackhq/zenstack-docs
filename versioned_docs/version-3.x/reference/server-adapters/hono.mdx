@@ -1,0 +1,49 @@
+---
+title: Hono
+description: Adapter for integrating with Hono
+sidebar_position: 7
+---
+
+import PackageInstall from '../../_components/PackageInstall';
+import ErrorHandling from './_error-handling.md';
+import Intro from './_intro.mdx';
+import AdapterOptions from './_options.mdx';
+
+# Hono Adapter
+
+<Intro module='@zenstackhq/server/hono' framework='Hono' url="https://hono.dev/" />
+
+### Installation
+
+<PackageInstall dependencies={['@zenstackhq/server@next']} />
+
+### Mounting the API
+
+You can use the `createHonoHandler` API to create a [Hono middleware](https://hono.dev/docs/getting-started/basic#using-middleware) that handles CRUD requests automatically:
+
+```ts
+import { Context, Hono } from 'hono';
+import { createHonoHandler } from '@zenstackhq/server/hono';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
+
+const app = new Hono();
+
+app.use(
+    '/api/model/*',
+    createHonoHandler({
+        apiHandler: new RPCApiHandler({ schema }),
+        // getSessionUser extracts the current session user from the request,
+        // its implementation depends on your auth solution
+        getClient: (ctx) => client.$setAuth(getSessionUser(ctx)),
+    })
+);
+```
+
+The middleware factory takes the following options to initialize:
+
+<AdapterOptions getClient='(ctx: Context) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
+
+<ErrorHandling />
