@@ -33,11 +33,6 @@ import { getSessionUser } from '~/auth';
 import { client } from '~/db';
 import { schema } from '~/zenstack/schema';
 
-// create an enhanced Prisma client with user context
-function getPrisma() {
-    return enhance(prisma, { user: getSessionUser() });
-}
-
 const handler = TanStackStartHandler({
     apiHandler: new RPCApiHandler({ schema }),
     // getSessionUser extracts the current session user from the request, its

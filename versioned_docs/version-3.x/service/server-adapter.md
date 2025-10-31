@@ -8,7 +8,7 @@ sidebar_position: 2
 
 Server adapters are components that handle the integration with specific frameworks. They understand how to install API routes and handle framework-specific request and response objects.
 
-Server adapters need to be configured with an API handlers that define the API specification. The following diagram illustrates the relationship between them:
+Server adapters need to be configured with an API handler that define the API specification. The following diagram illustrates the relationship between them:
 
 ```mermaid
 flowchart TD

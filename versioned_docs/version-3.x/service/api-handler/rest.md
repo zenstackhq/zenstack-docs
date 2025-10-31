@@ -2,8 +2,6 @@
 sidebar_position: 2
 ---
 
-# RESTful API Handler
-
 import DataTypeSerialization from './_data_type_serialization.md';
 
 # RESTful API Handler
@@ -359,7 +357,7 @@ You can use the `filter[:selector1][:selector2][...]=value` [query parameter fam
 
 1. Filtering with multiple values
 
-    Multiple filter values can be separated by comma. Items statisfying any of the values will be returned.
+    Multiple filter values can be separated by comma. Items satisfying any of the values will be returned.
 
     ```ts
     GET /api/post?filter[author]=1,2
@@ -367,7 +365,7 @@ You can use the `filter[:selector1][:selector2][...]=value` [query parameter fam
 
 1. Multiple filters
 
-    A request can carry multiple filters. Only items statisfying all filters will be returned.
+    A request can carry multiple filters. Only items satisfying all filters will be returned.
 
     ```ts
     GET /api/post?filter[author]=1&filter[published]=true
@@ -868,7 +866,7 @@ The JSON:API specification doesn't have a native way to represent compound IDs. 
 }
 ```
 
-You can use this ID value convension in places where an ID is needed, e.g., reading a single entity.
+You can use this ID value convention in places where an ID is needed, e.g., reading a single entity.
 
 ```ts
 GET /post/1_2
