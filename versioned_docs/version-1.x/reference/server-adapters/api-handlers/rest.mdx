@@ -632,7 +632,7 @@ PUT /:type/:id
 PATCH /:type/:id
 ```
 
-Both `PUT` and `PATCH` do partial update and has exactly the same behavior.
+Both `PUT` and `PATCH` perform partial updates with identical behavior.
 
 :::info
 Besides plain fields, you can also include relationships in the request body. Please note that this won't update the related resource; instead if only replaces the relationships. If you update a to-many relationship, the new collection will entirely replace the old one.
@@ -730,7 +730,7 @@ PATCH /:type/:id/relationships/:relationship
 ```
 
 :::info
-`PUT` and `PATCH` has exactly the same behavior and both relace the existing relationships with the new ones entirely.
+`PUT` and `PATCH` have identical behavior and both replace the existing relationships with the new ones entirely.
 :::
 
 ##### Status codes
