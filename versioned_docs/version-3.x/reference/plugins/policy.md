@@ -146,7 +146,7 @@ The following functions can be used in policy conditions:
 The plugin exports a runtime plugin `PolicyPlugin` that can be installed on the ORM client to enable access control enforcement.
 
 ```ts
-import { ZenStackClient } from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
 import { PolicyPlugin } from '@zenstackhq/plugin-policy';
 
 const db = new ZenStackClient(...);

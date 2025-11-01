@@ -19,7 +19,7 @@ Most of the time, you don't need to explicitly type the input and output of the 
 
 - `ModelResult`
 
-    The `ModelResult` generic type from `@zenstackhq/runtime` allows you to infer the exact model type given field selection and relation inclusion information.
+    The `ModelResult` generic type from `@zenstackhq/orm` allows you to infer the exact model type given field selection and relation inclusion information.
 
 ## Samples
 

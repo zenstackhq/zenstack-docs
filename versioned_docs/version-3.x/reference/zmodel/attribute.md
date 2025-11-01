@@ -365,7 +365,7 @@ _Params_:
 attribute @@meta(_ name: String, _ value: Any)
 ```
 
-Adds arbitrary metadata to a model. The metadata can be accessed by custom plugins for code generation, or at runtime from the `modelMeta` object exported from `@zenstackhq/runtime/model-meta`. The `value` parameter can be an arbitrary literal expression, including object literals.
+Adds arbitrary metadata to a model. The metadata can be accessed by custom plugins for code generation, or at runtime from the `modelMeta` object exported from `@zenstackhq/orm/model-meta`. The `value` parameter can be an arbitrary literal expression, including object literals.
 
 ```zmodel
 model User {
@@ -482,7 +482,7 @@ attribute @json()
 attribute @meta(_ name: String, _ value: Any)
 ```
 
-Adds arbitrary metadata to a field. The metadata can be accessed by custom plugins for code generation, or at runtime from the `modelMeta` object exported from `@zenstackhq/runtime/model-meta`. The `value` parameter can be an arbitrary literal expression, including object literals.
+Adds arbitrary metadata to a field. The metadata can be accessed by custom plugins for code generation, or at runtime from the `modelMeta` object exported from `@zenstackhq/orm/model-meta`. The `value` parameter can be an arbitrary literal expression, including object literals.
 
 ```zmodel
 model User {

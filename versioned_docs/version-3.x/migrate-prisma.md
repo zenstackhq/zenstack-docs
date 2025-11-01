@@ -32,7 +32,7 @@ ZenStack v3 doesn't depend on Prisma at runtime. Its CLI has a peer dependency o
 - Remove `prisma` and `@prisma/client` from your project dependencies.
 - Install ZenStack packages
     
-    <PackageInstall dependencies={['@zenstackhq/runtime@next']} devDependencies={['@zenstackhq/cli@next']} />
+    <PackageInstall dependencies={['@zenstackhq/orm@next']} devDependencies={['@zenstackhq/cli@next']} />
 
 - Install a database driver
   
@@ -87,7 +87,7 @@ Replace `new PrismaClient()` with `new ZenStackClient(schema, ...)` where `schem
 <TabItem value="postgres" label={`PostgreSQL`}>
 
 ```ts title='db.ts'
-import { ZenStackClient } from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
 import { schema } from './zenstack/schema';
 import { PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
@@ -105,7 +105,7 @@ export const db = new ZenStackClient(schema, {
 <TabItem value="sqlite" label={`SQLite`}>
 
 ```ts title='db.ts'
-import { ZenStackClient } from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
 import { SqliteDialect } from 'kysely';
 import SQLite from 'better-sqlite3';
 import { schema } from './zenstack/schema';

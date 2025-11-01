@@ -46,7 +46,7 @@ You can also always configure a project manually with the following steps:
 
 1. Install dependencies
 
-  <PackageInstall devDependencies={['@zenstackhq/cli@next']} dependencies={['@zenstackhq/runtime@next']} />
+  <PackageInstall devDependencies={['@zenstackhq/cli@next']} dependencies={['@zenstackhq/orm@next']} />
 
 2. Create a `zenstack/schema.zmodel` file
 

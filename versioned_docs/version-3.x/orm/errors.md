@@ -5,7 +5,7 @@ description: ORM Errors
 
 # Errors
 
-The ORM uses the following error classes from `@zenstackhq/runtime` to represent different types of failures:
+The ORM uses the following error classes from `@zenstackhq/orm` to represent different types of failures:
 
 ## `InputValidationError`
 
