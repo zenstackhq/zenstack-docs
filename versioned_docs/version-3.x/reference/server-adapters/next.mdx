@@ -1,0 +1,110 @@
+---
+title: Next.js
+description: Adapter for integrating with Next.js
+sidebar_position: 1
+---
+
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+import PackageInstall from '../../_components/PackageInstall';
+import ErrorHandling from './_error-handling.md';
+import Intro from './_intro.mdx';
+import AdapterOptions from './_options.mdx';
+
+# Next.js Server Adapter
+
+<Intro module='@zenstackhq/server/next' framework='Next.js' url="https://nextjs.org/" />
+
+The server adapter supports both the traditional "pages" router and the new "app" router.
+
+### Installation
+
+<PackageInstall dependencies={['@zenstackhq/server']} />
+
+### Mounting the API
+
+You can use it to create a request handler in an API endpoint like:
+
+<Tabs>
+
+<TabItem value="appdir" label={`App Router`}>
+
+```ts title='/src/app/api/model/[...path]/route.ts'
+import type { NextRequest } from "next/server";
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
+
+const handler = NextRequestHandler({ 
+    apiHandler: new RPCApiHandler({ schema }),
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    getClient: (req: NextRequest) => client.$setAuth(getSessionUser(req)),
+    useAppDir: true });
+
+export {
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as PATCH,
+  handler as DELETE,
+};
+```
+
+The Next.js API route handler takes the following options to initialize:
+
+<AdapterOptions getClient='(req: NextRequest) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
+
+</TabItem>
+
+<TabItem value="pages" label={`Pages Router`}>
+
+```ts title='/src/pages/api/model/[...path].ts'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequestHandler } from '@zenstackhq/server/next';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
+
+export default NextRequestHandler({ 
+    apiHandler: new RPCApiHandler({ schema }),
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    getClient: (req: NextApiRequest, res: NextApiResponse) => client.$setAuth(getSessionUser(req, res)),
+});
+```
+
+The Next.js API route handler takes the following options to initialize:
+
+<AdapterOptions getClient='(req: NextApiRequest, res: NextApiResponse) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
+
+</TabItem>
+
+</Tabs>
+
+### Controlling what endpoints to expose
+
+You can use a [Next.js middleware](https://nextjs.org/docs/pages/building-your-application/routing/middleware) to further control what endpoints to expose. For example, if you're using a RESTful API handler installed at "/api/model", you can disallow listing all `User` entities by adding a middleware like:
+
+```ts title='/src/middleware.ts'
+import { type NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+    const url = new URL(request.url);
+    if (
+        request.method === 'GET' &&
+        url.pathname.match(/^\/api\/model\/user\/?$/)
+    ) {
+        return NextResponse.json({ error: 'Not allowed' }, { status: 405 });
+    }
+}
+
+export const config = {
+    matcher: '/api/model/:path*',
+};
+```
+
+<ErrorHandling />

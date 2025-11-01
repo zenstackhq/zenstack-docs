@@ -360,7 +360,7 @@ You can use the `filter[:selector1][:selector2][...]=value` [query parameter fam
 
 1. Filtering with multiple values
 
-    Multiple filter values can be separated by comma. Items statisfying any of the values will be returned.
+    Multiple filter values can be separated by comma. Items satisfying any of the values will be returned.
 
     ```ts
     GET /api/post?filter[author]=1,2
@@ -368,7 +368,7 @@ You can use the `filter[:selector1][:selector2][...]=value` [query parameter fam
 
 1. Multiple filters
 
-    A request can carry multiple filters. Only items statisfying all filters will be returned.
+    A request can carry multiple filters. Only items satisfying all filters will be returned.
 
     ```ts
     GET /api/post?filter[author]=1&filter[published]=true
@@ -632,7 +632,7 @@ PUT /:type/:id
 PATCH /:type/:id
 ```
 
-Both `PUT` and `PATCH` do partial update and has exactly the same behavior.
+Both `PUT` and `PATCH` perform partial updates with identical behavior.
 
 :::info
 Besides plain fields, you can also include relationships in the request body. Please note that this won't update the related resource; instead if only replaces the relationships. If you update a to-many relationship, the new collection will entirely replace the old one.
@@ -730,7 +730,7 @@ PATCH /:type/:id/relationships/:relationship
 ```
 
 :::info
-`PUT` and `PATCH` has exactly the same behavior and both relace the existing relationships with the new ones entirely.
+`PUT` and `PATCH` have identical behavior and both replace the existing relationships with the new ones entirely.
 :::
 
 ##### Status codes
