@@ -22,3 +22,6 @@
 [submodule "code-repos/zenstackhq/v3-doc-orm-policy"]
 	path = code-repos/zenstackhq/v3-doc-orm-policy
 	url = https://github.com/zenstackhq/v3-doc-orm-policy.git
+[submodule "code-repos/zenstackhq/v3-doc-server-adapter"]
+	path = code-repos/zenstackhq/v3-doc-server-adapter
+	url = https://github.com/zenstackhq/v3-doc-server-adapter
