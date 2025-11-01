@@ -6,7 +6,7 @@ sidebar_label: API
 
 # API Reference
 
-## `@zenstackhq/runtime`
+## `@zenstackhq/orm`
 
 ### `class ZenStackClient`
 

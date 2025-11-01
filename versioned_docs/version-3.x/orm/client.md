@@ -25,7 +25,7 @@ The samples below only show creating a client using SQLite (via [better-sqlite3]
 <PackageInstall dependencies={["better-sqlite3"]} devDependencies={['@types/better-sqlite3']} />
 
 ```ts title='db.ts'
-import { ZenStackClient } from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
 import { SqliteDialect } from 'kysely';
 import SQLite from 'better-sqlite3';
 import { schema } from './zenstack/schema';
@@ -43,7 +43,7 @@ export const db = new ZenStackClient(schema, {
 <PackageInstall dependencies={["pg"]} devDependencies={['@types/pg']} />
 
 ```ts title='db.ts'
-import { ZenStackClient } from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
 import { schema } from './zenstack/schema';
 import { PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
@@ -63,7 +63,7 @@ export const db = new ZenStackClient(schema, {
 The created `db` object has the full ORM API inferred from the type of the `schema` parameter. When necessary, you can also explicitly get the inferred client type like:
 
 ```ts
-import type { ClientContract } from '@zenstackhq/runtime';
+import type { ClientContract } from '@zenstackhq/orm';
 import type { SchemaType } from '@/zenstack/schema';
 
 export type DbClient = ClientContract<SchemaType>;

@@ -13,7 +13,7 @@ After defining access control policies in ZModel, it's time to enjoy their benef
 Similar to the schema side, access control's runtime aspect is encapsulated in the `@zenstackhq/plugin-policy` package too, as a Runtime Plugin (more about this topic [later](../plugins/index.md)). You should install it on the raw ORM client to get a new client instance with access control enforcement.
 
 ```ts
-import { ZenStackClient } from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
 import { PolicyPlugin } from '@zenstackhq/plugin-policy';
 
 // create an unprotected, "raw" ORM client
