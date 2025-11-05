@@ -11,6 +11,8 @@ const GithubCodeBlock: React.FC<GithubCodeBlockProps> = ({ repoPath, file }) => 
     const getLanguage = (file: string): string => {
         if (file.endsWith('.ts')) {
             return 'typescript';
+        } else if (file.endsWith('.tsx')) {
+            return 'tsx';
         } else if (file.endsWith('.zmodel')) {
             return 'zmodel';
         } else {
