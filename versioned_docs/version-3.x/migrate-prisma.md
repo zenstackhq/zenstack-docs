@@ -1,6 +1,6 @@
 ---
 description: How to migrate from a Prisma project to ZenStack v3
-sidebar_position: 11
+sidebar_position: 10
 ---
 
 import PackageInstall from './_components/PackageInstall';
