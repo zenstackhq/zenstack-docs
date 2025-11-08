@@ -32,13 +32,19 @@ function Header() {
                             A TypeScript toolkit that enhances Prisma ORM with flexible Authorization and
                             auto-generated, type-safe APIs/hooks, simplifying full-stack development
                         </p>
-                        <div className={styles.buttons}>
+                        <div className="flex flex-wrap justify-center gap-4">
                             <Link
                                 className="button button--secondary button--lg lg:text-2xl lg:px-8 lg:py-4"
                                 to="/docs/welcome"
                             >
                                 Get Started →
                             </Link>
+                            <a
+                                href="/v3"
+                                className="button button--outline button--lg border-solid lg:text-2xl lg:px-8 lg:py-4 hover:text-gray-200 dark:hover:text-gray-600"
+                            >
+                                Check V3 Beta
+                            </a>
                         </div>
                     </div>
                 </div>

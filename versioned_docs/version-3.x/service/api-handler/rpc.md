@@ -200,7 +200,7 @@ The HTTP status code used by the endpoints follows the following rules:
 
 ### Error response format
 
-When an error occurs, the response body will have the following shape:
+When an error occurs, the response body will have the following shape. See [ORM error](../../orm/errors.md) for details of the `ORMErrorReason` and `RejectedByPolicyReason` enums.
 
 ```ts
 {
@@ -212,8 +212,8 @@ When an error occurs, the response body will have the following shape:
             // error message
             message: string;
 
-            // extra details about the error that's causing the failure
-            cause?: string;
+            // reason of the error
+            reason: ORMErrorReason;
 
             // the model name involved in the error, if applicable
             model?: string;
@@ -226,7 +226,10 @@ When an error occurs, the response body will have the following shape:
 
             // detailed rejection reason, only available when 
             // `rejectedByValidation` or `rejectedByPolicy` is true
-            rejectReason?: string;
+            rejectReason?: RejectedByPolicyReason;
+
+            // the error code given by the underlying database driver
+            dbErrorCode?: unknown;
         }
     }
 }

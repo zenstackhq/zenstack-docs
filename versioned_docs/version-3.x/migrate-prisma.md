@@ -1,6 +1,6 @@
 ---
 description: How to migrate from a Prisma project to ZenStack v3
-sidebar_position: 10
+sidebar_position: 11
 ---
 
 import PackageInstall from './_components/PackageInstall';
@@ -260,7 +260,7 @@ export const db = new ZenStackClient(schema, {
 
 A key difference is that ZenStack's computed fields are evaluated on the database side, which much more efficient and flexible than client-side computation. Read more in the [Computed Fields](./orm/computed-fields.md) documentation.
 
-## Feature Gap
+## Feature Gaps
 
 Here's a list of Prisma features that are not supported in ZenStack v3:
 

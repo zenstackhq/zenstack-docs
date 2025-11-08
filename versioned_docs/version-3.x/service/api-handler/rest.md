@@ -949,6 +949,7 @@ An error response is an object containing the following fields:
     - title: `string`, error title
     - detail: `string`, detailed error message
     - reason: `string`, extra reason for the error
+    - dbErrorCode: `unknown`, the error code given by the underlying database driver
 
 ### Example
 
