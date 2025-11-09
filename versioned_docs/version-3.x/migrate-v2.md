@@ -44,7 +44,7 @@ Since ZenStack v3 is no longer based on Prisma ORM, the first step is to replace
 
 ### Access Control
 
-Access control functionality has been moved into a self-contained plugin. You need to install the package package, add a plugin declaration in ZModel, and then use the plugin at runtime.
+Access control functionality has been moved into a self-contained plugin. You need to install the package, add a plugin declaration in ZModel, and then use the plugin at runtime.
 
 1. Install the package
 
