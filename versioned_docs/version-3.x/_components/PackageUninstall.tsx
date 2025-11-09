@@ -13,7 +13,7 @@ const pkgManagers = [
     { name: 'yarn', command: 'yarn remove' },
 ];
 
-const PackageInstall = ({ dependencies }: Props) => {
+const PackageUninstall = ({ dependencies }: Props) => {
     return (
         <Tabs>
             {pkgManagers.map((pkg) => (
@@ -27,4 +27,4 @@ const PackageInstall = ({ dependencies }: Props) => {
     );
 };
 
-export default PackageInstall;
+export default PackageUninstall;
