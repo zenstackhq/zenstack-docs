@@ -5,22 +5,101 @@ description: ORM Errors
 
 # Errors
 
-The ORM uses the following error classes from `@zenstackhq/orm` to represent different types of failures:
+The ORM throws an `ORMError` in case of failures. The class has the following fields:
 
-## `InputValidationError`
+```ts
+/**
+ * ZenStack ORM error.
+ */
+export class ORMError extends Error {
+    /**
+     * The name of the model that the error pertains to.
+     */
+    model?: string;
 
-This error is thrown when the argument passed to the ORM methods is invalid, e.g., missing required fields, or containing unknown fields. The `cause` property is set to the original error thrown during validation.
+    /**
+     * The error code given by the underlying database driver.
+     */
+    dbErrorCode?: unknown;
 
-If [input validation](../orm/validation.md) is used, this error is also thrown when the validation rules are violated.
+    /**
+     * The error message given by the underlying database driver.
+     */
+    dbErrorMessage?: string;
 
-## `NotFoundError`
+    /**
+     * The reason code for policy rejection. Only available when `reason` is `REJECTED_BY_POLICY`.
+     */
+    rejectedByPolicyReason?: RejectedByPolicyReason;
 
-This error is thrown when a requested record is not found in the database, e.g., when calling `findUniqueOrThrow`, `update`, etc.
+    /**
+     * The SQL query that was executed. Only available when `reason` is `DB_QUERY_ERROR`.
+     */
+    sql?: string;
 
-## `QueryError`
+    /**
+     * The parameters used in the SQL query. Only available when `reason` is `DB_QUERY_ERROR`.
+     */
+    sqlParams?: readonly unknown[];
+}
 
-This error is used to encapsulate all other errors thrown from the underlying database driver. The `cause` property is set to the original error thrown.
+/**
+ * Reason code for ORM errors.
+ */
+export enum ORMErrorReason {
+    /**
+     * ORM client configuration error.
+     */
+    CONFIG_ERROR = 'config-error',
 
-## `RejectedByPolicyError`
+    /**
+     * Invalid input error.
+     */
+    INVALID_INPUT = 'invalid-input',
 
-This error is thrown when an operation is rejected by [access control policies](../orm/access-control/index.md).
+    /**
+     * The specified record was not found.
+     */
+    NOT_FOUND = 'not-found',
+
+    /**
+     * Operation is rejected by access policy.
+     */
+    REJECTED_BY_POLICY = 'rejected-by-policy',
+
+    /**
+     * Error was thrown by the underlying database driver.
+     */
+    DB_QUERY_ERROR = 'db-query-error',
+
+    /**
+     * The requested operation is not supported.
+     */
+    NOT_SUPPORTED = 'not-supported',
+
+    /**
+     * An internal error occurred.
+     */
+    INTERNAL_ERROR = 'internal-error',
+}
+
+/**
+ * Reason code for policy rejection.
+ */
+export enum RejectedByPolicyReason {
+    /**
+     * Rejected because the operation is not allowed by policy.
+     */
+    NO_ACCESS = 'no-access',
+
+    /**
+     * Rejected because the result cannot be read back after mutation due to policy.
+     */
+    CANNOT_READ_BACK = 'cannot-read-back',
+
+    /**
+     * Other reasons.
+     */
+    OTHER = 'other',
+}
+```

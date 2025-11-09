@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 12
 ---
 
 # Roadmap
@@ -10,7 +10,7 @@ This is a list of major features that are planned for the future releases of Zen
 - [x] Data Validation
 - [x] Performance benchmark
 - [x] Query-as-a-Service (automatic CRUD API)
-- [ ] TanStack Query integration
+- [x] TanStack Query integration
 - [ ] Zod utility
 - [ ] Custom functions
 - [ ] Custom procedures
