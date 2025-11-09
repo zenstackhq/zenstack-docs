@@ -26,7 +26,7 @@ Here are a few essential items to verify before preparing your migration:
    
    V3 currently only supports PostgreSQL and SQLite databases. MySQL will be added later.
 
-   For PostgreSQL, only native the traditional TCP-based connection is supported. Newer HTTP-based protocols, such as those supported by providers like Neon and Prisma PG, are not yet supported, but will be in the future.
+   For PostgreSQL, only the traditional TCP-based connection is supported. Newer HTTP-based protocols, such as those supported by providers like Neon and Prisma PG, are not yet supported, but will be in the future.
 
 - Prisma feature gaps
 
@@ -119,7 +119,7 @@ model Post {
 
 ### Abstract Base Models
 
-V2 had the concept of [Abstract Model](/docs/guides/multiple-schema#abstract-model-inheritance) that allows you to define base models that serve purely as base types, but are not mapped to the database. You can use the `extends` keyword to inherit from an abstract model. We found this to be confusing because `extends` is also used for inheriting from a [Polymorphic Model](/guides/polymorphism). The same keyword was used for two very different concepts.
+V2 had the concept of [Abstract Model](/docs/guides/multiple-schema#abstract-model-inheritance) that allows you to define base models that serve purely as base types, but are not mapped to the database. You can use the `extends` keyword to inherit from an abstract model. We found this to be confusing because `extends` is also used for inheriting from a [Polymorphic Model](/docs/guides/polymorphism). The same keyword was used for two very different concepts.
 
 In v3, abstract models are replaced with "types", and the concept of "abstract inheritance" is replaced with [Mixins](./modeling/mixin.md). What you need to do is to change `abstract model` to `type`, and change the `extends` keyword to `with`.
 
