@@ -40,9 +40,11 @@ Here are a few essential items to verify before preparing your migration:
 
 Since ZenStack v3 is no longer based on Prisma ORM, the first step is to replace Prisma dependencies with ZenStack and update the code where `PrismaClient` is created. Please follow the [Prisma Migration Guide](./migrate-prisma.md) for detailed instructions.
 
-## Migrating Access Policies
+## Migrating ZModel
 
-Since v3's ZModel language is backward compatible with v2, not much work is required in ZModel files. One necessary change is that, if you use access policies (`@@allow`, `@@deny`, etc.), they are now declared in self-contained plugins. You need to install the package separately, add a plugin declaration in ZModel, and then install the plugin at runtime.
+### Access Control
+
+Access control functionality has been moved into a self-contained plugin. You need to install the package package, add a plugin declaration in ZModel, and then use the plugin at runtime.
 
 1. Install the package
 
@@ -112,6 +114,40 @@ model Post {
 
    // update is not allowed to change the owner
    @@deny('post-update', ownerId != before().ownerId)
+}
+```
+
+### Abstract Base Models
+
+V2 had the concept of [Abstract Model](/docs/guides/multiple-schema#abstract-model-inheritance) that allows you to define base models that serve purely as base types, but are not mapped to the database. You can use the `extends` keyword to inherit from an abstract model. We found this to be confusing because `extends` is also used for inheriting from a [Polymorphic Model](/guides/polymorphism). The same keyword was used for two very different concepts.
+
+In v3, abstract models are replaced with "types", and the concept of "abstract inheritance" is replaced with [Mixins](./modeling/mixin.md). What you need to do is to change `abstract model` to `type`, and change the `extends` keyword to `with`.
+
+V2:
+
+```zmodel
+abstract model Timestamped {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post extends Timestamped {
+  id Int @id @default(autoincrement())
+  title String
+}
+```
+
+V3:
+
+```zmodel
+type Timestamped {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post with Timestamped {
+  id Int @id @default(autoincrement())
+  title String
 }
 ```
 
