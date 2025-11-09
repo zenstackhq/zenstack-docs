@@ -4,6 +4,7 @@ sidebar_position: 11
 ---
 
 import PackageInstall from './_components/PackageInstall';
+import PackageUninstall from './_components/PackageUninstall';
 
 # Migrating From ZenStack V2
 
@@ -39,6 +40,18 @@ Here are a few essential items to verify before preparing your migration:
 ## Migrating Prisma
 
 Since ZenStack v3 is no longer based on Prisma ORM, the first step is to replace Prisma dependencies with ZenStack and update the code where `PrismaClient` is created. Please follow the [Prisma Migration Guide](./migrate-prisma.md) for detailed instructions.
+
+## Migrating ZenStack Packages
+
+As you have seen in the [Prisma Migration Guide](./migrate-prisma.md), all v3 packages are published under the "@next" tag for now. Two most important packages have been renamed:
+
+- `zenstack`: the CLI package is now named `@zenstackhq/cli`
+- `@zenstackhq/runtime`: the ORM runtime package is now named `@zenstackhq/orm`
+
+Make sure you replace them in your project.
+
+<PackageUninstall dependencies={["zenstack", "@zenstackhq/runtime"]} />
+<PackageInstall dependencies={["@zenstackhq/orm@next"]} devDependencies={["@zenstackhq/cli@next"]} />
 
 ## Migrating ZModel
 
