@@ -374,6 +374,22 @@ model User {
 }
 ```
 
+### @@schema
+
+```zmodel
+attribute @@schema(_ map: String)
+```
+
+Specifies the schema to use in a multi-schema PostgreSQL database. See [Working With PostgreSQL Schemas](../../recipe/postgres-multi-schema.md) for more details.
+
+```zmodel
+model User {
+    id Int @id
+    name String
+    @@schema("auth")
+}
+```
+
 ### @id
 
 ```zmodel

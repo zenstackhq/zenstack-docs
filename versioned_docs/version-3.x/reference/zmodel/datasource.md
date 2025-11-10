@@ -32,6 +32,14 @@ datasource NAME {
 
     The `url` option is only used by the migration engine to connect to the database. The ORM runtime doesn't rely on it. Instead, you provide the connection information when constructing an ORM client.
 
+-  **`defaultSchema`**:
+
+    (PostgreSQL only) The default schema to use for models that don't have an explicit `@@schema` attribute. Defaults to "public". See [Working With PostgreSQL Schemas](../../recipe/postgres-multi-schema.md) for more details.
+
+-  **`schemas`**:
+
+    (PostgreSQL only) List of schemas to use. If specified, you can use the `@@schema` attribute to specify the schema name for a model. See [Working With PostgreSQL Schemas](../../recipe/postgres-multi-schema.md) for more details.
+
 ## Example
 
 ```zmodel
