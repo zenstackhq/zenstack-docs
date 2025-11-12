@@ -82,9 +82,9 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (
         <QueryClientProvider client={queryClient}>
-            <ZenStackHooksProvider value={{ endpoint: '/api/model', fetch: myFetch }}>
+            <QuerySettingsProvider value={{ endpoint: '/api/model', fetch: myFetch }}>
                 <AppContent />
-            </ZenStackHooksProvider>
+            </QuerySettingsProvider>
         </QueryClientProvider>
     );
 }
