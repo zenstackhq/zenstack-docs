@@ -270,4 +270,4 @@ Here's a list of Prisma features that are not supported in ZenStack v3:
 | [JSON Filters](https://www.prisma.io/docs/orm/reference/prisma-client-reference#json-filters) | Yes | |
 | [Full-Text Search](https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search) | Yes | |
 | [Comparing Columns](https://www.prisma.io/docs/orm/reference/prisma-client-reference#compare-columns-in-the-same-table) | Yes | |
-| [Postgres Multi-Schema](https://www.prisma.io/docs/orm/prisma-schema/data-model/multi-schema) | Yes | |
+| [Database Seeding](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding) | Yes | |

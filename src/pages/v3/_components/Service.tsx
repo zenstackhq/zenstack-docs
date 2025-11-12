@@ -75,12 +75,12 @@ export {
                         <TabItem label="Client Code" value="client">
                             <CodeBlock language="tsx" title="React Example" className="p-4 xl:text-lg">
                                 {`import { schema } from './zenstack';
-import { useQueryHooks } from '@zenstackhq/query/react';
+import { useClientQueries } from '@zenstackhq/tanstack-query/react';
 
 export function UserPosts({ userId }: { userId: number }) {
   // use auto-generated hook to query user with posts
-  const { user: userHooks } = useQueryHooks(schema);
-  const { data, isLoading } = userHooks.useFindUnique({
+  const client = useClientQueries(schema);
+  const { data, isLoading } = client.user.useFindUnique({
   where: { id: userId },
   include: { posts: true }
   });
