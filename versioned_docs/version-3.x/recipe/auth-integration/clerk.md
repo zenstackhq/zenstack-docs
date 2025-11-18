@@ -8,11 +8,11 @@ sidebar_label: Clerk
 
 [Clerk](https://clerk.com/) is a comprehensive authentication and user management platform, providing both APIs and pre-made UI components. This guide will show you how to integrate Clerk with ZenStack's [access control system](../../orm/access-control/).
 
-### Set up Clerk
+## Set up Clerk
 
 First, follow Clerk's [quick start guides](https://clerk.com/docs/quickstarts/overview) to set up your project if you haven't already.
 
-### Adjust your ZModel
+## Adjust your ZModel
 
 Since Clerk manages both user authentication and storage, you don't need to store users in your database anymore. However, you still need to provide a type that the `auth()` function can resolve to. Instead of using a regular model, we can declare a `type` instead:
 
@@ -45,7 +45,7 @@ model Post {
 
 If you choose to [synchronize user data to your database](https://clerk.com/docs/users/sync-data-to-your-backend), you can define `User` as a regular `model` since it's then backed by a database table.
 
-### Create a user-bound ORM client
+## Create a user-bound ORM client
 
 When using ZenStack's built-in access control, you often use the `auth()` function in policy rules to reference the current user's identity. The evaluation of `auth()` at runtime requires you to call the `$setAuth()` method and pass in the validated user identity from Clerk. 
 
