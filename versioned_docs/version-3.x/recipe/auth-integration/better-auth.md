@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+sidebar_label: Better-Auth
 ---
 
 import PackageInstall from '../../_components/PackageInstall';
@@ -25,7 +26,9 @@ Add the adapter to your better-auth configuration:
 
 ```ts
 import { zenstackAdapter } from '@zenstackhq/better-auth';
-import { db } from './db'; // your ZenStack ORM client
+
+// ZenStack ORM client
+import { db } from './db'; 
 
 const auth = new BetterAuth({
     database: zenstackAdapter(db, {
@@ -44,6 +47,8 @@ With the adapter set up, you can use better-auth CLI to populate its database mo
 Then, run the "generate" command to generate the schema:
 
 <PackageExec command="@better-auth/cli generate" />
+
+You should see models like `User`, `Session`, and `Account` added to your `schema.zmodel` file if they don't already exist.
 
 Alternatively, you can refer to [better-auth schema documentation](https://www.better-auth.com/docs/concepts/database#core-schema) to manually add the necessary models.
 
@@ -77,7 +82,10 @@ const userId = session.userId;
 Then you can pass it to `ZenStackClient`'s `$setAuth()` method to get a user-bound ORM client.
 
 ```tsx
-const userDb = db.$setAuth({ userId });
+// ZenStack ORM client with access policy plugin installed
+import { authDb } from './db'; 
+
+const userDb = authDb.$setAuth({ userId });
 ```
 
 ### Organization plugin support
@@ -109,7 +117,7 @@ After enabling the Organization plugin and running the CLI to generate the addit
 Then you can use the full `userContext` object to get a user-bound client.
 
 ```tsx
-const userDb = db.$setAuth(userContext);
+const userDb = authDb.$setAuth(userContext);
 ```
 
 The user context will be accessible in ZModel policy rules via the special `auth()` function. To get it to work, let's add a type in ZModel to define the shape of `auth()`:
