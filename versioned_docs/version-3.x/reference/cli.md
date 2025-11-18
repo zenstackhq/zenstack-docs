@@ -245,6 +245,21 @@ Options:
   -h, --help       display help for command
 ```
 
+### format
+
+Format a ZModel schema file.
+
+```bash
+Usage: zen format [options]
+
+Format a ZModel schema file.
+
+Options:
+  --schema <file>  schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
+                   specified in package.json.
+  -h, --help       display help for command
+```
+
 ## Overriding Default Options
 
 ### Default Schema Location
