@@ -32,7 +32,7 @@ model Post extends Base
     viewCount Int @default(0)
 }
 
-model ToDo extends Base
+model Todo extends Base
 {
     title String
     completed Boolean @default(false)

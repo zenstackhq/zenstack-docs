@@ -16,7 +16,7 @@ To get access policies to work, ZenStack needs to be connected to the authentica
 This section is only relevant if you're also using Supabase's Database service as the underlying Postgres database of Prisma/ZenStack.
 :::
 
-This section is not directly to integrating authentication, but since ZenStack is based on Prisma, understanding how Prisma and Supabase should be set up appropriately when Supabase Auth is involved is important.
+This section is not directly related to integrating authentication, but since ZenStack is based on Prisma, understanding how Prisma and Supabase should be set up appropriately when Supabase Auth is involved is important.
 
 Supabase Auth stores user data in a separate Postgres schema called "auth". Since that schema is managed by Supabase, it's good idea not to directly import it into ZModel and use it in your application, since Supabase team may decide to change table schemas at any time. Instead, a better approach is to define your own `User` model in ZModel, and use database triggers to synchronize user data from Supabase Auth to your `User` table.
 
