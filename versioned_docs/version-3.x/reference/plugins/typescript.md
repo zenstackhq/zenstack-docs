@@ -12,7 +12,21 @@ The `@core/typescript` plugin generates TypeScript code from ZModel. The generat
 
 ## Options
 
-- `output`: Specifies the output directory for the generated TypeScript code. If a relative path is provided, it will be resolved relative to the ZModel schema.
+- `output`
+  
+  Optional string. Specifies the output directory for the generated TypeScript code. If a relative path is provided, it will be resolved relative to the ZModel schema. Defaults to the same directory as the ZModel schema.
+
+- `lite`
+  
+  Optional boolean. If set to `true`, the plugin will generate a lite version of schema file "schema-lite.ts" with attributes removed, along side with the full schema. The lite schema is suited to be used in frontend code like with the `@zenstackhq/tanstack-query` library. Defaults to `false`.
+
+- `liteOnly`
+  
+  Optional boolean. If set to `true`, the plugin will only generate the lite version of schema file "schema-lite.ts" with attributes removed, and skip generating the full schema. The lite schema is suited to be used in frontend code like with the `@zenstackhq/tanstack-query` library. Defaults to `false`.
+
+- `importWithFileExtension`
+  
+  Optional string. Used to control the `import` statements in the generated code. If set to a string value like ".js", the generated code will import from local modules with the specified file extension. This option is useful in ESM projects with certain TypeScript `moduleResolution` mode.
 
 ## Output
 

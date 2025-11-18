@@ -110,7 +110,7 @@ type Auth {
 Here is how you could access it in the access policies:
 
 ```tsx
-model ToDo {
+model Todo {
   ...
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String?       @default(auth().organizationId) @allow('update', false)

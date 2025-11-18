@@ -12,7 +12,9 @@ Please note that ZenStack's ORM runtime doesn't depend on Prisma, so you don't n
 
 ## Options
 
-- `output`: Specifies the path of the generated Prisma schema file. If a relative path is provided, it will be resolved relative to the ZModel schema.
+- `output`
+  
+  Optional string. Specifies the path of the generated Prisma schema file. If a relative path is provided, it will be resolved relative to the ZModel schema. Defaults to the same directory as the ZModel schema.
 
 ## Example
 
