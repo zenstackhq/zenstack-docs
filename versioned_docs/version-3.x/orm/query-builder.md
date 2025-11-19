@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-description: Query builder API
+description: Query Builder API
 ---
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';

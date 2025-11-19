@@ -26,6 +26,7 @@ Commands:
   info [path]         Get information of installed ZenStack packages.
   init [path]         Initialize an existing project for ZenStack.
   check [options]     Check a ZModel schema for syntax or semantic errors.
+  format [options]    Format a ZModel schema file.
   help [command]      display help for command
 ```
 
