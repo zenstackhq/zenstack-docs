@@ -26,6 +26,7 @@ Commands:
   info [path]         Get information of installed ZenStack packages.
   init [path]         Initialize an existing project for ZenStack.
   check [options]     Check a ZModel schema for syntax or semantic errors.
+  format [options]    Format a ZModel schema file.
   help [command]      display help for command
 ```
 
@@ -112,6 +113,8 @@ Options:
   --force              skip the confirmation prompt
   --migrations <path>  path that contains the "migrations" directory
   -h, --help           display help for command
+
+If there is a seed script defined in package.json, it will be run after the reset. Use --skip-seed to skip it.
 ```
 
 #### migrate deploy
@@ -178,6 +181,7 @@ Options:
 
 Commands:
   push [options]  Push the state from your schema to your database
+  seed [options]  Seed the database
   help [command]  display help for command
 ```
 
@@ -196,6 +200,28 @@ Options:
   --accept-data-loss  ignore data loss warnings
   --force-reset       force a reset of the database before push
   -h, --help          display help for command
+```
+
+#### db seed
+
+```bash
+Usage: zen db seed [options]
+
+Seed the database.
+
+Options:
+  --no-version-check  do not check for new version
+  -h, --help          Show this help message
+
+Seed script is configured under the "zenstack.seed" field in package.json.
+E.g.:
+{
+    "zenstack": {
+        "seed": "ts-node ./zenstack/seed.ts"
+    }
+}            
+
+Arguments following -- are passed to the seed script. E.g.: "zen db seed -- --users 10"
 ```
 
 ### info
