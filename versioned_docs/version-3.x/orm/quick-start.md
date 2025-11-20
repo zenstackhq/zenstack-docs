@@ -5,8 +5,9 @@ description: Quick start guide
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 import ZModelStarter from '../_components/_zmodel-starter.md';
-import PackageInstall from '../_components/PackageInstall.tsx';
-import PackageExec from '../_components/PackageExec.tsx';
+import PackageInstall from '../_components/PackageInstall';
+import PackageExec from '../_components/PackageExec';
+import PackageDlx from '../_components/PackageDlx';
 
 # Quick Start
 
@@ -30,7 +31,7 @@ Or simply use the [interactive playground](https://stackblitz.com/~/github.com/z
 
 To add ZenStack to an existing project, run the CLI `init` command to install dependencies and create a sample schema:
 
-<PackageExec command="@zenstackhq/cli@next init" />
+<PackageDlx package="@zenstackhq/cli@next" script="zen" args="init" />
 
 Then create a `zenstack/schema.zmodel` file in the root of your project. You can use the following sample schema to get started:
 
