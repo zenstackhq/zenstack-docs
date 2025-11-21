@@ -63,7 +63,6 @@ The factory function accepts an options object with the following fields:
 
   Currently it is not possible to use custom index names. This also works for compound unique constraints just like for [compound IDs](#compound-id-fields).
 
-
 ## Endpoints and Features
 
 The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following sections list the endpoints and features are implemented. The examples refer to the following schema modeling a blogging app:
@@ -965,3 +964,46 @@ An error response is an object containing the following fields:
    ]
 }
 ```
+
+
+## Customizing the handler
+
+`RestApiHandler` exposes its internal helpers as `protected`, making it straightforward to extend the default implementation with project-specific rules.
+
+```ts
+import { RestApiHandler } from '@zenstackhq/server/api';
+import { schema } from '~/zenstack/schema';
+
+class PublishedOnlyRestHandler extends RestApiHandler<typeof schema> {
+    protected override buildFilter(type: string, query: Record<string, string | string[]> | undefined) {
+        const base = super.buildFilter(type, query);
+        if (type !== 'post') {
+            return base;
+        }
+
+        const existing =
+            base.filter && typeof base.filter === 'object' && !Array.isArray(base.filter)
+                ? { ...(base.filter as Record<string, unknown>) }
+                : {};
+
+        return {
+            ...base,
+            filter: {
+                ...existing,
+                published: true,
+            },
+        };
+    }
+}
+
+export const handler = new PublishedOnlyRestHandler({
+    schema,
+    endpoint: 'https://api.example.com',
+});
+```
+
+The example enforces a default filter for the `post` model while delegating all other behavior (query parsing, serialization, pagination, etc.) to the base class. Similar overrides are available for error handling (`handleGenericError`), request payload processing (`processRequestBody`), relationship serialization (`buildRelationSelect`), and more.
+
+:::tip
+For additional extension patterns and guidance on writing a handler from scratch, see [Custom API Handler](./custom).
+:::
