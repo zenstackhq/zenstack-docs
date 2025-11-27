@@ -10,7 +10,7 @@ sidebar_label: API
 
 ### `ClientContract<Schema>`
 
-The interface for the ZenStack ORM client, implemented by [ZenStackClient](#zenstackclient).
+The interface for the ZenStack ORM client, implemented by [ZenStackClient](#zenstackclientschema).
 
 ### `ZenStackClient<Schema>`
 
@@ -21,70 +21,83 @@ The class that implements the ORM client.
  * ZenStack ORM client.
  */
 export const ZenStackClient = function <Schema extends SchemaDef>(
-    this: any,
-    schema: Schema,
-    options: ClientOptions<Schema>,
+  this: any,
+  schema: Schema,
+  options: ClientOptions<Schema>,
 );
+```
 
+#### Options
+
+```ts
 /**
  * ZenStack client options.
  */
 export type ClientOptions<Schema extends SchemaDef> = {
-    /**
-     * Kysely dialect.
-     */
-    dialect: Dialect;
+  /**
+   * Kysely dialect.
+   */
+  dialect: Dialect;
 
-    /**
-     * Plugins.
-     */
-    plugins?: RuntimePlugin<Schema>[];
+  /**
+   * Plugins.
+   */
+  plugins?: RuntimePlugin<Schema>[];
 
-    /**
-     * Logging configuration.
-     */
-    log?: KyselyConfig['log'];
+  /**
+   * Logging configuration.
+   */
+  log?: KyselyConfig['log'];
 
-    // only required when using computed fields
-    /**
-     * Computed field definitions.
-     */
-    computedFields: ComputedFieldsOptions<Schema>;      
+  /**
+   * Whether to automatically fix timezone for `DateTime` fields returned by 
+   * node-pg. Defaults to `true`.
+   *
+   * Node-pg has a terrible quirk that it interprets the date value as local
+   * timezone (as a `Date` object) although for `DateTime` field the data in 
+   * DB is stored in UTC.
+   * @see https://github.com/brianc/node-postgres/issues/429
+   */
+  fixPostgresTimezone?: boolean;
+
+  /**
+   * Whether to enable input validations expressed with attributes like `@email`,
+   * `@regex`, `@@validate`, etc. Defaults to `true`.
+   */
+  validateInput?: boolean;
+
+  /**
+   * Options for omitting fields in ORM query results.
+   */
+  omit?: OmitOptions<Schema>;
+
+  /**
+   * Computed field definitions.
+   */
+  computedFields?: ComputedFieldsOptions<Schema>;      
 };
 ```
 
-#### Query APIs
+#### Properties
 
-Please refer to the [ORM Query API documentation](../orm/api/) for more details about query APIs like `findMany`, `create`, `update`, etc.
-
-#### `$connect()`
+##### `$schema`
 
 ```ts
 /**
- * Eagerly connects to the database.
+ * The schema definition.
  */
-$connect(): Promise<void>;
+readonly $schema: Schema;
 ```
 
-#### `$disconnect()`
-
+##### `$options`
 ```ts
 /**
- * Explicitly disconnects from the database.
+ * The client options.
  */
-$disconnect(): Promise<void>;
+readonly $options: Options;
 ```
 
-#### `$setAuth()`
-
-```ts
-/**
- * Sets the current user identity.
- */
-$setAuth(auth: AuthType<Schema> | undefined): ClientContract<Schema>;
-```
-
-#### `$auth`
+##### `$auth`
 
 ```ts
 /**
@@ -93,40 +106,7 @@ $setAuth(auth: AuthType<Schema> | undefined): ClientContract<Schema>;
 get $auth(): AuthType<Schema> | undefined;
 ```
 
-#### `$use()`
-
-Read more in the [Plugins documentation](../orm/plugins/).
-
-```ts
-/**
- * Returns a new client with the specified plugin installed.
- */
-$use(plugin: RuntimePlugin<Schema>): ClientContract<Schema>;
-```
-
-#### `$unuse()`
-
-Read more in the [Plugins documentation](../orm/plugins/).
-
-```ts
-/**
- * Returns a new client with the specified plugin removed.
- */
-$unuse(pluginId: string): ClientContract<Schema>;
-```
-
-#### `$unuseAll()`
-
-Read more in the [Plugins documentation](../orm/plugins/).
-
-```ts
-/**
- * Returns a new client with all plugins removed.
- */
-$unuseAll(): ClientContract<Schema>;
-```
-
-#### `$qb`
+##### `$qb`
 
 Read more in the [Query Builder API documentation](../orm/query-builder).
 
@@ -137,7 +117,7 @@ Read more in the [Query Builder API documentation](../orm/query-builder).
 readonly $qb: ToKysely<Schema>;
 ```
 
-#### `$qbRaw`
+##### `$qbRaw`
 
 Read more in the [Query Builder API documentation](../orm/query-builder).
 
@@ -147,3 +127,81 @@ Read more in the [Query Builder API documentation](../orm/query-builder).
  */
 readonly $qbRaw: AnyKysely;
 ```
+
+#### APIs
+
+Please refer to the [ORM Query API documentation](../orm/api/) for more details about CRUD APIs like `findMany`, `create`, `update`, etc.
+
+##### `$connect()`
+
+```ts
+/**
+ * Eagerly connects to the database.
+ */
+$connect(): Promise<void>;
+```
+
+##### `$disconnect()`
+
+```ts
+/**
+ * Explicitly disconnects from the database.
+ */
+$disconnect(): Promise<void>;
+```
+
+##### `$setAuth()`
+
+```ts
+/**
+ * Sets the current user identity.
+ */
+$setAuth(auth: AuthType<Schema> | undefined): ClientContract<Schema>;
+```
+
+##### `$setOptions`
+
+```ts
+/**
+ * Returns a new client with new options applied.
+ * @example
+ * ```
+ * const dbNoValidation = db.$setOptions({ ...db.$options, validateInput: false });
+ * ```
+ */
+$setOptions<Options extends ClientOptions<Schema>>(options: Options): ClientContract<Schema, Options>;
+```
+
+##### `$use()`
+
+Read more in the [Plugins documentation](../orm/plugins/).
+
+```ts
+/**
+ * Returns a new client with the specified plugin installed.
+ */
+$use(plugin: RuntimePlugin<Schema>): ClientContract<Schema>;
+```
+
+##### `$unuse()`
+
+Read more in the [Plugins documentation](../orm/plugins/).
+
+```ts
+/**
+ * Returns a new client with the specified plugin removed.
+ */
+$unuse(pluginId: string): ClientContract<Schema>;
+```
+
+##### `$unuseAll()`
+
+Read more in the [Plugins documentation](../orm/plugins/).
+
+```ts
+/**
+ * Returns a new client with all plugins removed.
+ */
+$unuseAll(): ClientContract<Schema>;
+```
+
