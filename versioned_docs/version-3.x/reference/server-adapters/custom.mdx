@@ -1,0 +1,134 @@
+---
+title: Custom Server Adapter
+description: Wire ZenStack API handlers into frameworks that do not have a built-in adapter yet.
+sidebar_position: 20
+---
+
+# Custom Server Adapter
+
+## When to build one
+
+Server adapters translate framework-specific requests into the framework-agnostic contract implemented by ZenStack API handlers. If your runtime is not covered by a [built-in adapter](./next), you can create a lightweight bridge by combining the shared adapter utilities and the generic handler contract.
+
+## Core contracts
+
+```ts
+import { logInternalError, type CommonAdapterOptions } from '@zenstackhq/server/common';
+import type { ApiHandler, RequestContext, Response } from '@zenstackhq/server/types';
+```
+
+- `CommonAdapterOptions` gives every adapter an `apiHandler` field so it can delegate work to REST, RPC, or a custom handler.
+- `logInternalError` mirrors the logging behavior of the official adapters, making it easy to surface unexpected failures.
+- `ApiHandler`, `RequestContext`, and `Response` describe the shape of the data you must provide to the handler and how to forward the result back to your framework.
+
+## Implementation outline
+
+1. **Identify the minimal options surface.** Extend `CommonAdapterOptions` with whatever context your framework needs (for example, a `getClient` callback or a URL prefix).
+2. **Map the framework request to `RequestContext`.** Collect the HTTP method, path (excluding any prefix), query parameters, body, and the ZenStack client instance. Move the heavy lifting—policy enforcement, serialization, pagination—to the handler.
+3. **Send the handler response back through the framework.** Serialize `Response.body`, apply the status code, and fall back to `logInternalError` if anything throws.
+
+## Example: minimal Node HTTP adapter
+
+The snippet below wires `IncomingMessage`/`ServerResponse` from Node's `http` module into any ZenStack handler.
+
+```ts
+import type { IncomingMessage, ServerResponse } from 'http';
+import type { ClientContract } from '@zenstackhq/orm';
+import type { SchemaDef } from '@zenstackhq/orm/schema';
+import { logInternalError, type CommonAdapterOptions } from '@zenstackhq/server/common';
+import type { RequestContext } from '@zenstackhq/server/types';
+
+interface NodeAdapterOptions<Schema extends SchemaDef> extends CommonAdapterOptions<Schema> {
+    prefix?: string;
+    getClient(request: IncomingMessage, response: ServerResponse): ClientContract<Schema> | Promise<ClientContract<Schema>>;
+}
+
+export function createNodeAdapter<Schema extends SchemaDef>(
+    options: NodeAdapterOptions<Schema>,
+): (request: IncomingMessage, response: ServerResponse) => Promise<void> {
+    const prefix = options.prefix ?? '/api';
+
+    return async (request, response) => {
+        if (!request.url || !request.method || !request.url.startsWith(prefix)) {
+            response.statusCode = 404;
+            response.end();
+            return;
+        }
+
+        let client: ClientContract<Schema> | undefined;
+        try {
+            client = await options.getClient(request, response);
+        } catch (err) {
+            logInternalError(options.apiHandler.log, err);
+        }
+
+        if (!client) {
+            response.statusCode = 500;
+            response.setHeader('content-type', 'application/json');
+            response.end(JSON.stringify({ message: 'Unable to resolve ZenStack client' }));
+            return;
+        }
+
+        const url = new URL(request.url, 'http://localhost');
+        const query = Object.fromEntries(url.searchParams);
+        const requestBody = await readJson(request);
+
+        const context: RequestContext<Schema> = {
+            method: request.method,
+            path: url.pathname.slice(prefix.length) || '/',
+            query,
+            requestBody,
+            client,
+        };
+
+        try {
+            const handlerResponse = await options.apiHandler.handleRequest(context);
+            response.statusCode = handlerResponse.status;
+            response.setHeader('content-type', 'application/json');
+            response.end(JSON.stringify(handlerResponse.body));
+        } catch (err) {
+            logInternalError(options.apiHandler.log, err);
+            response.statusCode = 500;
+            response.setHeader('content-type', 'application/json');
+            response.end(JSON.stringify({ message: 'An internal server error occurred' }));
+        }
+    };
+}
+
+async function readJson(request: IncomingMessage) {
+    const chunks: Array<Buffer> = [];
+    for await (const chunk of request) {
+        chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+    }
+    if (chunks.length === 0) {
+        return undefined;
+    }
+
+    const payload = Buffer.concat(chunks).toString('utf8');
+    return payload ? JSON.parse(payload) : undefined;
+}
+```
+
+You can plug the adapter into a server just like the packaged adapters:
+
+```ts
+import { createServer } from 'http';
+import { RestApiHandler } from '@zenstackhq/server/api';
+import { schema } from '~/zenstack/schema';
+import { createNodeAdapter } from './node-adapter';
+
+const handler = new RestApiHandler({ schema, endpoint: 'https://api.example.com' });
+
+createServer(
+    createNodeAdapter({
+        prefix: '/api',
+        apiHandler: handler,
+        getClient: (req, res) => /* return a tenant-aware ZenStack client based on req */,
+    }),
+).listen(3000);
+```
+
+## Where to go next
+
+- Review the implementation of a built-in adapter—such as [Express](./express) or [SvelteKit](./sveltekit)—for inspiration on error handling, streaming bodies, and auth integration.
+- Pair a custom adapter with an extended handler from [Custom API Handler](../../service/api-handler/custom) to keep framework and business logic responsibilities cleanly separated.
