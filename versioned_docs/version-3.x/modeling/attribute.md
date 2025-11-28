@@ -15,8 +15,8 @@ By convention, attributes attached to models use a double `@@` prefix, while tho
 
 ```zmodel
 model User {
-    id        Int    @id
-    email     String @unique
+    id    Int    @id
+    email String @unique
 
     @@index([email, name])
 }

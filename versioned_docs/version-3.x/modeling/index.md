@@ -32,7 +32,7 @@ model User {
 }
 
 model Post {
-    id    Int    @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     title     String

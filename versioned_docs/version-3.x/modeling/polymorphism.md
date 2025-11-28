@@ -106,7 +106,7 @@ There are two special things about a polymorphic base model:
 
 You can also have a deep hierarchy involving multiple levels of base models. Just need to make sure each base model has its own discriminator field and `@@delegate` attribute. Extending from multiple base models directly is not supported.
 
-## Migration behavior
+## Database schema
 
 The migration engine takes care of mapping both the base model and the concrete ones to tables, and creates one-to-one relations between the base and each of its derivations.
 

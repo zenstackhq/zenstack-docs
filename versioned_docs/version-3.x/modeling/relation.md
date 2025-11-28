@@ -73,14 +73,14 @@ A typical one-to-many relation looks like this:
 
 ```zmodel
 model User {
-    id        Int    @id
-    posts     Post[]
+    id    Int    @id
+    posts Post[]
 }
 
 model Post {
-    id        Int  @id
-    author    User @relation(fields: [authorId], references: [id])
-    authorId  Int
+    id       Int  @id
+    author   User @relation(fields: [authorId], references: [id])
+    authorId Int
 }
 ```
 
