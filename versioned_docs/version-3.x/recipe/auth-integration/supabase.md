@@ -10,7 +10,7 @@ sidebar_label: Supabase Auth
 
 To get access policies to work, ZenStack needs to be connected to the authentication system to get the user's identity. If you use Supabase as your authentication provider, this document will guide you through integrating ZenStack with it. 
 
-### Syncing Supabase Auth users to your database
+## Syncing Supabase Auth users to your database
 
 :::info
 This section is only relevant if you're also using Supabase's Database service as the underlying Postgres database of ZenStack.
@@ -18,7 +18,7 @@ This section is only relevant if you're also using Supabase's Database service a
 
 Supabase Auth stores user data in a separate Postgres schema called "auth". Since that schema is managed by Supabase, it's good idea NOT to directly import it into ZModel and use it in your application. Instead, if you want to have a synchronized copy of the data, refer to [Supabase's user management documentation](https://supabase.com/docs/guides/auth/managing-user-data) for how to set up database triggers and keep your user table in sync with Supabase Auth.
 
-### Creating a user-bound ORM client
+## Creating a user-bound ORM client
 
 Supabase provides the `@supabase/ssr` package to help with server-side authentication. Please refer to [its documentation](https://supabase.com/docs/guides/auth/server-side) for full details. The following example shows how to do it in a Next.js application.
 
