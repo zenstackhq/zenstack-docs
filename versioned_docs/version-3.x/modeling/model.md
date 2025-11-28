@@ -35,7 +35,7 @@ If your model needs a composite ID, you can use the `@@id` model-level attribute
 ```zmodel
 model City {
     country String
-    name String
+    name    String
     // highlight-next-line
     @@id([country, name])
 }
@@ -51,7 +51,7 @@ model User {
 
 model City {
     country String
-    name String
+    name    String
     // highlight-next-line
     @@unique([country, name])
 }
@@ -95,7 +95,7 @@ Each model field must at least have a name and a type. A field can be typed in o
    }
 
    model User {
-       id Int @id
+       id   Int  @id
        // highlight-next-line
        role Role
    }
@@ -107,9 +107,9 @@ Each model field must at least have a name and a type. A field can be typed in o
 
     ```zmodel
     model Post {
-        id      Int @id
+        id       Int  @id
         // highlight-next-line
-        author  User   @relation(fields: [authorId], references: [id])
+        author   User @relation(fields: [authorId], references: [id])
         authorId Int
     }
     ```
@@ -126,7 +126,7 @@ Each model field must at least have a name and a type. A field can be typed in o
    }
 
    model User {
-       id Int  @id
+       id      Int     @id
        // highlight-next-line
        address Address @json
    }
@@ -136,7 +136,7 @@ A field can be set as optional by adding the `?` suffix to its type, or list by 
 
 ```zmodel
 model User {
-    id   Int     @id
+    id   Int      @id
     // highlight-next-line
     name String?
     // highlight-next-line
