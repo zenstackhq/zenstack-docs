@@ -3,7 +3,7 @@ title: 'ZenStack V3: The Perfect Prisma ORM Alternative'
 description: Why fighting Prisma's limitations when you can have a better choice?
 tags: [prisma, orm]
 authors: yiming
-date: 2025-12-01
+date: 2025-11-30
 image: ./cover.png
 ---
 
