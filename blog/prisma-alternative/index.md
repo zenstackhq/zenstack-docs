@@ -206,7 +206,7 @@ ZenStack is a monorepo, 100% TypeScript project - no native binaries, no WASM mo
 
 | ORM        | "node_modules" Size |
 |------------|-------------------|
-| Prisma     | 224 MB             |
+| Prisma 7    | 224 MB             |
 | ZenStack V3 | 33 MB             |
 
 A simpler code base also makes it easier for the community to navigate and contribute.
