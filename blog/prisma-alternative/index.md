@@ -11,7 +11,7 @@ image: ./cover.png
 
 ![Cover Image](cover.png)
 
-[Prisma](https://www.prisma.io/) won the hearts of many developers with its excellent developer experience - the elegant schema language, the intuitive query API, and the unmatched type-safety. However, as time went by, its focus shifted, and innovation in the ORM space slowed down considerably. Many successful OSS projects indeed struggle to meet the ever-growing demands, but you'll be surprised to find that many seemingly fundamental features that have been requested for years are still missing today, such as:
+[Prisma](https://www.prisma.io/) won the hearts of many TypeScript developers with its excellent developer experience - the elegant schema language, the intuitive query API, and the unmatched type-safety. However, as time went by, its focus shifted, and innovation in the ORM space slowed down considerably. Many successful OSS projects indeed struggle to meet the ever-growing demands, but you'll be surprised to find that many seemingly fundamental features that have been requested for years are still missing today, such as:
 
 - [Define type of content of Json field #3219](https://github.com/prisma/prisma/issues/3219)
 - [Support for Polymorphic Associations #1644](https://github.com/prisma/prisma/issues/1644)
