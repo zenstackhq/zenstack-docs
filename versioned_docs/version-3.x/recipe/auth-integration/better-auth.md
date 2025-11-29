@@ -151,6 +151,22 @@ model Todo {
 }
 ```
 
+## FAQ
+
+- Why do I get the error "Error: non exhaustive match" when running "zen generate"?
+
+  `@better-auth/cli` has a dependency conflict with ZenStack CLI that causes problems when you use "bun" as package manager. To work around, add the following override to your package.json:
+
+  ```json title="package.json"
+  {
+    "overrides": {
+        "chevrotain": "^11"
+    }
+  }
+  ```
+
+  Then nuke "node_modules" and re-install dependencies.
+
 ## Sample project
 
 Here is a fully working multi-tenant sample project using better-auth, ZenStack v3, and Next.js:
