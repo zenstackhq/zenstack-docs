@@ -221,4 +221,4 @@ All summed up, the project's goal is to be the data layer of modern full-stack a
 
 ## Conclusion
 
-ZenStack V3 is currently in Beta. Please check the documentation [here](https://zenstack.dev/v3) and find the GitHub repo at [https://github.com/zenstackhq/zenstack-v3](https://github.com/zenstackhq/zenstack-v3). Join us in [Discord](https://discord.gg/Ykhr738dUe) to share your thoughts and feedback!
+ZenStack v3 is currently in Beta, and a production-ready version will land soon. If you're interested in trying out migrating an existing Prisma project, you can find a more thorough guide [here](/docs/3.x/migrate-prisma). Make sure to join us in [Discord](https://discord.gg/Ykhr738dUe) and we'd love to hear your feedback!
