@@ -20,9 +20,8 @@ const PackageInstall = ({ devDependencies, dependencies }: Props) => {
             {pkgManagers.map((pkg) => (
                 <TabItem key={pkg.name} value={pkg.name} label={pkg.name}>
                     <CodeBlock language="bash">
-                        {`${devDependencies?.length ? `${pkg.command} ${pkg.dev} ${devDependencies.join(' ')}\n` : ''}${
-                            dependencies?.length ? `${pkg.command} ${dependencies.join(' ')}` : ''
-                        }`}
+                        {`${dependencies?.length ? `${pkg.command} ${dependencies.join(' ')}` : ''}
+${devDependencies?.length ? `${pkg.command} ${pkg.dev} ${devDependencies.join(' ')}\n` : ''}`}
                     </CodeBlock>
                 </TabItem>
             ))}
