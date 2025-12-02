@@ -23,4 +23,4 @@ A multi-tenant Todo app built with Next.js, Auth.js, TanStack Query, and ZenStac
 
 https://github.com/zenstackhq/rallly
 
-Rallly is an open-source scheduling and collaboration tool designed to make organizing events and meetings easier. This repo is a fork of the original Rallly repo, replaced Prisma with ZenStack v3.
+[Rallly](https://github.com/lukevella/rallly) is an open-source scheduling and collaboration tool designed to make organizing events and meetings easier. This repo is a fork of the original Rallly repo, replaced Prisma with ZenStack v3.
