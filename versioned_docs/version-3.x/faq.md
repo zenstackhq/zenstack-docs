@@ -14,4 +14,7 @@ Currently only SQLite (with [better-sqlite3](https://github.com/WiseLibs/better-
 
 ## What JavaScript runtimes are supported?
 
-Currently only Node.js is tested. Please voice your interest if you want support for other runtimes such as Bun or Deno.
+- Node.js: systematically tested.
+- Bun: passed basic end-to-end tests.
+- Vercel Edge Runtime: passed basic end-to-end tests.
+- Deno: not tested.
