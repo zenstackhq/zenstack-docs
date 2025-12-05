@@ -47,3 +47,4 @@ ZenStack currently maintains the following server adapters. New ones will be add
 - [Fastify](../reference/server-adapters/fastify)
 - [Hono](../reference/server-adapters/hono)
 - [Elysia](../reference/server-adapters/elysia)
+- [Custom](../reference/server-adapters/custom)
