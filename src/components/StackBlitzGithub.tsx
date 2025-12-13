@@ -29,13 +29,9 @@ const StackBlitzGithub: React.FC<StackBlitzGithubProps> = ({
 
     return (
         <>
-            <div className="mb-1 italic text-sm">
-                Click{' '}
-                <a href="#" onClick={() => sdk.openGithubProject(repoPath, options)}>
-                    here
-                </a>{' '}
-                to open an interactive playground.
-            </div>
+            <a href="#" onClick={() => sdk.openGithubProject(repoPath, options)}>
+                <img alt="Open in StackBlitz" src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" />
+            </a>
             {plainCodeFiles.map((file) => (
                 <GithubCodeBlock key={file} repoPath={repoPath} file={file} />
             ))}
