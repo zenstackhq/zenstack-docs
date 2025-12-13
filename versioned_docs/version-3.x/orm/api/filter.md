@@ -63,9 +63,51 @@ await db.post.findMany({
 
 ## Json filters
 
-:::info WORK IN PROGRESS
-Filtering on Json fields is work in progress and will be available soon.
+The query API supports flexible filtering on `Json` fields and allows you to reach into nested structures in the JSON data.
+
+### Generic Json filters
+
+Generic Json filters doesn't assume a predefined structure of the JSON data, and allows you to use JSON path to specify the location of the data you want to filter on. Such filters can be used on both plain `Json` and [Typed Json](../../modeling/typed-json) fields. The following fields can be used in the filter body (all fields are optional):
+
+- `path`
+
+    JSON path string for selecting data to filter on. If not provided, the root of the JSON data is used.
+
+    <ZenStackVsPrisma>
+    While for Prisma the "path" field's format depends on the database type, ZenStack unified it to a JSON path string.
+    </ZenStackVsPrisma>
+
+- `equals`
+
+    Checks if the selected data equals the given value. The value can be primitive types, arrays, or objects.
+
+- `not`
+
+    Checks if the selected data does not equal the given value. The value can be primitive types, arrays, or objects.
+
+- `string_contains`, `string_starts_with`, `string_ends_with`
+
+    String matching operators. If the selected data is not a string, the filter evaluates to false.
+
+- `mode`
+
+    Specifies if the string matching should be case sensitive or insensitive. Possible values are "default" (use default database behavior) and "insensitive" (case insensitive). Default is "default". Case insensitive matching is only supported on databases that support it natively (e.g., PostgreSQL).
+
+- `array_contains`, `array_starts_with`, `array_ends_with`
+
+    Array matching operators. If the selected data is not an array, the filter evaluates to false.
+
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="filter/json.ts" startScript="generate,filter:json" />
+
+### Typed Json filters
+
+Typed Json fields, with their structure well defined in the schema, allow for a more powerful way to filter. Instead of using JSON path, you can directly use fields to build-up the filter, similar to how you would filter with relations.
+
+:::tip
+You can still use generic Json filters on Typed Json fields if needed.
 :::
+
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-typed-json" openFile="filter.ts" startScript="generate,filter" />
 
 ## Relation filters
 

@@ -19,7 +19,7 @@ ZenStack natively supports polymorphic models. As we have seen in the [Polymorph
 Polymorphic models' CRUD behavior is similar to that of regular models, with two major differences:
 
 1. Base model entities cannot be created directly as they cannot exist without an associated concrete model entity.
-2. When querying a base model (either top-level or nested), the result will include all fields of the associated concrete model (unless fields are explicitly selected). The result's type is a discriminated union, so you can use TypeScript's type narrowing to access the concrete model's specific fields.
+2. When querying a base model (either top-level or nested), the result will include all fields of the associated concrete model (unless fields are explicitly selected).
 
 The ORM query API hides all the complexity of managing polymorphic models for you:
 - When creating a concrete model entity, its base entity is automatically created.
