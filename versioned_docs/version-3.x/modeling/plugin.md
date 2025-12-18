@@ -48,4 +48,6 @@ A plugin can have the following effects to ZModel:
 - It can contribute custom attributes that you can use to annotate models and fields.
 - It can contribute code generation logic that's executed when you run the `zenstack generate` command.
 
-Plugins can also contribute to the ORM runtime behavior, and we'll leave it to the [ORM](../orm/plugins/) part to explain it in detail.
+:::info
+Plugins can also extend ZenStack's CLI and ORM runtime behavior. Please refer to the [Plugin Development](../recipe/plugin-dev.md) documentation for a comprehensive guide.
+:::

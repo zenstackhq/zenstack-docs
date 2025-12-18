@@ -28,3 +28,6 @@
 [submodule "code-repos/zenstackhq/v3-doc-tanstack-query"]
 	path = code-repos/zenstackhq/v3-doc-tanstack-query
 	url = https://github.com/zenstackhq/v3-doc-tanstack-query
+[submodule "code-repos/zenstackhq/v3-doc-plugin"]
+	path = code-repos/zenstackhq/v3-doc-plugin
+	url = https://github.com/zenstackhq/v3-doc-plugin
