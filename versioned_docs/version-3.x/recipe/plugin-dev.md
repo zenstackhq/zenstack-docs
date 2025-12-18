@@ -87,7 +87,7 @@ The CLI attempts to load the plugin module following these steps:
 2. If `provider` is resolvable as a folder containing an index file (with ".js", ".mjs", ".ts", or ".mts" extensions), load the index file.
 3. Otherwise, load it as an npm package.
 
-Please note that only ESM modules are supported. TypeScript files are loaded via [jiti](https://gi.thub.com/unjs/jiti).
+Please note that only ESM modules are supported. TypeScript files are loaded via [jiti](https://github.com/unjs/jiti).
 :::
 
 ## Extending the ORM runtime
