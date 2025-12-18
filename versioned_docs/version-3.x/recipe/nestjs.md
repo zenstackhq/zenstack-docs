@@ -128,6 +128,7 @@ ZenStack also provides [API handlers](../service/api-handler/) that process CRUD
 
 ```ts title="app.controller.ts"
 import { Controller, All, Inject, Param, Query, Req, Res } from '@nestjs/common';
+import { RestApiHandler } from '@zenstackhq/server/api';
 import type { Request, Response } from 'express';
 import { DbService } from './db.service';
 
@@ -146,7 +147,7 @@ export class AppController {
   @All('/*path')
   async handleAll(
     @Req() req: Request,
-    @Res() response: Response,
+    @Res() res: Response,
     @Param('path') path: string[],
     @Query() query: Record<string, any>,
   ) {
@@ -156,10 +157,10 @@ export class AppController {
       path: path.join('/'),
       query,
       requestBody: req.body,
-      client: authDb,
+      client: this.dbService,
     });
 
-    response.status(result.status).json(result.body);
+    res.status(result.status).json(result.body);
   }
 }
 ```
