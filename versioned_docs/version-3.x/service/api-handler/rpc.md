@@ -234,3 +234,33 @@ When an error occurs, the response body will have the following shape. See [ORM 
     }
 }
 ```
+
+
+## Customizing the handler
+
+`RPCApiHandler` exposes several `protected` hooks that let you adapt query parsing, validation, and error formatting without re-implementing the RPC contract.
+
+```ts
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { schema } from '~/zenstack/schema';
+
+class Base64QueryHandler extends RPCApiHandler<typeof schema> {
+    protected override unmarshalQ(value: string, meta: string | undefined) {
+        if (value.startsWith('base64:')) {
+            const decoded = Buffer.from(value.slice('base64:'.length), 'base64').toString('utf8');
+            return super.unmarshalQ(decoded, meta);
+        }
+        return super.unmarshalQ(value, meta);
+    }
+}
+
+export const handler = new Base64QueryHandler({ schema });
+```
+
+This override accepts `q=base64:...` query strings (helpful when URLs must stay ASCII-safe) and then defers to the base implementation for SuperJSON deserialization. You can also override `processRequestPayload` to enforce request invariants or adjust the error helpers (`makeBadInputErrorResponse`, `makeORMErrorResponse`) to match your API surface.
+
+The example relies on Node's `Buffer`; use an alternative decoder if you run in an edge or browser runtime.
+
+:::tip
+See [Custom API Handler](./custom) for more advanced extension patterns and guidance on wiring a handcrafted handler to a server adapter.
+:::
