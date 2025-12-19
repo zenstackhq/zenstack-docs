@@ -40,3 +40,7 @@ const db = new ZenStackClient({ ... });
 const withPlugin = $db.use({ ... });
 const noPlugin = withPlugin.$unuseAll();
 ```
+
+:::info
+Plugins can also extend the ZModel language and ZenStack's CLI. Please refer to the [Plugin Development](../../recipe/plugin-dev.md) documentation for a comprehensive guide.
+:::

@@ -1,4 +1,3 @@
-import sdk from '@stackblitz/sdk';
 import React from 'react';
 import GithubCodeBlock from './GithubCodeBlock';
 
@@ -17,11 +16,15 @@ const StackBlitzGithub: React.FC<StackBlitzGithubProps> = ({
 }) => {
     const openFiles = Array.isArray(openFile) ? openFile : openFile ? openFile.split(',') : [];
 
-    const options = {
-        openFile: openFiles ? openFiles.join(',') : undefined,
-        view: 'editor',
-        startScript,
-    } as const;
+    // construct StackBlitz URL
+    const url = new URL(`https://stackblitz.com/~/github/${repoPath}`);
+    url.searchParams.append('view', 'editor');
+    if (openFiles && openFiles.length > 0) {
+        openFiles.forEach((f) => url.searchParams.append('file', f));
+    }
+    if (startScript) {
+        url.searchParams.append('startScript', startScript);
+    }
 
     if (!plainCodeFiles) {
         plainCodeFiles = [...openFiles];
@@ -29,7 +32,7 @@ const StackBlitzGithub: React.FC<StackBlitzGithubProps> = ({
 
     return (
         <>
-            <a href="#" onClick={() => sdk.openGithubProject(repoPath, options)}>
+            <a href={url.toString()} target="_blank" rel="noopener noreferrer">
                 <img alt="Open in StackBlitz" src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" />
             </a>
             {plainCodeFiles.map((file) => (
