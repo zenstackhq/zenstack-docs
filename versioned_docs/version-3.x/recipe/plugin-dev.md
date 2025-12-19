@@ -20,6 +20,10 @@ You can also package a plugin as an npm package. Make sure to export the "plugin
 
 The following example shows a sample plugin that allows you to mark fields as "password" and specify hashing algorithms to use.
 
+:::info
+Custom attributes and functions by themselves don't have any effect. They are commonly combined with other plugin aspects to achieve a meaningful goal, like we'll see in the next sections.
+:::
+
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-plugin" openFile="zenstack/password-plugin/plugin.zmodel" />
 
 :::info
@@ -38,6 +42,20 @@ model User {
     password String @password(hasher: bcryptHasher(10))
 }
 ```
+
+### Parameter and return types
+
+The following types can be used for attribute parameters and function parameters and returns:
+
+- String
+- Int
+- Float
+- Boolean
+- DateTime
+- Object
+- Any
+
+A parameter can be set optional by suffixing its type with a `?`.
 
 ## Generating custom artifacts
 
