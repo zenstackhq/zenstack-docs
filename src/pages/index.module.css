@@ -10,12 +10,6 @@
     overflow: hidden !important;
 }
 
-@media screen and (min-width: 1200px) {
-    .bannerCode code {
-        font-size: 120% !important;
-    }
-}
-
 @media screen and (max-width: 996px) {
     .heroBanner {
         padding-top: 4rem !important;

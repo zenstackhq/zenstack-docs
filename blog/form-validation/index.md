@@ -81,7 +81,7 @@ model Signup {
 A few quick notes:
 - We used attributes like `@email` and `@endsWith` to attach validation rules to fields.
 - We also used the model-level attribute `@@validate` to express validation rules involving multiple fields and conditions.
-- The `@@allow` attribute grants "create" and "read" access to the table. By default, all operations are denied. Access control is not a focus of this post, but you can learn more [here](https://zenstack.dev/docs/the-complete-guide/part1/access-policy/) if interested.
+- The `@@allow` attribute grants "create" and "read" access to the table. By default, all operations are denied. Access control is not a focus of this post, but you can learn more [here](https://zenstack.dev/docs/2.x/the-complete-guide/part1/access-policy/) if interested.
 
 Run the following commands to generate a Prisma schema and synchronize it to the database:
 

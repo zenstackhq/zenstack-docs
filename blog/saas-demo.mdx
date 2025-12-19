@@ -125,7 +125,7 @@ model Space {
 }
 ```
 
-In addition to the Prisma schema, it has two attributes `@length` and `@regex`, which is the standard validation attribute provided by ZenStack library. Actually, one enhancement to Prisma of ZenStack is to be able to define your own [custom attribute](https://zenstack.dev/docs/reference/zmodel-language#attribute).
+In addition to the Prisma schema, it has two attributes `@length` and `@regex`, which is the standard validation attribute provided by ZenStack library. Actually, one enhancement to Prisma of ZenStack is to be able to define your own [custom attribute](https://zenstack.dev/docs/2.x/reference/zmodel-language#attribute).
 
 Then we need to model the relationship between `Space` and `User`. It’s a typical [many-to-many](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations) relation. So we need to add a relation model `SpaceUser`:
 
@@ -197,7 +197,7 @@ Access policies are expressed with the `@@allow`and `@@deny`model attributes. 
 
     `auth()` is a special function provided by ZenStack to return the current authenticated `User` instance, which represents the user identity of the current data request, after wrapping Prisma client, which I will show you how to do it later.
     The first and third rules should be straightforward. So let’s talk about the second rule, which actually implements **tenant isolation**.
-    It uses the Any condition syntax in [Collection Predicate Expression](https://zenstack.dev/docs/reference/zmodel-language#collection-predicate-expressions) :
+    It uses the Any condition syntax in [Collection Predicate Expression](https://zenstack.dev/docs/2.x/reference/zmodel-language#collection-predicate-expressions) :
 
     ```
     <collection>?[condition]

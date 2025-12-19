@@ -46,7 +46,7 @@ Gaining enough confidence, we began working on the implementation. Our confidenc
 
 Now, you can fully enjoy it with the latest version of ZenStack:
 
-[Polymorphic Relations](https://zenstack.dev/docs/guides/polymorphism)
+[Polymorphic Relations](https://zenstack.dev/docs/2.x/guides/polymorphism)
 
 Why should you use it? Check out the below post to illustrate the benefit with a real example:
 
@@ -141,7 +141,7 @@ Don't let inertia obscure the truth; use your heart to find the right path and p
 
 You can find the complete change detail in the below post:
 
-[Upgrading to V2](https://zenstack.dev/docs/upgrade-v2)
+[Upgrading to V2](https://zenstack.dev/docs/2.x/upgrade-v2)
 
 In the Game of Thrones series finale, Tyrion Lannister said the following words:
 

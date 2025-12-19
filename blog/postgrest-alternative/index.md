@@ -114,7 +114,7 @@ model Post {
 }
 ```
 
-More pleasant, isn't it? You can find a more comprehensive introduction to ZenStack's access policies [here](/docs/the-complete-guide/part1/access-policy/).
+More pleasant, isn't it? You can find a more comprehensive introduction to ZenStack's access policies [here](/docs/2.x/the-complete-guide/part1/access-policy/).
 
 Read on for more side-by-side comparisons.
 
@@ -214,10 +214,10 @@ app.use(
 );
 ```
 
-A full list of currently supported adapters and their documentations can be found [here](/docs/category/server-adapters).
+A full list of currently supported adapters and their documentations can be found [here](/docs/2.x/category/server-adapters).
 
 The `/api/data` endpoint will then provide a full set of Prisma operations for each model in your schema, like `/api/data/post/findMany`. Since the Prisma client used is protected by the access policies, the generated web API is also secure.
 
 ## Wrap Up
 
-I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/category/quick-start) and [Guides](/docs/category/recipes) pages for more details, and join our [Discord](https://discord.gg/Ykhr738dUe) for questions and updates!
+I hope you find the Prisma + ZenStack combination a useful alternative to PostgREST. Check out the [Get Started](/docs/2.x/category/quick-start) and [Guides](/docs/2.x/category/recipes) pages for more details, and join our [Discord](https://discord.gg/Ykhr738dUe) for questions and updates!

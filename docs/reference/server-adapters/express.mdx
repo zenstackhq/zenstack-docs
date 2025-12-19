@@ -1,34 +1,34 @@
 ---
 title: Express.js
 description: Adapter for integrating with Express.js
-sidebar_position: 4
+sidebar_position: 5
 ---
 
+import PackageInstall from '../../_components/PackageInstall';
 import ErrorHandling from './_error-handling.md';
+import Intro from './_intro.mdx';
 import AdapterOptions from './_options.mdx';
-import UsingAPI from './_using-api.mdx'
 
 # Express.js Adapter
 
-The `@zenstackhq/server/express` module provides a quick way to install API routes onto a [Express.js](https://expressjs.com/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+<Intro module='@zenstackhq/server/express' framework='Express.js' url="https://expressjs.com/" />
 
 ### Installation
 
-```bash
-npm install @zenstackhq/server
-```
+<PackageInstall dependencies={['@zenstackhq/server']} />
 
 ### Mounting the API
 
 You can integrate ZenStack into your project with the `ZenStackMiddleware` [express middleware](https://expressjs.com/en/guide/using-middleware.html):
 
 ```ts
-import { PrismaClient } from '@prisma/client';
-import { enhance } from '@zenstackhq/runtime';
-import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import express from 'express';
+import { ZenStackMiddleware } from '@zenstackhq/server/express';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
 
-const prisma = new PrismaClient();
 const app = express();
 
 app.use(express.json());
@@ -36,16 +36,17 @@ app.use(express.json());
 app.use(
     '/api/model',
     ZenStackMiddleware({
+        apiHandler: new RPCApiHandler({ schema }),
         // getSessionUser extracts the current session user from the request, its
         // implementation depends on your auth solution
-        getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
+        getClient: (request) => client.$setAuth(getSessionUser(request)),
     })
 );
 ```
 
 The Express.js adapter takes the following options to initialize:
 
-<AdapterOptions getPrisma='(request: Request, response: Response) => unknown | Promise<unknown>' />
+<AdapterOptions getClient='(request: Request, response: Response) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
 
 - sendResponse (optional)
 
@@ -55,12 +56,4 @@ The Express.js adapter takes the following options to initialize:
     
     Defaults to `true`.
 
-### Using the API
-
-<UsingAPI />
-
 <ErrorHandling />
-
-### Fully working example
-
-You can find a fully working example [here](https://github.com/zenstackhq/docs-tutorial-express).

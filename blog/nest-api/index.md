@@ -325,7 +325,7 @@ export class AppModule implements NestModule {
 }
 ```
 
-That's it! Now we have a complete set of RESTful CRUD APIs at "/api/zen" that conforms to the [JSON:API](https://jsonapi.org/) specification, and the access policies fully protect the APIs. The API provides rich filtering and relation-fetching capabilities. The following are some examples; you can find more details [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest#endpoints-and-features).
+That's it! Now we have a complete set of RESTful CRUD APIs at "/api/zen" that conforms to the [JSON:API](https://jsonapi.org/) specification, and the access policies fully protect the APIs. The API provides rich filtering and relation-fetching capabilities. The following are some examples; you can find more details [here](https://zenstack.dev/docs/2.x/reference/server-adapters/api-handlers/rest#endpoints-and-features).
 
 ```bash
 # Fetch posts together with their authors

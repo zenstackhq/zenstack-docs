@@ -17,7 +17,7 @@ In the [previous post](../next-chapter-2/index.md), we discussed the new extensi
 
 ## Plugin Composition
 
-ZenStack v2 provided a rudimentary [plugin system](../../docs/the-complete-guide/part2) that allows you to participate in the process of `zenstack generate`. It's sufficient for use cases like generating OpenAPI specs or TanStack Query hooks. However, there's no well-defined way to extend the ORM's runtime behavior in a pluggable way.
+ZenStack v2 provided a rudimentary [plugin system](../../docs/2.x/the-complete-guide/part2) that allows you to participate in the process of `zenstack generate`. It's sufficient for use cases like generating OpenAPI specs or TanStack Query hooks. However, there's no well-defined way to extend the ORM's runtime behavior in a pluggable way.
 
 V3 aims to provide a more complete plugin system that allows you to contribute at the schema, generation, and runtime levels. A plugin can include the following parts:
 

@@ -62,7 +62,7 @@ In `schema.zmodel,` there are 4 models, and their relationships are as below:
 Let’s take a look at all the permissions of the Post and how they could be expressed using ZenStack’s access policies.
 
 💡 _You can find the detailed reference of access policies syntax below:
-[https://zenstack.dev/docs/reference/zmodel-language#access-policy](https://zenstack.dev/docs/reference/zmodel-language#access-policy)_
+[https://zenstack.dev/docs/2.x/reference/zmodel-language#access-policy](https://zenstack.dev/docs/2.x/reference/zmodel-language#access-policy)_
 
 
 -   Create

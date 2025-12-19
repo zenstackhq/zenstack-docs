@@ -34,7 +34,7 @@ There have been many security concerns about using cloud-based databases directl
 
 Beneath the simple surface, cloud database providers have been working hard to automate many things for you:
 
-- Scaling up and down? Don’t worry about it. When idle, the services can shrink to [literally zero CPU usage](https://neon.tech/docs/reference/glossary#scale-to-zero) and rapidly scale up as traffic surges.
+- Scaling up and down? Don’t worry about it. When idle, the services can shrink to [literally zero CPU usage](https://neon.tech/docs/2.x/reference/glossary#scale-to-zero) and rapidly scale up as traffic surges.
 - Bottomless storage, so running out of disk space is never a worry anymore.
 - Sharding has always been a headache to manage and used to require lots of application code changes. Now, it can be achieved in a [much less intrusive way](https://planetscale.com/docs/concepts/sharding).
 - Not proficient with managing indexes? The services monitor query patterns and auto-tune indexes for you.

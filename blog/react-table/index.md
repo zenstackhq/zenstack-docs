@@ -330,7 +330,7 @@ We've got a pretty cool table end-to-end working now, with roughly 200 lines of 
 
 - **ZenStack's access control**
 
-    Remember I said we'll get back to the security issue? A real-world API must have an authorization mechanism with it. ZenStack's real power lies in its ability to define access control rules in the data schema. You can define rules like rejecting anonymous users or showing only the orders of the current login employee, etc. Read more details [here](/docs/the-complete-guide/part1/access-policy/).
+    Remember I said we'll get back to the security issue? A real-world API must have an authorization mechanism with it. ZenStack's real power lies in its ability to define access control rules in the data schema. You can define rules like rejecting anonymous users or showing only the orders of the current login employee, etc. Read more details [here](/docs/2.x/the-complete-guide/part1/access-policy/).
 
 - **React Query's fetching**
 

@@ -1,26 +1,25 @@
 ---
 title: TanStack Start
 description: Adapter for integrating with TanStack Start
-sidebar_position: 9
+sidebar_position: 4
 ---
 
 import ErrorHandling from './_error-handling.md';
 import AdapterOptions from './_options.mdx';
-import UsingAPI from './_using-api.mdx'
+import PackageInstall from '../../_components/PackageInstall';
+import Intro from './_intro.mdx';
 
 # TanStack Start Adapter
 
-The `@zenstackhq/server/tanstack-start` module provides a quick way to install API routes onto a [TanStack Start](https://tanstack.com/start) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+[TanStack Start](https://tanstack.com/start) is a full-stack React framework powered by TanStack Router, offering full-document SSR, streaming, server functions, and bundling capabilities.
 
-TanStack Start is a full-stack React framework powered by TanStack Router, offering full-document SSR, streaming, server functions, and bundling capabilities.
+<Intro module='@zenstackhq/server/tanstack-start' framework='TanStack Start' url="https://tanstack.com/start" />
 
 This feature is contributed by [@digoburigo](https://github.com/digoburigo).
 
 ### Installation
 
-```bash
-npm install @zenstackhq/server
-```
+<PackageInstall dependencies={['@zenstackhq/server']} />
 
 ### Mounting the API
 
@@ -29,18 +28,16 @@ You can use the `TanStackStartHandler` to create a handler for your API routes. 
 ```ts title='app/routes/api/$.ts'
 import { createFileRoute } from '@tanstack/react-router'
 import { TanStackStartHandler } from '@zenstackhq/server/tanstack-start'
-import { enhance } from '@zenstackhq/runtime'
-import { prisma } from '~/server/db'
-
-// create an enhanced Prisma client with user context
-function getPrisma() {
-    // getSessionUser extracts the current session user from the request, its
-    // implementation depends on your auth solution
-    return enhance(prisma, { user: getSessionUser() });
-}
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
 
 const handler = TanStackStartHandler({
-    getPrisma
+    apiHandler: new RPCApiHandler({ schema }),
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    getClient: (request) => client.$setAuth(getSessionUser(request)),
 })
 
 export const Route = createFileRoute('/api/$')({
@@ -58,11 +55,7 @@ export const Route = createFileRoute('/api/$')({
 
 The TanStack Start handler takes the following options to initialize:
 
-<AdapterOptions getPrisma='() => unknown | Promise<unknown>' />
-
-### Using the API
-
-<UsingAPI />
+<AdapterOptions getClient='(request: Request) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
 
 <ErrorHandling />
 

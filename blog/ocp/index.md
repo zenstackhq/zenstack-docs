@@ -308,7 +308,7 @@ By utilizing table inheritance, we managed to avoid repetition to some extent. H
 
 Action speaks louder than words, let's do it! Although Prisma has not yet supported polymorphism, ZenStack, as a believer in Prisma, has taken the initiative to add it in the V2 beta version through a unique approach. You can find all the details in the document below:
 
-[Polymorphic Relations | ZenStack](https://zenstack.dev/docs/next/guides/polymorphism)
+[Polymorphic Relations | ZenStack](https://zenstack.dev/docs/2.x/guides/polymorphism)
 
 ### Real Inheritance Between models
 

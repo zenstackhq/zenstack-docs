@@ -166,4 +166,4 @@ const images = await db.image.findMany({
 });
 ```
 
-Is it useful, or can it be confusing (as it looks the same as relation filters)? Let us know by leaving a comment below. You can also learn more about this feature in the [official guide](https://zenstack.dev/docs/guides/typing-json).
+Is it useful, or can it be confusing (as it looks the same as relation filters)? Let us know by leaving a comment below. You can also learn more about this feature in the [official guide](https://zenstack.dev/docs/2.x/guides/typing-json).

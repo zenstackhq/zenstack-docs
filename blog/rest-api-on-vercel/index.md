@@ -343,7 +343,7 @@ Easy, isn't it? The automatically generated APIs provide resource-centric RESTfu
     curl 'localhost:3000/api/pet?include=order'
     ```
 
-Check [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest#endpoints-and-features) for a full list of endpoints and features. In a few moments, you'll also see how to generate an OpenAPI specification that thoroughly documents the API.
+Check [here](https://zenstack.dev/docs/2.x/reference/server-adapters/api-handlers/rest#endpoints-and-features) for a full list of endpoints and features. In a few moments, you'll also see how to generate an OpenAPI specification that thoroughly documents the API.
 
 Our API is up and running, but it has one big problem: it's not guarded by any security measures. As a result, anybody can read and update any data. Let's fix that in the following sections in two steps: authentication and authorization.
 
@@ -534,7 +534,7 @@ The syntax for `@@allow` and `@@deny` is pretty self-explanatory. A few things t
 -   The `future()` function returns the entity value after an update is applied.
 -   The second `@@allow` rule on the `Pet` model looks a bit complex. It's needed because we want to disallow creating orders that include sold pets. On the database level, it means that the `orderId` field of `Pet` can only be updated if it's `null` (meaning it's not sold yet). We also used the `future()` function to disallow updates to other fields.
 
-You can learn more about access policies [here](https://zenstack.dev/docs/the-complete-guide/part1/access-policy/).
+You can learn more about access policies [here](https://zenstack.dev/docs/2.x/the-complete-guide/part1/access-policy/).
 
 By declaratively defining access policies in the schema, you no longer need to implement these rules in your API. It's easier to ensure consistency, making the schema a single source of truth for your data's shape and security rules.
 
@@ -734,7 +734,7 @@ You can continue testing with the `Order` model and see if its behavior conforms
 
 ## Generating OpenAPI specification
 
-So far, we've implemented a secure RESTful API, but it's only complete if it's documented. Fortunately, ZenStack provides a plugin to generate OpenAPI V3 specifications from the ZModel. You only need to turn on the plugin in your schema (see full documentation [here](https://zenstack.dev/docs/reference/plugins/openapi)):
+So far, we've implemented a secure RESTful API, but it's only complete if it's documented. Fortunately, ZenStack provides a plugin to generate OpenAPI V3 specifications from the ZModel. You only need to turn on the plugin in your schema (see full documentation [here](https://zenstack.dev/docs/2.x/reference/plugins/openapi)):
 
 First, install the plugin package:
 

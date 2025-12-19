@@ -48,7 +48,7 @@ If we enforce it at the database level, we don't need to ever worry about it aga
 
 If you're familiar with PostgreSQL, you probably immediately think of [row-level security](https://www.postgresql.org/docs/15/ddl-rowsecurity.html). However, it's Postgres only and requires in-depth knowledge of SQL. If you use Prisma ORM, you can achieve a better result with ZenStack in a database-independent and easy-to-adopt way.
 
-I assume you’ve used Prisma before or already have a basic understanding of it. If not, here is a greatly simplified [crash course](/docs/the-complete-guide/part1/prisma) to get you started.
+I assume you’ve used Prisma before or already have a basic understanding of it. If not, here is a greatly simplified [crash course](/docs/2.x/the-complete-guide/part1/prisma) to get you started.
 
 ## Quick Overview
 

@@ -37,15 +37,11 @@ const config = {
                     lastVersion: 'current',
                     versions: {
                         current: {
+                            label: '3.x',
+                            banner: 'none',
+                        },
+                        '2.x': {
                             label: '2.x',
-                            banner: 'none',
-                        },
-                        '1.x': {
-                            label: '1.x',
-                            banner: 'none',
-                        },
-                        '3.x': {
-                            label: '3.0 Beta',
                             banner: 'none',
                         },
                     },
@@ -70,7 +66,7 @@ const config = {
             announcementBar: {
                 id: 'v3_beta',
                 content:
-                    'ZenStack v3 Beta is released 🚀. The new version has replaced Prisma with a brand new query engine. <a href="/v3">Check it out</a>',
+                    'ZenStack v3 is released 🚀. The new version has replaced Prisma with a brand ORM engine. <a href="/docs">Check it out</a>',
                 isCloseable: true,
             },
             colorMode: {
@@ -100,19 +96,15 @@ const config = {
                 },
                 items: [
                     {
-                        to: 'docs/welcome',
+                        to: '/docs/',
                         position: 'left',
                         label: 'Get Started',
+                        activeBaseRegex: '^/docs/?$',
                     },
                     {
-                        to: 'docs/the-complete-guide',
+                        to: '/docs/category/reference',
                         position: 'left',
-                        label: 'Handbook',
-                    },
-                    {
-                        to: 'v3',
-                        position: 'left',
-                        label: 'V3 Beta 🚀',
+                        label: 'Reference',
                     },
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
@@ -174,7 +166,7 @@ const config = {
                         items: [
                             {
                                 label: 'Get Started',
-                                to: '/docs/welcome',
+                                to: '/docs',
                             },
                             {
                                 label: 'Reference',

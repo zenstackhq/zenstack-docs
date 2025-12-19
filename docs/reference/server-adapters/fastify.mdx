@@ -1,41 +1,42 @@
 ---
 title: Fastify
 description: Adapter for integrating with Fastify
-sidebar_position: 5
+sidebar_position: 6
 ---
 
+import PackageInstall from '../../_components/PackageInstall';
 import ErrorHandling from './_error-handling.md';
+import Intro from './_intro.mdx';
 import AdapterOptions from './_options.mdx';
-import UsingAPI from './_using-api.mdx';
 
 # Fastify Adapter
 
-The `@zenstackhq/server/fastify` module provides a quick way to install API routes onto a [Fastify](https://www.fastify.io/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+<Intro module='@zenstackhq/server/fastify' framework='Fastify' url="https://www.fastify.io/" />
 
 ### Installation
 
-```bash
-npm install @zenstackhq/server
-```
+<PackageInstall dependencies={['@zenstackhq/server']} />
 
 ### Mounting the API
 
 You can integrate ZenStack into your project with the `ZenStackFastifyPlugin` [fastify plugin](https://www.fastify.io/docs/latest/Reference/Plugins/):
 
 ```ts
-import { enhance } from '@zenstackhq/runtime';
+import fastify from 'fastify'
 import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
-import { prisma } from './db.ts';
-import { getSessionUser } from './auth.ts';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
 
 const server = fastify();
 
-// serve OpenAPI at /api/model
 server.register(ZenStackFastifyPlugin, {
+    apiHandler: new RPCApiHandler({ schema }),
     prefix: '/api/model',
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
-    getPrisma: (request) => enhance(prisma, { user: getSessionUser(request) }),
+    getClient: (request) => client.$setAuth(getSessionUser(request)),
 });
 ```
 
@@ -47,10 +48,6 @@ The Fastify adapter takes the following options to initialize:
 
     Prefix for the mounted API endpoints. E.g.: /api/model.
 
-<AdapterOptions getPrisma='(request: FastifyRequest, reply: FastifyReply) => unknown | Promise<unknown>' />
-
-### Using the API
-
-<UsingAPI />
+<AdapterOptions getClient='(request: FastifyRequest, reply: FastifyReply) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
 
 <ErrorHandling />

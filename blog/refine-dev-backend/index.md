@@ -202,7 +202,7 @@ You then have a set of CRUD APIs served at "/api/model/[Model Name]/...". The AP
   - `/api/model/post/create`
   - ...
 
-You can find the detailed API specification [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rpc).
+You can find the detailed API specification [here](https://zenstack.dev/docs/2.x/reference/server-adapters/api-handlers/rpc).
 
 ### Implementing a data provider
 
@@ -305,7 +305,7 @@ The operation is denied correctly according to the rules. However, it's not an e
 - ZenStack's enhanced PrismaClient has an extra `check` API for inferring permission based on the policy rules. The `check` API is also available in the automatic CRUD API.
 
 :::info
-ZenStack's `check` API doesn't query the database. It's based on logical inference from the policy rules. See more details [here](https://zenstack.dev/docs/guides/check-permission).
+ZenStack's `check` API doesn't query the database. It's based on logical inference from the policy rules. See more details [here](https://zenstack.dev/docs/2.x/guides/check-permission).
 :::
 
 Let's see how these two pieces are put together. First, implement an `AccessControlProvider`:
