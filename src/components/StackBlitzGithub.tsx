@@ -32,7 +32,7 @@ const StackBlitzGithub: React.FC<StackBlitzGithubProps> = ({
 
     return (
         <>
-            <a href={url.toString()} target="_blank">
+            <a href={url.toString()} target="_blank" rel="noopener noreferrer">
                 <img alt="Open in StackBlitz" src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" />
             </a>
             {plainCodeFiles.map((file) => (
