@@ -41,7 +41,7 @@ app.group('/crud', (app) =>
             basePath: '/api/model',
             // getSessionUser extracts the current session user from the request,
             // its implementation depends on your auth solution
-            getClient: (context) => client.$setAuth(getSessionUser(context)) }),
+            getClient: (context) => client.$setAuth(getSessionUser(context)),
         })
     )
 );
