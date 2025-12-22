@@ -12,7 +12,7 @@ import Service from './_components/Service';
 import ValueProps from './_components/ValueProps';
 import styles from './index.module.css';
 
-const description = `ZenStack v3 is a powerful data layer for modern TypeScript applications. It provides an intuitive data modeling language, a fully type-safe ORM, built-in access control and data validation, and automatic data query service that seamlessly integrates with popular frameworks like Next.js and Nuxt.`;
+const description = `ZenStack is a powerful data layer for modern TypeScript applications. It provides an intuitive data modeling language, a fully type-safe ORM, built-in access control and data validation, and automatic data query service that seamlessly integrates with popular frameworks like Next.js and Nuxt.`;
 
 function Header() {
     return (
@@ -67,7 +67,7 @@ function Section({ children, className }: { children: React.ReactNode; className
 export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
-        <Layout title={`${siteConfig.title} V3`} description={description}>
+        <Layout title={`${siteConfig.title}`} description={description}>
             <Header />
             <main className="flex flex-col">
                 <Section>
