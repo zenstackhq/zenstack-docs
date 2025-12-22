@@ -10,21 +10,16 @@ This guide describes different ways to use ZenStack in a [NestJS](https://nestjs
 
 ZenStack offers a standard ORM component that you can use in your NestJS application just like any other ORM. To get started, create a `DbService` by extending the `ZenStackClient` constructor:
 
-```ts title="db.service.ts"
+```ts title="src/db/db.service.ts"
 import { ZenStackClient } from '@zenstackhq/orm';
-import { PostgresDialect } from '@zenstackhq/orm/dialects/postgres';
-import { schema, type SchemaType } from './zenstack/schema';
-import { Pool } from 'pg';
+import { schema, type SchemaType } from '../../zenstack/schema';
+import { SqliteDialect } from '@zenstackhq/orm/dialects/sqlite';
+import SQLite from 'better-sqlite3';
 
-export class DbService extends ZenStackClient<
-  SchemaType,
-  ClientOptions<SchemaType>
-> {
+export class DbService extends ZenStackClient<SchemaType> {
   constructor() {
     super(schema, {
-      dialect: new PostgresDialect({
-        pool: new Pool({ connectionString: process.env.DATABASE_URL })
-      }),
+      dialect: new SqliteDialect({ database: new SQLite('./zenstack/dev.db') }),
     });
   }
 }
@@ -32,22 +27,23 @@ export class DbService extends ZenStackClient<
 
 You can then register this service as a provider in a module:
 
-```ts title="app.module.ts"
+```ts title="src/app.module.ts"
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { DbService } from './db.service';
+import { DbService } from './db/db.service';
 
 @Module({
   controllers: [AppController],
   providers: [DbService],
 })
+export class AppModule {}
 ```
 
 Finally, inject the `DbService` in your controllers or other services to access the database:
 
-```ts title="app.controller.ts"
+```ts title="src/app.controller.ts"
 import { Controller, Get } from '@nestjs/common';
-import { DbService } from './db.service';
+import { DbService } from './db/db.service';
 
 @Controller('api')
 export class AppController {
@@ -66,12 +62,13 @@ To leverage ZenStack's [built-in access control features](../orm/access-control/
 
 In the sample below, we provide an access-controlled `DbService` under the name "AUTH_DB":
 
-```ts title="app.module.ts"
+```ts title="src/app.module.ts"
 import { Module, Scope } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { DbService } from './db/db.service';
 import { REQUEST } from '@nestjs/core';
 import type { Request } from 'express';
 import { PolicyPlugin } from '@zenstackhq/plugin-policy';
-import { DbService } from './db.service';
 // your authentication helper
 import { getRequestUser } from './auth.util';
 
@@ -101,13 +98,14 @@ import { getRequestUser } from './auth.util';
     },
   ],
 })
+export class AppModule {}
 ```
 
 Now you can choose to use the access-controlled `DbService` in your controllers or services by injecting it with the "AUTH_DB" token:
 
-```ts title="app.controller.ts"
+```ts title="src/app.controller.ts"
 import { Controller, Get, Inject } from '@nestjs/common';
-import { DbService } from './db.service';
+import { DbService } from './db/db.service';
 
 @Controller('api')
 export class AppController {
@@ -126,11 +124,12 @@ export class AppController {
 
 ZenStack also provides [API handlers](../service/api-handler/) that process CRUD requests automatically for you. To use it, create a catch-all route in your controller and forward the request to the API handler:
 
-```ts title="app.controller.ts"
+```ts title="src/app.controller.ts"
 import { Controller, All, Inject, Param, Query, Req, Res } from '@nestjs/common';
 import { RestApiHandler } from '@zenstackhq/server/api';
 import type { Request, Response } from 'express';
-import { DbService } from './db.service';
+import { DbService } from './db/db.service';
+import { schema } from '../zenstack/schema';
 
 @Controller('api')
 export class AppController {
@@ -166,4 +165,3 @@ export class AppController {
 ```
 
 With this setup, all requests to `/api/*` will be handled by the ZenStack API handler, which performs the necessary CRUD operations with access control enforced. Refer to the [API handlers documentation](../service/api-handler/) for request and response formats and other details.
-
