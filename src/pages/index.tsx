@@ -3,6 +3,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
+import Sponsorship from '../components/Sponsorship';
+import UserLogs from '../components/UserLogos';
 import AICoding from './_components/AICoding';
 import ORM from './_components/ORM';
 import SchemaLanguage from './_components/Schema';
@@ -29,7 +31,7 @@ function Header() {
                         </p>
                         <div className="flex flex-wrap justify-center gap-4">
                             <Link
-                                className="button button--secondary button--lg lg:text-2xl lg:px-8 lg:py-4"
+                                className="button button--secondary button--lg w-64 lg:text-2xl lg:px-8 lg:py-4"
                                 to="/docs"
                             >
                                 Get Started →
@@ -37,7 +39,7 @@ function Header() {
                             <a
                                 href="https://stackblitz.com/~/github.com/zenstackhq/v3-doc-quick-start?file=zenstack%2fschema.zmodel&file=main.ts&view=editor&showSidebar=0&hideNavigation=1&hideExplorer=1"
                                 target="_blank"
-                                className="button button--outline button--lg border-solid lg:text-2xl lg:px-8 lg:py-4 hover:text-gray-200 dark:hover:text-gray-600"
+                                className="button button--outline button--lg w-64 border-solid lg:text-2xl lg:px-8 lg:py-4 hover:text-gray-200 dark:hover:text-gray-600"
                             >
                                 Open Playground
                             </a>
@@ -72,22 +74,41 @@ export default function Home(): JSX.Element {
                 </Section>
 
                 <Section className="bg-slate-50 dark:bg-slate-800">
+                    <UserLogs />
+                </Section>
+
+                <Section>
                     <SchemaLanguage />
                 </Section>
 
-                <Section>
+                <Section className="bg-slate-50 dark:bg-slate-800">
                     <ORM />
                 </Section>
 
-                <Section className="bg-slate-50 dark:bg-slate-800">
+                <Section>
                     <Service />
                 </Section>
 
-                <Section>
+                <Section className="bg-slate-50 dark:bg-slate-800">
                     <AICoding />
                     <div className="flex justify-center w-full mt-16">
-                        <Link className="button button--primary button--lg text-xl w-fit py-4" to="/docs">
+                        <Link
+                            className="button button--outline button--lg border-solid lg:text-2xl lg:px-8 lg:py-4 hover:text-gray-600 dark:hover:text-gray-400"
+                            to="/docs"
+                        >
                             Start Building Now →
+                        </Link>
+                    </div>
+                </Section>
+
+                <Section>
+                    <Sponsorship />
+                    <div className="flex justify-center w-full mt-16">
+                        <Link
+                            className="button button--primary button--lg text-xl w-fit py-4"
+                            to="https://github.com/sponsors/zenstackhq"
+                        >
+                            Support this project →
                         </Link>
                     </div>
                 </Section>

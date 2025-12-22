@@ -11,14 +11,12 @@ export default function ORM(): JSX.Element {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-2 mt-4">
                 <CodeBlock language="ts" className="p-4 hidden md:block xl:text-lg">
                     {`import { schema } from './zenstack';
-import {
-  ZenStackClient,
-  AccessControlPlugin
-} from '@zenstackhq/runtime';
+import { ZenStackClient } from '@zenstackhq/orm';
+import { PolicyPlugin } from '@zenstackhq/plugin-policy';
 
 const db = new ZenStackClient(schema, { ... })
   // install access control plugin to enforce policies
-  .$use(new AccessControlPlugin())
+  .$use(new PolicyPlugin())
   // set current user context
   .$setAuth(...);
 
@@ -54,7 +52,8 @@ const userPostJoin = await db
                         ZenStack's ORM is built on top of the awesome <a href="https://kysely.dev/">Kysely</a> SQL query
                         builder. Its query API is compatible with that of{' '}
                         <a href="https://www.prisma.io/docs/orm/prisma-client">Prisma Client</a>, so migrating an
-                        existing Prisma project will require minimal code changes.
+                        existing Prisma project will require minimal code changes.{' '}
+                        <a href="/docs/migrate-prisma">Read more</a> about migrating from Prisma.
                     </span>
                 </div>
             </div>

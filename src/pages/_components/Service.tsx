@@ -20,7 +20,10 @@ export default function Service(): JSX.Element {
                         <li>🚀 Seamlessly integrates with popular frameworks</li>
                         <li>🚀 Works with any authentication solution</li>
                         <li>
-                            🚀 Type-safe client SDK powered by <a href="https://tanstack.com/query">TanStack Query</a>
+                            🚀 Type-safe client SDK powered by{' '}
+                            <a href="https://tanstack.com/query" target="_blank">
+                                TanStack Query
+                            </a>
                         </li>
                         <li>🚀 Highly customizable</li>
                     </ul>
@@ -31,9 +34,12 @@ export default function Service(): JSX.Element {
                             Next.js, Nuxt, Express, etc.
                         </p>
                         <p>
-                            Client hooks based on <a href="https://tanstack.com/query">TanStack Query</a> can also be
-                            derived from the schema, allowing you to make type-safe queries to the service without
-                            writing a single line of code.
+                            Client hooks based on{' '}
+                            <a href="https://tanstack.com/query" target="_blank">
+                                TanStack Query
+                            </a>{' '}
+                            can also be derived from the schema, allowing you to make type-safe queries to the service
+                            without writing a single line of code.
                         </p>
                     </div>
                 </div>
@@ -78,8 +84,8 @@ export function UserPosts({ userId }: { userId: number }) {
   // use auto-generated hook to query user with posts
   const client = useClientQueries(schema);
   const { data, isLoading } = client.user.useFindUnique({
-  where: { id: userId },
-  include: { posts: true }
+    where: { id: userId },
+    include: { posts: true }
   });
 
   if (isLoading) return <div>Loading...</div>;
