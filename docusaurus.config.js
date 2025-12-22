@@ -64,9 +64,9 @@ const config = {
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
             announcementBar: {
-                id: 'v3_beta',
+                id: 'v3_ga',
                 content:
-                    'ZenStack v3 is released 🚀. The new version has replaced Prisma with a brand ORM engine. <a href="/docs">Check it out</a>',
+                    'ZenStack v3 is released 🚀. The new version has replaced Prisma with a brand new ORM engine. <a href="/docs">Check it out</a>',
                 isCloseable: true,
             },
             colorMode: {

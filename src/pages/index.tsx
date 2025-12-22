@@ -39,6 +39,7 @@ function Header() {
                             <a
                                 href="https://stackblitz.com/~/github.com/zenstackhq/v3-doc-quick-start?file=zenstack%2fschema.zmodel&file=main.ts&view=editor&showSidebar=0&hideNavigation=1&hideExplorer=1"
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className="button button--outline button--lg w-64 border-solid lg:text-2xl lg:px-8 lg:py-4 hover:text-gray-200 dark:hover:text-gray-600"
                             >
                                 Open Playground
