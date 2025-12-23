@@ -31,6 +31,8 @@ The `zen db push` command is used to push your ZModel schema changes to the data
 
 The `zen migrate dev` command is used to create a new migration file based on your ZModel schema changes. It will also apply the migration to your database. The command is for development only and should never be used in production.
 
+For features not yet supported by the migration engine (e.g., [views](../modeling/view)), you can use the `--create-only` option to create an empty migration record and manually implement it.
+
 ### migrate deploy
 
 The `zen migrate deploy` command is used to apply all pending migrations to your production database. It's typically used in your deployment pipeline.

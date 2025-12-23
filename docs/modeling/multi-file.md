@@ -5,7 +5,7 @@ description: Breaking down complex schemas into multiple files
 
 import ZModelVsPSL from '../_components/ZModelVsPSL';
 
-# Multi-file Schema
+# Multi-File Schema
 
 <ZModelVsPSL>
 Prisma uses an implicit approach that simply merges all schema files in a folder. ZModel uses explicit `import` syntax for better clarity and flexibility.

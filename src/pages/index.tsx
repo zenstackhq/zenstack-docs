@@ -22,7 +22,7 @@ function Header() {
                     <div className="w-full max-w-4xl text-center flex flex-col items-center px-4">
                         <h1 className="hero__title font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-6 sm:mb-8 lg:mb-12 leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight 2xl:leading-tight">
                             <span className="inline-block text-white dark:text-gray-800">
-                                Battery-Included TypeScript ORM
+                                Modern Data Layer for TypeScript Applications
                             </span>
                         </h1>
                         <p className="hero__subtitle font-semi-bold text-base sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 lg:mb-12 leading-relaxed text-gray-100 dark:text-gray-700 max-w-none sm:max-w-2xl text-center">

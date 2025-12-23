@@ -30,19 +30,28 @@ Prisma schema doesn't allow users to define custom attributes, while ZModel allo
 
 ZModel comes with a rich set of attributes that you can use directly. See [ZModel Language Reference](../reference/zmodel/attribute#predefined-attributes) for a complete list. You can also define your own attributes for specific purposes. Attributes are defined with a list of typed parameters. Parameters can be named (default) or positional. Positional parameters can be passed with or without an explicit name. Parameters can also be optional.
 
-Here's an example of how the `@unique` attribute is defined:
+Here's an example of how the `@@index` attribute is defined:
 
 ```zmodel
-attribute @unique(map: String?, length: Int?, sort: SortOrder?)
+attribute @@index(_ fields: FieldReference[], name: String?, map: String?)
 ```
 
 You can apply it in various ways:
 
 ```zmodel
-model Foo {
-    x String @unique() // default application
-    y String @unique('y_unique') // positional parameter
-    z String @unique(map: 'z_unique', length: 10) // named parameter
+model A {
+    x String
+    @@index([x]) // positional parameter
+}
+
+model B {
+    x String
+    @@index([x], name: 'b_index') // positional and named parameters
+}
+
+model C {
+    x String
+    @@index(fields: [x], name: 'c_index') // all named parameters
 }
 ```
 
