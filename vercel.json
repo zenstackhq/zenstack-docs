@@ -29,6 +29,11 @@
             "source": "/docs/guides/authentication/:path*",
             "destination": "/docs/quick-start/authentication/:path*",
             "permanent": true
+        },
+        {
+            "source": "/docs/3.x",
+            "destination": "/docs/",
+            "permanent": true
         }
     ]
 }
