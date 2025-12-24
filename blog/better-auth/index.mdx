@@ -204,7 +204,7 @@ The initial dashboard UI looks like:
 
 ## Setting up ZenStack
 
-In the following sections, we'll use ZenStack to implement the access control requirements. ZenStack uses its own DSL called [ZModel](/docs/the-complete-guide/part1/zmodel) to define data models and access policy rules. ZModel is a superset of the Prisma schema language. The ZenStack CLI can generate a Prisma schema from a ZModel file so that downstream Prisma consumers (like better-auth) will continue to work seamlessly.
+In the following sections, we'll use ZenStack to implement the access control requirements. ZenStack uses its own DSL called [ZModel](/docs/2.x/the-complete-guide/part1/zmodel) to define data models and access policy rules. ZModel is a superset of the Prisma schema language. The ZenStack CLI can generate a Prisma schema from a ZModel file so that downstream Prisma consumers (like better-auth) will continue to work seamlessly.
 
 Let's initialize the project with ZenStack:
 
@@ -346,9 +346,9 @@ export {
 };
 ```
 
-This will expose a set of CRUD endpoints like `/api/model/TodoList/findMany`, `/api/model/TodoList/create`, etc. You can find more details [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rpc).
+This will expose a set of CRUD endpoints like `/api/model/TodoList/findMany`, `/api/model/TodoList/create`, etc. You can find more details [here](https://zenstack.dev/docs/2.x/reference/server-adapters/api-handlers/rpc).
 
-Although we can call these APIs with `fetch` directly, a much easier way is to leverage ZenStack's [TanStack Query plugin](https://zenstack.dev/docs/reference/plugins/tanstack-query) to generate client-side hooks.
+Although we can call these APIs with `fetch` directly, a much easier way is to leverage ZenStack's [TanStack Query plugin](https://zenstack.dev/docs/2.x/reference/plugins/tanstack-query) to generate client-side hooks.
 
 ```bash
 npm install @zenstackhq/tanstack-query
@@ -434,7 +434,7 @@ type Auth {
 }
 ```
 
-Now, we're ready to write the policy rules. You can find more information about access policies [here](https://zenstack.dev/docs/the-complete-guide/part1/access-policy/).
+Now, we're ready to write the policy rules. You can find more information about access policies [here](https://zenstack.dev/docs/2.x/the-complete-guide/part1/access-policy/).
 
 #### 1. Tenant segregation
 

@@ -277,7 +277,7 @@ Then whenever the place you use the Prisma client, just wrap it with the `enhanc
 
 If you feel interested in the access policy, you can find more detail below:
 
-**[Understanding Access Policies](https://zenstack.dev/docs/the-complete-guide/part1/access-policy/)**
+**[Understanding Access Policies](https://zenstack.dev/docs/2.x/the-complete-guide/part1/access-policy/)**
 
 There is also a tutorial for how to create the project step by step:
 

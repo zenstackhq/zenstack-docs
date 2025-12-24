@@ -85,7 +85,7 @@ model Space {
 
 ### Access Policy
 
-Do you still remember how did we achieve **tenant isolation** using [Collection Predicate Expression](https://zenstack.dev/docs/reference/zmodel-language#collection-predicate-expressions)? If not, please take this chance to review it quickly because that’s the foundation here.
+Do you still remember how did we achieve **tenant isolation** using [Collection Predicate Expression](https://zenstack.dev/docs/2.x/reference/zmodel-language#collection-predicate-expressions)? If not, please take this chance to review it quickly because that’s the foundation here.
 
 -   List
 

@@ -4,42 +4,41 @@ description: Adapter for integrating with SvelteKit
 sidebar_position: 3
 ---
 
+import PackageInstall from '../../_components/PackageInstall';
 import ErrorHandling from './_error-handling.md';
+import Intro from './_intro.mdx';
 import AdapterOptions from './_options.mdx';
-import UsingAPI from './_using-api.mdx';
 
-# SvelteKit Server Adapter
+# SvelteKit Adapter
 
-The `@zenstackhq/server/sveltekit` module provides a quick way to install API endpoints onto a [SvelteKit](https://kit.svelte.dev/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+<Intro module='@zenstackhq/server/sveltekit' framework='SvelteKit' url="https://kit.svelte.dev/" />
 
 ### Installation
 
-```bash
-npm install @zenstackhq/server
-```
+<PackageInstall dependencies={['@zenstackhq/server']} />
 
 ### Mounting the API
 
-You can mount the API by creating a SvelteKit server hooks like:
+You can mount the API by creating SvelteKit server hooks like:
 
 ```ts title='/src/hooks.server.ts'
 import { SvelteKitHandler } from '@zenstackhq/server/sveltekit';
-import { enhance } from '@zenstackhq/runtime';
-import { getSessionUser } from '$lib/auth.ts';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
 
-// create an enhanced Prisma client with user context
-function getPrisma(event: RequestEvent) {
+export const handle = SvelteKitHandler({
+    apiHandler: new RPCApiHandler({ schema }),
+    prefix: '/api/model',
     // getSessionUser extracts the current session user from the request, its
     // implementation depends on your auth solution
-    return enhance({ user: getSessionUser(event) });
-}
-
-// create the hooks handler with the `getPrisma` hook
-export const handle = SvelteKitHandler({ prefix: '/api/model', getPrisma });
+    getClient: (event) => client.$setAuth(getSessionUser(event)),
+});
 ```
 
 :::tip
-You can use the [sequence helper](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks) to compose multiple server hooks.
+You can use the [sequence helper](https://svelte.dev/docs/kit/@sveltejs-kit-hooks#sequence) to compose multiple server hooks.
 :::
 
 The SvelteKit hooks handler takes the following options to initialize:
@@ -50,14 +49,6 @@ The SvelteKit hooks handler takes the following options to initialize:
 
     Prefix for the mounted API endpoints. E.g.: /api/model.
 
-<AdapterOptions getPrisma='(event: RequestEvent) => unknown | Promise<unknown>' />
-
-### Using the API
-
-<UsingAPI />
+<AdapterOptions getClient='(event: RequestEvent) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
 
 <ErrorHandling />
-
-### Fully working example
-
-You can find a fully working example [here](https://github.com/zenstackhq/sample-todo-sveltekit).

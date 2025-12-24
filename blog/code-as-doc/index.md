@@ -105,7 +105,7 @@ I will walk you through the steps of how to create this tool.
 
 Like many wonderful tools in the web development world, ZenStack adopts a plugin-based architecture. At the core of the system is the ZModel schema, around which features are implemented as plugins.   Let's create a plugin to generate a markdown for a ZModel so it can be easily adopted by others. 
 
-> For brevity, we'll focus on core parts. See the [ZenStack documentation](https://zenstack.dev/docs/the-complete-guide/part2/writing-plugins) for complete plugin development details.
+> For brevity, we'll focus on core parts. See the [ZenStack documentation](https://zenstack.dev/docs/2.x/the-complete-guide/part2/writing-plugins) for complete plugin development details.
 > 
 
 A plugin is simply a Node.js module that has the two parts:

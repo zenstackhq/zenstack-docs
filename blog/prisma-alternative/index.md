@@ -19,7 +19,7 @@ image: ./cover.png
 
 <!-- truncate -->
 
-As a new challenger in this space, [ZenStack](https://zenstack.dev/v3) aspires to be the spiritual successor to Prisma, but with a light-weighted architecture, a richer feature set, well-thought-out extensibility, and an easy-to-contribute codebase. Furthermore, its being essentially compatible with Prisma means you can have a smooth transition from existing projects.
+As a new challenger in this space, [ZenStack](https://zenstack.dev) aspires to be the spiritual successor to Prisma, but with a light-weighted architecture, a richer feature set, well-thought-out extensibility, and an easy-to-contribute codebase. Furthermore, its being essentially compatible with Prisma means you can have a smooth transition from existing projects.
 
 ## A bit of history
 
@@ -213,12 +213,12 @@ A simpler code base also makes it easier for the community to navigate and contr
 
 ## Beyond ORM
 
-A feature-rich ORM can enable some very interesting new use cases. For example, since the ORM is equipped with access control, it can be directly mapped to a service that offers a full-fledged data query API without writing any code. You effectively get a self-hosted Backend-as-a-Service, but without any vendor lock-in. Check out the [Query-as-a-Service](/docs/3.x/service) documentation if you're interested.
+A feature-rich ORM can enable some very interesting new use cases. For example, since the ORM is equipped with access control, it can be directly mapped to a service that offers a full-fledged data query API without writing any code. You effectively get a self-hosted Backend-as-a-Service, but without any vendor lock-in. Check out the [Query-as-a-Service](/docs/service) documentation if you're interested.
 
-Furthermore, [frontend query hooks](/docs/3.x/service/client-sdk/tanstack-query/) (based on [TanStack Query](https://tanstack.com/query)) can be automatically derived, and they work seamlessly with the backend service.
+Furthermore, [frontend query hooks](/docs/service/client-sdk/tanstack-query/) (based on [TanStack Query](https://tanstack.com/query)) can be automatically derived, and they work seamlessly with the backend service.
 
 All summed up, the project's goal is to be the data layer of modern full-stack applications. Kill boilerplate code, eliminate redundancy, and let your data model drive as many aspects as possible.
 
 ## Conclusion
 
-ZenStack v3 is currently in Beta, and a production-ready version will land soon. If you're interested in trying out migrating an existing Prisma project, you can find a more thorough guide [here](/docs/3.x/migrate-prisma). Make sure to join us in [Discord](https://discord.gg/Ykhr738dUe), and we'd love to hear your feedback!
+ZenStack v3 is currently in Beta, and a production-ready version will land soon. If you're interested in trying out migrating an existing Prisma project, you can find a more thorough guide [here](/docs/migrate-prisma). Make sure to join us in [Discord](https://discord.gg/Ykhr738dUe), and we'd love to hear your feedback!

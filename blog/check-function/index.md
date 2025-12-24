@@ -181,7 +181,7 @@ There are two possible ways to add such support:
   }
   ```
 
-- B: make it work with [collection predicate expressions](../docs/reference/zmodel-language#collection-predicate-expressions)
+- B: make it work with [collection predicate expressions](../docs/2.x/reference/zmodel-language#collection-predicate-expressions)
 
   ```zmodel
 

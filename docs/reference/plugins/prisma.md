@@ -1,35 +1,26 @@
 ---
-description: Built-in plugin for generating Prisma schema
-sidebar_position: 1
+sidebar_position: 2
+sidebar_label: "@core/prisma"
+description: Generating Prisma schema from ZModel
 ---
 
 # @core/prisma
 
-The `@core/prisma` plugin generates a Prisma schema from ZModel.
+The `@core/prisma` plugin generates a Prisma schema file from ZModel.
 
-:::info
-This plugin is always automatically included when `zenstack generate` is run. You only need to add it to your ZModel if you want to customize its options.
-:::
+Please note that ZenStack's ORM runtime doesn't depend on Prisma, so you don't need to use this plugin to use the ORM. However, you can use it to generate a Prisma schema and then run custom Prisma generators or other tools that consumes a Prisma schema.
 
-### Installation
+## Options
 
-This plugin is built-in to ZenStack and does not need to be installed separately.
+- `output`
+  
+  Optional string. Specifies the path of the generated Prisma schema file. If a relative path is provided, it will be resolved relative to the ZModel schema. Defaults to the same directory as the ZModel schema.
 
-### Options
+## Example
 
-| Name           | Type    | Description                                       | Required | Default                |
-| -------------- | ------- | ------------------------------------------------- | -------- | ---------------------- |
-| output         | String  | Output file path (relative to the path of ZModel)                                  | No       | ./prisma/schema.prisma |
-| generateClient | Boolean | Whether to run `prisma generate` after generation | No       | true                   |
-| generateArgs | String | Command line arguments appended to the `prisma generate` call, e.g., "--no-engine". Please note that the "--schema" option is automatically passed, and you shouldn't provide it explicitly. | No       |                    |
-| format         | Boolean | Whether to run `prisma format` after generation   | No       | true                  |
-| customAttributesAsComments | Boolean | Whether to generate non-Prisma attributes (e.g., `@@allow`) as comments in the Prisma schema | No | false |
-
-### Example
-
-```zmodel title='/schema.zmodel'
+```zmodel
 plugin prisma {
-    provider = '@core/prisma'
-    output = './src/prisma/schema.prisma'
+  provider = '@core/prisma'
+  output = '../prisma/schema.prisma'
 }
 ```

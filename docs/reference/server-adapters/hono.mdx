@@ -4,54 +4,46 @@ description: Adapter for integrating with Hono
 sidebar_position: 7
 ---
 
+import PackageInstall from '../../_components/PackageInstall';
 import ErrorHandling from './_error-handling.md';
+import Intro from './_intro.mdx';
 import AdapterOptions from './_options.mdx';
-import UsingAPI from './_using-api.mdx'
 
 # Hono Adapter
 
-The `@zenstackhq/server/hono` module provides a quick way to install API routes onto a [Hono](https://hono.dev/) project for database CRUD operations. Combined with ZenStack's power of enhancing Prisma with access policies, it's surprisingly simple to achieve a secure data backend without manually coding it.
+<Intro module='@zenstackhq/server/hono' framework='Hono' url="https://hono.dev/" />
 
 ### Installation
 
-```bash
-npm install @zenstackhq/server
-```
+<PackageInstall dependencies={['@zenstackhq/server']} />
 
 ### Mounting the API
 
 You can use the `createHonoHandler` API to create a [Hono middleware](https://hono.dev/docs/getting-started/basic#using-middleware) that handles CRUD requests automatically:
 
 ```ts
-import { PrismaClient } from '@prisma/client';
-import { enhance } from '@zenstackhq/runtime';
-import { createHonoHandler } from '@zenstackhq/server/hono';
 import { Context, Hono } from 'hono';
+import { createHonoHandler } from '@zenstackhq/server/hono';
+import { RPCApiHandler } from '@zenstackhq/server/api';
+import { getSessionUser } from '~/auth';
+import { client } from '~/db';
+import { schema } from '~/zenstack/schema';
 
-const prisma = new PrismaClient();
 const app = new Hono();
 
 app.use(
     '/api/model/*',
     createHonoHandler({
-        getPrisma: (ctx) => {
-            return enhance(prisma, { user: getCurrentUser(ctx) });
-        },
+        apiHandler: new RPCApiHandler({ schema }),
+        // getSessionUser extracts the current session user from the request,
+        // its implementation depends on your auth solution
+        getClient: (ctx) => client.$setAuth(getSessionUser(ctx)),
     })
 );
-
-function getCurrentUser(ctx: Context) {
-    // the implementation depends on your authentication mechanism
-    ...
-}
 ```
 
 The middleware factory takes the following options to initialize:
 
-<AdapterOptions getPrisma='(ctx: Context) => unknown | Promise<unknown>' />
-
-### Using the API
-
-<UsingAPI />
+<AdapterOptions getClient='(ctx: Context) => ClientContract<Schema> | Promise<ClientContract<Schema>>' />
 
 <ErrorHandling />

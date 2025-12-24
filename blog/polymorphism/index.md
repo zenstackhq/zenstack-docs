@@ -10,7 +10,7 @@ image: ./cover.png
 
 ![Cover image](cover.png)
 
-> EDIT 4/25/2024: the feature has been released in [ZenStack V2](/docs/upgrade-v2).
+> EDIT 4/25/2024: the feature has been released in [ZenStack V2](/docs/2.x/upgrade-v2).
 
 Prisma is a beloved ORM for NodeJS developers. As with every popular open-source project, it has a long wishlist. Here are two prominent examples:
 

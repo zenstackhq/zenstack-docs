@@ -287,7 +287,7 @@ export {
 };
 ```
 
-With the above code, you have a complete set of CRUD APIs served at "/api/model". For example, you can list all users with `GET /api/model/user`. See the full specification of the CRUD API [here](https://zenstack.dev/docs/reference/server-adapters/api-handlers/rest). As you can see, the code expects a JWT token in the `Authorization` header, and you'll see how the frontend sends it when we get to the part of building CRUD UI with React-Admin.
+With the above code, you have a complete set of CRUD APIs served at "/api/model". For example, you can list all users with `GET /api/model/user`. See the full specification of the CRUD API [here](https://zenstack.dev/docs/2.x/reference/server-adapters/api-handlers/rest). As you can see, the code expects a JWT token in the `Authorization` header, and you'll see how the frontend sends it when we get to the part of building CRUD UI with React-Admin.
 
 Now, let's tackle the React-Admin data provider part, which is pretty straightforward. For brevity, I'm only showing partial code here, but you can find the complete implementation at the end of this post.
 
