@@ -5,6 +5,7 @@ description: how to filter entities
 
 import ZenStackVsPrisma from '../../_components/ZenStackVsPrisma';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
+import PreviewFeature from '../../_components/PreviewFeature';
 
 # Filter
 
@@ -33,7 +34,7 @@ List fields allow extra filter operators to filter on the list content:
 - `isEmpty`: checks if the list is empty.
 
 :::info
-List type is only supported for PostgreSQL.
+List type is not supported by SQLite.
 :::
 
 ```zmodel
@@ -63,6 +64,8 @@ await db.post.findMany({
 
 ## Json filters
 
+<PreviewFeature name="Json filter" />
+
 The query API supports flexible filtering on `Json` fields and allows you to reach into nested structures in the JSON data.
 
 ### Generic Json filters
@@ -71,7 +74,7 @@ Generic Json filters doesn't assume a predefined structure of the JSON data, and
 
 - `path`
 
-    JSON path string for selecting data to filter on. If not provided, the root of the JSON data is used.
+    [JSON Path](https://datatracker.ietf.org/doc/rfc9535/) string for selecting data to filter on. If not provided, the root of the JSON data is used.
 
     <ZenStackVsPrisma>
     While for Prisma the "path" field's format depends on the database type, ZenStack unified it to a JSON path string.
@@ -101,7 +104,7 @@ Generic Json filters doesn't assume a predefined structure of the JSON data, and
 
 ### Typed Json filters
 
-Typed Json fields, with their structure well defined in the schema, allow for a more powerful way to filter. Instead of using JSON path, you can directly use fields to build-up the filter, similar to how you would filter with relations.
+[Strongly Typed Json](../../modeling/typed-json) fields, with their structure well defined in the schema, allow for a more convenient way to filter. Instead of using JSON path, you can directly use fields to build-up the filter, similar to how you would filter with relations.
 
 :::tip
 You can still use generic Json filters on Typed Json fields if needed.
@@ -123,6 +126,6 @@ The ability to mix SQL query builder into ORM filters is a major improvement ove
 
 ZenStack v3 is implemented on top of [Kysely](https://kysely.dev/), and it leverages Kysely's powerful query builder API to extend the filtering capabilities. You can use the `$expr` operator to define a boolean expression that can express almost everything that can be expressed in SQL.
 
-The `$expr` operator can be used together with other filter operators, so you can keep most of your filters simple and only reach to the query builder level for complicated components.
+The `$expr` operator can be used together with other filter operators, so you can keep most of your filters simple and only reach down to the query builder level for complicated components.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="filter/query-builder.ts" startScript="generate,filter:query-builder" />

@@ -5,7 +5,9 @@ description: ORM Errors
 
 # Errors
 
-The ORM throws an `ORMError` in case of failures. The class has the following fields:
+The ORM throws an `ORMError` in case of failures. In case of an error thrown by the underlying database driver, ZenStack stores the database-specific error code and message in the `dbErrorCode` and `dbErrorMessage` fields of the `ORMError` object.
+
+The `ORMError` class has the following fields:
 
 ```ts
 /**

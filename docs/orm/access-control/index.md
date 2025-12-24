@@ -17,4 +17,4 @@ ZenStack's access control approach is straightforward:
 1. You define whitelist or blacklist policies on your models for CRUD operations.
 2. When querying data, the engine converts the policies into SQL filters and injects them into the generated queries.
 
-If you're familiar with PostgreSQL's [Row-Level Security (RLS)](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), ZenStack's idea is similar, but as the enforcement happens on the application side, it's database agnostic, doesn't involve schema migrations, and surprisingly, [performs better](https://supabase.com/docs/guides/database/postgres/row-level-security#add-filters-to-every-query) than RLS.
+If you're familiar with PostgreSQL's [Row-Level Security (RLS)](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), ZenStack's idea is similar, but as the enforcement happens on the application side, it's database-type agnostic, doesn't involve database schema migrations, and surprisingly, [performs better](https://supabase.com/docs/guides/database/postgres/row-level-security#add-filters-to-every-query) than RLS.

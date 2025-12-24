@@ -7,7 +7,7 @@ interface ZenStackVsPrismaProps {
 
 const ZenStackVsPrisma: FC<ZenStackVsPrismaProps> = ({ children }) => {
     return (
-        <Admonition type="info" title="🔋 ZenStack vs Prisma">
+        <Admonition type="note" title="🔋 ZenStack vs Prisma">
             {children}
         </Admonition>
     );

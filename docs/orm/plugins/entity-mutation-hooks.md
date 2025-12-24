@@ -3,8 +3,11 @@ sidebar_position: 2
 ---
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
+import PreviewFeature from '../../_components/PreviewFeature';
 
 # Entity Mutation Hooks
+
+<PreviewFeature name="Plugin feature" />
 
 ## Introduction
 

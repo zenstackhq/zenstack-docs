@@ -5,8 +5,11 @@ description: Plugin development guide
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 import PackageInstall from '../_components/PackageInstall';
+import PreviewFeature from '../_components/PreviewFeature';
 
 # Plugin Development
+
+<PreviewFeature name="Plugin feature" />
 
 This guide provides a comprehensive introduction to developing ZenStack plugins, demonstrating how to extend ZenStack’s functionality at the schema, CLI, and runtime levels.
 

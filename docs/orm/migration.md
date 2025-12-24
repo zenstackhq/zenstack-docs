@@ -21,7 +21,7 @@ If you are already familiar with Prisma Migrate, you can continue using your cur
 
 ## Commands
 
-Please refer to the [CLI Reference](../reference/cli.md) for the complete list of commands and options.
+Please refer to the [CLI Reference](../reference/cli.md#migrate) for the complete list of commands and options.
 
 ### db push
 

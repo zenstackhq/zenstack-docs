@@ -50,7 +50,7 @@ const db = new ZenStackClient(schema, {
 The computed field callback is also passed with a second `context` argument containing other useful information related to the current query. For example, you can use the `modelAlias` property to refer to the containing model and use it to qualify field names in case of conflicts.
 
 ```ts
-import { sql } from 'kysely';
+import { sql } from '@zenstackhq/orm/helpers';
 
 const db = new ZenStackClient(schema, {
   ...
@@ -60,7 +60,7 @@ const db = new ZenStackClient(schema, {
         eb.selectFrom('Post')
           // the `modelAlias` context property gives you a name that you can
           // use to address the containing model (here `User`) at runtime
-          .whereRef('Post.authorId', '=', sql.ref(modelAlias, 'id'))
+          .whereRef('Post.authorId', '=', sql.ref(`${modelAlias}.id`))
           .select(({fn}) => fn.countAll<number>().as('count')),
     },
   },

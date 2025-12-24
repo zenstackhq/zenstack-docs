@@ -15,7 +15,7 @@ You can try running the `npx zen generate` command in the following playground a
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-quick-start" openFile="zenstack/schema.zmodel" />
 
-The `generate` command generates several TypeScript files from the ZModel schema that support both development-time typing and runtime access to the schema. For more details of the generated code, please refer to the [@core/typescript plugin](../reference/plugins/typescript.md) documentation.
+The `generate` command generates several TypeScript files from the ZModel schema that support both development-time typing and runtime access to the schema. For more details of the generated code, please refer to the [@core/typescript](../reference/plugins/typescript.md) plugin documentation.
 
 :::info
 The CLI's code generation is extensible via plugins. Please refer to the [Plugin Development](../recipe/plugin-dev.md) documentation for a comprehensive guide.

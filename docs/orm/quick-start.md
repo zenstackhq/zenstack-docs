@@ -21,7 +21,9 @@ Run the following command to scaffold a new project with a pre-configured minima
 npm create zenstack my-project
 ```
 
-Or simply use the [interactive playground](https://stackblitz.com/~/github.com/zenstackhq/v3-doc-quick-start) to experience it inside the browser.
+Or simply use the following interactive playground to experience it inside the browser.
+
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-quick-start" openFile="zenstack/schema.zmodel,main.ts" codeFiles={[]} />
 
 ## 2. Adding to an existing project
 
@@ -57,8 +59,8 @@ You can also always configure a project manually with the following steps:
 
 :::info
 
-By default, ZenStack CLI loads the schema from `zenstack/schema.zmodel`. You can change this by passing the `--schema` option. TypeScript files are by default generated to the same directory as the schema file. You can change this by passing the `--output` option.
+By default, ZenStack CLI loads the schema from `zenstack/schema.zmodel`. You can change this by passing the `--schema` option. TypeScript files are by default generated to the same directory as the schema file. You can change this by passing the `--output` option. The default settings can also be changed as explained in the [CLI reference](../reference/cli#overriding-default-options).
 
-You can choose to either commit the generated TypeScript files to your source control, or add them to `.gitignore` and generate them on the fly in your CI/CD pipeline.
+You can choose to either commit the generated TypeScript files to your source control (recommended), or add them to `.gitignore` and generate them on the fly in your CI/CD pipeline.
 
 :::

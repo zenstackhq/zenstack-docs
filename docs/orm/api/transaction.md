@@ -24,6 +24,10 @@ const [user, post] = await db.$transaction([
 
 The result of each operation is returned in the same order as the input.
 
+:::info
+Promises returned by the ORM APIs like `create`, `update`, etc. are lazy and do not start executing until they are awaited directly or the parent `$transaction` call is awaited.
+:::
+
 ## Interactive Transaction
 
 This overload takes an async callback function as input. The callback receives a transaction client that can be used to perform database operations within the transaction.

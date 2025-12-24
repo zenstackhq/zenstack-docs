@@ -4,8 +4,11 @@ description: ORM plugin introduction
 ---
 
 import ZenStackVsPrisma from '../../_components/ZenStackVsPrisma';
+import PreviewFeature from '../../_components/PreviewFeature';
 
 # Plugin Overview
+
+<PreviewFeature name="Plugin feature" />
 
 <ZenStackVsPrisma>
 ZenStack's plugin system aims to provide a more flexible extensibility solution than [Prisma Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions), allowing you to tap into the ORM runtime at different levels. Some parts of the plugin design resemble client extensions, but overall, it's not meant to be compatible.
@@ -31,7 +34,7 @@ ZenStack ORM provides three ways for you to tap into its runtime:
 
 3. **Kysely query hooks**
 
-    Kysely query hooks give you the ultimate power to inspect and alter the SQL query (in AST form) before it's sent to the database. It's a very powerful low-level extensibility that should be used with care. See [Kysely Query Hooks](./kysely-query-hooks.md) for details.
+    Kysely query hooks give you the ultimate power to inspect and transform the SQL query (in AST form) before it's sent to the database. It's a very powerful low-level extensibility that should be used with care. See [Kysely Query Hooks](./kysely-query-hooks.md) for details.
 
 All three types of plugins are installed via the unified `$use` method on the ORM client. The `$use` method returns a new ORM client with the plugin applied, without modifying the original client. You can use the `$unuse` or `$unuseAll` methods to remove plugin(s) from a client.
 

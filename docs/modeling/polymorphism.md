@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 11
 description: Polymorphic models in ZModel
 ---
 
@@ -28,7 +28,7 @@ It may be tempting to use mixins to share the common fields, however it's not an
 A true solution involves having an in-database model of polymorphism, where we really have a `Content` table that serves as an intermediary between `User` and the concrete content types. This is what ZModel polymorphism is about.
 
 :::info
-There are [two main ways](https://www.prisma.io/docs/orm/prisma-schema/data-model/table-inheritance) to model polymorphism in relational databases: single-table inheritance (STI) and multi-table inheritance (MTI, aka. "Delegate Types"). ZModel's implementation follows the MTI pattern.
+There are [two main ways](https://chatgpt.com/share/694b3260-8778-8012-bcd2-53d145c64ee3) to model polymorphism in relational databases: single-table inheritance (STI) and multi-table inheritance (MTI, aka. "Delegate Types"). ZModel's implementation follows the MTI pattern.
 :::
 
 ## Modeling polymorphism

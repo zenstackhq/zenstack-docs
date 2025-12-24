@@ -41,7 +41,7 @@ await db.post.update({
 
 ## Manipulating relations
 
-The `update` and `upsert` methods are very powerful in that they allow you to freely manipulate relations. You can create, connect, disconnect, update, and delete relations in a single operation. You can also reach deeply into indirect relations.
+The `update` and `upsert` methods are very powerful in that they allow you to freely manipulate relations. You can create, connect, disconnect, update, and delete relations in a single operation. You can also reach deeply into indirect relations. Nested updates are executed in a transaction to ensure data integrity.
 
 `updateMany` and `updateManyAndReturn` only support updating scalar fields.
 

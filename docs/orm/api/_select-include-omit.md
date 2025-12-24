@@ -16,3 +16,4 @@
 
     This field is optional. If not provided, no fields are omitted by default. The `omit` field is mutually exclusive with the `select` field.
     
+    See [Omitting Fields](./omit) for different ways to configure field omission.

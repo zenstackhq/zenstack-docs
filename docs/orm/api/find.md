@@ -36,7 +36,7 @@ The `find` series of APIs are used to query records from the database. It has th
 
 ## Filtering
 
-The API provides a very flexible set of filtering options. We've put it into a [dedicated section](./filter.md).
+The API provides a very flexible set of filtering options. We've put it into a [dedicated document](./filter.md).
 
 ## Sorting
 

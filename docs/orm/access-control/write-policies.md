@@ -30,6 +30,7 @@ Here's a quick example. Don't worry about the details yet. We'll cover the CRUD 
 model User {
     id    Int    @id @default(autoincrement())
     email String @unique
+    posts Post[]
 
     // open to signup, profiles are public
     @@allow('create,read', true)
@@ -56,7 +57,7 @@ model Post {
 }
 ```
 
-You can write as many policy rules as you want for a model. The order of the rules doesn't matter. ZenStack determines whether a CRUD operation is allowed using the following logic:
+You can write as many policy rules as you want for a model. The order of the rules doesn't matter. ZenStack determines whether a CRUD operation is allowed using the following procedure:
 
 1. If any `@@deny` rule evaluates to true, it's denied.
 2. If any `@@allow` rule evaluates to true, it's allowed.
@@ -96,9 +97,9 @@ As you've seen in the previous sample, a rule can specify multiple operations in
 
 ZModel supports an intuitive expression language that's very similar to JavaScript. Typical expressions include:
 
-- Literals like strings, numbers, and booleans
-- Comparisons with `==`, `>`, etc.
-- Logical combinations with `&&`, `||`, etc.
+- Literals like strings, numbers, booleans, and `null`
+- Comparisons: `==`, `!=`, `>`, `>=`, `<`, `<=`
+- Logical combinations: `&&`, `||`, `!`
 - References to the current model's fields, like `published`
 
 They provide the basic building blocks for composing complex policy rules.
@@ -138,7 +139,7 @@ model Post {
 }
 ```
 
-So the big question becomes: Where does the value of `auth()` come from?
+So the obvious question becomes: *Where does the value of `auth()` come from?*
 
 ZenStack isn't an authentication library, so it doesn't know how to fetch the current login user. You are responsible for providing that piece of information. We'll cover it in the next part, where we talk about the runtime aspect of access control. For now, assume `auth()` gives you the **validated** current user info.
 
@@ -152,7 +153,7 @@ If you don't provide the current user, `auth()` will return `null`, and you can 
 
 You can achieve a lot by writing policies using a model's simple fields; however, real-world access control often involves relations. For example:
 
-> A user can only create posts if his profile is verified, where "Profile" is a relation of "User".
+> A user cannot be deleted if he has any published posts.
 
 ZenStack's policy really shines when it comes to how flexible it is in traversing relations.
 
@@ -197,7 +198,7 @@ model User {
     posts Post[]
 
     // user can't be deleted if he has published posts
-    @@deny('delete', posts?[published])
+    @@deny('delete', posts?[published == true])
 }
 
 model Post {
@@ -256,7 +257,7 @@ model Profile {
 }
 ```
 
-You can use the `check()` function to delegate the policy check to the related entity directly:
+You can use the [`check()`](../../reference/plugins/policy#check) function to delegate the policy check to the related entity directly:
 
 ```zmodel
 model User {

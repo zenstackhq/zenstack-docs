@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 8
 description: Reusing common fields with mixins
 ---
 
@@ -55,4 +55,4 @@ model Post with BaseFieldsMixin {
 
 A model can use multiple mixins as long as their field names don't conflict.
 
-Mixins don't exist at the database level. The fields defined in the mixin types are conceptually inlined into the models that use them.
+Mixins don't exist at the database level. The fields defined in the mixin types are inlined into the models that use them.

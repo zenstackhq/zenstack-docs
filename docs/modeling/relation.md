@@ -5,7 +5,7 @@ description: Relations in ZModel
 
 # Relation
 
-Relations are a fundamental concept in relational databases. They connect models into a graph and allow you to query interconnected data efficiently. In ZModel, relations are modeled using the `@relation` attribute. In most cases, it involves one side of the relation defining a foreign key field that references the primary key of the other side. By convention, we call the model that holds the foreign key the "owner" side.
+Relations are a fundamental concept in relational databases. They connect models into a graph and ensure data consistency. In ZModel, relations are modeled using the `@relation` attribute. In most cases, it involves one side of the relation defining a foreign key field that references the primary key of the other side. By convention, we call the model that holds the foreign key the "owner" side.
 
 ## One-to-one relation
 

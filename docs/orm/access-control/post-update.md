@@ -16,7 +16,7 @@ In ZenStack v2, post-update rules were implicitly defined with the "update" oper
 
 Among the CRUD operations, "update" is a special one because it has a "pre" state and "post" state. The "update" policies we've seen in the previous parts refer to the "pre" state, meaning that if your policies refer to the model's fields, the fields are evaluated to their values before the update happens.
 
-However, sometimes you want to express conditions that should hold after the update happens. For example, you may want to ensure that after an update, a post's `published` field cannot be set to true unless the current user is the author. Post-update policies are designed for such scenarios.
+However, sometimes you want to express conditions that should hold after the update happens. For example, you may want to ensure that after an update, a post's `published` field cannot be `true` unless the current user is the author. Post-update policies are designed for such scenarios.
 
 Writing post-update rules is essentially the same as writing regular "update" rules, except that fields will refer to their post-update values. You can use the built-in `before()` function to refer to the pre-update entity if needed.
 
@@ -38,7 +38,7 @@ model Post {
 }
 ```
 
-When post-update policies are violated, a `RejectedByPolicyError` is thrown.
+When post-update policies are violated, an `ORMError` with `reason` set to "rejected-by-policy" is thrown. See [Errors](../errors) for more details.
 
 ## Samples
 

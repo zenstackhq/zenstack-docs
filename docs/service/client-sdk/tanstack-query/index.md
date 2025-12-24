@@ -11,7 +11,7 @@ import OptimisticLimitation from './_optimistic-limitation.md';
 import FineGrainedOptimistic from './_fine-grained-optimistic.md';
 import Invalidation from './_invalidation.md';
 
-# TanStack Query
+# TanStack Query Client
 
 ## Overview
 

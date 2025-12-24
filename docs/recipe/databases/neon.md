@@ -6,7 +6,7 @@ import PackageInstall from '../../_components/PackageInstall';
 
 # Neon
 
-Neon can be used with the regular `pg` driver as described in the [PostgreSQL](./postgres) guide. It also provides a serverless driver that uses HTTP/WebSocket protocol which works in edge environments. This guide explains how to use the serverless driver with ZenStack.
+[Neon](https://neon.com/) can be used with the regular `pg` driver as described in the [PostgreSQL](./postgres) guide. It also provides a serverless driver that uses HTTP/WebSocket protocol which works in edge environments. This guide explains how to use the serverless driver with ZenStack.
 
 ## Installing driver
 

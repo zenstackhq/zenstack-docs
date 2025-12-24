@@ -20,7 +20,7 @@ plugin policy {
 
 Use the following model-level attributes to define access control policies:
 
-- `@@allow`
+#### `@@allow`
 
     ```zmodel
     attribute @@allow(_ operation: String, _ condition: Boolean)
@@ -30,7 +30,7 @@ Use the following model-level attributes to define access control policies:
       - `operation`: comma-separated list of "create", "read", "update", "post-update", "delete". Use "all" to denote all operations.
       - `condition`: a boolean expression that controls if the operation should be allowed.
   
-- `@@deny`
+#### `@@deny`
   
     ```zmodel
     attribute @@deny(_ operation: String, _ condition: Boolean)
@@ -44,7 +44,7 @@ Use the following model-level attributes to define access control policies:
 
 The following functions can be used in policy conditions:
 
-- `auth()`
+#### `auth()`
 
     ```zmodel
     function auth(): User {}
@@ -52,7 +52,7 @@ The following functions can be used in policy conditions:
 
     Gets the current login user. The return type of the function is the `User` model defined in the current ZModel.
 
-- `now()`
+#### `now()`
 
     ```zmodel
     function now(): DateTime {}
@@ -60,34 +60,31 @@ The following functions can be used in policy conditions:
 
     Gets the current datetime.
 
-- `contains()`
+#### `contains()`
 
     ```zmodel
-    function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {
-    }
+    function contains(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
     ```
 
     Checks if the field value contains the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
 
-- `startsWith()`
+#### `startsWith()`
 
     ```zmodel
-    function startsWith(field: String, search: String, caseInSensitive: Boolean?): Boolean {
-    }
+    function startsWith(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
     ```
 
     Checks if the field value starts with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
 
-- `endsWith()`
+#### `endsWith()`
 
     ```zmodel
-    function endsWith(field: String, search: String, caseInSensitive: Boolean?): Boolean {
-    }
+    function endsWith(field: String, search: String, caseInSensitive: Boolean?): Boolean {}
     ```
 
     Checks if the field value ends with the search string. By default, the search is case-sensitive, and "LIKE" operator is used to match. If `caseInSensitive` is true, "ILIKE" operator is used if supported, otherwise it still falls back to "LIKE" and delivers whatever the database's behavior is.
 
-- `has()`
+#### `has()`
 
     ```zmodel
     function has(field: Any[], search: Any): Boolean {}
@@ -95,16 +92,15 @@ The following functions can be used in policy conditions:
 
     Checks if the list field value has the given search value.
 
-- `hasSome()`
+#### `hasSome()`
 
     ```zmodel
-    function hasSome(field: Any[], search: Any[]): Boolean {
-    }
+    function hasSome(field: Any[], search: Any[]): Boolean {}
     ```
 
     Checks if the list field value has at least one element of the search list
 
-- `hasEvery()`
+#### `hasEvery()`
 
     ```zmodel
     function hasEvery(field: Any[], search: Any[]): Boolean {}
@@ -113,7 +109,7 @@ The following functions can be used in policy conditions:
     Checks if the list field value has all elements of the search list.
 
 
-- `isEmpty()`
+#### `isEmpty()`
 
     ```zmodel
     function isEmpty(field: Any[]): Boolean {}
@@ -121,7 +117,7 @@ The following functions can be used in policy conditions:
 
     Checks if the list field value is empty.
 
-- `currentModel()`
+#### `currentModel()`
 
     ```zmodel
     function currentModel(casing: String?): String {}
@@ -131,7 +127,7 @@ The following functions can be used in policy conditions:
         
       - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
 
-- `currentOperation()`
+#### `currentOperation()`
 
     ```zmodel
     function currentOperation(casing: String?): String {}
@@ -140,6 +136,17 @@ The following functions can be used in policy conditions:
     Returns the operation for which the policy rule is defined for. Note that a rule with "all" operation is expanded to "create", "read", "update", and "delete" rules, and the function returns corresponding value for each expanded version.
         
       - `casing`: parameter to control the casing of the returned value. Valid values are "original", "upper", "lower", "capitalize", "uncapitalize". Defaults to "original".
+
+#### `check()`
+  
+    ```zmodel
+    function check(field: Any, operation: String?): Boolean {}
+    ```
+
+    Delegates the access control decision to a relation. Only to-one relations are supported.
+
+      - `field`: the relation field to delegate to.
+      - `operation`: the operation to check access for. Can be "read", "create", "update", "post-update", or "delete". If the operation is not provided, it defaults the operation of the containing policy rule.
 
 ## Runtime Plugin
 

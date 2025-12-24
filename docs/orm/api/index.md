@@ -12,7 +12,7 @@ The API is organized into several categories covered by the following sections. 
 
 - `where`
 
-    When an operation can involve filtering records, a `where` clause is used to specify the condition. E.g., `findUnique`, `updateMany`, `delete`, etc. `where` clause also exists in nested payload for filtering relations.
+    For operations that involve filtering records, a `where` clause is used to specify the condition. Examples include `findUnique`, `updateMany`, `delete`, and etc. `where` clause also exists in nested payload for filtering relations.
 
     ```ts
     await db.post.findMany({ where: { published: true } });
@@ -38,9 +38,15 @@ The API is organized into several categories covered by the following sections. 
     });
     ```
 
+    :::info
+    `include` and `select` cannot be used together in the same operation, because `include` implies selecting all non-relation fields.
+
+    `select` and `omit` cannot be used together in the same operation either, because the combination is meaningless.
+    :::
+
 - `orderBy`, `take`, `skip`
 
-    When an operation returns multiple records, you can use these clauses to control the sort order, number of records returned, and the offset for pagination.
+    When an operation returns multiple records, you can use these clauses to control the sort order, number of records returned, and the offset for pagination. `take` can be positive (for forward pagination) or negative (for backward pagination).
 
     ```ts
     // results will be sorted by `createdAt` in descending order, and return 
@@ -69,7 +75,7 @@ The output types of the API methods generally fall into three categories:
 
     ```ts
     // result will be `Promise<{ title: string; author: { name: string } }[]>`
-    await db.post.findMany({
+    db.post.findMany({
       select: { title: true, author: { select: { name: true } } }
     });
     ```

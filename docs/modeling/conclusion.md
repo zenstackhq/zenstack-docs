@@ -11,6 +11,6 @@ In the following parts, you'll learn how to put the schema into use and let it d
 
 - [Using ORM to query the database](../orm/)
 - [Exposing a data API with Query-as-a-Service](../service/)
-- [Deriving other useful utilities](../service/)
+- [Deriving other useful utilities](../category/utilities/)
 
 Let's continue our journey with ZenStack!

@@ -28,10 +28,14 @@ flowchart TD
 
 Let's use a real example to see how API handlers and server adapters work together to serve an automatic secured data query API. A few notes about the example:
 
-- Express.js is used to demonstrate, but the same concept applies to other supported frameworks.
+- [Express.js](https://expressjs.com/) is used to demonstrate, but the same concept applies to other supported frameworks.
 - Authentication is simulated by using the "x-userid" header. In real applications, you would use a proper authentication mechanism.
 - ZModel schema is configured with access policies.
 - For each request, the `getClient` call back is called to get an ORM client instance bound to the current user.
+
+:::info
+After the server launches in the interactive playground, open a new terminal and run `npm run client` to test the API.
+:::
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-server-adapter" openFile="main.ts,zenstack/schema.zmodel" />
 

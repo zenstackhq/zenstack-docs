@@ -40,17 +40,20 @@ You can apply it in various ways:
 
 ```zmodel
 model A {
-    x String
+    id Int @id
+    x  String
     @@index([x]) // positional parameter
 }
 
 model B {
-    x String
+    id Int @id
+    x  String
     @@index([x], name: 'b_index') // positional and named parameters
 }
 
 model C {
-    x String
+    id Int @id
+    x  String
     @@index(fields: [x], name: 'c_index') // all named parameters
 }
 ```

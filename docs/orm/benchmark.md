@@ -41,7 +41,7 @@ Dataset size: 500
 
 ### Remote PostgreSQL
 
-> Tests are run from a local machine against a PostgreSQL database from [Neon](https://neon.com/) in the us-east-1 region.
+> Tests are run from a machine in US west against a PostgreSQL database from [Neon](https://neon.com/) in the us-east-1 region.
 
 Iteration count: 20  
 Dataset size: 500
@@ -58,6 +58,8 @@ Dataset size: 500
 ### Cold Start Overhead
 
 While not readily observable in the numbers, ZenStack has a higher cold start overhead due to the usage of [Zod](https://zod.dev/) for input validation. Zod does JIT compilation of schemas on the first run. This overhead is amortized over multiple operations. The worst-case cold start overhead observed is around 20ms in the test environment.
+
+We'll seek ways to reduce this overhead in the future.
   
 ### Why Is ZenStack Slower for Simple Mutations?
 

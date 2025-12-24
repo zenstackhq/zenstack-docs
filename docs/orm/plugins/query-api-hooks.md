@@ -3,8 +3,11 @@ sidebar_position: 1
 ---
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
+import PreviewFeature from '../../_components/PreviewFeature';
 
 # Query API Hooks
+
+<PreviewFeature name="Plugin feature" />
 
 ## Introduction
 

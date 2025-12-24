@@ -11,4 +11,4 @@ You can use the `count` method to count the number of records that match a query
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="count.ts" startScript="generate,count" />
 
-To count relations, please use a `find` API with the special `_count` field as demonstrated in the [Find](./find.md#field-selection) section.
+To count relations, please use a `find` API with the special `_count` field as demonstrated in the [Find](./find.md#field-selection) documentation.

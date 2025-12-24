@@ -97,9 +97,9 @@ if (content.type === 'Post') {
 }
 ```
 
-### Straightforward, light-weighted, flexible
+### Straightforward, light-weighted, extensible
 
-Compared to Prisma and previous versions of ZenStack, v3 is more straightforward, light-weighted, and flexible.
+Compared to Prisma and previous versions of ZenStack, v3 is more straightforward, light-weighted, and extensible.
 
 - No runtime dependency to Prisma, thus no overhead of Rust/WASM query engines.
 - No magic generating into `node_modules`. You fully control how the generated code is compiled and bundled.
@@ -108,9 +108,11 @@ Compared to Prisma and previous versions of ZenStack, v3 is more straightforward
 
 ## Documentation Conventions
 
-### Sample playground
+### Interactive samples
 
-Throughout the documentation we'll use [StackBlitz](https://stackblitz.com/) to provide interactive samples alongside with static code snippets. StackBlitz's [WebContainers](https://webcontainers.io/) is an awesome technology that allows you to run a Node.js environment inside the browser. The embedded samples use the [sql.js](https://github.com/sql-js/sql.js) (a WASM implementation of SQLite) for WebContainers compatibility, which is not suitable for production use. Feel free to make changes and try things out in the playground.
+Throughout the documentation we'll use [StackBlitz](https://stackblitz.com/) to provide interactive samples alongside with static code snippets. StackBlitz's [WebContainers](https://webcontainers.io/) is an awesome technology that allows you to run a Node.js environment inside the browser. The embedded samples use the [sql.js](https://github.com/sql-js/sql.js) (a WASM implementation of SQLite) for WebContainers compatibility, which is not suitable for production use.
+
+Feel free to make changes and try things out in the playground.
 
 ### If you already know Prisma
 

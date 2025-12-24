@@ -26,6 +26,12 @@ const authDb = db.$use(new PolicyPlugin());
 ...
 ```
 
+:::info
+`ZenStackClient` instances are immutable. Methods like `$use()` and `$setAuth()` return new client instances, leaving the original instance unchanged.
+
+The new instances are shallow clone of the original one. They are cheap to create and don't involve creating new database connections.
+:::
+
 ## Setting Auth User
 
 As mentioned in the previous part, you can use the `auth()` function in policy rules to refer to the current authenticated user. At runtime, you should use the `$setAuth()` API to provide such information. ZenStack itself is not an authentication library, so you need to determine how to achieve it based on your authentication mechanism.
@@ -47,9 +53,13 @@ async function handleRequest(req: Request) {
 }
 ```
 
-Without calling `$setAuth()`, the client works in anonymous mode, meaning that `auth()` in ZModel is evaluated to null. You can explicitly call `$setAuth(undefined)` to get an anonymous-bound client from a client that's previously bound to a user.
+Without calling `$setAuth()`, the client works in anonymous mode, meaning that `auth()` in ZModel is evaluated to `null`. You can explicitly call `$setAuth(undefined)` to get an anonymous-bound client from a client that's previously bound to a user.
 
 Use the `$auth` property to get the user info previously set by `$setAuth()`.
+
+:::tip
+See [Integrating With Authentication](/docs/category/integrating-with-authentication) for guides on integrating ZenStack with popular authentication solutions.
+:::
 
 ## Making Queries
 
@@ -63,17 +73,17 @@ For the most part, the ORM query behavior is very intuitive:
 
     - Mutation operations that affect multiple rows, like `updateMany` and `deleteMany`, only impact rows that meet the "update" or "delete" policies respectively.
 
-    - Mutation operations that affect a single, unique row, like `update` and `delete`, will throw an `NotFoundError` if the target row doesn't meet the "update" or "delete" policies respectively.
+    - Mutation operations that affect a single, unique row, like `update` and `delete`, will throw an `ORMError` with `reason` set to `NOT_FOUND` if the target row doesn't meet the "update" or "delete" policies respectively. See [Errors](../errors) for more details.
 
 :::info
-Why `NotFoundError` instead of `RejectedByPolicyError`? Because the rationale is rows that don't satisfy the policies "don't exist".
+Why set reason as `NOT_FOUND` instead of `REJECTED_BY_POLICY`? Because the rationale is rows that don't satisfy the policies "don't exist".
 :::
 
-There are some complications when "read" and "write" policies affect the same query. It's ubiquitous because most mutation APIs involve reading the post-mutation entity to return to the caller. When the mutation succeeds but the post-mutation entity cannot be read, a `RejectedByPolicyError` is thrown, even though the mutation is persisted.
+There are some complications when "read" and "write" policies affect the same query. It's ubiquitous because most mutation APIs involve reading the post-mutation entity to return to the caller. When the mutation succeeds but the post-mutation entity cannot be read, an `ORMError` with `reason` set to `REJECTED_BY_POLICY` is thrown, even though the mutation is persisted.
 
 ```ts
 // if Post#1 is updatable but the post-update read is not allowed, the 
-// update will be persisted first and then a `RejectedByPolicyError` 
+// update will be persisted first and then an `ORMError` 
 // will be thrown
 await db.post.update({
     where: { id: 1 },
@@ -90,7 +100,7 @@ Why throw an error instead of returning `null`? Because it'll compromise type-sa
 The low-level Kysely query-builder API is also subject to access control enforcement. Its behavior is intuitive:
 
 - Calling `$qb.selectFrom()` returns readable rows only.
-- When you call `$qb.insertInto()`, `RejectedByPolicyError` will be thrown if the inserted row doesn't satisfy the "create" policies. Similar for `update` and `delete`.
+- When you call `$qb.insertInto()`, an `ORMError` will be thrown if the inserted row doesn't satisfy the "create" policies. Similar for `update` and `delete`.
 - Calling `$qb.update()` and `$qb.delete()` only affects rows that satisfy the "update" and "delete" policies, respectively.
 - When you join tables, the joined table will be filtered to readable rows only.
 - When you use sub-queries, the sub-queries will be filtered to readable rows only.
