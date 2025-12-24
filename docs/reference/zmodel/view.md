@@ -6,8 +6,6 @@ sidebar_position: 4
 
 Views are used to model SQL views in the database.
 
-### Syntax
-
 ## Syntax
 
 ```zmodel
@@ -32,7 +30,7 @@ view NAME (with MIXIN_NAME(,MIXIN_NAME)*)? {
 
     Name of a custom type used as a mixin. 
 
-### Example
+## Example
 
 ```zmodel
 view UserInfo {
