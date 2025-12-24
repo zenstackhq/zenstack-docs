@@ -221,7 +221,7 @@ const config = {
                 copyright: `Copyright © ${new Date().getFullYear()} ZenStack, Inc.`,
             },
 
-            image: '/img/social-cover.png',
+            image: '/img/social-cover-xmas.png',
 
             prism: {
                 theme: prismThemes.github,
