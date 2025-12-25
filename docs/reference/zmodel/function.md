@@ -89,7 +89,7 @@ Functions related to input validation are documented in a [separate page](./inpu
 ### uuid()
 
 ```zmodel
-function uuid(): String {}
+function uuid(version: Int?, format: String?): String {}
 ```
 
 Generates a globally unique identifier based on the UUID spec.
@@ -97,7 +97,7 @@ Generates a globally unique identifier based on the UUID spec.
 ### cuid()
 
 ```zmodel
-function cuid(version: Int?): String {}
+function cuid(version: Int?, format: String?): String {}
 ```
 
 Generates a unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec. Pass `2` as an argument to use [cuid2](https://github.com/paralleldrive/cuid2).
@@ -105,7 +105,7 @@ Generates a unique identifier based on the [CUID](https://github.com/ericelliott
 ### nanoid()
 
 ```zmodel
-function nanoid(length: Int?): String {}
+function nanoid(length: Int?, format: String?): String {}
 ```
 
 Generates an identifier based on the [nanoid](https://github.com/ai/nanoid) spec.
@@ -113,7 +113,7 @@ Generates an identifier based on the [nanoid](https://github.com/ai/nanoid) spec
 ### ulid()
 
 ```zmodel
-function ulid(): String {}
+function ulid(format: String?): String {}
 ```
 
 Generates a unique identifier based on the [ULID](https://github.com/ulid/spec) spec.
