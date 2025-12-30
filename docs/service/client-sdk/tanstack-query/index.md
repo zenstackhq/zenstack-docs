@@ -33,11 +33,38 @@ The integration provides the following features
 - Automatic query invalidation upon mutation.
 - Automatic optimistic updates (opt-in).
 
-## Installation
+## Framework Compatibility
 
-:::info
-TanStack Query version 5.0.0 or later is required.
+### React
+
+- `@tanstack/react-query`: v5+
+- `react` v18+
+
+### Vue
+
+- `@tanstack/vue-query`: v5+
+- `vue` v3+
+
+### Svelte
+
+- `@tanstack/svelte-query`: v6+
+- `svelte` v5.25.0+
+
+:::warning
+
+`@tanstack/svelte-query` v6 leverages Svelte 5's [runes](https://svelte.dev/docs/svelte/what-are-runes) reactivity system. ZenStack is not compatible with prior versions that use Svelte stores.
+
 :::
+
+### Angular
+
+Not supported yet (need to migrate implementation from ZenStack v2).
+
+### Solid
+
+Not supported yet.
+
+## Installation
 
 <PackageInstall dependencies={['@zenstackhq/tanstack-query']} />
 
@@ -55,7 +82,7 @@ You can configure the query hooks by setting up context. The following options a
 
 - logging
 
-    Enable logging for debugging purposes. Defaults to false.
+    Logging configuration. Pass `true` to log with `console.log`. Pass a `(message) => void` function for custom logging.
 
 Example for using the context provider:
 
@@ -69,24 +96,24 @@ import { QuerySettingsProvider, type FetchFn } from '@zenstackhq/tanstack-query/
 
 // custom fetch function that adds a custom header
 const myFetch: FetchFn = (url, options) => {
-    options = options ?? {};
-    options.headers = {
-        ...options.headers,
-        'x-my-custom-header': 'hello world',
-    };
-    return fetch(url, options);
+  options = options ?? {};
+  options.headers = {
+    ...options.headers,
+    'x-my-custom-header': 'hello world',
+  };
+  return fetch(url, options);
 };
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <QuerySettingsProvider value={{ endpoint: '/api/model', fetch: myFetch }}>
-                <AppContent />
-            </QuerySettingsProvider>
-        </QueryClientProvider>
-    );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <QuerySettingsProvider value={{ endpoint: '/api/model', fetch: myFetch }}>
+        <AppContent />
+      </QuerySettingsProvider>
+    </QueryClientProvider>
+  );
 }
 
 export default MyApp;
@@ -101,17 +128,17 @@ export default MyApp;
 import { provideQuerySettingsContext, type FetchFn } from '@zenstackhq/tanstack-query/vue';
 
 const myFetch: FetchFn = (url, options) => {
-    options = options ?? {};
-    options.headers = {
-        ...options.headers,
-        'x-my-custom-header': 'hello world',
-    };
-    return fetch(url, options);
+  options = options ?? {};
+  options.headers = {
+    ...options.headers,
+    'x-my-custom-header': 'hello world',
+  };
+  return fetch(url, options);
 };
 
 provideQuerySettingsContext({
-    endpoint: 'http://localhost:3000/api/model',
-    fetch: myFetch
+  endpoint: 'http://localhost:3000/api/model',
+  fetch: myFetch
 });
 </script>
 
@@ -125,43 +152,48 @@ provideQuerySettingsContext({
 
 ```svelte title='+layout.svelte'
 <script lang="ts">
-    import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
-    import { setQuerySettingsContext, type FetchFn } from '@zenstackhq/tanstack-query/svelte';
+  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+  import { setQuerySettingsContext, type FetchFn } from '@zenstackhq/tanstack-query/svelte';
 
-    // custom fetch function that adds a custom header
-    const myFetch: FetchFn = (url, options) => {
-        options = options ?? {};
-        options.headers = {
-            ...options.headers,
-            'x-my-custom-header': 'hello world',
-        };
-        return fetch(url, options);
+  // custom fetch function that adds a custom header
+  const myFetch: FetchFn = (url, options) => {
+    options = options ?? {};
+    options.headers = {
+      ...options.headers,
+      'x-my-custom-header': 'hello world',
     };
+    return fetch(url, options);
+  };
 
-    setQuerySettingsContext({
-        endpoint: '/api/model',
-        fetch: myFetch,
-    });
+  setQuerySettingsContext({
+    endpoint: '/api/model',
+    fetch: myFetch,
+  });
 
-    const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 </script>
 
 <div>
-    <QueryClientProvider client={queryClient}>
-        <slot />
-    </QueryClientProvider>
+  <QueryClientProvider client={queryClient}>
+    <slot />
+  </QueryClientProvider>
 </div>
 ```
 </TabItem>
 
 </Tabs>
 
+The provided configuration can be overridden at query time. See [Configuration Overrides](#configuration-overrides) for details.
+
 ## Using the Query Hooks
 
 Call the `useClientQueries` hook to get a root object to access CRUD hooks for all models. From there, using the hooks is pretty much the same as using `ZenStackClient` in backend code.
 
+<Tabs>
+
+<TabItem value="react" label="React">
+
 ```ts
-// replace "/react" with "/vue", "/svelte" as needed
 import { useClientQueries } from '@zenstackhq/tanstack-query/react';
 import { schema } from '~/zenstack/schema-lite.ts';
 
@@ -169,20 +201,96 @@ const client = useClientQueries(schema);
 
 // `usersWithPosts` is typed `User & { posts: Post[] }`
 const { data: usersWithPosts } = client.user.useFindMany({
-    include: { posts: true },
-    orderBy: { createdAt: 'desc' },
+  include: { posts: true },
+  orderBy: { createdAt: 'desc' },
 });
 
 const createPost = client.post.useCreate();
 
 function onCreate() {
-    createPost.mutate({ title: 'Some new post' });
+  createPost.mutate({ title: 'Some new post' });
 }
 ```
 
+</TabItem>
+
+<TabItem value="vue" label="Vue">
+
+:::info
+If you want the queries to be reactive, make sure to pass reactive objects as arguments when calling the hooks. See [TanStack Query documentation](https://tanstack.com/query/latest/docs/framework/vue/reactivity) for details.
+:::
+
+```ts title="app.vue"
+<script setup lang="ts">
+  import { useClientQueries } from '@zenstackhq/tanstack-query/vue';
+  import { schema } from '~/zenstack/schema-lite.ts';
+  
+  const client = useClientQueries(schema);
+  
+  // `usersWithPosts` is typed `Ref<User & { posts: Post[] }>`
+  const { data: usersWithPosts } = client.user.useFindMany({
+    include: { posts: true },
+    orderBy: { createdAt: 'desc' },
+  });
+  
+  const createPost = client.post.useCreate();
+  
+  function onCreate() {
+    createPost.mutate({ title: 'Some new post' });
+  }
+</script>
+```
+
+</TabItem>
+
+<TabItem value="svelte" label="Svelte">
+
+:::info
+Arguments to the query hooks must be wrapped in a function to make the result reactive. Please check this [TanStack Query documentation](https://tanstack.com/query/latest/docs/framework/svelte/migrate-from-v5-to-v6) if you are migrating from `@tanstack/svelte-query` v5 to v6.
+:::
+
+```ts title="App.svelte"
+<script lang="ts">
+  import { useClientQueries } from '@zenstackhq/tanstack-query/svelte';
+  import { schema } from '~/zenstack/schema-lite.ts';
+
+  const client = useClientQueries(schema);
+
+  // `usersWithPosts` is typed `Ref<User & { posts: Post[] }>`
+  const { data: usersWithPosts } = client.user.useFindMany(
+    () => ({
+      include: { posts: true },
+      orderBy: { createdAt: 'desc' }})
+  );
+</script>
+```
+
+</TabItem>
+
+</Tabs>
+
 The `useClientQueries` takes the schema as an argument, and it uses it for both type inference and runtime logic (e.g., automatic query invalidation). This may bring security concerns, because the schema object contains sensitive content like access policies. Using it in the frontend code will expose such information.
 
-To mitigate the risk, you can pass the additional `--lite` option when running `zen generate`. With that flag on, the CLI will generate an additional "lite" schema object in `schema-lite.ts` with all attributes removed. The lite schema contains all information needed by the query hooks.
+To mitigate the risk, you can pass the additional `--lite` option when running `zen generate`. With that flag on, the CLI will generate an additional "lite" schema object in `schema-lite.ts` with all attributes removed. The lite schema contains all information needed by the query hooks. Check the [CLI Reference](../../../reference/cli.md#generate) for details.
+
+## Configuration Overrides
+
+The query configurations (as described in the [Context Provider](#context-provider) section) can be overridden in a hierarchical manner.
+
+When calling `useClientQueries`, you can pass the `endpoint`, `fetch`, etc. options to override the global configuration for all hooks returned from the call.
+
+```ts
+const client = useClientQueries(schema, { endpoint: '/custom-endpoint' });
+```
+
+Similarly, when calling an individual query or mutation hook, you can also pass the same options to override the configuration for that specific call.
+
+```ts
+const { data } = client.user.useFindMany(
+  { where: { active: true } },
+  { endpoint: '/another-endpoint' }
+);
+```
 
 ## Optimistic Update
 
@@ -198,7 +306,7 @@ Here's an example:
 const { mutate: create } = useCreatePost({ optimisticUpdate: true });
 
 function onCreatePost() {
-    create({ ... })
+  create({ ... })
 }
 ```
 
@@ -222,8 +330,8 @@ By default, all queries opt into automatic optimistic update. You can opt-out on
 
 ```ts
 const { data } = client.post.useFindMany(
-    { where: { published: true } },
-    { optimisticUpdate: false }
+  { where: { published: true } },
+  { optimisticUpdate: false }
 );
 ```
 
@@ -244,49 +352,52 @@ import { useClientQueries } from '@zenstackhq/tanstack-query/react';
 // post list component with infinite loading
 const Posts = () => {
 
-    const client = useClientQueries(schema);
+  const client = useClientQueries(schema);
 
-    const PAGE_SIZE = 10;
+  const PAGE_SIZE = 10;
 
-    const fetchArgs = {
-        include: { author: true },
-        orderBy: { createdAt: 'desc' as const },
-        take: PAGE_SIZE,
-    };
+  const fetchArgs = {
+    include: { author: true },
+    orderBy: { createdAt: 'desc' as const },
+    take: PAGE_SIZE,
+  };
 
-    const { data, fetchNextPage, hasNextPage } = client.post.useInfiniteFindMany(fetchArgs, {
-        getNextPageParam: (lastPage, pages) => {
-            if (lastPage.length < PAGE_SIZE) {
-                return undefined;
-            }
-            const fetched = pages.flatMap((item) => item).length;
-            return {
-                ...fetchArgs,
-                skip: fetched,
-            };
-        },
-    });    
+  const { data, fetchNextPage, hasNextPage } = client.post.useInfiniteFindMany(
+    fetchArgs, 
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length < PAGE_SIZE) {
+          return undefined;
+        }
+        const fetched = pages.flatMap((item) => item).length;
+        return {
+          ...fetchArgs,
+          skip: fetched,
+        };
+      }
+    }
+  );    
 
-    return (
-        <>
-            <ul>
-                {data?.pages.map((posts, i) => (
-                    <React.Fragment key={i}>
-                        {posts?.map((post) => (
-                            <li key={post.id}>
-                                {post.title} by {post.author.email}
-                            </li>
-                        ))}
-                    </React.Fragment>
-                ))}
-            </ul>
-            {hasNextPage && (
-                <button onClick={() => fetchNextPage()}>
-                    Load more
-                </button>
-            )}
-        </>
-    );
+  return (
+    <>
+      <ul>
+        {data?.pages.map((posts, i) => (
+          <React.Fragment key={i}>
+            {posts?.map((post) => (
+              <li key={post.id}>
+                {post.title} by {post.author.email}
+              </li>
+            ))}
+          </React.Fragment>
+        ))}
+      </ul>
+      {hasNextPage && (
+        <button onClick={() => fetchNextPage()}>
+          Load more
+        </button>
+      )}
+    </>
+  );
 };
 ```
 
@@ -307,40 +418,40 @@ const client = useClientQueries(schema);
 const PAGE_SIZE = 10;
 
 const fetchArgs = {
-    include: { author: true },
-    orderBy: { createdAt: 'desc' as const },
-    take: PAGE_SIZE,
+  include: { author: true },
+  orderBy: { createdAt: 'desc' as const },
+  take: PAGE_SIZE,
 };
 
 const { data, hasNextPage, fetchNextPage } = client.post.useInfiniteFindMany(
-    fetchArgs,
-    {
-        getNextPageParam: (lastPage, pages) => {
-            if (lastPage.length < PAGE_SIZE) {
-                return undefined;
-            }
-            const fetched = pages.flatMap((item) => item).length;
-            return {
-                ...fetchArgs,
-                skip: fetched,
-            };
-        },
-    }
+  fetchArgs,
+  {
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.length < PAGE_SIZE) {
+        return undefined;
+      }
+      const fetched = pages.flatMap((item) => item).length;
+      return {
+        ...fetchArgs,
+        skip: fetched,
+      };
+    },
+  }
 );
 </script>
 
 <template>
-    <div>
-        <ul v-if="data">
-            <template v-for="(posts, i) in data.pages" :key="i">
-                <li v-for="post in posts" :key="post.id">
-                    {{ post.title }} by {{ post.author.email }}
-                </li>
-            </template>
-        </ul>
-    </div>
+  <div>
+    <ul v-if="data">
+      <template v-for="(posts, i) in data.pages" :key="i">
+        <li v-for="post in posts" :key="post.id">
+          {{ post.title }} by {{ post.author.email }}
+        </li>
+      </template>
+    </ul>
+  </div>
 
-    <button v-if="hasNextPage" @click="() => fetchNextPage()">Load More</button>
+  <button v-if="hasNextPage" @click="() => fetchNextPage()">Load More</button>
 </template>
 
 ```
@@ -353,51 +464,53 @@ Here's a quick example of using infinite query to load a list of posts with infi
 
 ```svelte title='/src/components/Posts.svelte'
 <script lang="ts">
-    // post list component with infinite loading
+  // post list component with infinite loading
 
-    import { useClientQueries } from '@zenstackhq/tanstack-query/svelte';
+  import { useClientQueries } from '@zenstackhq/tanstack-query/svelte';
 
-    const client = useClientQueries(schema);
+  const client = useClientQueries(schema);
 
-    const PAGE_SIZE = 10;
+  const PAGE_SIZE = 10;
 
-    const fetchArgs = {
-        include: { author: true },
-        orderBy: { createdAt: 'desc' as const },
-        take: PAGE_SIZE,
-    };
+  const fetchArgs = {
+    include: { author: true },
+    orderBy: { createdAt: 'desc' as const },
+    take: PAGE_SIZE,
+  };
 
-    const query = client.post.useInfiniteFindMany(fetchArgs, {
-        getNextPageParam: (lastPage, pages) => {
-            if (lastPage.length < PAGE_SIZE) {
-                return undefined;
-            }
-            const fetched = pages.flatMap((item) => item).length;
-            return {
-                ...fetchArgs,
-                skip: fetched,
-            };
-        },
-    });    
+  const query = client.post.useInfiniteFindMany(
+    () => fetchArgs,
+    () => ({
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length < PAGE_SIZE) {
+          return undefined;
+        }
+        const fetched = pages.flatMap((item) => item).length;
+        return {
+          ...fetchArgs,
+          skip: fetched,
+        };
+      }})
+    );    
 </script>
 
 <div>
-    <ul>
-        <div>
-            {#if $query.data}
-                {#each $query.data.pages as posts, i (i)}
-                    {#each posts as post (post.id)}
-                        <li>{post.title} by {post.author.email}</li>
-                    {/each}
-                {/each}
-            {/if}
-        </div>
-    </ul>
-    {#if $query.hasNextPage}
-        <button on:click={() => $query.fetchNextPage()}>
-            Load more
-        </button>
-    {/if}
+  <ul>
+    <div>
+      {#if query.data}
+        {#each query.data.pages as posts, i (i)}
+          {#each posts as post (post.id)}
+            <li>{post.title} by {post.author.email}</li>
+          {/each}
+        {/each}
+      {/if}
+    </div>
+  </ul>
+  {#if query.hasNextPage}
+    <button on:click={() => query.fetchNextPage()}>
+      Load more
+    </button>
+  {/if}
 </div>
 ```
 
@@ -457,15 +570,30 @@ const queryClient = useQueryClient();
 const { queryKey } = useFindUniqueUser({ where: { id: '1' } });
 
 function onCancel() {
-    queryClient.cancelQueries({ queryKey, exact: true });
+  queryClient.cancelQueries({ queryKey, exact: true });
 }
 ```
 
 When a cancellation occurs, the query state is reset and the ongoing `fetch` call to the CRUD API is aborted.
 
-## Example
+## Samples
+
+### Interactive Demo
 
 The following live demo shows how to use the query hooks in a React SPA.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-tanstack-query" openFile="src/App.tsx" />
 
+### Full-Stack Samples
+
+#### Next.js
+
+[https://github.com/zenstackhq/zenstack-v3/tree/main/samples/next.js](https://github.com/zenstackhq/zenstack-v3/tree/main/samples/next.js)
+
+#### Nuxt
+
+[https://github.com/zenstackhq/zenstack-v3/tree/main/samples/nuxt](https://github.com/zenstackhq/zenstack-v3/tree/main/samples/nuxt)
+
+#### SvelteKit
+
+[https://github.com/zenstackhq/zenstack-v3/tree/main/samples/sveltekit](https://github.com/zenstackhq/zenstack-v3/tree/main/samples/sveltekit)
