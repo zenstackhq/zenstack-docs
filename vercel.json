@@ -1,38 +1,14 @@
 {
     "trailingSlash": false,
     "redirects": [
-        { "source": "/docs/category/get-started", "destination": "/docs/category/quick-start", "permanent": true },
-        { "source": "/docs/get-started/:path*", "destination": "/docs/quick-start/:path*", "permanent": true },
-        { "source": "/docs/category/guides", "destination": "/docs/category/recipes", "permanent": true },
-        { "source": "/docs/intro", "destination": "/docs", "permanent": true },
-        {
-            "source": "/docs/intro/prisma-crash-course",
-            "destination": "/docs/2.x/the-complete-guide/part1/prisma",
-            "permanent": true
-        },
-        {
-            "source": "/docs/intro/zmodel",
-            "destination": "/docs/2.x/the-complete-guide/part1/zmodel",
-            "permanent": true
-        },
-        {
-            "source": "/docs/intro/api",
-            "destination": "/docs/2.x/the-complete-guide/part3/",
-            "permanent": true
-        },
-        {
-            "source": "/docs/intro/frontend",
-            "destination": "/docs/2.x/the-complete-guide/part4/",
-            "permanent": true
-        },
-        {
-            "source": "/docs/guides/authentication/:path*",
-            "destination": "/docs/quick-start/authentication/:path*",
-            "permanent": true
-        },
         {
             "source": "/docs/3.x",
             "destination": "/docs/",
+            "permanent": true
+        },
+        {
+            "source": "/docs/2.x",
+            "destination": "/docs/2.x/welcome",
             "permanent": true
         }
     ]
