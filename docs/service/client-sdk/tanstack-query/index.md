@@ -497,8 +497,8 @@ Here's a quick example of using infinite query to load a list of posts with infi
 <div>
   <ul>
     <div>
-      {#if $query.data}
-        {#each $query.data.pages as posts, i (i)}
+      {#if query.data}
+        {#each query.data.pages as posts, i (i)}
           {#each posts as post (post.id)}
             <li>{post.title} by {post.author.email}</li>
           {/each}
@@ -506,8 +506,8 @@ Here's a quick example of using infinite query to load a list of posts with infi
       {/if}
     </div>
   </ul>
-  {#if $query.hasNextPage}
-    <button on:click={() => $query.fetchNextPage()}>
+  {#if query.hasNextPage}
+    <button on:click={() => query.fetchNextPage()}>
       Load more
     </button>
   {/if}
