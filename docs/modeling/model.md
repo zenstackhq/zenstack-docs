@@ -144,21 +144,32 @@ model User {
 }
 ```
 
+### Default values
+
 A default value can be specified for a field with the `@default` attribute. The value can be a literal, an enum value, or a supported function call, including:
 
-- `now()`: returns the current timestamp
-- `cuid()`: returns a CUID
-- `uuid()`: returns a UUID
-- `ulid()`: returns a ULID
-- `nanoid()`: returns a Nano ID
-- `autoincrement()`: returns an auto-incrementing integer (only for integer fields)
-- `dbgenerated("...")`: calls a native db function
+- [`now()`](../reference/zmodel/function.md#now): returns the current timestamp
+- [`cuid()`](../reference/zmodel/function.md#cuid): returns a CUID
+- [`uuid()`](../reference/zmodel/function.md#uuid): returns a UUID
+- [`ulid()`](../reference/zmodel/function.md#ulid): returns a ULID
+- [`nanoid()`](../reference/zmodel/function.md#nanoid): returns a Nano ID
+- [`autoincrement()`](../reference/zmodel/function.md#autoincrement): returns an auto-incrementing integer (only for integer fields)
+- [`dbgenerated("...")`](../reference/zmodel/function.md#dbgenerated): calls a native db function
 
 ```zmodel
 model User {
     id        Int      @id @default(autoincrement())
     role      Role     @default(USER)
     createdAt DateTime @default(now())
+}
+```
+
+Prefixing and suffixing entity IDs is becoming more common in database design, usually by including the model name in the generated ID. To support this pattern, functions that generate `String` IDs (`cuid()`, `uuid()`, `ulid()`, `nanoid()`) takes an optional `format` argument to allow passing in a pattern that controls the output format. `%s` in the pattern will be replaced by the generated id. For example:
+
+```zmodel
+model User {
+    // generate a UUID v4 with "user_" prefix
+    id String @id @default(uuid(4, "user_%s"))
 }
 ```
 

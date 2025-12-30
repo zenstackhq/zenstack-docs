@@ -89,34 +89,53 @@ Functions related to input validation are documented in a [separate page](./inpu
 ### uuid()
 
 ```zmodel
-function uuid(): String {}
+function uuid(version: Int?, format: String?): String {}
 ```
 
 Generates a globally unique identifier based on the UUID spec.
 
+*Parameters:*
+
+- `version` (optional): The UUID version to generate. Supported values are `4` (default) and `7`.
+- `format` (optional): A pattern to control the output format. `%s` in the pattern will be replaced by the generated id. Use escaped `\\%s` to have a literal `%s` in the output.
+
 ### cuid()
 
 ```zmodel
-function cuid(version: Int?): String {}
+function cuid(version: Int?, format: String?): String {}
 ```
 
-Generates a unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec. Pass `2` as an argument to use [cuid2](https://github.com/paralleldrive/cuid2).
+Generates a unique identifier based on the [CUID](https://github.com/ericelliott/cuid) spec.
+
+*Parameters:*
+
+- `version` (optional): The CUID version to generate. Supported values are `1` (default) and `2`.
+- `format` (optional): A pattern to control the output format. `%s` in the pattern will be replaced by the generated id. Use escaped `\\%s` to have a literal `%s` in the output.
 
 ### nanoid()
 
 ```zmodel
-function nanoid(length: Int?): String {}
+function nanoid(length: Int?, format: String?): String {}
 ```
 
 Generates an identifier based on the [nanoid](https://github.com/ai/nanoid) spec.
 
+*Parameters:*
+
+- `length` (optional): The length of the generated id.
+- `format` (optional): A pattern to control the output format. `%s` in the pattern will be replaced by the generated id. Use escaped `\\%s` to have a literal `%s` in the output.
+
 ### ulid()
 
 ```zmodel
-function ulid(): String {}
+function ulid(format: String?): String {}
 ```
 
 Generates a unique identifier based on the [ULID](https://github.com/ulid/spec) spec.
+
+*Parameters:*
+
+- `format` (optional): A pattern to control the output format. `%s` in the pattern will be replaced by the generated id. Use escaped `\\%s` to have a literal `%s` in the output.
 
 ### now()
 
