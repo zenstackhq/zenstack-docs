@@ -144,6 +144,8 @@ model User {
 }
 ```
 
+### Default values
+
 A default value can be specified for a field with the `@default` attribute. The value can be a literal, an enum value, or a supported function call, including:
 
 - `now()`: returns the current timestamp
@@ -159,6 +161,15 @@ model User {
     id        Int      @id @default(autoincrement())
     role      Role     @default(USER)
     createdAt DateTime @default(now())
+}
+```
+
+Functions that generate `String` ids (`cuid()`, `uuid()`, `ulid()`, `nanoid()`) takes an optional `format` argument to allow passing in a pattern that controls the output format. `%s` in the pattern will be replaced by the generated id. For example:
+
+```zmodel
+model User {
+    // generate a UUID v4 with "user_" prefix
+    id String @id @default(uuid(4, "user_%s"))
 }
 ```
 
