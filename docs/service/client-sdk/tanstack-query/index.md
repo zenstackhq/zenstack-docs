@@ -52,7 +52,7 @@ The integration provides the following features
 
 :::warning
 
-`@tanstack/svelte-query` v6 leverages Svelte 5's [runes](https://svelte.dev/docs/svelte/what-are-runes) reactivity system. ZenStack is not compatible with prior versions that uses Svelte stores.
+`@tanstack/svelte-query` v6 leverages Svelte 5's [runes](https://svelte.dev/docs/svelte/what-are-runes) reactivity system. ZenStack is not compatible with prior versions that use Svelte stores.
 
 :::
 
