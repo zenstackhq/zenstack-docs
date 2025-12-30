@@ -148,13 +148,13 @@ model User {
 
 A default value can be specified for a field with the `@default` attribute. The value can be a literal, an enum value, or a supported function call, including:
 
-- `now()`: returns the current timestamp
-- `cuid()`: returns a CUID
-- `uuid()`: returns a UUID
-- `ulid()`: returns a ULID
-- `nanoid()`: returns a Nano ID
-- `autoincrement()`: returns an auto-incrementing integer (only for integer fields)
-- `dbgenerated("...")`: calls a native db function
+- [`now()`](../reference/zmodel/function.md#now): returns the current timestamp
+- [`cuid()`](../reference/zmodel/function.md#cuid): returns a CUID
+- [`uuid()`](../reference/zmodel/function.md#uuid): returns a UUID
+- [`ulid()`](../reference/zmodel/function.md#ulid): returns a ULID
+- [`nanoid()`](../reference/zmodel/function.md#nanoid): returns a Nano ID
+- [`autoincrement()`](../reference/zmodel/function.md#autoincrement): returns an auto-incrementing integer (only for integer fields)
+- [`dbgenerated("...")`](../reference/zmodel/function.md#dbgenerated): calls a native db function
 
 ```zmodel
 model User {
