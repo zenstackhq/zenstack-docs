@@ -588,6 +588,12 @@ The following live demo shows how to use the query hooks in a React SPA.
 
 #### Next.js
 
+[https://github.com/zenstackhq/zenstack-v3/tree/main/samples/next.js](https://github.com/zenstackhq/zenstack-v3/tree/main/samples/next.js)
+
 #### Nuxt
 
+[https://github.com/zenstackhq/zenstack-v3/tree/main/samples/nuxt](https://github.com/zenstackhq/zenstack-v3/tree/main/samples/nuxt)
+
 #### SvelteKit
+
+[https://github.com/zenstackhq/zenstack-v3/tree/main/samples/sveltekit](https://github.com/zenstackhq/zenstack-v3/tree/main/samples/sveltekit)
