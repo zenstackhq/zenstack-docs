@@ -164,7 +164,7 @@ model User {
 }
 ```
 
-Prefixing/suffixing entity IDs is becoming more common in database design, usually by including the model name in the generated ID. To support this pattern, functions that generate `String` ids (`cuid()`, `uuid()`, `ulid()`, `nanoid()`) takes an optional `format` argument to allow passing in a pattern that controls the output format. `%s` in the pattern will be replaced by the generated id. For example:
+Prefixing and suffixing entity IDs is becoming more common in database design, usually by including the model name in the generated ID. To support this pattern, functions that generate `String` IDs (`cuid()`, `uuid()`, `ulid()`, `nanoid()`) takes an optional `format` argument to allow passing in a pattern that controls the output format. `%s` in the pattern will be replaced by the generated id. For example:
 
 ```zmodel
 model User {
