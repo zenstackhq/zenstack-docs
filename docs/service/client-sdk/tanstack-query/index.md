@@ -10,6 +10,7 @@ import OptimisticBehavior from './_optimistic-behavior.md';
 import OptimisticLimitation from './_optimistic-limitation.md';
 import FineGrainedOptimistic from './_fine-grained-optimistic.md';
 import Invalidation from './_invalidation.md';
+import PreviewFeature from '../../../_components/PreviewFeature.tsx'
 
 # TanStack Query
 
@@ -49,6 +50,8 @@ The integration provides the following features
 
 - `@tanstack/svelte-query`: v6+
 - `svelte` v5.25.0+
+
+<PreviewFeature name="Svelte support" />
 
 :::warning
 
