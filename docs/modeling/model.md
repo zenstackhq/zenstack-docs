@@ -3,6 +3,8 @@ sidebar_position: 3
 description: Models in ZModel
 ---
 
+import AvailableSince from '../_components/AvailableSince';
+
 # Model
 
 The `model` construct is the core of ZModel. It defines the structure of your data and relations. A model represents a domain entity and is backed by a database table.
@@ -163,6 +165,10 @@ model User {
     createdAt DateTime @default(now())
 }
 ```
+
+### Custom ID formats
+
+<AvailableSince version="v3.1.0" />
 
 Prefixing and suffixing entity IDs is becoming more common in database design, usually by including the model name in the generated ID. To support this pattern, functions that generate `String` IDs (`cuid()`, `uuid()`, `ulid()`, `nanoid()`) takes an optional `format` argument to allow passing in a pattern that controls the output format. `%s` in the pattern will be replaced by the generated id. For example:
 
