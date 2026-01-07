@@ -109,7 +109,8 @@ Generates a unique identifier based on the [CUID](https://github.com/ericelliott
 
 *Parameters:*
 
-- `version` (optional): The CUID version to generate. Supported values are `1` (default) and `2`.
+- `version` (optional): The CUID version to generate. Supported values are `1` (default) and `2`.<br />
+The npm package for **CUID v1 is deprecated**, so you should use `2` for all new projects.
 - `format` (optional): A pattern to control the output format. `%s` in the pattern will be replaced by the generated id. Use escaped `\\%s` to have a literal `%s` in the output.
 
 ### nanoid()
