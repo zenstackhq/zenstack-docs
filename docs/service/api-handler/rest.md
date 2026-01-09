@@ -843,7 +843,7 @@ PATCH /:type/:id/relationships/:relationship
 
 Custom procedures can be invoked with the special `$procs` resource type.
 
-Use `GET` for query procedures and pass the arguments as a URL encoded object in the `args` query parameter:
+Use `GET` for query procedures and pass the arguments as a URL-encoded object in the `args` query parameter:
 
 ```ts
 GET /$procs/:procName?args=<encoded arguments>
