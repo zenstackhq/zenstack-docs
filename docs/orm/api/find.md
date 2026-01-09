@@ -5,6 +5,7 @@ description: Find API
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 import SelectIncludeOmit from './_select-include-omit.md';
+import AvailableSince from '../../_components/AvailableSince';
 
 # Find
 
@@ -32,6 +33,8 @@ The `find` series of APIs are used to query records from the database. It has th
 
 - `exists`
     
+    <AvailableSince version="3.2.0" />
+
     Check if any record exists that matches the query criteria. More performant than using `findFirst` or `count`.
 
 ## Basic usage
