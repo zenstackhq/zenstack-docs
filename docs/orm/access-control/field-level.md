@@ -4,6 +4,7 @@ sidebar_position: 4
 
 import AvailableSince from '../../_components/AvailableSince';
 import PreviewFeature from '../../_components/PreviewFeature'
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Field-Level Policies
 
@@ -57,4 +58,4 @@ When updating data, if an update involves setting fields that violate "update" p
 
 ## Samples
 
-Coming soon!
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-policy" openFile={['field-level/zenstack/schema.zmodel', 'field-level/main.ts']} startScript="field-level" />
