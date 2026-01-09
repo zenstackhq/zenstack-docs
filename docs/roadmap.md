@@ -13,7 +13,7 @@ This is a list of major features that are planned for the future releases of Zen
 - [x] TanStack Query integration
 - [ ] Databases
     - [ ] MySQL
-- [ ] Field-level access control
+- [x] Field-level access control
 - [ ] Zod utility
 - [ ] Custom functions
 - [ ] Custom procedures
