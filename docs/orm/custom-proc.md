@@ -5,6 +5,7 @@ description: ORM custom procedures
 
 import PreviewFeature from '../_components/PreviewFeature';
 import AvailableSince from '../_components/AvailableSince';
+import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Custom Procedures
 
@@ -96,3 +97,7 @@ const feeds = await db.$procs.getUserFeeds({
 ## Error handling
 
 The `ZenStackClient` always throws an `ORMError` to the caller when an error occurs. To follow this protocol, custom procedure implementations should ensure other types of errors are caught and wrapped into `ORMError` and re-thrown. See [Error Handling](./errors.md) for more details.
+
+## Samples
+
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-procedure" openFile={['zenstack/schema.zmodel', 'main.ts']} startScript="dev" />

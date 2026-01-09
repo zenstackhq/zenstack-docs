@@ -31,3 +31,6 @@
 [submodule "code-repos/zenstackhq/v3-doc-plugin"]
 	path = code-repos/zenstackhq/v3-doc-plugin
 	url = https://github.com/zenstackhq/v3-doc-plugin
+[submodule "code-repos/zenstackhq/v3-doc-orm-procedure"]
+	path = code-repos/zenstackhq/v3-doc-orm-procedure
+	url = https://github.com/zenstackhq/v3-doc-orm-procedure.git

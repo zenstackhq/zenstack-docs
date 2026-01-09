@@ -30,4 +30,4 @@ The ORM query API hides all the complexity of managing polymorphic models for yo
 
 The schema used in the sample involves a base model and three concrete models:
 
-<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-polymorphism" codeFiles={['zenstack/schema.zmodel', 'main.ts']} startScript="generate,dev" />
+<StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-polymorphism" openFile={['zenstack/schema.zmodel', 'main.ts']} startScript="dev" />
