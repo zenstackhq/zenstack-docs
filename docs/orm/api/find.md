@@ -30,6 +30,10 @@ The `find` series of APIs are used to query records from the database. It has th
     
     Similar to `findFirst`, but throws an error if no record is found.
 
+- `exists`
+    
+    Check if any record exists that matches the query criteria. More performant than using `findFirst` or `count`.
+
 ## Basic usage
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="find/basic.ts" startScript="generate,find:basic" />

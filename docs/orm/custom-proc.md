@@ -8,6 +8,9 @@ import AvailableSince from '../_components/AvailableSince';
 
 # Custom Procedures
 
+> This amazing feature is implemented by [Mike Willbanks
+](https://github.com/mwillbanks).
+
 <PreviewFeature name="Custom procedure" />
 
 <AvailableSince version="v3.2.0" />
