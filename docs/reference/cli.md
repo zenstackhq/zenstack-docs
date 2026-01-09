@@ -45,6 +45,7 @@ Options:
   --schema <file>      schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
                        specified in package.json.
   -o, --output <path>  default output directory for code generation
+  -w, --watch          watch for changes and re-generate automatically
   --lite               also generate a lite version of schema without attributes
   --lite-only          only generate lite version of schema without attributes
   --silent             suppress all output except errors (default: false)
