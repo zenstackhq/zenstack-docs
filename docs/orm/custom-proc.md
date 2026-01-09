@@ -10,7 +10,7 @@ import AvailableSince from '../_components/AvailableSince';
 
 <PreviewFeature name="Custom procedure" />
 
-<AvailableSince version="3.2.0" />
+<AvailableSince version="v3.2.0" />
 
 :::info
 Please refer to the [Modeling](../modeling/custom-proc.md) part for how to define custom procedures in ZModel.

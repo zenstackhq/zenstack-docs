@@ -11,7 +11,7 @@ import AvailableSince from '../_components/AvailableSince';
 
 <PreviewFeature name="Custom procedure" />
 
-<AvailableSince version="3.2.0" />
+<AvailableSince version="v3.2.0" />
 
 <ZModelVsPSL>
 Custom procedure is a ZModel feature and doesn't exist in PSL.
