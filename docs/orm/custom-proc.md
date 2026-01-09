@@ -71,8 +71,8 @@ const db = new ZenStackClient({
 
 The implementation callbacks are provided with a context argument with the following fields:
 
-    - `client`: an instance of `ZenStackClient` used to invoke the procedure.
-    - `args`: an object that contains the procedure arguments.
+  - `client`: an instance of `ZenStackClient` used to invoke the procedure.
+  - `args`: an object that contains the procedure arguments.
 
 At runtime, before passing the args to the callbacks, ZenStack verifies that they conform to the types defined in ZModel. You can implement additional validations in the implementation if needed. ZenStack doesn't verify the return values. It's your responsibility to ensure they match the declared return types.
 
