@@ -867,7 +867,7 @@ POST /$procs/:procName
 #### Examples
 
 ```ts
-// for arguments `{"userId":1,"limit":10}
+// for arguments `{"userId":1,"limit":10}`
 GET /$procs/getUserFeeds?args=%7B%22userId%22%3A1%2Climit%3A10%7D
 ```
 
