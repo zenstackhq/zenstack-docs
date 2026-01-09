@@ -868,7 +868,7 @@ POST /$procs/:procName
 
 ```ts
 // for arguments `{"userId":1,"limit":10}`
-GET /$procs/getUserFeeds?args=%7B%22userId%22%3A1%2Climit%3A10%7D
+GET /$procs/getUserFeeds?args=%7B%22userId%22%3A1%2C%22limit%22%3A10%7D
 ```
 
 ```ts
