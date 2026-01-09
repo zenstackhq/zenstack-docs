@@ -43,4 +43,4 @@ Parameter types can be marked optional with a `?` suffix. If a procedure doesn't
 
 Custom procedures are implemented with TypeScript when constructing the ORM client, and can be invoked via the ORM client in backend code. See [Custom Procedures](../orm/custom-proc.md) in the ORM part for more details.
 
-They are also accessible via Query-as-a-Service (via [RPC-style](../service/api-handler/rpc.md#endpoints) or [RESTful-style](../service/api-handler/rest.md#calling-custom-procedures) API), plus consumable via Client SDKs like [TanStack Query Client](../service/client-sdk/tanstack-query/).
+They are also accessible via Query-as-a-Service (via [RPC-style](../service/api-handler/rpc.md#endpoints) or [RESTful-style](../service/api-handler/rest.md#calling-custom-procedures) API), plus consumable via Client SDKs like [TanStack Query Client](../service/client-sdk/tanstack-query/#custom-procedures).
