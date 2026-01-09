@@ -4,11 +4,14 @@ description: ZenStack custom procedures
 ---
 
 import ZModelVsPSL from '../_components/ZModelVsPSL';
-import PreviewFeature from '../_components/PreviewFeature'
+import PreviewFeature from '../_components/PreviewFeature';
+import AvailableSince from '../_components/AvailableSince';
 
 # Custom Procedure
 
 <PreviewFeature name="Custom procedure" />
+
+<AvailableSince version="v3.2.0" />
 
 <ZModelVsPSL>
 Custom procedure is a ZModel feature and doesn't exist in PSL.

@@ -3,11 +3,14 @@ sidebar_position: 13
 description: ORM custom procedures
 ---
 
-import PreviewFeature from '../_components/PreviewFeature'
+import PreviewFeature from '../_components/PreviewFeature';
+import AvailableSince from '../_components/AvailableSince';
 
 # Custom Procedures
 
 <PreviewFeature name="Custom procedure" />
+
+<AvailableSince version="v3.2.0" />
 
 :::info
 Please refer to the [Modeling](../modeling/custom-proc.md) part for how to define custom procedures in ZModel.
