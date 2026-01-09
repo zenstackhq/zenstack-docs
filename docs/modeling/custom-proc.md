@@ -33,11 +33,11 @@ mutation procedure signUp(email: String) : User
 
 You can use all types supported by ZModel to define procedure parameters and return types, including:
 
-    - Primitive types like `Int`, `String`
-    - Models
-    - Enums
-    - Custom types
-    - Array of the types above
+  - Primitive types like `Int`, `String`
+  - Models
+  - Enums
+  - Custom types
+  - Array of the types above
 
 Parameter types can be marked optional with a `?` suffix. If a procedure doesn't return anything, use `Void` as the return type.
 
