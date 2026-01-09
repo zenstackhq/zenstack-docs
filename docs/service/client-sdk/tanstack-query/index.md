@@ -521,6 +521,12 @@ Here's a quick example of using infinite query to load a list of posts with infi
 
 </Tabs>
 
+## Custom Procedures
+
+[Custom procedures](../../../modeling/custom-proc.md) are grouped under the `$procs` property on the client returned by `useClientQueries`. Query procedures are mapped to query hooks, while mutation procedures are mapped to mutation hooks.
+
+There's no automatic query invalidation or optimistic update support for custom procedures, since their semantics are unknown to the system. You need to implement such behavior manually as needed.
+
 ## Advanced Topics
 
 ### Query Invalidation

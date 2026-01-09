@@ -181,9 +181,17 @@ The following part explains how the `meta` information is included for different
 
     _Http method:_ `DELETE`
 
--   **[model]/check**
+-   **[$procs]/[custom-procedure-name]**
+
+    Invoking a query custom procedure. E.g., `/$procs/getUserFeeds?q=<encoded args>`.
 
     _Http method:_ `GET`
+
+-   **[$procs]/[mutation-custom-procedure-name]**
+
+    Invoking a mutation custom procedure. E.g., `/$procs/signUp`.
+
+    _Http method:_ `POST`
 
 ## HTTP Status Code and Error Responses
 

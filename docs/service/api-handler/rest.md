@@ -50,7 +50,7 @@ The factory function accepts an options object with the following fields:
 
 - externalIdMapping
 
-  Optional. An `Record<string, string>` value that provides a mapping from model names (as defined in ZModel) to unique constraint name. This is useful when you for example want to expose natural keys in place of a surrogate keys:
+  Optional. An `Record<string, string>` value that provides a mapping from model names (as defined in ZModel) to the model's unique field name. This is useful when you for example want to expose natural keys in place of a surrogate keys:
 
   ```ts
   // Expose tags by unique name and not by ID, ie. /tag/blue intead of /tag/id
@@ -98,6 +98,10 @@ model Comment {
     post Post @relation(fields: [postId], references: [id])
     postId Int
 }
+
+procedure getUserFeeds(userId: Int, limit: Int?) : Post[] 
+
+mutation procedure signUp(email: String) : User
 ```
 
 ### Listing resources
@@ -834,6 +838,47 @@ PATCH /:type/:id/relationships/:relationship
         "data": null
     }
     ```
+
+### Calling custom procedures
+
+Custom procedures can be invoked with the special `$procs` resource type.
+
+Use `GET` for query procedures and pass the arguments as a URL encoded object in the `args` query parameter:
+
+```ts
+GET /$procs/:procName?args=<encoded arguments>
+```
+
+Use `POST` for mutation procedures and pass the arguments in the request body:
+
+```ts
+POST /$procs/:procName
+{
+    "args": { ... }
+}
+```
+
+#### Status codes
+
+- 200: The request was successful and the response body contains the custom procedure's return value.
+- 400: Invalid custom procedure name or arguments.
+- 500: An error occurred while executing the custom procedure.
+
+#### Examples
+
+```ts
+// for arguments `{"userId":1,"limit":10}
+GET /$procs/getUserFeeds?args=%7B%22userId%22%3A1%2Climit%3A10%7D
+```
+
+```ts
+POST /$procs/signUp
+{
+    "args": {
+        "email": "alice@zenstack.dev"
+    }
+}
+```
 
 ## Compound ID Fields
 
