@@ -49,3 +49,18 @@ model Post {
 ```
 
 For models that don't have the `@@schema` attribute, the default schema (either "public" or the one specified in `defaultSchema`) will be used.
+
+## Prisma Migrations
+
+In order to be able to use Prisma Migrations with PostgreSQL schema it is necessary to add a `generator` even though generally speaking this directive has been deprecated in order to enable `"multiSchema"` in the `previewFeatures` in the `schema.prisma` file.
+
+```
+generator client {
+    provider = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
+}
+
+plugin prisma {
+    provider = '@core/prisma'
+}
+```
