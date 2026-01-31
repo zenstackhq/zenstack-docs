@@ -30,7 +30,7 @@ import { zenstackAdapter } from '@zenstackhq/better-auth';
 // ZenStack ORM client
 import { db } from './db'; 
 
-const auth = new BetterAuth({
+const auth = betterAuth({
     database: zenstackAdapter(db, {
         provider: 'postgresql',
     }),
