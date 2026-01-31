@@ -62,6 +62,13 @@ Collection predicate expressions are used to express a boolean condition over a 
 
 The `CONDITION` is an expression under the context of the relation, meaning that fields referenced in the condition are resolved against the related model. You can use `this` keyword to "escape" and refer to the fields belonging to the model where the rule is defined.
 
+You can nest collection predicate expressions to traverse multiple levels of to-many relations. It's possible that field names become ambiguous due to nesting (i.e., outer model and inner model both have fields with the same name). To help disambiguate, collection predicate expression allows you to define a "binding variable" to explicitly denote the element of the current collection. For example:
+
+```zmodel
+// are there published posts that have published comments?
+posts?[p, p.published && comments?[c, c.published]]
+```
+
 ### `in` Operator
 
 The `in` keyword can be used to check if a value exists in a list. E.g., `value in [1, 2, 3]`.

@@ -18,7 +18,7 @@ You can filter on scalar fields with values or operators as supported by the fie
 - `equals` `not`: all scalar fields
 - `in` `notIn`: all scalar fields
 - `contains` `startsWith` `endsWith`: `String` fields
-- `lt` `lte` `gt` `gte`: `String`, `Int`, `BigInt`, `Float`, `Decimal`, and `Date` fields
+- `lt` `lte` `gt` `gte` `between`: `String`, `Int`, `BigInt`, `Float`, `Decimal`, and `Date` fields
 
 A filter object can contain multiple field filters, and they are combined with `AND` semantic. You can also use the `AND`, `OR`, and `NOT` logical operators to combine filter objects to form a complex filter.
 
