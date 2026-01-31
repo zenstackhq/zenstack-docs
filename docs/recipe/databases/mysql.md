@@ -3,9 +3,11 @@ sidebar_position: 4
 ---
 
 import PackageInstall from '../../_components/PackageInstall';
+import PreviewFeature from '../../_components/PreviewFeature';
 
 # MySQL
 
+<PreviewFeature name="MySQL support" />
 
 ## Installing driver
 
