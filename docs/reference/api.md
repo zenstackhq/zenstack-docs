@@ -10,7 +10,7 @@ sidebar_label: API
 
 ### `ClientContract`
 
-The interface for the ZenStack ORM client, implemented by [ZenStackClient](#zenstackclientschema).
+The interface for the ZenStack ORM client, implemented by [ZenStackClient](#zenstackclient).
 
 #### Type Parameters
 
