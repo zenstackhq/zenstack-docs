@@ -11,8 +11,40 @@ import PreviewFeature from '../../_components/PreviewFeature';
 <PreviewFeature name="Plugin feature" />
 
 <ZenStackVsPrisma>
-ZenStack's plugin system aims to provide a more flexible extensibility solution than [Prisma Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions), allowing you to tap into the ORM runtime at different levels. Some parts of the plugin design resemble client extensions, but overall, it's not meant to be compatible.
+ZenStack's plugin system aims to provide a far more flexible extensibility solution than [Prisma Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions), allowing you to tap into the ORM runtime at different levels. Some parts of the plugin design resemble client extensions, but overall, it's not meant to be compatible.
 </ZenStackVsPrisma>
+
+ZenStack ORM's extensibility generally falls into two categories: [hooking into CRUD lifecycle](#hooking-into-crud-lifecycle) and [extending ORM client API](#extending-orm-client-api).
+
+## Defining a plugin
+
+ORM plugins are simple objects that implement the [`RuntimePlugin`](../../reference/api#runtimeplugin) interface from the `@zenstackhq/orm` package. You can choose one of the following (equivalent) ways to define a plugin:
+
+1. Creating an object that satisfies the `RuntimePlugin`'s typing.
+   ```ts
+   db.$use({
+     id: 'my-plugin',
+     ...
+   });
+   ```
+2. Defining a class that implements the `RuntimePlugin` interface.
+   ```ts
+   class MyPlugin implements RuntimePlugin<Schema> {
+     readonly id = 'my-plugin';
+     ...
+   }
+   db.$use(new MyPlugin());
+   ```
+3. Using the `definePlugin` helper function for more convenient type inference.
+   ```ts
+   import { definePlugin } from '@zenstackhq/orm';
+   db.$use(definePlugin({
+     id: 'my-plugin',
+     ...
+   }));
+   ```
+
+## Hooking into CRUD lifecycle
 
 As you go deeper using an ORM, you'll find the need to tap into its engine for different purposes. For example, you may want to:
 
@@ -40,9 +72,19 @@ All three types of plugins are installed via the unified `$use` method on the OR
 
 ```ts
 const db = new ZenStackClient({ ... });
-const withPlugin = $db.use({ ... });
+const withPlugin = db.$use({ ... });
 const noPlugin = withPlugin.$unuseAll();
 ```
+
+## Extending ORM client API
+
+Plugins can also extend the ORM client API by adding new methods/properties to it, or introducing new properties to the query arguments.
+
+For example, when building a cache plugin that cache query results, you may want to let all read query APIs (`findMany`, `groupBy`, etc.) accept an additional `cache` option to configure the caching behavior. And you may want to introduce a top-level `$invalidateCache()` method to clear the cache.
+
+See [Extending ORM Client API](./extending-orm-client.md) page for details.
+
+---
 
 :::info
 Plugins can also extend the ZModel language and ZenStack's CLI. Please refer to the [Plugin Development](../../recipe/plugin-dev.md) documentation for a comprehensive guide.

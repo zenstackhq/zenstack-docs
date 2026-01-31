@@ -8,11 +8,15 @@ sidebar_label: API
 
 ## `@zenstackhq/orm`
 
-### `ClientContract<Schema>`
+### `ClientContract`
 
-The interface for the ZenStack ORM client, implemented by [ZenStackClient](#zenstackclientschema).
+The interface for the ZenStack ORM client, implemented by [ZenStackClient](#zenstackclient).
 
-### `ZenStackClient<Schema>`
+#### Type Parameters
+
+- `Schema`: The schema type.
+
+### `ZenStackClient`
 
 The class that implements the ORM client.
 
@@ -26,6 +30,10 @@ export const ZenStackClient = function <Schema extends SchemaDef>(
   options: ClientOptions<Schema>,
 );
 ```
+
+#### Type Parameters
+
+- `Schema`: The schema type.
 
 #### Options
 
@@ -205,3 +213,88 @@ Read more in the [Plugins documentation](../orm/plugins/).
 $unuseAll(): ClientContract<Schema>;
 ```
 
+### `RuntimePlugin`
+
+The interface for ZenStack ORM runtime plugins.
+
+#### Type Parameters
+
+- `Schema`: The schema type.
+- `ExtQueryArgs`: Extended query args.
+- `ExtClientMembers`: Extended client members.
+
+#### Members
+
+##### `id`
+```ts
+/**
+ * Plugin ID.
+ */
+id: string;
+```
+
+##### `name`
+```ts
+/**
+ * Plugin display name.
+ */
+name?: string;
+```
+
+##### `description`
+```ts
+/**
+ * Plugin description.
+ */
+description?: string;
+```
+
+##### `onQuery`
+```ts
+/**
+ * Intercepts an ORM query.
+ */
+onQuery?: OnQueryCallback<Schema>;
+```  
+
+##### `onProcedure`
+```ts
+/**
+ * Intercepts a procedure invocation.
+ */
+onProcedure?: OnProcedureCallback<Schema>;
+```
+
+##### `onEntityMutation`
+```ts
+/**
+ * Intercepts an entity mutation.
+ */
+onEntityMutation?: EntityMutationHooksDef<Schema>;
+```
+
+##### `onKyselyQuery`
+```ts
+/**
+ * Intercepts a Kysely query.
+ */
+onKyselyQuery?: OnKyselyQueryCallback<Schema>;
+```
+
+##### `client`
+```ts
+/**
+ * Extended client members (methods and properties).
+ */
+client?: ExtClientMembers;
+```
+
+##### `queryArgs`
+```ts
+/**
+ * Extended query args configuration.
+ */
+queryArgs?: {
+    [K in keyof ExtQueryArgs]: ZodType<ExtQueryArgs[K]>;
+};
+```
