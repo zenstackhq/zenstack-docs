@@ -21,7 +21,7 @@ ZenStack plugins built by our awesome community members :heart:.
 
 - [zenstack-pinia-colada](https://github.com/genu/zenstack-pinia-colada)
   
-    [Pinia Colada](https://pinia-colada.esm.dev/) client for ZenStack v3 - The Smart Data Fetching Layer for Vue 3. Made by [@geny](https://github.com/genu).
+    [Pinia Colada](https://pinia-colada.esm.dev/) client for ZenStack v3 - The Smart Data Fetching Layer for Vue 3. Made by [@genu](https://github.com/genu).
 
 - [zenstack-trpc](https://github.com/olup/zenstack-trpc)
 
