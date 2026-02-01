@@ -11,12 +11,12 @@ This is a list of major features that are planned for the future releases of Zen
 - [x] Performance benchmark
 - [x] Query-as-a-Service (automatic CRUD API)
 - [x] TanStack Query integration
-- [ ] Databases
-    - [ ] MySQL
+- [x] Databases
+    - [x] MySQL
 - [x] Field-level access control
 - [ ] Zod utility
 - [ ] Custom functions
-- [ ] Custom procedures
+- [x] Custom procedures
 - [ ] Field encryption
 - [ ] Soft delete
 - [ ] Audit trail
