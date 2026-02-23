@@ -20,7 +20,7 @@ This guide will help you migrate an existing Prisma project to ZenStack v3. The 
 In the following sections, we'll cover various aspects of the migration process where care needs to be taken.
 
 :::warning
-ZenStack v3 currently only supports PostgreSQL and SQLite databases.
+ZenStack v3 only supports PostgreSQL, MySQL, and SQLite databases.
 :::
 
 ## Migration Steps
@@ -39,16 +39,19 @@ ZenStack v3 doesn't depend on Prisma at runtime. Its CLI has a peer dependency o
     ZenStack doesn't bundle database drivers. Install the appropriate driver for your database:
 
     <Tabs>
+    
     <TabItem value="postgres" label="PostgreSQL">
-
     <PackageInstall dependencies={['pg']} devDependencies={['@types/pg']} />
-
     </TabItem>
+
+    <TabItem value="mysql" label="MySQL">
+    <PackageInstall dependencies={['mysql2']} />
+    </TabItem>
+
     <TabItem value="sqlite" label="SQLite">
-
     <PackageInstall dependencies={['better-sqlite3']} devDependencies={['@types/better-sqlite3']} />
-
     </TabItem>
+
     </Tabs>
 
 
@@ -100,6 +103,23 @@ export const db = new ZenStackClient(schema, {
   }),
 });
 ```
+</TabItem>
+
+<TabItem value="mysql" label={`MySQL`}>
+
+```ts title='db.ts'
+import { ZenStackClient } from '@zenstackhq/orm';
+import { MysqlDialect } from '@zenstackhq/orm/dialects/mysql';
+import { schema } from './zenstack/schema';
+import { createPool } from 'mysql2';
+
+export const db = new ZenStackClient(schema, {
+  dialect: new MysqlDialect({
+    pool: createPool(process.env.DATABASE_URL),
+  }),
+});
+```
+
 </TabItem>
 
 <TabItem value="sqlite" label={`SQLite`}>

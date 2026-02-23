@@ -67,7 +67,7 @@ You can use the following fields to control what fields are returned in the resu
 
 ## Finding distinct rows
 
-You can use the `distinct` field to find distinct rows based on specific fields. One row for each unique combination of the specified fields will be returned. The implementation relies on SQL `DISTINCT ON`, so it's not available for SQLite provider.
+You can use the `distinct` field to find distinct rows based on specific fields. One row for each unique combination of the specified fields will be returned. The implementation relies on SQL `DISTINCT ON`, so it's not available for SQLite and MySQL provider.
 
 ```ts
 // returns one Post for each unique authorId

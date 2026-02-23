@@ -58,6 +58,24 @@ export const db = new ZenStackClient(schema, {
 ```
 </TabItem>
 
+<TabItem value="mysql" label={`MySQL`}>
+
+<PackageInstall dependencies={["mysql2"]} />
+
+```ts title='db.ts'
+import { ZenStackClient } from '@zenstackhq/orm';
+import { MysqlDialect } from '@zenstackhq/orm/dialects/mysql';
+import { schema } from './zenstack/schema';
+import { createPool } from 'mysql2';
+
+export const db = new ZenStackClient(schema, {
+    dialect: new MysqlDialect({
+        pool: createPool(process.env.DATABASE_URL),
+    }),
+});
+```
+</TabItem>
+
 </Tabs>
 
 The created `db` object has the full ORM API inferred from the type of the `schema` parameter. When necessary, you can also explicitly get the inferred client type like:

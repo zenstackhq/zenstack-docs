@@ -7,6 +7,10 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
+- [zenstack-encrypt](https://github.com/genu/zenstack-encryption)
+
+    Transparent field-level encryption and decryption using the `@encrypted` attribute. Made by [@genu](https://github.com/genu).
+
 - [zenstack-cache](https://github.com/visualbravo/zenstack-cache)
 
     Reduce response times and database load with query-level caching integrated with the ZenStack ORM. Made by [@sanny-io](https://github.com/sanny-io). 
