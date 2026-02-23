@@ -292,6 +292,8 @@ Options:
 Start the ZenStack proxy server. This command is aliased as `studio` too.
 
 ```bash
+Usage: zen proxy [options]
+
 Options:
   --schema <file>            schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
   -p, --port <port>          port to run the proxy server on (default: 2311)
