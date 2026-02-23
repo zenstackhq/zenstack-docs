@@ -25,10 +25,11 @@ datasource NAME {
 
     -   sqlite
     -   postgresql
+    -   mysql
 
 -   **`url`**:
 
-    Optional. Database connection string. Either a plain string or an invocation of `env` function to fetch from an environment variable. For SQLite provider, the URL should be a file protocol, like `file:./dev.db`. For PostgreSQL provider, it should be a postgres connection string, like `postgresql://user:password@localhost:5432/dbname`.
+    Optional. Database connection string. Either a plain string or an invocation of `env` function to fetch from an environment variable. For SQLite provider, the URL should be a file protocol, like `file:./dev.db`. For PostgreSQL and MySQL provider, it should be a valid connection string URL, like `postgresql://user:password@localhost:5432/dbname`.
 
     The `url` option is only used by the migration engine to connect to the database. The ORM runtime doesn't rely on it. Instead, you provide the connection information when constructing an ORM client.
 

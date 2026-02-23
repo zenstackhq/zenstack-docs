@@ -34,7 +34,7 @@ List fields allow extra filter operators to filter on the list content:
 - `isEmpty`: checks if the list is empty.
 
 :::info
-List type is not supported by SQLite.
+List type is only supported by PostgreSQL.
 :::
 
 ```zmodel

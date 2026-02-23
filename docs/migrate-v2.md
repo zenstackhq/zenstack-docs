@@ -25,9 +25,7 @@ Here are a few essential items to verify before preparing your migration:
 
 - Database support
    
-   V3 currently only supports PostgreSQL and SQLite databases. MySQL will be added later.
-
-   For PostgreSQL, only the traditional TCP-based connection is supported. Newer HTTP-based protocols, such as those supported by providers like Neon and Prisma PG, are not yet supported, but will be in the future.
+   V3 only supports PostgreSQL, MySQL and SQLite databases.
 
 - Prisma feature gaps
 

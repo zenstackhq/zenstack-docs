@@ -287,6 +287,21 @@ Options:
   -h, --help       display help for command
 ```
 
+### proxy
+
+Start the ZenStack proxy server. This command is aliased as `studio` too.
+
+```bash
+Options:
+  --schema <file>            schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  -p, --port <port>          port to run the proxy server on (default: 2311)
+  -o, --output <path>        output directory for `zen generate` command
+  -d, --databaseUrl <url>    database connection URL
+  -l, --logLevel <level...>  Query log levels (e.g., query, error)
+  --no-version-check         do not check for new version
+  -h, --help                 Show this help message
+```
+
 ## Overriding Default Options
 
 ### Default Schema Location
