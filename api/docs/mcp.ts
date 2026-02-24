@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default createVercelHandler({
-    docsPath: path.join(__dirname, '../build/mcp/docs.json'),
-    indexPath: path.join(__dirname, '../build/mcp/search-index.json'),
+    docsPath: path.join(__dirname, '../../build/mcp/docs.json'),
+    indexPath: path.join(__dirname, '../../build/mcp/search-index.json'),
     name: 'zenstack-docs',
     baseUrl: 'https://zenstack.dev/docs',
 });
