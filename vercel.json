@@ -1,5 +1,16 @@
 {
     "trailingSlash": false,
+    "functions": {
+        "api/mcp/docs.js": {
+            "includeFiles": "build/mcp/**"
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/docs/mcp",
+            "destination": "/api/mcp/docs"
+        }
+    ],
     "redirects": [
         {
             "source": "/docs/3.x",
