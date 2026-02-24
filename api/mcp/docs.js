@@ -8,5 +8,5 @@ export default createVercelHandler({
     docsPath: path.join(__dirname, '../build/mcp/docs.json'),
     indexPath: path.join(__dirname, '../build/mcp/search-index.json'),
     name: 'zenstack-docs',
-    baseUrl: 'https://zenstack.com/docs',
+    baseUrl: 'https://zenstack.dev/docs',
 });
