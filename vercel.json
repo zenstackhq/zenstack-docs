@@ -7,11 +7,6 @@
             "permanent": true
         },
         {
-            "source": "/docs/3.x/context7.json",
-            "destination": "/docs/context7-3.x.json",
-            "permanent": true
-        },
-        {
             "source": "/docs/2.x",
             "destination": "/docs/2.x/welcome",
             "permanent": true
