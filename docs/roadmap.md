@@ -17,6 +17,5 @@ This is a list of major features that are planned for the future releases of Zen
 - [ ] Zod utility
 - [ ] Custom functions
 - [x] Custom procedures
-- [ ] Field encryption
 - [ ] Soft delete
 - [ ] Audit trail
