@@ -29,3 +29,7 @@ If you use both ZenStack v2 and v3 in different projects, you can install the or
 ```
 
 Other IDEs are not supported at this time.
+
+## NPM Packages
+
+ZenStack has a layered architecture and supports a variety of usage scenarios, each requiring different set of packages to be installed. Please refer to documentation parts like [ORM](./orm), [Query as a Service](./service), etc. for detailed instructions.

@@ -27,6 +27,10 @@ Please refer to the [CLI Reference](../reference/cli.md#migrate) for the complet
 
 The `zen db push` command is used to push your ZModel schema changes to the database without creating a migration file. It's useful for development and testing purposes, but should never be used in production.
 
+### db pull
+
+The `zen db pull` command introspects your database and generates a ZModel schema from it. It's useful when adopting ZenStack with an existing database or syncing after direct database changes. See the [Database Introspection](./introspection.md) for more details.
+
 ### migrate dev
 
 The `zen migrate dev` command is used to create a new migration file based on your ZModel schema changes. It will also apply the migration to your database. The command is for development only and should never be used in production.

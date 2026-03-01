@@ -67,6 +67,19 @@ const db = new ZenStackClient(schema, {
 });
 ```
 
+The full signature of the computed field implementation is as follows:
+
+```ts
+import { OperandExpression, ExpressionBuilder } from 'kysely';
+
+type ComputedFieldCallback = (
+  eb: ExpressionBuilder<...>,
+  context: {
+    modelAlias: string
+  }
+) => OperandExpression<...>;
+```
+
 ## Samples
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-computed-fields" />

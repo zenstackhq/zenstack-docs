@@ -15,6 +15,11 @@ The `ORMError` class has the following fields:
  */
 export class ORMError extends Error {
     /**
+     * Error reason code.
+     */
+    reason: ORMErrorReason;
+
+    /**
      * The name of the model that the error pertains to.
      */
     model?: string;

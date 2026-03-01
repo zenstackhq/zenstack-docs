@@ -203,6 +203,29 @@ Options:
   -h, --help          display help for command
 ```
 
+#### db pull
+
+Introspect your database and generate a ZModel schema from it.
+
+```bash
+Usage: zen db pull [options]
+
+Introspect your database.
+
+Options:
+  --schema <file>                          schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel"
+                                           unless specified in package.json.
+  -o, --output <path>                      set custom output path for the introspected schema. If a file path is
+                                           provided, all schemas are merged into that single file. If a directory path
+                                           is provided, files are written to the directory and imports are kept.
+  --model-casing <pascal|camel|snake|none>  set the casing of generated models (default: "pascal")
+  --field-casing <pascal|camel|snake|none>  set the casing of generated fields (default: "camel")
+  --always-map                              always add @map and @@map attributes to models and fields (default: false)
+  --quote <double|single>                   set the quote style of generated schema files (default: "single")
+  --indent <number>                         set the indentation of the generated schema files (default: 4)
+  -h, --help                               display help for command
+```
+
 #### db seed
 
 ```bash

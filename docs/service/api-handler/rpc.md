@@ -161,11 +161,19 @@ The following part explains how the `meta` information is included for different
 
     _Http method:_ `POST`
 
+-   **[model]/createManyAndReturn**
+
+    _Http method:_ `POST`
+
 -   **[model]/update**
 
     _Http method:_ `PATCH` or `PUT`
 
 -   **[model]/updateMany**
+
+    _Http method:_ `PATCH` or `PUT`
+
+-   **[model]/updateManyAndReturn**
 
     _Http method:_ `PATCH` or `PUT`
 
@@ -181,15 +189,31 @@ The following part explains how the `meta` information is included for different
 
     _Http method:_ `DELETE`
 
--   **[$procs]/[custom-procedure-name]**
+-   **$procs/[custom-procedure-name]**
 
     Invoking a query custom procedure. E.g., `/$procs/getUserFeeds?q=<encoded args>`.
 
     _Http method:_ `GET`
 
--   **[$procs]/[mutation-custom-procedure-name]**
+-   **$procs/[mutation-custom-procedure-name]**
 
     Invoking a mutation custom procedure. E.g., `/$procs/signUp`.
+
+    _Http method:_ `POST`
+
+-  **$transaction/sequential**
+
+    Executes a batch of CRUD operations sequentially in a transaction. The request body must be a non-empty JSON array of operation objects. Each operation has the following shape:
+
+    ```ts
+    {
+      model: string;  // model name, e.g.,"User"
+      op: string;     // CRUD operation, eg., "create", "findUnique"
+      args?: object;  // arguments (same as the correspondingORM API)
+    }
+    ```
+
+    The response body contains a `data` field with an array of results, one per operation, in the same order as the request.
 
     _Http method:_ `POST`
 
