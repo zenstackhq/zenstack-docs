@@ -38,11 +38,11 @@ The factory exposes the following methods:
 
 - `makeModelCreateSchema`
   
-    Creates a schema for creating new records, with fields that have defaults being optional. The result schema exclude relation fields.
+    Creates a schema for creating new records, with fields that have defaults being optional. The result schema excludes relation fields.
 
 - `makeModelUpdateSchema`
 
-    Creates a schema for updating records, with all fields being optional. The result schema exclude relation fields.
+    Creates a schema for updating records, with all fields being optional. The result schema excludes relation fields.
 
 - `makeTypeSchema`
 

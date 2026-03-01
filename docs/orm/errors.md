@@ -11,46 +11,6 @@ The `ORMError` class has the following fields:
 
 ```ts
 /**
- * Reason code for ORM errors.
- */
-export enum ORMErrorReason {
-    /**
-     * ORM client configuration error.
-     */
-    CONFIG_ERROR = 'config-error',
-
-    /**
-     * Invalid input error.
-     */
-    INVALID_INPUT = 'invalid-input',
-
-    /**
-     * The specified record was not found.
-     */
-    NOT_FOUND = 'not-found',
-
-    /**
-     * Operation is rejected by access policy.
-     */
-    REJECTED_BY_POLICY = 'rejected-by-policy',
-
-    /**
-     * Error was thrown by the underlying database driver.
-     */
-    DB_QUERY_ERROR = 'db-query-error',
-
-    /**
-     * The requested operation is not supported.
-     */
-    NOT_SUPPORTED = 'not-supported',
-
-    /**
-     * An internal error occurred.
-     */
-    INTERNAL_ERROR = 'internal-error',
-}
-
-/**
  * ZenStack ORM error.
  */
 export class ORMError extends Error {
@@ -58,7 +18,7 @@ export class ORMError extends Error {
      * Error reason code.
      */
     reason: ORMErrorReason;
-    
+
     /**
      * The name of the model that the error pertains to.
      */
