@@ -66,7 +66,7 @@ The factory function accepts an options object with the following fields:
 
 ## Endpoints and Features
 
-The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following sections list the endpoints and features are implemented. The examples refer to the following schema modeling a blogging app:
+The RESTful API handler conforms to the the [JSON:API](https://jsonapi.org/format/) v1.1 specification for its URL design and input/output format. The following sections list the endpoints and features that are implemented. The examples refer to the following schema modeling a blogging app:
 
 ```zmodel
 model User {
