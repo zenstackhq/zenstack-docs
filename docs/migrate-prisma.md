@@ -32,7 +32,7 @@ ZenStack v3 doesn't depend on Prisma at runtime. Its CLI has a peer dependency o
 - Remove `prisma` and `@prisma/client` from your project dependencies.
 - Install ZenStack packages
     
-    <PackageInstall dependencies={['@zenstackhq/orm']} devDependencies={['@zenstackhq/cli']} />
+    <PackageInstall dependencies={['@zenstackhq/schema', '@zenstackhq/orm']} devDependencies={['@zenstackhq/cli']} />
 
 - Install a database driver
   

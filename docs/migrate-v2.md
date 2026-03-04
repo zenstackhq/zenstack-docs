@@ -49,7 +49,7 @@ Two most important packages have been renamed:
 Make sure you replace them in your project.
 
 <PackageUninstall dependencies={["zenstack", "@zenstackhq/runtime"]} />
-<PackageInstall dependencies={["@zenstackhq/orm"]} devDependencies={["@zenstackhq/cli"]} />
+<PackageInstall dependencies={['@zenstackhq/schema', "@zenstackhq/orm"]} devDependencies={["@zenstackhq/cli"]} />
 
 ## Migrating ZModel
 

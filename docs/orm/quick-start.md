@@ -45,7 +45,7 @@ You can also always configure a project manually with the following steps:
 
 1. Install dependencies
 
-  <PackageInstall devDependencies={['@zenstackhq/cli']} dependencies={['@zenstackhq/orm']} />
+  <PackageInstall devDependencies={['@zenstackhq/cli']} dependencies={['@zenstackhq/schema', '@zenstackhq/orm']} />
 
 1. Create a `zenstack/schema.zmodel` file
 
