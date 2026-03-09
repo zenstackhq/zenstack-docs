@@ -7,6 +7,18 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
+- [zenstack-docs-plugin](https://github.com/sheldonj/zenstack-docs-plugin)
+
+    Automatically generates rich, browseable Markdown documentation from your ZModel schema. Made by [@sheldonj](https://github.com/sheldonj).
+
+- [@stratal/zenstack-plugin](https://www.npmjs.com/package/@stratal/zenstack-plugin)
+
+    ZenStack integration for [Stratal](https://stratal.dev/) - a modular framework for building Cloudflare Workers with dependency injection, OpenAPI documentation, queues, cron jobs, and more. Made by [Temitayo Fadojutimi](https://github.com/adesege).
+
+- [zenstack-validator](https://www.npmjs.com/package/zenstack-validator)
+
+    Auto-generate [class-validator](https://www.npmjs.com/package/class-validator) DTOs with validation logic directly from your ZModel schema.
+
 - [zenstack-encrypt](https://github.com/genu/zenstack-encryption)
 
     Transparent field-level encryption and decryption using the `@encrypted` attribute. Made by [@genu](https://github.com/genu).

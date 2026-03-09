@@ -14,7 +14,7 @@ This is a list of major features that are planned for the future releases of Zen
 - [x] Databases
     - [x] MySQL
 - [x] Field-level access control
-- [ ] Zod utility
+- [x] Zod utility
 - [ ] Custom functions
 - [x] Custom procedures
 - [ ] Soft delete
