@@ -150,4 +150,4 @@ ZenStack was built with this philosophy long before the "vibe coding" era. The i
 
 If you're evaluating your stack for the agent era, ask yourself: **when an AI writes code against my data layer, what stops it from making a catastrophic mistake?** If the answer is "code review" or "hoping the tests catch it," it might be time to add a stronger safety net.
 
-[Get started with ZenStack](https://zenstack.dev/docs/intro) and see what a schema-first, safety-net-first stack looks like in practice.
+[Get started with ZenStack](https://zenstack.dev/docs/) and see what a schema-first, safety-net-first stack looks like in practice.
