@@ -1,9 +1,9 @@
 ---
 title: "Your Stack Choice Is Coding Agent's Safety Net"
 description: In the age of AI-assisted coding, your tech stack is no longer just a developer preference — it's a guardrail that determines how safely and effectively coding agents can operate.
-tags: [ai, coding-agent, tech-stack, zenstack, llm]
+tags: [ai, agent, llm, zenstack]
 authors: yiming
-date: 2026-03-09
+date: 2026-03-10
 image: ./cover.png
 ---
 
@@ -52,7 +52,7 @@ if (user.role !== 'admin' && resource.ownerId !== user.id) {
 }
 
 // In route handler B (slightly different check)
-if (!user.roles.includes('admin') && resource.tenantId !== user.tenantId) {
+if (user.role !== 'admin' && resource.tenantId !== user.tenantId) {
   throw new ForbiddenError();
 }
 
@@ -79,7 +79,7 @@ The rules live in one place. They're structural, not behavioral. An agent litera
 
 AI agents perform best when context is concentrated, not scattered. This is a fundamental property of how large language models work — they reason over a context window, and the more relevant information fits within that window, the better their output.
 
-Schema-first approaches shine here. When your data model, validation rules, and access policies all live in a single schema file, an agent can read that one file and understand the complete picture. Compare this to a codebase where the data model is in a migration file, validations are in a middleware folder, access rules are in a service layer, and business constraints are buried in utility functions. Even a skilled human developer struggles to hold all of that in their head. For an agent, it's nearly impossible.
+Schema-first approaches shine here. When your data model, validation rules, and access policies all live in a single schema file, an agent can read that one file and understand the complete picture. Compare this to a codebase where the data models are in a bunch of migration files, validations are in a middleware folder, access rules are in a service layer, and business constraints are buried in utility functions. Even a skilled human developer struggles to hold all of that in their head. For an agent, it's nearly impossible.
 
 **The best stack for the AI era is one where the "spec" of your data layer fits in one place.**
 
@@ -102,21 +102,29 @@ The common thread in all of these: **the failures happen when rules are implicit
 ```zmodel
 model Invoice {
   id        Int      @id @default(autoincrement())
-  amount    Float
+  amount    Float    @gt(0)
   owner     User     @relation(fields: [ownerId], references: [id])
   ownerId   Int
   tenant    Tenant   @relation(fields: [tenantId], references: [id])
   tenantId  Int
 
   // Access rules: declarative, co-located with the model
-  @@allow('create', auth() != null && tenantId == auth().tenantId)
-  @@allow('read', ownerId == auth().id || auth().role == 'admin')
-  @@allow('update', ownerId == auth().id)
-  @@deny('delete', auth().role != 'admin')
+
+  // no anonymous access
+  @@deny('all', auth() == null)
+
+  // can create for self in the context of a tenant
+  @@allow('create', ownerId == auth().id && tenantId == auth().tenantId)
+
+  // can read if in the same tenant
+  @@allow('read', tenantId == auth().tenantId)
+
+  // can update or delete if owner
+  @@allow('update,delete', ownerId == auth().id)
 }
 ```
 
-From this single schema, ZenStack generates a type-safe, access-controlled client. Here's what that means for AI agents:
+From this single schema, ZenStack generates a type-safe, access-controlled database client. Here's what that means for AI agents:
 
 - **Authorization is structural.** An agent can't "forget" to add an auth check because the check happens automatically at the data layer. Every query through ZenStack's enhanced client is filtered by the rules in the schema. The agent's job is just to write the query — the safety net handles the rest.
 
@@ -124,7 +132,7 @@ From this single schema, ZenStack generates a type-safe, access-controlled clien
 
 - **Type safety propagates.** The generated client is fully typed. If an agent writes a query that references a non-existent field or uses an invalid filter, TypeScript catches it before the code runs.
 
-- **Less code to generate, less to get wrong.** ZenStack's server adapters can auto-generate CRUD APIs, and its plugin ecosystem produces artifacts like OpenAPI specs and tRPC routers. Every auto-generated artifact is one less thing an agent needs to hand-write — and one less place for bugs to hide.
+- **Less code to generate, less to get wrong.** ZenStack and its ecosystem can automatically derive CRUD APIs, TanStack Query hooks, Zod schemas, tRPC routers, OpenAPI specs, and more. Every auto-generated artifact is one less thing an agent needs to hand-write — and one less place for bugs to hide.
 
 Going back to the failure modes above:
 
@@ -142,11 +150,7 @@ The stacks that will thrive in the agent era share a common philosophy: **make t
 
 ## Choose Stacks That Protect You From Speed
 
-AI agents are only getting faster and more autonomous. The question is no longer whether to use them — it's whether your stack can keep up safely.
-
-A stack built on a strong type system, declarative business rules, and a single source of truth for your data layer isn't just pleasant to work with. It's a stack that can absorb the speed and imprecision of AI-generated code without letting bugs — especially security bugs — slip through.
-
-ZenStack was built with this philosophy long before the "vibe coding" era. The idea that your data model, access rules, and validation should live together in a declarative schema wasn't originally about AI safety — it was about developer productivity and correctness. But it turns out that what's good for human developers is even better for AI agents: clear, concentrated, enforceable rules.
+AI agents are only getting faster and more autonomous. The question is no longer whether to use them — it's whether your stack can keep up safely. A good stack isn't just pleasant to work with. It absorbs the speed and imprecision of AI-generated code. It turns out that what's good for human developers is even better for AI agents: clear, concentrated, enforceable rules.
 
 If you're evaluating your stack for the agent era, ask yourself: **when an AI writes code against my data layer, what stops it from making a catastrophic mistake?** If the answer is "code review" or "hoping the tests catch it," it might be time to add a stronger safety net.
 
