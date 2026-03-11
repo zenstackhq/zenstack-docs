@@ -11,9 +11,9 @@ ZenStack plugins built by our awesome community members :heart:.
 
     Automatically generates rich, browseable Markdown documentation from your ZModel schema. Made by [@sheldonj](https://github.com/sheldonj).
 
-- [@stratal/zenstack-plugin](https://www.npmjs.com/package/@stratal/zenstack-plugin)
+- [Stratal](https://stratal.dev)
 
-    ZenStack integration for [Stratal](https://stratal.dev/) - a modular framework for building Cloudflare Workers with dependency injection, OpenAPI documentation, queues, cron jobs, and more. Made by [Temitayo Fadojutimi](https://github.com/adesege).
+    [Stratal](https://stratal.dev/) is a modular framework for building Cloudflare Workers with dependency injection, OpenAPI documentation, queues, cron jobs, and more. It integrates ZenStack via its `DatabaseModule`, providing multi-connection support, a built-in plugin system (error handling, event emitting, schema switching for multi-tenancy), and request-scoped database services with full type safety. Made by [Temitayo Fadojutimi](https://github.com/adesege).
 
 - [zenstack-validator](https://www.npmjs.com/package/zenstack-validator)
 
