@@ -14,5 +14,5 @@ OpenAPI spec generation is available for the following API styles:
 
 | Style | Status | Description |
 | --- | --- | --- |
-| [RESTful](./restful) | Available | JSON:API-compliant RESTful endpoints |
-| [RPC](./rpc) | Coming soon | RPC-style endpoints |
+| [RESTful](./openapi/restful) | Available | JSON:API-compliant RESTful endpoints |
+| [RPC](./openapi/rpc) | Coming soon | RPC-style endpoints |
