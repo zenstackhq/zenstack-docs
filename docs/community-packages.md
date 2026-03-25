@@ -7,9 +7,13 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
+- [zmodel-to-dart](https://pub.dev/packages/zmodel_to_dart)
+
+    A Dart builder that generates DTO classes from .zmodel files. Made by [Israel Lins Albuquerque](https://github.com/israelins85).
+
 - [zenstack-docs-plugin](https://github.com/sheldonj/zenstack-docs-plugin)
 
-    Automatically generates rich, browseable Markdown documentation from your ZModel schema. Made by [@sheldonj](https://github.com/sheldonj).
+    Automatically generates rich, browseable Markdown documentation from your ZModel schema. Made by [James Sheldon](https://github.com/sheldonj).
 
 - [Stratal](https://stratal.dev)
 
@@ -21,7 +25,7 @@ ZenStack plugins built by our awesome community members :heart:.
 
 - [zenstack-encrypt](https://github.com/genu/zenstack-encryption)
 
-    Transparent field-level encryption and decryption using the `@encrypted` attribute. Made by [@genu](https://github.com/genu).
+    Transparent field-level encryption and decryption using the `@encrypted` attribute. Made by [Eugen Istoc](https://github.com/genu).
 
 - [zenstack-cache](https://github.com/visualbravo/zenstack-cache)
 
@@ -29,7 +33,7 @@ ZenStack plugins built by our awesome community members :heart:.
 
 - [zenstack-kit](https://github.com/olup/zenstack-kit)
   
-    Drizzle-kit like CLI tooling for ZenStack schemas with Prisma-compatible migrations. Made by [@olup](https://github.com/olup).
+    Drizzle-kit like CLI tooling for ZenStack schemas with Prisma-compatible migrations. Made by [Olup](https://github.com/olup).
 
 - [zenstack-live](https://github.com/visualbravo/zenstack-live)
   
@@ -37,8 +41,8 @@ ZenStack plugins built by our awesome community members :heart:.
 
 - [zenstack-pinia-colada](https://github.com/genu/zenstack-pinia-colada)
   
-    [Pinia Colada](https://pinia-colada.esm.dev/) client for ZenStack v3 - The Smart Data Fetching Layer for Vue 3. Made by [@genu](https://github.com/genu).
+    [Pinia Colada](https://pinia-colada.esm.dev/) client for ZenStack v3 - The Smart Data Fetching Layer for Vue 3. Made by [Eugen Istoc](https://github.com/genu).
 
 - [zenstack-trpc](https://github.com/olup/zenstack-trpc)
 
-    Auto-generate fully type-safe [tRPC](https://trpc.io) routers from ZenStack V3 schemas. Made by [@olup](https://github.com/olup).
+    Auto-generate fully type-safe [tRPC](https://trpc.io) routers from ZenStack V3 schemas. Made by [Olup](https://github.com/olup).
