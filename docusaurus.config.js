@@ -283,6 +283,15 @@ const config = {
                 blogSidebarCount: 10,
             },
         ],
+        [
+            'docusaurus-plugin-mcp-server',
+            {
+                server: {
+                    name: 'zenstack-docs',
+                    version: '1.0.0',
+                },
+            },
+        ],
     ],
 
     markdown: {
