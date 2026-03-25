@@ -29,29 +29,29 @@ The numbers shown are in milliseconds per operation; lower is better. ZenStack's
 
 > Tests are run against a PostgreSQL database in a local Docker container.
 
-Iteration count: 100  
-Dataset size: 500
+Iteration count: 500  
+Dataset size: 1000
 
 |ORM|findMany|findMany-filter-paginate-order|findMany-1-level-nesting|findFirst|findFirst-1-level-nesting|findUnique|findUnique-1-level-nesting|create|nested-create|update|nested-update|upsert|nested-upsert|delete|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|zenstack|3.62|1.23|118.28|1.08|1.10|0.64|0.95|2.10|4.48|1.70|2.64|1.42|2.53|2.02|
-|prisma|3.04 (-15.95%)|1.35 (+9.86%)|134.43 (+13.66%)|1.37 (+26.98%)|1.53 (+39.37%)|0.97 (+52.42%)|1.53 (+61.20%)|1.84 (-12.67%)|4.98 (+11.30%)|1.22 (-27.88%)|3.10 (+17.41%)|2.70 (+90.26%)|2.74 (+8.18%)|1.53 (-24.27%)|
-|drizzle|8.42 (+132.62%)|0.97 (-21.18%)|94.88 (-19.78%)|1.09 (+1.39%)|1.15 (+4.82%)|0.74 (+15.88%)|1.15 (+21.70%)|1.61 (-23.57%)|3.72 (-16.84%)|0.88 (-47.98%)|2.25 (-14.80%)|0.77 (-45.54%)|2.08 (-17.96%)|1.28 (-36.74%)|
-|typeorm|1.73 (-52.10%)|0.73 (-40.98%)|23.24 (-80.35%)|0.87 (-19.29%)|1.30 (+18.26%)|0.37 (-42.66%)|1.06 (+11.64%)|1.80 (-14.13%)|2.80 (-37.41%)|0.51 (-69.89%)|1.41 (-46.69%)|1.60 (+12.60%)|2.02 (-20.07%)|0.91 (-54.96%)|
+|zenstack|1.85|0.81|547.38|2.53|1.40|0.59|1.35|1.53|3.21|0.89|2.24|1.17|2.00|1.38|
+|prisma|4.40 (+137.77%)|0.83 (+2.86%)|589.62 (+7.72%)|1.07 (-57.51%)|1.43 (+2.27%)|0.63 (+6.44%)|1.28 (-4.69%)|1.34 (-12.39%)|3.55 (+10.58%)|0.86 (-3.33%)|2.45 (+9.54%)|1.85 (+58.25%)|2.41 (+20.69%)|1.51 (+9.67%)|
+|drizzle|3.77 (+103.74%)|0.82 (+2.12%)|527.09 (-3.71%)|1.07 (-57.54%)|1.35 (-3.65%)|0.69 (+16.40%)|1.20 (-10.90%)|1.47 (-4.11%)|3.18 (-1.04%)|0.86 (-3.79%)|2.17 (-3.21%)|0.76 (-34.57%)|1.92 (-3.67%)|1.42 (+3.31%)|
+|typeorm|4.00 (+116.46%)|0.57 (-28.82%)|30.08 (-94.50%)|1.97 (-22.22%)|1.49 (+6.69%)|0.38 (-36.09%)|1.26 (-6.15%)|1.71 (+12.04%)|2.50 (-22.05%)|0.57 (-36.09%)|1.53 (-31.55%)|1.54 (+31.77%)|1.87 (-6.46%)|1.14 (-17.38%)|
 
 ### Remote PostgreSQL
 
 > Tests are run from a machine in US west against a PostgreSQL database from [Neon](https://neon.com/) in the us-east-1 region.
 
 Iteration count: 20  
-Dataset size: 500
+Dataset size: 1000
 
 |ORM|findMany|findMany-filter-paginate-order|findMany-1-level-nesting|findFirst|findFirst-1-level-nesting|findUnique|findUnique-1-level-nesting|create|nested-create|update|nested-update|upsert|nested-upsert|delete|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|zenstack|266.88|89.09|379.77|83.93|89.51|87.56|89.48|261.96|719.56|257.24|438.89|264.01|430.05|256.50|
-|prisma|349.80 (+31.07%)|173.51 (+94.76%)|485.73 (+27.90%)|171.33 (+104.15%)|179.38 (+100.41%)|173.32 (+97.95%)|180.36 (+101.57%)|175.17 (-33.13%)|1043.86 (+45.07%)|174.61 (-32.12%)|681.50 (+55.28%)|613.88 (+132.52%)|603.02 (+40.22%)|178.72 (-30.32%)|
-|drizzle|1067.94 (+300.16%)|177.13 (+98.83%)|284.89 (-24.98%)|174.92 (+108.42%)|178.58 (+99.51%)|176.94 (+102.08%)|180.89 (+102.16%)|183.68 (-29.88%)|716.85 (-0.38%)|179.00 (-30.42%)|532.09 (+21.24%)|176.24 (-33.25%)|540.86 (+25.77%)|180.24 (-29.73%)|
-|typeorm|268.19 (+0.49%)|87.74 (-1.51%)|473.78 (+24.76%)|86.04 (+2.52%)|182.50 (+103.90%)|88.06 (+0.57%)|175.96 (+96.66%)|265.91 (+1.51%)|436.68 (-39.31%)|88.39 (-65.64%)|348.48 (-20.60%)|355.76 (+34.75%)|443.17 (+3.05%)|88.53 (-65.48%)|
+|zenstack|312.47|76.08|655.15|73.44|76.59|75.86|76.95|78.02|470.09|75.72|384.52|230.39|384.86|78.40|
+|prisma|355.75 (+13.85%)|75.96 (-0.16%)|696.63 (+6.33%)|74.64 (+1.64%)|75.05 (-2.01%)|76.66 (+1.06%)|75.38 (-2.04%)|74.94 (-3.94%)|521.30 (+10.89%)|77.75 (+2.68%)|460.83 (+19.85%)|379.62 (+64.77%)|526.45 (+36.79%)|78.14 (-0.33%)|
+|drizzle|303.62 (-2.83%)|219.17 (+188.07%)|614.18 (-6.25%)|146.22 (+99.11%)|150.06 (+95.93%)|147.49 (+94.43%)|149.38 (+94.12%)|146.58 (+87.89%)|597.02 (+27.00%)|145.94 (+92.74%)|444.78 (+15.67%)|149.66 (-35.04%)|453.70 (+17.89%)|148.27 (+89.12%)|
+|typeorm|298.76 (-4.39%)|74.78 (-1.71%)|438.22 (-33.11%)|72.92 (-0.70%)|148.71 (+94.17%)|73.68 (-2.87%)|151.04 (+96.28%)|220.29 (+182.36%)|376.70 (-19.87%)|72.68 (-4.01%)|295.20 (-23.23%)|298.66 (+29.63%)|369.63 (-3.96%)|74.07 (-5.52%)|
 
 ## Observations
 
@@ -60,9 +60,3 @@ Dataset size: 500
 While not readily observable in the numbers, ZenStack has a higher cold start overhead due to the usage of [Zod](https://zod.dev/) for input validation. Zod does JIT compilation of schemas on the first run. This overhead is amortized over multiple operations. The worst-case cold start overhead observed is around 20ms in the test environment.
 
 We'll seek ways to reduce this overhead in the future.
-  
-### Why Is ZenStack Slower for Simple Mutations?
-
-Right now, ZenStack wraps every mutation in an explicit transaction. Although it doesn't make a real difference on the database side because PostgreSQL will do it anyway behind the scenes, it adds communication overhead between the client and the database server.
-
-There'll be optimizations for this in the future.
