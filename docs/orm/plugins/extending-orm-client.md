@@ -94,7 +94,7 @@ const myPlugin = definePlugin(schema, {
     user: {
       fullName: {
         needs: { firstName: true, lastName: true },
-        compute: (user) => `${user.firstName} {user.lastName}`,
+        compute: (user) => `${user.firstName} ${user.lastName}`,
       },
     },
   },

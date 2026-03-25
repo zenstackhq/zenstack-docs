@@ -21,7 +21,7 @@ const handler = new RestApiHandler({ schema, endpoint: 'http://localhost/api' })
 
 ### Options
 
-The factory function accepts an options object with the following fields:
+The constructor accepts an options object with the following fields:
 
 - `schema`
 
