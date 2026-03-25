@@ -162,6 +162,16 @@ model Post with Timestamped {
 }
 ```
 
+## Migrating Plugins
+
+### Zod
+
+Zod integration (previously the `@core/zod` plugin) is now implemented as a utility instead of plugin. Check [documentation](./utilities/zod) for details.
+
+### OpenAPI Spec Generation
+
+OpenAPI spec generation (previously the `@zenstackhq/openapi` plugin) is now implemented as part of the automatic CRUD API handlers. Check [documentation](./service/openapi) for details.
+
 ## Migrating Server Adapters
 
 Server adapters are mostly backward compatible. One small change needed is that, when creating a server adapter, it's now mandatory to explicitly pass in an API handler instance (RPC or RESTful). The API handlers are now created with the `schema` object as input. See [Server Adapters](./service/server-adapter.md) for more details.
@@ -233,17 +243,9 @@ This section lists v2 features that haven't been migrated to v3 yet, or that are
 
 The `@password` attribute is removed in v3. We believe most people will use a more sophisticated authentication system than a simple id/password mechanism.
 
-### Field-level access control
-
-Not supported yet, but will be added soon with some design changes.
-
 ### Data encryption
 
-Not supported yet, but will be added soon.
-
-### Zod integration
-
-Not supported yet, but will be added soon with some design changes.
+Check the [zenstack-encrypt](https://github.com/genu/zenstack-encryption) community package.
 
 ### Checking permissions without querying the database
 
@@ -251,11 +253,7 @@ The [check()](/docs/2.x/guides/check-permission) feature is removed due to low p
 
 ### tRPC integration
 
-[TRPC](https://trpc.io/) is TypeScript-inference heavy, and stacking it over ZenStack generates additional complexities and pressure on the compiler. We're evaluating the best way to integrate it in v3, and no concrete plan is in place yet. At least there's no plan to migrate the code-generation-based approach in v2 directly.
-
-### OpenAPI spec generation
-
-The [OpenAPI plugin](/docs/2.x/reference/plugins/openapi) has not migrated to v3 yet and will be added later with some redesign.
+Check the [zenstack-trpc](https://github.com/olup/zenstack-trpc) community package.
 
 ### SWR integration
 
