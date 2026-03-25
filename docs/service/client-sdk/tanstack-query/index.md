@@ -585,6 +585,133 @@ function onCancel() {
 
 When a cancellation occurs, the query state is reset and the ongoing `fetch` call to the CRUD API is aborted.
 
+### Respecting ORM Client Customization
+
+By default, calling `useClientQueries(schema)` gives you hooks for all models and all CRUD operations, with result types matching the schema. However, if your server-side ORM client is customized — with [slicing](../../../orm/advanced/slicing.md), [field omission](../../../orm/api/omit.md), or [plugin-contributed result fields](../../../orm/plugins/extending-orm-client.md#adding-fields-to-query-results) — the hooks' types won't reflect those customizations.
+
+To keep the hooks in sync with your ORM client, pass the **client type** as a generic parameter to `useClientQueries`:
+
+```ts
+import { useClientQueries } from '@zenstackhq/tanstack-query/react';
+import { schema } from '~/zenstack/schema-lite';
+
+// Import the ORM client type from your server code (type-only import)
+import type { DbType } from '~/server/db';
+
+// Pass the client type as a generic parameter
+const client = useClientQueries<DbType>(schema);
+```
+
+Where `DbType` is the type of your customized ORM client exported from your server module:
+
+```ts title="server/db.ts"
+import { ZenStackClient } from '@zenstackhq/orm';
+import { schema, type Schema } from '~/zenstack/schema';
+
+const db = new ZenStackClient<Schema>(schema, { ... });
+
+// Export the type for use in frontend hooks
+export type DbType = typeof db;
+```
+
+This ensures that the hooks' input types, available operations, and result types all match what the server-side ORM client actually provides.
+
+#### Slicing
+
+If your ORM client is configured with [slicing](../../../orm/advanced/slicing.md), the hooks will only expose the included models and operations.
+
+```ts title="server/db.ts"
+const db = new ZenStackClient<Schema>(schema, {
+  ...
+  slicing: {
+    includedModels: ['User', 'Post'],
+    models: {
+      post: {
+        excludedOperations: ['deleteMany'],
+      },
+    },
+  },
+});
+
+export type DbType = typeof db;
+```
+
+```ts title="frontend component"
+const client = useClientQueries<DbType>(schema);
+
+// ✅ Only 'user' and 'post' are available
+client.user.useFindMany();
+client.post.useFindMany();
+
+// ❌ TypeScript error: 'comment' doesn't exist (excluded by slicing)
+client.comment.useFindMany();
+
+// ❌ TypeScript error: 'useDeleteMany' doesn't exist on post (excluded operation)
+client.post.useDeleteMany();
+```
+
+#### Field Omission
+
+If your ORM client has [client-level field omission](../../../orm/api/omit.md) configured, the hooks' result types will reflect the omitted fields.
+
+```ts title="server/db.ts"
+const db = new ZenStackClient<Schema>(schema, {
+  ...
+  omit: {
+    User: { password: true },
+  },
+});
+
+export type DbType = typeof db;
+```
+
+```ts title="frontend component"
+const client = useClientQueries<DbType>(schema);
+
+const { data: user } = client.user.useFindFirst();
+
+// ✅ `user` is typed without the `password` field
+console.log(user?.email);
+
+// ❌ TypeScript error: `password` is not in the result type
+console.log(user?.password);
+```
+
+#### Plugin-Contributed Result Fields
+
+If your ORM client uses plugins that [add computed fields to query results](../../../orm/plugins/extending-orm-client.md#adding-fields-to-query-results), the hooks' result types will include those fields.
+
+```ts title="server/db.ts"
+const fullNamePlugin = definePlugin(schema, {
+  id: 'full-name',
+  result: {
+    user: {
+      fullName: {
+        needs: { firstName: true, lastName: true },
+        compute: (user) => `${user.firstName} ${user.lastName}`,
+      },
+    },
+  },
+});
+
+const db = new ZenStackClient<Schema>(schema, { ... }).$use(fullNamePlugin);
+
+export type DbType = typeof db;
+```
+
+```ts title="frontend component"
+const client = useClientQueries<DbType>(schema);
+
+const { data: user } = client.user.useFindFirst();
+
+// ✅ `fullName` is included in the result type
+console.log(user?.fullName);
+```
+
+:::info
+Since the generic parameter is purely for type inference, the actual runtime behavior (slicing enforcement, field omission, computed fields) happens on the server side. The generic parameter simply ensures your frontend code's types stay aligned with the server-side ORM configuration.
+:::
+
 ## Samples
 
 ### Interactive Demo

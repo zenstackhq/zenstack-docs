@@ -2,6 +2,8 @@
 sidebar_position: 3
 ---
 
+import AvailableSince from '../../_components/AvailableSince';
+
 # @zenstackhq/plugin-policy
 
 The `@zenstackhq/plugin-policy` plugin provides a set of ZModel declarations and an ORM runtime plugin to enable access control features. See [Access Control](../../orm/access-control/index.md) for more details.
@@ -158,4 +160,26 @@ import { PolicyPlugin } from '@zenstackhq/plugin-policy';
 
 const db = new ZenStackClient(...);
 const authDb = db.$use(new PolicyPlugin());
+```
+
+### Options
+
+The `PolicyPlugin` constructor accepts an optional options object with the following properties:
+
+#### `dangerouslyAllowRawSql`
+
+<AvailableSince version="v3.5.0" />
+
+*Type: `boolean` | Default: `false`*
+
+By default, when the policy plugin is installed, raw SQL methods like `executeRaw` and `queryRaw` are rejected by the ORM client. Setting this option to `true` bypasses this restriction, allowing raw queries to execute within the current transaction without enforcing access control.
+
+:::warning
+Use this option with caution. It executes raw SQL without any access control enforcement.
+:::
+
+```ts
+const authDb = db.$use(new PolicyPlugin({
+    dangerouslyAllowRawSql: true,
+}));
 ```

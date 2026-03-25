@@ -33,8 +33,52 @@ const factory = createSchemaFactory(schema);
 The factory exposes the following methods:
 
 - `makeModelSchema`
-    
-    Creates a schema for the full shape of a model, including relation fields (as optional fields).
+
+    Creates a schema for the full shape of a model. By default, all scalar fields are included, and all relation fields are included as optional fields.
+
+    <AvailableSince version="v3.5.0" />
+
+    You can pass an optional second argument with `select`, `include`, or `omit` options to control which fields and relations are included in the resulting schema. These options work recursively for relation fields, mirroring the ORM's query API semantics.
+
+    - **`select`** — pick only the listed fields. Set a field to `true` to include it with its default shape, or pass a nested options object for relation fields. Mutually exclusive with `include` and `omit`.
+    - **`include`** — start with all scalar fields, then additionally include the named relation fields. Can be combined with `omit`.
+    - **`omit`** — remove named scalar fields from the default set. Can be combined with `include`, but mutually exclusive with `select`.
+
+    ```ts
+    // Select specific fields only
+    const schema = factory.makeModelSchema('User', {
+        select: { id: true, email: true },
+    });
+
+    // Include a relation with nested selection
+    const schema = factory.makeModelSchema('User', {
+        select: {
+            id: true,
+            email: true,
+            posts: {
+                select: { id: true, title: true },
+            },
+        },
+    });
+
+    // Include relations on top of all scalar fields
+    const schema = factory.makeModelSchema('User', {
+        include: { posts: true },
+    });
+
+    // Omit specific scalar fields
+    const schema = factory.makeModelSchema('User', {
+        omit: { password: true },
+    });
+
+    // Combine include and omit
+    const schema = factory.makeModelSchema('User', {
+        include: { posts: true },
+        omit: { password: true },
+    });
+    ```
+
+    The resulting Zod schema is fully typed — the inferred TypeScript type reflects exactly which fields are present based on the options you provide.
 
 - `makeModelCreateSchema`
   
