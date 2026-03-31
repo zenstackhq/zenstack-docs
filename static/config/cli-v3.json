@@ -2,7 +2,7 @@
     "notifications": [
         {
             "id": 1,
-            "title": "✨ ZenStack Studio knows your schema best:\n - Strongly typed JSON editor \n - Polymorphic model browsing\n - Transaction query builder with IntelliSense\n Run `npx zen studio` to try it",
+            "title": "✨ ZenStack Studio knows your schema best:\n - Strongly typed JSON editor \n - Polymorphic model browsing\n - Query editor with IntelliSense\n Run `npx zen studio` to try it",
             "active": true
         }
     ]
