@@ -1,6 +1,6 @@
 ---
 description: How to migrate from a ZenStack v2 project to v3
-sidebar_position: 11
+sidebar_position: 13
 ---
 
 import PackageInstall from './_components/PackageInstall';
