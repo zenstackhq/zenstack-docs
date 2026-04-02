@@ -16,14 +16,15 @@ function getRelatedPosts(allBlogPosts, metadata) {
 
     let relatedPosts = allBlogPosts.filter(
         (post) =>
-            post.metadata.frontMatter.tags.some((tag) => currentTags.has(tag)) && post.metadata.title !== metadata.title
+            post.metadata.frontMatter.tags?.some((tag) => currentTags.has(tag)) &&
+            post.metadata.title !== metadata.title,
     );
 
     if (relatedPosts.length < MIN_RELATED_POSTS) {
         remainingCount = MIN_RELATED_POSTS - relatedPosts.length;
         const remainingPosts = getMultipleRandomElement(
             allBlogPosts.filter((post) => !relatedPosts.includes(post) && post.metadata.title !== metadata.title),
-            remainingCount
+            remainingCount,
         );
         relatedPosts = relatedPosts.concat(remainingPosts);
     }
@@ -37,7 +38,7 @@ function getRelatedPosts(allBlogPosts, metadata) {
             authors: post.metadata.authors,
             readingTime: post.metadata.readingTime,
             date: post.metadata.date,
-            relatedWeight: post.metadata.frontMatter.tags.filter((tag) => currentTags.has(tag)).length * 4 + 1,
+            relatedWeight: post.metadata.frontMatter.tags?.filter((tag) => currentTags.has(tag)).length * 4 + 1,
         };
     });
 
@@ -64,9 +65,9 @@ async function blogPluginExtended(...pluginArgs) {
                         // Note that this created data path must be in sync with
                         // metadataPath provided to mdx-loader.
                         `${utils.docuHash(metadata.source)}.json`,
-                        JSON.stringify({ ...metadata, relatedPosts }, null, 2)
+                        JSON.stringify({ ...metadata, relatedPosts }, null, 2),
                     );
-                })
+                }),
             );
         },
     };
