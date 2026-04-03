@@ -190,7 +190,7 @@ const posts = await prisma.post.findMany({
 });
 ```
 
-This works, but it scales poorly. Every query is a new opportunity to forget a condition. In a large codebase with many developers, enforcing consistent access rules this way requires discipline, code reviews, and a fair amount of trust.
+This works, but it scales poorly. Every query is a new opportunity to forget a condition. In a large codebase with many developers and AI agents, enforcing consistent access rules this way requires discipline, code reviews, and a fair amount of trust.
 
 **Drizzle** is in the same position — access control is entirely your responsibility:
 
@@ -359,7 +359,7 @@ No single tool wins across the board. The right choice depends on what your proj
 - You're coming from Prisma and want a low-friction migration path with significantly more capability
 - Your project would benefit from a schema that serves as a single source of truth for data, security, and API shape
 
-Regarding team size: for solo developers or very small teams, any of the three works fine. As teams grow, ZenStack's declarative access control becomes increasingly valuable — the alternative is trusting every developer to remember every where clause on every query, forever.
+Regarding team size: for solo developers or very small teams, any of the three works fine. As teams grow, ZenStack's declarative access control becomes increasingly valuable — the alternative is trusting every developer (or agent) to remember every where clause on every query, forever.
 
 Greenfield vs. existing projects: if you're starting fresh, all three are equally viable starting points. If you're migrating an existing Prisma codebase, ZenStack offers a genuine [migration path](/docs/migrate-prisma) from Prisma without requiring a major rewrite.
 
