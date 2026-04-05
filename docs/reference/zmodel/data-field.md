@@ -38,6 +38,7 @@ type Type {
     -   BigInt
     -   Float
     -   Decimal
+    -   DateTime
     -   Json
     -   Bytes
     -   Unsupported
