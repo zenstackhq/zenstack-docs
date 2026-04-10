@@ -51,6 +51,8 @@ Use the `orderBy` field to control the sort field, direction, and null field pla
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="find/sort.ts" startScript="generate,find:sort" />
 
+You can also sort by fuzzy search relevance using `_relevance`. See [Fuzzy search filters](./filter.md#sorting-by-relevance) for details.
+
 ## Pagination
 
 You can use two strategies for pagination: offset-based or cursor-based. Pagination is not supported for `findUnique` and `findUniqueOrThrow`.
