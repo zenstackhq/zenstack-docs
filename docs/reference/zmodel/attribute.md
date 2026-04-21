@@ -513,47 +513,68 @@ Native type mapping attributes are a special set of field attributes that allow 
 
 Without native type mappings, ZModel types are by default mapped to the database types as follows:
 
-| ZModel Type | SQLite Type | PostgreSQL Type      |
-|-------------|-------------|----------------------|
-| `String`    | `TEXT`      | `text`               |
-| `Boolean`   | `INTEGER`   | `boolean`            |
-| `Int`       | `INTEGER`   | `integer`            |
-| `BigInt`    | `INTEGER`   | `bigint`             |
-| `Float`     | `REAL`      | `double precision`   |
-| `Decimal`   | `DECIMAL`   | `decimal(65,30)`     |
-| `DateTime`  | `NUMERIC`   | `timestamp(3)`       |
-| `Json`      | `JSONB`     | `jsonb`              |
-| `Bytes`     | `BLOB`      | `bytea`              |
+| ZModel Type | SQLite Type | PostgreSQL Type      | MySQL Type       |
+|-------------|-------------|----------------------|------------------|
+| `String`    | `TEXT`      | `text`               | `varchar(191)`   |
+| `Boolean`   | `INTEGER`   | `boolean`            | `tinyint(1)`     |
+| `Int`       | `INTEGER`   | `integer`            | `int`            |
+| `BigInt`    | `INTEGER`   | `bigint`             | `bigint`         |
+| `Float`     | `REAL`      | `double precision`   | `double`         |
+| `Decimal`   | `DECIMAL`   | `decimal(65,30)`     | `decimal(65,30)` |
+| `DateTime`  | `NUMERIC`   | `timestamp(3)`       | `datetime(3)`    |
+| `Json`      | `JSONB`     | `jsonb`              | `json`           |
+| `Bytes`     | `BLOB`      | `bytea`              | `longblob`       |
 
 
 The following native type mapping attributes can be used to override the default mapping:
 
-| Attribute                | ZModel Type                   | SQLite Type | PostgreSQL Type      |
-|--------------------------|-------------------------------|-------------|----------------------|
-| `@db.Text`               | `String`                      | -           | `text`               |
-| `@db.Char(x)`            | `String`                      | -           | `char(x)`            |
-| `@db.VarChar(x)`         | `String`                      | -           | `varchar(x)`         |
-| `@db.Bit(x)`             | `String` `Boolean` `Bytes`    | -           | `bit(x)`             |
-| `@db.VarBit`             | `String`                      | -           | `varbit`             |
-| `@db.Uuid`               | `String`                      | -           | `uuid`               |
-| `@db.Xml`                | `String`                      | -           | `xml`                |
-| `@db.Inet`               | `String`                      | -           | `inet`               |
-| `@db.Citext`             | `String`                      | -           | `citext`             |
-| `@db.Boolean`            | `Boolean`                     | -           | `boolean`            |
-| `@db.Int`                | `Int`                         | -           | `serial` `serial4`   |
-| `@db.Integer`            | `Int`                         | -           | `integer` `int`,`int4` |
-| `@db.SmallInt`           | `Int`                         | -           | `smallint` `int2`    |
-| `@db.Oid`                | `Int`                         | -           | `oid`                |
-| `@db.BigInt`             | `BigInt`                      | -           | `bigint` `int8`      |
-| `@db.DoublePrecision`    | `Float` `Decimal`             | -           | `double precision`   |
-| `@db.Real`               | `Float` `Decimal`             | -           | `real`               |
-| `@db.Decimal`            | `Float` `Decimal`             | -           | `decimal` `numeric`  |
-| `@db.Money`              | `Float` `Decimal`             | -           | `money`              |
-| `@db.Timestamp(x)`       | `DateTime`                    | -           | `timestamp(x)`       |
-| `@db.Timestamptz(x)`     | `DateTime`                    | -           | `timestampz(x)`      |
-| `@db.Date`               | `DateTime`                    | -           | `date`               |
-| `@db.Time(x)`            | `DateTime`                    | -           | `time(x)`            |
-| `@db.Timetz`             | `DateTime`                    | -           | `timez(x)`           |
-| `@db.Json`               | `Json`                        | -           | `json`               |
-| `@db.JsonB`              | `Json`                        | -           | `jsonb`              |
-| `@db.ByteA`              | `Bytes`                       | -           | `bytea`              |
+| Attribute                | ZModel Type                   | SQLite | PostgreSQL Type        | MySQL Type              |
+|--------------------------|-------------------------------|--------|------------------------|-------------------------|
+| `@db.Text`               | `String`                      | -      | `text`                 | `text`                  |
+| `@db.Char(x)`            | `String`                      | -      | `char(x)`              | `char(x)`               |
+| `@db.VarChar(x)`         | `String`                      | -      | `varchar(x)`           | `varchar(x)`            |
+| `@db.TinyText`           | `String`                      | -      | -                      | `tinytext`              |
+| `@db.MediumText`         | `String`                      | -      | -                      | `mediumtext`            |
+| `@db.LongText`           | `String`                      | -      | -                      | `longtext`              |
+| `@db.Bit(x)`             | `String` `Boolean` `Bytes`    | -      | `bit(x)`               | `bit(x)`                |
+| `@db.VarBit`             | `String`                      | -      | `varbit`               | -                       |
+| `@db.Uuid`               | `String`                      | -      | `uuid`                 | -                       |
+| `@db.Xml`                | `String`                      | -      | `xml`                  | -                       |
+| `@db.Inet`               | `String`                      | -      | `inet`                 | -                       |
+| `@db.Citext`             | `String`                      | -      | `citext`               | -                       |
+| `@db.Boolean`            | `Boolean`                     | -      | `boolean`              | -                       |
+| `@db.TinyInt(1)`         | `Boolean`                     | -      | -                      | `tinyint(1)`            |
+| `@db.Int`                | `Int`                         | -      | `serial` `serial4`     | `int`                   |
+| `@db.Integer`            | `Int`                         | -      | `integer` `int` `int4` | -                       |
+| `@db.SmallInt`           | `Int`                         | -      | `smallint` `int2`      | `smallint`              |
+| `@db.MediumInt`          | `Int`                         | -      | -                      | `mediumint`             |
+| `@db.TinyInt`            | `Int`                         | -      | -                      | `tinyint`               |
+| `@db.Year`               | `Int`                         | -      | -                      | `year`                  |
+| `@db.UnsignedInt`        | `Int`                         | -      | -                      | `int unsigned`          |
+| `@db.UnsignedSmallInt`   | `Int`                         | -      | -                      | `smallint unsigned`     |
+| `@db.UnsignedMediumInt`  | `Int`                         | -      | -                      | `mediumint unsigned`    |
+| `@db.UnsignedTinyInt`    | `Int`                         | -      | -                      | `tinyint unsigned`      |
+| `@db.Oid`                | `Int`                         | -      | `oid`                  | -                       |
+| `@db.BigInt`             | `BigInt`                      | -      | `bigint` `int8`        | `bigint`                |
+| `@db.UnsignedBigInt`     | `BigInt`                      | -      | -                      | `bigint unsigned`       |
+| `@db.Float`              | `Float`                       | -      | -                      | `float`                 |
+| `@db.Double`             | `Float`                       | -      | -                      | `double`                |
+| `@db.DoublePrecision`    | `Float` `Decimal`             | -      | `double precision`     | -                       |
+| `@db.Real`               | `Float` `Decimal`             | -      | `real`                 | -                       |
+| `@db.Decimal`            | `Float` `Decimal`             | -      | `decimal` `numeric`    | `decimal(p,s)`          |
+| `@db.Money`              | `Float` `Decimal`             | -      | `money`                | -                       |
+| `@db.Timestamp(x)`       | `DateTime`                    | -      | `timestamp(x)`         | `timestamp(x)`          |
+| `@db.DateTime(x)`        | `DateTime`                    | -      | -                      | `datetime(x)`           |
+| `@db.Timestamptz(x)`     | `DateTime`                    | -      | `timestampz(x)`        | -                       |
+| `@db.Date`               | `DateTime`                    | -      | `date`                 | `date`                  |
+| `@db.Time(x)`            | `DateTime`                    | -      | `time(x)`              | `time(x)`               |
+| `@db.Timetz`             | `DateTime`                    | -      | `timez(x)`             | -                       |
+| `@db.Json`               | `Json`                        | -      | `json`                 | `json`                  |
+| `@db.JsonB`              | `Json`                        | -      | `jsonb`                | -                       |
+| `@db.LongBlob`           | `Bytes`                       | -      | -                      | `longblob`              |
+| `@db.Blob`               | `Bytes`                       | -      | -                      | `blob`                  |
+| `@db.MediumBlob`         | `Bytes`                       | -      | -                      | `mediumblob`            |
+| `@db.TinyBlob`           | `Bytes`                       | -      | -                      | `tinyblob`              |
+| `@db.Binary`             | `Bytes`                       | -      | -                      | `binary`                |
+| `@db.VarBinary`          | `Bytes`                       | -      | -                      | `varbinary`             |
+| `@db.ByteA`              | `Bytes`                       | -      | `bytea`                | -                       |
