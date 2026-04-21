@@ -34,17 +34,28 @@ The factory exposes the following methods:
 
 - `makeModelSchema`
 
-    Creates a schema for the full shape of a model. By default, all scalar fields are included, and all relation fields are included as optional fields.
+    Creates a schema for a model. By default, **only scalar fields are included** — relation fields are excluded. Use `include` or `select` options to opt in to relations, mirroring ORM query API semantics.
 
     <AvailableSince version="v3.5.0" />
 
-    You can pass an optional second argument with `select`, `include`, or `omit` options to control which fields and relations are included in the resulting schema. These options work recursively for relation fields, mirroring the ORM's query API semantics.
+    You can pass an optional second argument with `select`, `include`, `omit`, or `optionality` options:
 
     - **`select`** — pick only the listed fields. Set a field to `true` to include it with its default shape, or pass a nested options object for relation fields. Mutually exclusive with `include` and `omit`.
     - **`include`** — start with all scalar fields, then additionally include the named relation fields. Can be combined with `omit`.
     - **`omit`** — remove named scalar fields from the default set. Can be combined with `include`, but mutually exclusive with `select`.
+    - **`optionality`** — controls which fields are made optional at runtime:
+        - `'all'` — every field in the schema becomes optional.
+        - `'defaults'` — only fields that have a `@default` attribute or are `@updatedAt` become optional; all other fields remain their original optionality.
 
     ```ts
+    // Default: scalar fields only (no relations)
+    const schema = factory.makeModelSchema('User');
+
+    // Include a relation on top of all scalar fields
+    const schema = factory.makeModelSchema('User', {
+        include: { posts: true },
+    });
+
     // Select specific fields only
     const schema = factory.makeModelSchema('User', {
         select: { id: true, email: true },
@@ -61,11 +72,6 @@ The factory exposes the following methods:
         },
     });
 
-    // Include relations on top of all scalar fields
-    const schema = factory.makeModelSchema('User', {
-        include: { posts: true },
-    });
-
     // Omit specific scalar fields
     const schema = factory.makeModelSchema('User', {
         omit: { password: true },
@@ -76,15 +82,33 @@ The factory exposes the following methods:
         include: { posts: true },
         omit: { password: true },
     });
+
+    // Make all fields optional (useful for update payloads)
+    const schema = factory.makeModelSchema('User', {
+        optionality: 'all',
+    });
+
+    // Make only @default / @updatedAt fields optional (useful for create payloads)
+    const schema = factory.makeModelSchema('User', {
+        optionality: 'defaults',
+    });
     ```
 
-    The resulting Zod schema is fully typed — the inferred TypeScript type reflects exactly which fields are present based on the options you provide.
+    The resulting Zod schema is fully typed — the inferred TypeScript type reflects exactly which fields are present and their optionality based on the options you provide.
 
-- `makeModelCreateSchema`
-  
+- `makeModelCreateSchema` *(deprecated)*
+
+    :::warning Deprecated
+    Use `makeModelSchema(model, { optionality: 'defaults' })` instead.
+    :::
+
     Creates a schema for creating new records, with fields that have defaults being optional. The result schema excludes relation fields.
 
-- `makeModelUpdateSchema`
+- `makeModelUpdateSchema` *(deprecated)*
+
+    :::warning Deprecated
+    Use `makeModelSchema(model, { optionality: 'all' })` instead.
+    :::
 
     Creates a schema for updating records, with all fields being optional. The result schema excludes relation fields.
 
@@ -108,4 +132,3 @@ The created Zod schemas have the following features:
 ## Samples
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-zod" openFile={['zenstack/schema.zmodel', 'main.ts']} />
-
