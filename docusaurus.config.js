@@ -66,7 +66,7 @@ const config = {
             announcementBar: {
                 id: 'v3_ga',
                 content:
-                    'ZenStack v3 is released 🚀. The new version has replaced Prisma with a brand new ORM engine. <a href="/docs">Check it out</a>',
+                    'Explore your database the modern way with ZenStack Studio. <a href="https://studio.zenstack.dev/">Check it out</a>',
                 isCloseable: true,
             },
             colorMode: {
