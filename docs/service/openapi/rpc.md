@@ -41,7 +41,7 @@ import { schema } from '~/zenstack/schema';
 import { RPCApiHandler } from '@zenstackhq/server/api';
 
 const app = express();
-const handler = new RPCApiHandler({ schema, endpoint: 'http://localhost:3000/api' });
+const handler = new RPCApiHandler({ schema });
 
 // Serve the OpenAPI spec
 app.get('/api/openapi.json', async (_req, res) => {
