@@ -565,10 +565,10 @@ The following native type mapping attributes can be used to override the default
 | `@db.Money`              | `Float` `Decimal`             | -      | `money`                | -                       |
 | `@db.Timestamp(x)`       | `DateTime`                    | -      | `timestamp(x)`         | `timestamp(x)`          |
 | `@db.DateTime(x)`        | `DateTime`                    | -      | -                      | `datetime(x)`           |
-| `@db.Timestamptz(x)`     | `DateTime`                    | -      | `timestampz(x)`        | -                       |
+| `@db.Timestamptz(x)`     | `DateTime`                    | -      | `timestamptz(x)`        | -                       |
 | `@db.Date`               | `DateTime`                    | -      | `date`                 | `date`                  |
 | `@db.Time(x)`            | `DateTime`                    | -      | `time(x)`              | `time(x)`               |
-| `@db.Timetz`             | `DateTime`                    | -      | `timez(x)`             | -                       |
+| `@db.Timetz`             | `DateTime`                    | -      | `timetz(x)`             | -                       |
 | `@db.Json`               | `Json`                        | -      | `json`                 | `json`                  |
 | `@db.JsonB`              | `Json`                        | -      | `jsonb`                | -                       |
 | `@db.LongBlob`           | `Bytes`                       | -      | -                      | `longblob`              |
