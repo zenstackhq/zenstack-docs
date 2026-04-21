@@ -64,9 +64,9 @@ const config = {
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         {
             announcementBar: {
-                id: 'v3_ga',
+                id: 'zenstack_studio',
                 content:
-                    'Explore your database the modern way with ZenStack Studio. <a href="https://studio.zenstack.dev/">Check it out</a>',
+                    '<span class="mr-2">⚡</span>Explore your database the modern way with <strong>ZenStack Studio.</strong> <a href="https://studio.zenstack.dev/" style="margin-left:6px">Try it out →</a>',
                 isCloseable: true,
             },
             colorMode: {
