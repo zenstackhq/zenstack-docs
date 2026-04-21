@@ -4,6 +4,7 @@ description: Custom types in ZModel
 ---
 
 import ZModelVsPSL from '../_components/ZModelVsPSL';
+import AvailableSince from '../_components/AvailableSince';
 
 # Custom Type
 
@@ -24,7 +25,7 @@ type Address {
 }
 ```
 
-Custom types are defined exactly like models, with the exception that they cannot contain fields that are relations to other models. They can, however, contain fields that are other custom types.
+Custom types are defined exactly like models. They can contain fields that are other custom types:
 
 ```zmodel
 type Address {
@@ -39,6 +40,33 @@ type UserProfile {
     address Address?
 }
 ```
+
+### Relation Fields
+
+<AvailableSince version="v3.6.0" />
+
+Custom types can also contain relation fields to models. This is particularly useful when used as [mixins](./mixin.md) to share relation field definitions across multiple models. For example, you can define an audit mixin that tracks who created and last updated a record:
+
+```zmodel
+type AuditMixin {
+    id          String @id @default(cuid())
+    createdBy   User    @relation("CreatedBy", fields: [createdById], references: [id])
+    createdById String
+    updatedBy   User    @relation("UpdatedBy", fields: [updatedById], references: [id])
+    updatedById String
+}
+
+model Post with AuditMixin {
+    title String
+}
+
+model Comment with AuditMixin {
+    body String
+}
+```
+:::warning
+Custom types with relation fields can only be used as [mixins](./mixin.md). They cannot be used to type [JSON fields](./typed-json.md), since JSON fields cannot hold relational data.
+:::
 
 There are two ways to use custom types:
 

@@ -7,8 +7,6 @@ import PreviewFeature from '../../_components/PreviewFeature';
 
 # MySQL
 
-<PreviewFeature name="MySQL support" />
-
 ## Installing driver
 
 <PackageInstall dependencies={['mysql2']} />
