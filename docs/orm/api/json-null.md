@@ -1,6 +1,6 @@
 ---
 sidebar_position: 11
-description: JSON Value
+description: JSON null value handling approaches
 ---
 
 # Json Null Values
