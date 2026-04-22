@@ -35,7 +35,7 @@ const users = await db.$queryRawUnsafe<{ id: number; email: string }[]>(
   'SELECT id, email FROM "User"'
 );
 
-// query users of a specific role, use parameterized query to avoid SQL injection
+// query users of a specific role, use parameterized query to avoid SQL injection (PostgreSQL syntax shown here)
 const filteredUsers = await db.$queryRawUnsafe<{ id: number; email: string }[]>(
   'SELECT id, email FROM "User" WHERE role = $1', role
 );
@@ -61,6 +61,7 @@ This method is susceptible to SQL injection if you interpolate unsanitized user 
 :::
 
 ```ts
+// use parameterized query to avoid SQL injection (PostgreSQL syntax shown here)
 const count = await db.$executeRawUnsafe(
   'UPDATE "User" SET name = $1 WHERE id = $2',
   newName,
