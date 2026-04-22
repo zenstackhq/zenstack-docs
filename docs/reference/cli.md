@@ -87,12 +87,12 @@ Usage: zen migrate dev [options]
 Create a migration from changes in schema and apply it to the database.
 
 Options:
-  --schema <file>      schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
-                       specified in package.json.
-  -n, --name <name>    migration name
-  --create-only        only create migration, do not apply
-  --migrations <path>  path that contains the "migrations" directory
-  -h, --help           display help for command
+  --schema <file>             schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  -n, --name <name>           migration name
+  --create-only               only create migration, do not apply
+  --migrations <path>         path that contains the "migrations" directory
+  --random-prisma-schema-name append a random UUID to the temporary Prisma schema filename (e.g., ~schema.<uuid>.prisma) to avoid collisions between concurrent runs sharing a working directory (default: false)
+  -h, --help                  display help for command
 ```
 
 #### migrate reset
@@ -109,11 +109,11 @@ Usage: zen migrate reset [options]
 Reset your database and apply all migrations, all data will be lost.
 
 Options:
-  --schema <file>      schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
-                       specified in package.json.
-  --force              skip the confirmation prompt
-  --migrations <path>  path that contains the "migrations" directory
-  -h, --help           display help for command
+  --schema <file>             schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  --force                     skip the confirmation prompt
+  --migrations <path>         path that contains the "migrations" directory
+  --random-prisma-schema-name append a random UUID to the temporary Prisma schema filename (e.g., ~schema.<uuid>.prisma) to avoid collisions between concurrent runs sharing a working directory (default: false)
+  -h, --help                  display help for command
 
 If there is a seed script defined in package.json, it will be run after the reset. Use --skip-seed to skip it.
 ```
@@ -128,10 +128,10 @@ Usage: zen migrate deploy [options]
 Deploy your pending migrations to your production/staging database.
 
 Options:
-  --schema <file>      schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
-                       specified in package.json.
-  --migrations <path>  path that contains the "migrations" directory
-  -h, --help           display help for command
+  --schema <file>             schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  --migrations <path>         path that contains the "migrations" directory
+  --random-prisma-schema-name append a random UUID to the temporary Prisma schema filename (e.g., ~schema.<uuid>.prisma) to avoid collisions between concurrent runs sharing a working directory (default: false)
+  -h, --help                  display help for command
 ```
 
 #### migrate status
@@ -144,10 +144,10 @@ Usage: zen migrate status [options]
 Check the status of your database migrations.
 
 Options:
-  --schema <file>      schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
-                       specified in package.json.
-  --migrations <path>  path that contains the "migrations" directory
-  -h, --help           display help for command
+  --schema <file>             schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  --migrations <path>         path that contains the "migrations" directory
+  --random-prisma-schema-name append a random UUID to the temporary Prisma schema filename (e.g., ~schema.<uuid>.prisma) to avoid collisions between concurrent runs sharing a working directory (default: false)
+  -h, --help                  display help for command
 ```
 
 #### migrate resolve
@@ -160,12 +160,12 @@ Usage: zen migrate resolve [options]
 Resolve issues with database migrations in deployment databases.
 
 Options:
-  --schema <file>            schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless
-                             specified in package.json.
-  --migrations <path>        path that contains the "migrations" directory
-  --applied <migration>      record a specific migration as applied
-  --rolled-back <migration>  record a specific migration as rolled back
-  -h, --help                 display help for command
+  --schema <file>             schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  --migrations <path>         path that contains the "migrations" directory
+  --applied <migration>       record a specific migration as applied
+  --rolled-back <migration>   record a specific migration as rolled back
+  --random-prisma-schema-name append a random UUID to the temporary Prisma schema filename (e.g., ~schema.<uuid>.prisma) to avoid collisions between concurrent runs sharing a working directory (default: false)
+  -h, --help                  display help for command
 ```
 
 ### db
@@ -196,11 +196,11 @@ Usage: zen db push [options]
 Push the state from your schema to your database.
 
 Options:
-  --schema <file>     schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel"
-                      unless specified in package.json.
-  --accept-data-loss  ignore data loss warnings
-  --force-reset       force a reset of the database before push
-  -h, --help          display help for command
+  --schema <file>             schema file (with extension .zmodel). Defaults to "zenstack/schema.zmodel" unless specified in package.json.
+  --accept-data-loss          ignore data loss warnings
+  --force-reset               force a reset of the database before push
+  --random-prisma-schema-name append a random UUID to the temporary Prisma schema filename (e.g., ~schema.<uuid>.prisma) to avoid collisions between concurrent runs sharing a working directory (default: false)
+  -h, --help                  display help for command
 ```
 
 #### db pull
