@@ -174,7 +174,7 @@ The `PolicyPlugin` constructor accepts an optional options object with the follo
 
 By default, when the policy plugin is installed, raw SQL methods like `executeRaw` and `queryRaw` are rejected by the ORM client. Setting this option to `true` bypasses this restriction, allowing raw queries to execute within the current transaction without enforcing access control.
 
-:::warning
+:::danger Bypassing Access Control
 Use this option with caution. It executes raw SQL without any access control enforcement.
 :::
 

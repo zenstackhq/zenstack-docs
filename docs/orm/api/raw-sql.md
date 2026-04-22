@@ -8,7 +8,7 @@ description: Raw SQL API
 Although the [Query API](./index.md) covers most use cases and the [Query Builder API](../query-builder.md) provides a type-safe escape hatch for complex queries, sometimes the most direct approach is to write raw SQL. ZenStack provides four methods on the ORM client for this purpose.
 
 :::danger Access Control
-Raw SQL queries bypass ZenStack's [access control](../access-control/) enforcement. If you have the [policy plugin](../../reference/plugins/policy.md) installed, raw SQL methods are rejected by default. You must opt in with `dangerouslyAllowRawSql: true` to use them.
+Raw SQL queries bypass ZenStack's [access control](../access-control/) enforcement. If you have the [policy plugin](../../reference/plugins/policy.md) installed, raw SQL methods are rejected by default. You must opt in with the [`dangerouslyAllowRawSql`](../../reference/plugins/policy.md#dangerouslyallowrawsql) option to use them.
 :::
 
 ## `$queryRaw`
