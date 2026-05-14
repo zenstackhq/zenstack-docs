@@ -112,6 +112,10 @@ You can still use generic Json filters on Typed Json fields if needed.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm-typed-json" openFile="filter.ts" startScript="generate,filter" />
 
+## Text search filters
+
+For text matching beyond exact and `LIKE`-style operators, ZenStack provides two text-search features — **full-text search** and **fuzzy search**. See the [Text Search](./text-search/index.md) documentation for details and guidance on when to use each.
+
 ## Relation filters
 
 Filters can be defined on conditions over relations. For one-to-one relations, you can filter on their fields directly. For one-to-many relations, use the "some", "every", or "none" operators to build a condition over a list of records.
