@@ -11,6 +11,7 @@ import OptimisticLimitation from './_optimistic-limitation.md';
 import FineGrainedOptimistic from './_fine-grained-optimistic.md';
 import Invalidation from './_invalidation.md';
 import PreviewFeature from '../../../_components/PreviewFeature.tsx'
+import AvailableSince from '../../../_components/AvailableSince';
 
 # TanStack Query
 
@@ -584,6 +585,177 @@ function onCancel() {
 ```
 
 When a cancellation occurs, the query state is reset and the ongoing `fetch` call to the CRUD API is aborted.
+
+### Json Null Values
+
+<AvailableSince version="3.7.0" />
+
+When working with JSON fields, care needs to be taken to distinguish between two types of nulls:
+
+- Column value not set (database-level NULL)
+- JSON `null` value
+
+The hooks package exports similar `DbNull`, `JsonNull`, and `AnyNull` values as the ORM (see [Json Null Values](../../../orm/api/json-null.md) in the ORM reference for the underlying semantics), so you can filter and write JSON fields from the frontend with the same precision.
+
+When creating or updating records, use the following values (instead of JavaScript `null`) for different intentions:
+
+- `DbNull` - sets the column value to database NULL
+- `JsonNull` - sets the column value to JSON `null`
+
+When filtering with JSON fields, use:
+
+- `DbNull` - matches database NULL
+- `JsonNull` - matches JSON `null`
+- `AnyNull` - matches either database NULL or JSON `null`
+
+<Tabs>
+
+<TabItem value="react" label="React">
+
+```ts
+import { DbNull, JsonNull, AnyNull } from '@zenstackhq/tanstack-query/react';
+
+// sets jsonField to database NULL, only valid if `jsonField` is optional
+client.foo.useCreate().mutate({ data: { jsonField: DbNull } });
+
+// sets jsonField to JSON null
+client.foo.useCreate().mutate({ data: { jsonField: JsonNull } });
+
+// find records where jsonField is either database NULL or JSON null
+client.foo.useFindMany({ where: { jsonField: AnyNull } });
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue">
+
+```ts
+import { DbNull, JsonNull, AnyNull } from '@zenstackhq/tanstack-query/vue';
+
+// sets jsonField to database NULL, only valid if `jsonField` is optional
+client.foo.useCreate().mutate({ data: { jsonField: DbNull } });
+
+// sets jsonField to JSON null
+client.foo.useCreate().mutate({ data: { jsonField: JsonNull } });
+
+// find records where jsonField is either database NULL or JSON null
+client.foo.useFindMany({ where: { jsonField: AnyNull } });
+```
+
+</TabItem>
+
+<TabItem value="svelte" label="Svelte">
+
+```ts
+import { DbNull, JsonNull, AnyNull } from '@zenstackhq/tanstack-query/svelte';
+
+// sets jsonField to database NULL, only valid if `jsonField` is optional
+client.foo.useCreate().mutate({ data: { jsonField: DbNull } });
+
+// sets jsonField to JSON null
+client.foo.useCreate().mutate({ data: { jsonField: JsonNull } });
+
+// find records where jsonField is either database NULL or JSON null
+client.foo.useFindMany(() => ({ where: { jsonField: AnyNull } }));
+```
+
+</TabItem>
+
+</Tabs>
+
+The query results will return JavaScript `null` for both database NULL and JSON `null` values.
+
+### Transaction
+
+<AvailableSince version="3.7.0" />
+
+The `$transaction.useSequential` hook lets you execute multiple queries andmutations in a single transaction from the frontend, mirroring the [sequential transaction](../../../orm/api/transaction.md#sequential-transaction) overload on the ORM. All operations are sent to the server in one request and executed sequentially in the order they are provided. If any operation fails, the whole transaction is rolled back.
+
+The operations are independent of each other — there's no way to access the result of a previous operation and use it to influence later ones. If you need that, perform the work inside a server-side procedure or API route that uses the ORM's interactive transaction.
+
+:::info
+Only sequential transactions are supported on the client. Interactive transactions are intentionally not exposed via hooks, since holding a database transaction open across multiple network round-trips would be very harmful to server scalability.
+:::
+
+Each operation is described by an object with `model` (PascalCase model name), `op` (operation name such as `create`, `findMany`, `update`, etc.), and `args` (the same shape as the corresponding ORM call). `args` can be omitted for operations whose args are entirely optional (e.g., `findMany`, `count`, `exists`, `deleteMany`).
+
+<Tabs>
+
+<TabItem value="react" label="React">
+
+```ts
+import { useClientQueries } from '@zenstackhq/tanstack-query/react';
+
+const client = useClientQueries(schema);
+const tx = client.$transaction.useSequential();
+
+function onSubmit() {
+  tx.mutate([
+    { model: 'User', op: 'create', args: { data: { email: 'foo@bar.com' } } },
+    { model: 'Post', op: 'create', args: { data: { title: 'Hello' } } },
+  ]);
+}
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue">
+
+```ts
+import { useClientQueries } from '@zenstackhq/tanstack-query/vue';
+
+const client = useClientQueries(schema);
+const tx = client.$transaction.useSequential();
+
+function onSubmit() {
+  tx.mutate([
+    { model: 'User', op: 'create', args: { data: { email: 'foo@bar.com' } } },
+    { model: 'Post', op: 'create', args: { data: { title: 'Hello' } } },
+  ]);
+}
+```
+
+</TabItem>
+
+<TabItem value="svelte" label="Svelte">
+
+```ts
+import { useClientQueries } from '@zenstackhq/tanstack-query/svelte';
+
+const client = useClientQueries(schema);
+const tx = client.$transaction.useSequential();
+
+function onSubmit() {
+  tx.mutate([
+    { model: 'User', op: 'create', args: { data: { email: 'foo@bar.com' } } },
+    { model: 'Post', op: 'create', args: { data: { title: 'Hello' } } },
+  ]);
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+The mutation result is a tuple, with each element's type inferred from its `model` and `op`:
+
+```ts
+const results = await tx.mutateAsync([
+  { model: 'User', op: 'create', args: { data: { email: 'a@b.com' } } },
+  { model: 'User', op: 'findMany' },
+  { model: 'User', op: 'count' },
+]);
+
+results[0].email;   // User
+results[1][0]?.id;  // User[]
+results[2];         // number
+```
+
+Queries affected by the operations in the transaction are automatically invalidated when the mutation settles. You can opt out by passing `invalidateQueries: false`:
+
+```ts
+const tx = client.$transaction.useSequential({ invalidateQueries: false });
+```
 
 ### Respecting ORM Client Customization
 
