@@ -44,7 +44,7 @@ That's why I also wrote a post to demonstrate how to create an HTTP MCP server w
 
 ## MCP Is Bloated
 
-My blog post gained quite a few attractions within the ZenStack community. Given how neat the ZenStack solution is, I expected to see a variety of MCP servers with integrated Auth released. 
+My blog post gained quite a few attention within the ZenStack community. Given how neat the ZenStack solution is, I expected to see a variety of MCP servers with integrated Auth released. 
 
 Unfortunately, it's never happened. I didn't realize the reason until the following GitHub issue was created by one user:
 
@@ -161,7 +161,7 @@ If the task can't be achieved within one operation, it knows to use multiple ope
 
 
 
-The more impressive thing is that throughout my entire experiment,  there is only once that the initial function call created by LLM is incorrect, which was caught by the '`check'` tool.   And it simply takes another route to get the job done. 
+The more impressive thing is that throughout my entire experiment,  there was only one time that the initial function call created by LLM is incorrect, which was caught by the '`check'` tool.   And it simply takes another route to get the job done. 
 
 
 ![check-error](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/73im9z4xrqubvvsaz3q2.png)
