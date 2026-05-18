@@ -123,9 +123,9 @@ As a result, it provides 3 tools:
 
 Instead of providing a `search` tool, we would offer a `schema` tool that sends the entire schema to the LLM, giving it a whole picture of the application with some simple examples.   Although this approach means the tool's footprint is no longer fixed, the size of the entire schema text file is manageable by most LLMs nowadays.  
 
-### excute
+### execute
 
-The `excute` is nothing more.  Actually, it's even simpler, because it would only run a fixed number of function calls corresponding to the query API, like `findMany` , `createMany` , `updateMany` etc. instead of arbitrary code.
+The `execute` is nothing more.  Actually, it's even simpler, because it would only run a fixed number of function calls corresponding to the query API, like `findMany` , `createMany` , `updateMany` etc. instead of arbitrary code.
 
 ### check
 
@@ -137,7 +137,7 @@ This tool is used for LLM to check if the parameters of the function call it com
 I skipped it entirely — which means I was running queries without type-checking them first. **I got lucky that the queries happened to be valid, but that's not the right approach**. The check step exists to catch invalid field names, wrong argument shapes, or unsupported operations before they hit the database.
 > 
 
-I have to add a MUST to the prompt of `excute` to make sure it gets called.
+I have to add a MUST to the prompt of `execute` to make sure it gets called.
 
 ```tsx
 You MUST use the "check" tool first to validate the query before calling this tool
