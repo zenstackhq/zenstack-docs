@@ -5,6 +5,7 @@ description: Polymorphic models
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
+import AvailableSince from '../_components/AvailableSince';
 
 # Polymorphic Models
 
@@ -25,6 +26,78 @@ The ORM query API hides all the complexity of managing polymorphic models for yo
 - When creating a concrete model entity, its base entity is automatically created.
 - When querying a base entity, the ORM fetches the associated concrete entity and merges the results.
 - When deleting a base or concrete entity, the ORM automatically deletes the counterpart entity.
+
+## Customizing the discriminator value
+
+<AvailableSince version="v3.7.1" />
+
+By default, when the ORM creates a concrete entity, it stores the concrete model's **name** in the base model's discriminator field. For instance, given the schema below, creating a `Video` writes `"Video"` to `Content.type`, and creating an `Image` writes `"Image"`.
+
+```zmodel
+model Content {
+    id   Int    @id
+    type String
+    @@delegate(type)
+}
+
+model Video extends Content { url String }
+model Image extends Content { data Bytes }
+```
+
+If the model names don't match the values you want to store, you can override the value with the `@@delegateMap` attribute on each concrete model.
+
+### String discriminator
+
+When the discriminator field is a `String`, pass a string literal to `@@delegateMap`:
+
+```zmodel
+model Content {
+    id   Int    @id
+    type String
+    @@delegate(type)
+}
+
+model Video extends Content {
+    url String
+    // highlight-next-line
+    @@delegateMap("video")
+}
+
+model Image extends Content {
+    data Bytes
+    // highlight-next-line
+    @@delegateMap("image")
+}
+```
+
+### Enum discriminator
+
+When the discriminator field is an enum, pass an enum member to `@@delegateMap`. The member must come from the same enum as the discriminator field:
+
+```zmodel
+enum AssetKind {
+    ASSET_KIND_VIDEO
+    ASSET_KIND_IMAGE
+}
+
+model Asset {
+    id   Int       @id
+    type AssetKind
+    @@delegate(type)
+}
+
+model Video extends Asset {
+    url String
+    // highlight-next-line
+    @@delegateMap(ASSET_KIND_VIDEO)
+}
+
+model Image extends Asset {
+    data Bytes
+    // highlight-next-line
+    @@delegateMap(ASSET_KIND_IMAGE)
+}
+```
 
 ## Samples
 
