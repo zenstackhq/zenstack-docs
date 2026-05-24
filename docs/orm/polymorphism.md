@@ -114,17 +114,6 @@ if (content.type === 'video') {
 }
 ```
 
-For an enum discriminator, narrow against the enum member instead (e.g., `asset.type === 'ASSET_KIND_VIDEO'`).
-
-### Validation rules
-
-The ZModel compiler enforces the following at the schema boundary:
-
-- `@@delegateMap` is only valid on a model that extends a delegate base.
-- A model may include at most one `@@delegateMap` attribute.
-- The value type must match the discriminator field: a string literal for a `String` discriminator, an enum member for an enum discriminator (and the member must belong to the discriminator's enum).
-- All concrete models that share the same delegate base must end up with distinct discriminator values. Without `@@delegateMap`, the model name is used — so a mapped value of `"Image"` would collide with a sibling `Image` model that has no `@@delegateMap`.
-
 ## Samples
 
 The schema used in the sample involves a base model and three concrete models:
