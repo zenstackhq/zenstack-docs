@@ -287,6 +287,5 @@ Here's a list of Prisma features that are not supported in ZenStack v3:
 | Feature | Planned | Notes |
 |---------|-------------| --- |
 | [Client Extensions](https://www.prisma.io/docs/orm/prisma-client/client-extensions) | No | Replaced with ZenStack runtime plugins |
-| [Full-Text Search](https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search) | Yes | |
 | [Comparing Columns](https://www.prisma.io/docs/orm/reference/prisma-client-reference#compare-columns-in-the-same-table) | Yes | |
 | [Fluent API](https://www.prisma.io/docs/v6/orm/prisma-client/queries/relation-queries#fluent-api) | TBD | |
