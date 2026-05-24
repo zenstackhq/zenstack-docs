@@ -359,6 +359,20 @@ _Params_:
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | discriminator | A `String` or `enum` field in the same model used to store the name of the concrete model that inherit from this base model. |
 
+### @@delegateMap
+
+```zmodel
+attribute @@delegateMap(_ value: Any)
+```
+
+Maps a delegate sub-model to a specific discriminator value. Applied to a concrete model that extends a delegate base. If omitted, the sub-model's name is used as the discriminator value by default. See [Customizing the discriminator value](../../orm/polymorphism.md#customizing-the-discriminator-value).
+
+_Params_:
+
+| Name  | Description                                                                                                                                          |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value | A string literal (when the discriminator is `String`) or an enum member (when the discriminator is an enum, and must belong to the same enum type). |
+
 ### @@meta
 
 ```zmodel
