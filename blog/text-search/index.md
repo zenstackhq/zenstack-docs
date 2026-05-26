@@ -7,7 +7,7 @@ date: 2026-05-25
 image: ./cover.png
 ---
 
-# Beyond `LIKE`: Full-Text and Fuzzy Search in ZenStack v3
+# Beyond `LIKE`: Full-Text and Fuzzy Search in ZenStack V3
 
 ![Cover image](cover.png)
 
