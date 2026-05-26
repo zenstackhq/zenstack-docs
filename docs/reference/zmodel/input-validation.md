@@ -63,6 +63,14 @@ All field-level attributes have a `message` parameter that allows you to provide
 
         Requires a string field to be a valid email address.
 
+    - `@phone`
+
+        ```zmodel
+        @phone(_ message: String?)
+        ```
+
+        Requires a string field to be a valid E.164 phone number.
+
     - `@url`
   
         ```zmodel
@@ -194,6 +202,14 @@ All field-level attributes have a `message` parameter that allows you to provide
     ```
 
   Checks if a string field is a valid email address.
+
+- `isPhone()`
+
+    ```zmodel
+    function isPhone(field: String): Boolean {}
+    ```
+
+  Checks if a string field is a valid E.164 phone number.
 
 - `isUrl()`
 
