@@ -28,7 +28,7 @@ Here's the real-world industry experience on how that actually works:
 
 If you want to explore more about the double-edged sword of the MCP,  here is a good article that got hyped on HackerNews:
 
-[MCP is Dead; Long Live MCP!](https://chrlschn.dev/blog/2026/03/mcp-is-dead-long-live-mcp/#auth-and-security)
+[MCP is Dead; Long Live MCP!](https://chrlschn.dev/blog/2026/03/mcp-is-dead-long-live-mcp/#the-duality-of-mcp)
 
 
 I agree with the author's point of view that _**the remote http MCP server is actually the game-changer and will be a key linchpin in organizational and enterprise adoption, shifting from vibe-coding to agentic engineering.**_
@@ -132,10 +132,8 @@ The `execute` is nothing more.  Actually, it's even simpler, because it would on
 This tool is used for LLM to check if the parameters of the function call it composed are valid before `execute`.  This is kind of icing on the cake,  because I believe the LLM could still figure out the correct parameters from the returned error message of `execute` . In fact, after playing around with the MCP server in Claude and getting several successful responses, I just realized it never actually called the `check` .  Here is the response I got when I asked why he didn't call `check` as prompted:
 
 > You're right, and that's a fair callout. The `gym:check` tool description explicitly says:
-"Use the 'check' tool first to validate the call, then execute it."
-
-I skipped it entirely — which means I was running queries without type-checking them first. **I got lucky that the queries happened to be valid, but that's not the right approach**. The check step exists to catch invalid field names, wrong argument shapes, or unsupported operations before they hit the database.
-> 
+> "Use the 'check' tool first to validate the call, then execute it."
+> I skipped it entirely — which means I was running queries without type-checking them first. **I got lucky that the queries happened to be valid, but that's not the right approach**. The check step exists to catch invalid field names, wrong argument shapes, or unsupported operations before they hit the database. 
 
 I have to add a MUST to the prompt of `execute` to make sure it gets called.
 
