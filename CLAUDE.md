@@ -47,6 +47,8 @@ The site has two doc versions:
 
 When adding documentation that applies only to v3, add it to `docs/`. The v2.x content is archived and should rarely need changes.
 
+When documenting a new feature, attribute, function, option, or API surface, mark it with the `<AvailableSince version="vX.Y.Z" />` component (from `docs/_components/AvailableSince.tsx`) so readers know which release first shipped it. Place the tag immediately under the heading or bullet that introduces the feature, and add `import AvailableSince from '<relative-path>/_components/AvailableSince';` at the top of the doc if it isn't already imported. See [docs/utilities/zod.md](docs/utilities/zod.md) and [docs/reference/zmodel/input-validation.md](docs/reference/zmodel/input-validation.md) for examples.
+
 ### Key Configuration
 
 - `docusaurus.config.js` — Main site config: navbar, footer, Algolia search, Mermaid diagrams, Google Tag Manager
