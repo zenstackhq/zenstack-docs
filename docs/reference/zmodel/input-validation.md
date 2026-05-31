@@ -2,6 +2,8 @@
 sidebar_position: 11
 ---
 
+import AvailableSince from '../../_components/AvailableSince';
+
 # Input Validation
 
 This document describes the attributes and functions available for input validation in ZModel. See [Input Validation](../../orm/validation.md) for more details on how to use them.
@@ -70,6 +72,16 @@ All field-level attributes have a `message` parameter that allows you to provide
         ```
 
         Requires a string field to be a valid URL.
+
+    - `@phone`
+
+        <AvailableSince version="v3.7.2" />
+
+        ```zmodel
+        @phone(_ message: String?)
+        ```
+
+        Requires a string field to be a valid [E.164](https://en.wikipedia.org/wiki/E.164) phone number (e.g. `+15555555555`).
 
     - `@datetime`
   
@@ -202,6 +214,16 @@ All field-level attributes have a `message` parameter that allows you to provide
     ```
 
   Checks if a string field is a valid URL.
+
+- `isPhone()`
+
+    <AvailableSince version="v3.7.2" />
+
+    ```zmodel
+    function isPhone(field: String): Boolean {}
+    ```
+
+  Checks if a string field is a valid [E.164](https://en.wikipedia.org/wiki/E.164) phone number.
 
 - `isDateTime()`
 
