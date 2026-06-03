@@ -1,13 +1,13 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 description: Quick start guide
 ---
 
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
-import ZModelStarter from '../_components/_zmodel-starter.md';
-import PackageInstall from '../_components/PackageInstall';
-import PackageExec from '../_components/PackageExec';
-import PackageDlx from '../_components/PackageDlx';
+import ZModelStarter from './_components/_zmodel-starter.md';
+import PackageInstall from './_components/PackageInstall';
+import PackageExec from './_components/PackageExec';
+import PackageDlx from './_components/PackageDlx';
 
 # Quick Start
 
@@ -59,7 +59,7 @@ You can also always configure a project manually with the following steps:
 
 :::info
 
-By default, ZenStack CLI loads the schema from `zenstack/schema.zmodel`. You can change this by passing the `--schema` option. TypeScript files are by default generated to the same directory as the schema file. You can change this by passing the `--output` option. The default settings can also be changed as explained in the [CLI reference](../reference/cli#overriding-default-options).
+By default, ZenStack CLI loads the schema from `zenstack/schema.zmodel`. You can change this by passing the `--schema` option. TypeScript files are by default generated to the same directory as the schema file. You can change this by passing the `--output` option. The default settings can also be changed as explained in the [CLI reference](./reference/cli#overriding-default-options).
 
 You can choose to either commit the generated TypeScript files to your source control (recommended), or add them to `.gitignore` and generate them on the fly in your CI/CD pipeline.
 
