@@ -7,6 +7,10 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
+- [zenstack-replicas](https://github.com/visualbravo/zenstack-replicas)
+
+    Distribute read operations across database replicas with round-robin load balancing for the ZenStack ORM. Made by [@sanny-io](https://github.com/sanny-io).
+
 - [zmodel-to-dart](https://pub.dev/packages/zmodel_to_dart)
 
     A Dart builder that generates DTO classes from .zmodel files. Made by [Israel Lins Albuquerque](https://github.com/israelins85).
