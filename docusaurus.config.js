@@ -109,8 +109,9 @@ const config = {
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
                         href: 'https://github.com/zenstackhq/zenstack',
-                        label: 'GitHub',
+                        label: '⭐ GitHub',
                         position: 'right',
+                        className: 'bg-gray-900 rounded-sm',
                     },
                     {
                         href: 'https://discord.gg/Ykhr738dUe',
