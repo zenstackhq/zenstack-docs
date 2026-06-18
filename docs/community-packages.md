@@ -7,6 +7,10 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
+- [zenstack-mcp](https://github.com/azzerty23/zenstack-mcp)
+
+    Expose your ZenStack V3 database to LLMs through a [Model Context Protocol](https://modelcontextprotocol.io) interface, with built-in access-control policies and OAuth 2.0 authentication. Made by [Azzerty23](https://github.com/azzerty23).
+
 - [zenstack-replicas](https://github.com/visualbravo/zenstack-replicas)
 
     Distribute read operations across database replicas with round-robin load balancing for the ZenStack ORM. Made by [@sanny-io](https://github.com/sanny-io).
