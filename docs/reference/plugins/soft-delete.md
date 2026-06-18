@@ -135,14 +135,15 @@ CREATE UNIQUE INDEX "User_email_active_key"
   WHERE "deletedAt" IS NULL;
 ```
 
-**MySQL** — has no partial indexes; use a generated column that is the value only for live rows (`NULL` rows don't collide in a unique index):
+**MySQL** — has no partial indexes, but a unique index allows multiple `NULL`s, so use it over an expression that is the value only for live rows (and `NULL` for tombstones):
 
 ```sql
 ALTER TABLE `User`
-  ADD COLUMN `email_active` VARCHAR(191)
-    GENERATED ALWAYS AS (CASE WHEN `deletedAt` IS NULL THEN `email` END) STORED,
-  ADD UNIQUE INDEX `User_email_active_key` (`email_active`);
+  ADD UNIQUE INDEX `User_email_active_key` (
+    (CASE WHEN `deletedAt` IS NULL THEN `email` END)
+  );
 ```
 
 :::caution
-Migrations are diff-based, so if you leave `@unique` on the field the next `migrate dev` will detect the plain index as "missing" and try to recreate it. To keep the schema and database in sync, drop `@unique` from the field in ZModel and let the manual partial index enforce uniqueness instead. :::
+Migrations are diff-based, so if you leave `@unique` on the field the next `migrate dev` will detect the plain index as "missing" and try to recreate it. To keep the schema and database in sync, drop `@unique` from the field in ZModel and let the manual partial index enforce uniqueness instead. 
+:::
