@@ -3,10 +3,13 @@ sidebar_position: 4
 ---
 
 import AvailableSince from '../../_components/AvailableSince';
+import PreviewFeature from '../../_components/PreviewFeature';
 
 # @zenstackhq/plugin-soft-delete
 
 <AvailableSince version="v3.8.0" />
+
+<PreviewFeature name="Soft delete plugin" />
 
 The `@zenstackhq/plugin-soft-delete` plugin implements **soft delete** by intercepting Kysely queries at runtime. Instead of physically removing rows, delete operations mark them with a timestamp, and reads automatically exclude the marked rows.
 
