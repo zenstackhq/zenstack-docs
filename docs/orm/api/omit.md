@@ -13,6 +13,10 @@ The previous sections have shown how you can use `select` and `omit` clauses to 
 Please note that the omit settings only affect the ORM query APIs, but not the [Query Builder APIs](../query-builder). With query builder you'll need to explicitly specify the fields to select.
 :::
 
+:::warning
+Omit (at all three layers) is not a security feature. It's merely a convenient way to control the default set of fields returned during a query. Don't rely on it to protect sensitive data — use [access policies](../access-control) for that purpose.
+:::
+
 ## Schema-Level Omit
 
 You can use the `@omit` attribute in ZModel to mark fields to be omitted. Such fields will be omitted by default for all `ZenStackClient` instances and all queries.
@@ -71,7 +75,7 @@ const users = await db.user.findMany({
 });
 ```
 
-There might be scenarios where you don't want the query-level override feature. For example, when using `ZenStackClient` with the [Query as a Service](../../service), you may want to have certain fields always omitted for security reasons. In such cases, use the `allowQueryTimeOmitOverride` option to disable query-time overrides:
+There might be scenarios where you don't want the query-level override feature. For example, when using `ZenStackClient` with the [Query as a Service](../../service), you may want to have certain fields always omitted. In such cases, use the `allowQueryTimeOmitOverride` option to disable query-time overrides:
 
 ```ts
 const db = new ZenStackClient<Schema>({
