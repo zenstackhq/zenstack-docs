@@ -2,6 +2,10 @@
     "trailingSlash": false,
     "rewrites": [
         {
+            "source": "/",
+            "destination": "https://detailed-costs-055147.framer.app/"
+        },
+        {
             "source": "/framer",
             "destination": "https://detailed-costs-055147.framer.app/"
         },
