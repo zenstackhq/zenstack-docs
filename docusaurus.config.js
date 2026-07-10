@@ -99,6 +99,7 @@ const config = {
                 logo: {
                     alt: 'ZenStack Logo',
                     src: 'img/new-logo.png',
+                    href: 'pathname:///',
                 },
                 items: [
                     {
