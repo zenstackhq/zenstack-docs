@@ -19,7 +19,7 @@ For two reasons, tables are one of the nastiest things to build in web UI. First
 
 > Building UI is a very branded and custom experience, even if that means choosing a design system or adhering to a design spec. - tanstack.com
 
-Tables are most commonly used to render database query results — in modern times, the output of an ORM. In this post, I'll introduce a way of connecting [Prisma](https://prisma.io) - the most popular TypeScript ORM, to React Table, with the help of [React Query](https://tanstack.com/query) and [ZenStack](/). You'll be amazed by how little code you need to write to render a full-fledged table UI.
+Tables are most commonly used to render database query results — in modern times, the output of an ORM. In this post, I'll introduce a way of connecting [Prisma](https://prisma.io) - the most popular TypeScript ORM, to React Table, with the help of [React Query](https://tanstack.com/query) and [ZenStack](https://zenstack.dev). You'll be amazed by how little code you need to write to render a full-fledged table UI.
 
 ## A full-stack setup
 
