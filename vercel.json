@@ -3,7 +3,7 @@
     "rewrites": [
         {
             "source": "/",
-            "destination": "https://detailed-costs-055147.framer.app/"
+            "destination": "https://zenstack.framer.website/"
         }
     ],
     "redirects": [
