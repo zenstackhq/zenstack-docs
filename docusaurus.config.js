@@ -100,6 +100,7 @@ const config = {
                     alt: 'ZenStack Logo',
                     src: 'img/new-logo.png',
                     href: 'pathname:///',
+                    target: '_self',
                 },
                 items: [
                     {
