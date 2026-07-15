@@ -17,7 +17,6 @@ export const config = { matcher: '/' };
 
 export default async function middleware(): Promise<Response | undefined> {
     try {
-        console.log('Fetching Framer landing page...');
         const upstream = await fetch(`${FRAMER_ORIGIN}/`, {
             headers: { accept: 'text/html' },
         });
@@ -29,9 +28,6 @@ export default async function middleware(): Promise<Response | undefined> {
 
         const html = await upstream.text();
         const rewritten = html.split(FRAMER_ORIGIN).join(CANONICAL_ORIGIN);
-        if (rewritten !== html) {
-            console.log('Rewrote Framer landing page HTML to canonical domain.');
-        }
 
         const headers = new Headers(upstream.headers);
         // the body was re-encoded, so the upstream encoding/length no longer apply
