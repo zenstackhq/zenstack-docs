@@ -21,7 +21,7 @@ export default async function middleware(request: Request): Promise<Response | u
         // affect the HTML Framer serves (never cookie/host)
         const { search } = new URL(request.url);
         const requestHeaders = new Headers({ accept: 'text/html' });
-        for (const name of ['user-agent', 'accept-language']) {
+        for (const name of ['user-agent', 'accept-language', 'referer', 'x-forwarded-for']) {
             const value = request.headers.get(name);
             if (value) {
                 requestHeaders.set(name, value);
