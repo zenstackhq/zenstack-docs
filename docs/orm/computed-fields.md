@@ -5,6 +5,7 @@ description: Computed fields in ZModel
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
+import AvailableSince from '../_components/AvailableSince';
 
 # Computed Fields
 
@@ -79,6 +80,92 @@ type ComputedFieldCallback = (
   }
 ) => OperandExpression<...>;
 ```
+
+## Parameterized Computed Fields
+
+<AvailableSince version="v3.9.0" />
+
+A computed field can declare typed **parameters**, with the arguments supplied at query time wherever the field is used. This lets a single field express a database-side computation that depends on a runtime value — for example, "count a user's posts created since a given date", or the motivating case of "sort products by their tag name in a chosen category".
+
+Declare the parameters right after the field name in the ZModel schema (a parameterized field reads just like a regular one, with a parameter list added):
+
+```zmodel
+model User {
+    id    Int    @id
+    posts Post[]
+    recentPostCount(since: DateTime) Int @computed
+}
+```
+
+The implementation receives the arguments as a **third** parameter, after `eb` and `context`:
+
+```ts
+import { sql } from '@zenstackhq/orm/helpers';
+
+const db = new ZenStackClient(schema, {
+  ...
+  computedFields: {
+    User: {
+      // `args` is typed from the field's declared parameters: `{ since: Date }`
+      recentPostCount: (eb, { modelAlias }, args) =>
+        eb.selectFrom('Post')
+          .whereRef('Post.authorId', '=', sql.ref(`${modelAlias}.id`))
+          .where('Post.createdAt', '>=', args.since)
+          .select(({ fn }) => fn.countAll<number>().as('count')),
+    },
+  },
+});
+```
+
+Because the arguments are **plain data** (not a callback), they serialize over the wire — so a frontend can drive the query through the auto-CRUD API while it stays a single, policy-checked, `select`-narrowed statement.
+
+### Supplying arguments
+
+The `args` object travels with the field wherever it is used. Note that a parameterized field is **not** returned by default (it needs arguments), so a plain `findMany()` won't include it — you request it explicitly via `select`/`include`.
+
+```ts
+const since = new Date('2024-01-01');
+
+// orderBy — `{ args, sort, nulls? }`
+await db.user.findMany({ orderBy: { recentPostCount: { args: { since }, sort: 'desc' } } });
+
+// where (and `having`) — `args` alongside the filter operators
+await db.user.findMany({ where: { recentPostCount: { args: { since }, gte: 5 } } });
+
+// select / include
+await db.user.findMany({ include: { recentPostCount: { args: { since } } } });
+await db.user.findFirst({ select: { id: true, recentPostCount: { args: { since } } } });
+
+// aggregate — `_count` / `_sum` / `_avg` / `_min` / `_max`
+await db.user.aggregate({ _sum: { recentPostCount: { args: { since } } } });
+
+// groupBy — a keyed `{ field, args }` entry in `by`
+await db.user.groupBy({
+  by: [{ field: 'recentPostCount', args: { since } }],
+  _count: { _all: true },
+});
+```
+
+The full signature of a parameterized computed field implementation adds the `args` parameter:
+
+```ts
+import { OperandExpression, ExpressionBuilder } from 'kysely';
+
+type ParameterizedComputedFieldCallback = (
+  eb: ExpressionBuilder<...>,
+  context: {
+    modelAlias: string
+  },
+  args: {
+    // derived from the field's declared parameters, e.g. `since: DateTime` -> `since: Date`
+    since: Date
+  }
+) => OperandExpression<...>;
+```
+
+:::info
+Grouping **by** a computed field whose implementation is a *correlated subquery* is subject to your database's own rules for grouping by a correlated expression (PostgreSQL rejects it; SQLite allows it) — the same constraint that applies to any correlated `GROUP BY`. Computed fields defined by a row-local expression can be grouped on all databases.
+:::
 
 ## Samples
 
