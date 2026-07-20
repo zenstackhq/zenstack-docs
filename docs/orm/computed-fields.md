@@ -5,6 +5,7 @@ description: Computed fields in ZModel
 
 import ZenStackVsPrisma from '../_components/ZenStackVsPrisma';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
+import AvailableSince from '../_components/AvailableSince';
 
 # Computed Fields
 
@@ -81,6 +82,8 @@ type ComputedFieldCallback = (
 ```
 
 ## Parameterized Computed Fields
+
+<AvailableSince version="v3.9.0" />
 
 A computed field can declare typed **parameters**, with the arguments supplied at query time wherever the field is used. This lets a single field express a database-side computation that depends on a runtime value — for example, "count a user's posts created since a given date", or the motivating case of "sort products by their tag name in a chosen category".
 
