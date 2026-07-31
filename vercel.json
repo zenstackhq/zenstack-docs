@@ -2,8 +2,12 @@
     "trailingSlash": false,
     "rewrites": [
         {
-            "source": "/",
-            "destination": "https://zenstack.framer.website/"
+            "source": "/framer",
+            "destination": "https://detailed-costs-055147.framer.app/"
+        },
+        {
+            "source": "/framer/:path*",
+            "destination": "https://detailed-costs-055147.framer.app/:path*"
         }
     ],
     "redirects": [

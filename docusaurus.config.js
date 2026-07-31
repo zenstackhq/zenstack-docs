@@ -10,7 +10,7 @@ const config = {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
-    favicon: 'img/new-logo.png',
+    favicon: 'img/logo.png',
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
@@ -24,13 +24,6 @@ const config = {
         defaultLocale: 'en',
         locales: ['en'],
     },
-
-    stylesheets: [
-        {
-            href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
-            type: 'text/css',
-        },
-    ],
 
     presets: [
         [
@@ -98,9 +91,8 @@ const config = {
                 title: 'ZenStack',
                 logo: {
                     alt: 'ZenStack Logo',
-                    src: 'img/new-logo.png',
-                    href: 'pathname:///',
-                    target: '_self',
+                    src: 'img/logo.png',
+                    srcDark: 'img/logo-dark.png',
                 },
                 items: [
                     {
@@ -117,8 +109,7 @@ const config = {
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
                         href: 'https://github.com/zenstackhq/zenstack',
-                        label: '⭐ on GitHub',
-                        'aria-label': 'Star ZenStack on GitHub',
+                        label: '⭐ GitHub',
                         position: 'right',
                         className: 'bg-gray-900 rounded-sm',
                     },
