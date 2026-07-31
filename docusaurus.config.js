@@ -117,7 +117,8 @@ const config = {
                     { to: '/blog', label: 'Blog', position: 'left' },
                     {
                         href: 'https://github.com/zenstackhq/zenstack',
-                        label: '⭐ GitHub',
+                        label: '⭐ on GitHub',
+                        'aria-label': 'Star ZenStack on GitHub',
                         position: 'right',
                         className: 'bg-gray-900 rounded-sm',
                     },
