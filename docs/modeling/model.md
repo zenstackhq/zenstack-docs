@@ -4,6 +4,7 @@ description: Models in ZModel
 ---
 
 import AvailableSince from '../_components/AvailableSince';
+import ZModelVsPSL from '../_components/ZModelVsPSL';
 
 # Model
 
@@ -192,6 +193,10 @@ model User {
 ```
 
 These attributes control what data type is used when the [migration engine](../orm/migration.md) maps the schema to DDL. You can find a complete list of native type attributes in the [ZModel Language Reference](../reference/zmodel/attribute#native-type-mapping-attributes).
+
+<ZModelVsPSL>
+Unlike PSL, all native type mapping attributes in ZModel use the `@db.` prefix, regardless of the name of your [`datasource`](./datasource.md).
+</ZModelVsPSL>
 
 ## Name mapping
 
