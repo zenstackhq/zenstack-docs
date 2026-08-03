@@ -83,6 +83,18 @@ export type ClientOptions<Schema extends SchemaDef> = {
    * Computed field definitions.
    */
   computedFields?: ComputedFieldsOptions<Schema>;      
+
+  /**
+   * Type-checking options for query arguments. Available since v3.9.0.
+   */
+  typing?: {
+    /**
+     * Recursively rejects unknown properties in query arguments. This is
+     * opt-in because the additional precision requires more work from the
+     * TypeScript checker. Defaults to `false`.
+     */
+    exactQueryArgs?: boolean;
+  };
 };
 ```
 
