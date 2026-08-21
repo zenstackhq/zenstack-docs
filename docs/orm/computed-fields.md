@@ -72,14 +72,79 @@ The full signature of the computed field implementation is as follows:
 
 ```ts
 import { OperandExpression, ExpressionBuilder } from 'kysely';
+import { ClientContract } from '@zenstackhq/orm';
 
 type ComputedFieldCallback = (
   eb: ExpressionBuilder<...>,
   context: {
-    modelAlias: string
+    modelAlias: string,
+    client: ClientContract<Schema>
   }
 ) => OperandExpression<...>;
 ```
+
+## Accessing the Client
+
+<AvailableSince version="v3.9.1" />
+
+The `context` argument also carries `client` — the ORM client that's executing the query. Its main use is letting a computed field depend on *who is asking*, since the current user identity lives on the client rather than in the schema.
+
+```zmodel
+model User {
+    id    Int    @id
+    posts Post[]
+}
+
+model Post {
+    id       Int     @id
+    author   User    @relation(fields: [authorId], references: [id])
+    authorId Int
+    isMine   Boolean @computed
+}
+```
+
+```ts
+import { sql } from '@zenstackhq/orm/helpers';
+
+const db = new ZenStackClient(schema, {
+  ...
+  computedFields: {
+    Post: {
+      // `client.$auth` is the identity bound with `$setAuth()`, and `undefined`
+      // when the client is anonymous
+      isMine: (eb, { client }) =>
+        client.$auth
+          ? sql<boolean>`${eb.ref('authorId')} = ${client.$auth.id}`
+          : eb.lit(false),
+    },
+  },
+});
+```
+
+Because `$setAuth()` returns a *new* client rather than mutating the original, each user-bound client evaluates the field against its own identity:
+
+```ts
+const userDb = db.$setAuth({ id: 1 });
+
+// only user 1's posts
+await userDb.post.findMany({ where: { isMine: true } });
+
+// => { ..., isMine: true }
+await userDb.post.findUnique({ where: { id: 1 } });
+
+// the original client is anonymous and unaffected => { ..., isMine: false }
+await db.post.findUnique({ where: { id: 1 } });
+```
+
+The per-request client that a web app already creates (see [Setting Auth User](./access-control/query.md#setting-auth-user)) therefore carries its identity into every computed field it evaluates, with no module-level state to keep in sync. Reading `$auth` this way doesn't require the access policy plugin — `$setAuth()` and `$auth` are part of the base client.
+
+:::info
+A computed field implementation must return its expression **synchronously**, so `client` is meant for reading per-client state such as `$auth`. It is not a way to `await` queries while building a computed field — data-dependent logic belongs in the expression itself, for example as a correlated subquery.
+:::
+
+:::tip
+The `sql` fragment above is what types a `Boolean @computed` field. A Kysely comparison like `eb('authorId', '=', id)` evaluates correctly, but its type is `SqlBool` (`boolean | 0 | 1`), which doesn't satisfy the `OperandExpression<boolean>` that a `Boolean` field expects. A `sql<boolean>` fragment, `eb.lit()`, or a `CASE` expression built with `eb.case()` all give you the right type.
+:::
 
 ## Parameterized Computed Fields
 
@@ -150,11 +215,13 @@ The full signature of a parameterized computed field implementation adds the `ar
 
 ```ts
 import { OperandExpression, ExpressionBuilder } from 'kysely';
+import { ClientContract } from '@zenstackhq/orm';
 
 type ParameterizedComputedFieldCallback = (
   eb: ExpressionBuilder<...>,
   context: {
-    modelAlias: string
+    modelAlias: string,
+    client: ClientContract<Schema>
   },
   args: {
     // derived from the field's declared parameters, e.g. `since: DateTime` -> `since: Date`
