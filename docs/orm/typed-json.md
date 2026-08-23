@@ -22,7 +22,7 @@ ZModel allows you to define custom types and use them to [type JSON fields](../m
 
 <AvailableSince version="v3.9.2" />
 
-You can indicate the ORM should reject unknown fields by decorating the custom type definition with the `@@strict` attribute. The presence of unknown fields would then be considered both a compilation error and a runtime validation error.
+You can indicate the ORM should reject unknown fields by decorating the custom type definition with the `@@strict` attribute. The presence of unknown fields would then be reported as both a compilation error and a runtime validation error.
 
 ## Samples
 
