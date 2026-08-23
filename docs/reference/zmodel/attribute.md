@@ -406,9 +406,9 @@ model User {
 }
 ```
 
-<AvailableSince version="v3.9.2" />
-
 ### @@strict
+
+<AvailableSince version="v3.9.2" />
 
 ```zmodel
 attribute @@strict()

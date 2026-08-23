@@ -18,6 +18,8 @@ ZModel allows you to define custom types and use them to [type JSON fields](../m
 1. The return type of such fields is typed as TypeScript types derived from the ZModel custom type definition.
 2. When creating or updating such fields, the ORM validates the input against the custom type definition. By default, the engine "loosely" validates the mutation input and doesn't prevent you from including fields not defined in the custom type.
 
+## Strict JSON
+
 <AvailableSince version="v3.9.2" />
 
 You can indicate the ORM should reject unknown fields by decorating the custom type definition with the `@@strict` attribute. The presence of unknown fields would then be considered both a compilation error and a runtime validation error.
