@@ -406,7 +406,7 @@ model User {
 }
 ```
 
-<AvailableSince version="3.9.2" />
+<AvailableSince version="v3.9.2" />
 
 ### @@strict
 
