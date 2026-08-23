@@ -2,6 +2,8 @@
 sidebar_position: 7
 ---
 
+import AvailableSince from '../../_components/AvailableSince';
+
 # Attribute
 
 Attributes decorate fields and models and attach extra behaviors or constraints to them.
@@ -401,6 +403,28 @@ model User {
     id Int @id
     name String
     @@schema("auth")
+}
+```
+
+<AvailableSince version="3.9.2" />
+
+### @@strict
+
+```zmodel
+attribute @@strict()
+```
+
+Indicates [strongly-typed JSON](../../orm/typed-json) should reject unknown fields.
+
+```zmodel
+model User {
+    id Int @id
+    profile Profile @json
+}
+
+type Profile {
+    name String
+    @@strict
 }
 ```
 
