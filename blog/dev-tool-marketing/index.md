@@ -21,7 +21,7 @@ Having an opinion in that thread is the easy part, because I've lived that probl
 
 I used to think of this as one activity, which is why it felt uniformly awful. It's three jobs with completely different costs.
 
-Finding the thread is pure time. You open `r/webdev`, `r/typescript`, `r/node`; most of the front page isn't for you, and the thread that is was posted three days ago and already has an accepted answer. Ninety minutes of that for every thread actually worth answering.
+Finding the thread is pure time. You open `r/webdev`, `r/typescript`, `r/node`; most of the front page isn't for you, and the relevant thread was posted three days ago and already has an accepted answer. Ninety minutes of that for every thread actually worth answering.
 
 Keyword search doesn't fix it. "ORM" returns everyone arguing about ORMs in the abstract. What you want is narrower: someone with a specific problem you happen to solve, posted recently, in a sub that tolerates you answering, and described in any of a dozen ways that never include the name of your category. Then something still has to go down the list of candidates and judge which are worth opening, off a title and two lines of summary. That's not a filter you can write.
 
@@ -29,7 +29,7 @@ This is why it never got the energy it deserved. I'd rather be building than mar
 
 Writing the reply isn't slow so much as demanding. Read the whole thread, work out what the person actually needs rather than what they asked, pick the one angle out of three or four that doesn't turn into a pitch, and write it so it stands on its own without a link. That's real work, and it's why the Sunday burst produces replies you regret. You can't do it on the attention you have left at 9pm.
 
-Hitting send takes a second and carries nearly all of the risk. Tools that post for you write comments that read like it: restate the question, hedge, list three options, land on the product. Reddit's moderation is partly software and mostly people, and people spot that shape instantly. You don't get a warning, you get a ban you find out about later.
+Hitting send takes a second and carries nearly all of the risk. Tools that post for you write comments that sound automated: restate the question, hedge, list three options, land on the product. Reddit's moderation is partly software and mostly people, and people spot that shape instantly. You don't get a warning, you get a ban you find out about later.
 
 So: automate the finding, assist the writing, never automate the send. Most tools in this space blur all three, so you can't tell which one you're actually adopting.
 
