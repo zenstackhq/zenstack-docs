@@ -170,7 +170,7 @@ import { sql } from '@zenstackhq/orm/helpers';
 const db = new ZenStackClient(schema, {
   ...
   computedFields: {
-    User: {
+    user: {
       // `args` is typed from the field's declared parameters: `{ since: Date }`
       recentPostCount: (eb, { modelAlias }, args) =>
         eb.selectFrom('Post')
