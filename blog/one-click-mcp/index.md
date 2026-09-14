@@ -1,6 +1,6 @@
 ---
 title: Turning Your Database Into an MCP Server With One Click
-description: The third post of the MCP series, about what it took to turn the Code Mode approach into something you can switch on for your own database
+description: The third post of the MCP series, turning any PostgreSQL, MySQL, or SQLite database into an MCP server with per-user authorization, no ZenStack project required
 tags: [ai, mcp, database, authorization, studio]
 authors: jiasheng
 date: 2026-09-13
@@ -65,13 +65,17 @@ So the third step of this series is **make it easy**. That's what we have spent 
 
 ## What One Click Actually Means
 
+If this series is the first time you have heard of ZenStack, here is the part that matters most: **none of this requires a ZenStack project.** Your app can be built with Prisma, Drizzle, Rails, Django, or plain SQL. Studio only needs a database.
+
 [ZenStack Studio](https://studio.zenstack.dev/) started as a GUI for your data: a table editor that understands relations and a query editor that uses the same query API as the ORM. One command gets you there:
 
 ```bash
 npx @zenstackhq/cli studio
 ```
 
-It introspects your existing PostgreSQL, MySQL, or SQLite database, generates a `schema.zmodel` from it, and starts a small proxy on your machine. Studio talks to that proxy, and the proxy talks to your database, so your credentials stay on your machine and never reach ZenStack. You don't need to use the ZenStack ORM or change any application code for any of this.
+It introspects your existing PostgreSQL, MySQL, or SQLite database, generates a `schema.zmodel` from it, and starts a small proxy on your machine. Studio talks to that proxy, and the proxy talks to your database, so your credentials stay on your machine and never reach ZenStack. Nothing in your application changes.
+
+The generated schema is a plain description of your tables and relations, with no access policies in it. That's all the **Full access** mode below needs, so you can connect an agent right after the command finishes.
 
 Once the project is open, there is an **MCP Server** entry next to the Table Editor and Query Editor. Switch it on, and Studio hands you a configuration to paste into your MCP client:
 
@@ -147,7 +151,15 @@ Model 'Customer' is not exposed by this MCP server.
 
 Model switches answer *what* the agent can touch. For MCP, I think the more interesting question is *who* the agent is acting for.
 
-Studio gives you two choices when connecting. **Full access** applies no rules at all, which is fine for poking around your own local database. **Specific user** means every query runs as if that user had made it, so your ZenStack access policies apply. Studio generates the schema from your database, and you can add policies to it, like this:
+Studio gives you two choices when connecting. **Full access** applies no rules at all. It works with the generated schema as it is, and it's what most people want when pointing a coding agent at their own database. **Specific user** means every query runs as if that user had made it, so access policies apply.
+
+But the generated schema has no policies in it, so where do they come from? You could learn the ZModel syntax and write them by hand. But you are already talking to an agent, so why not let it do the job? Install the ZenStack skills, which include one dedicated to access control:
+
+```bash
+npx skills add zenstackhq/skills
+```
+
+Then ask Claude Code something like *"add access policies to schema.zmodel so users can only read their own orders, and support staff can read all orders."* What comes back looks like this:
 
 ```zmodel
 model User {
@@ -173,33 +185,65 @@ model Order {
 }
 ```
 
+Once the proxy is running with the updated schema, refresh the schema on the MCP Server page. Studio shows you a diff before it replaces what the agent sees.
+
 Connect as `{ "id": "user_42" }`, and when the agent asks for "total spending last month," it only ever sees user_42's orders. Nothing in the prompt makes that happen. Just like in the first post, it holds no matter what arguments the LLM generates, even if it hallucinates a `where` clause that asks for everyone.
 
-The identity travels in the `Authorization` header as a token signed with your project's secret key. Studio generates one for you, but it also shows a short Node.js snippet to sign one yourself, because this is where it gets interesting beyond coding agents. If your backend signs a token per end user, the same MCP server becomes an in-product assistant that answers from live data, scoped to whoever is asking.
+## The Chat Box Your UI Never Had
+
+Picking a user in Studio is handy for testing. But look at how that identity actually reaches the server: it's just a token in the `Authorization` header, signed with your project's secret key. Studio can generate one for you, and so can your own backend, for any user, at the moment they need it. There is no login flow to go through and nothing to register ahead of time.
+
+That small detail turns the MCP server from a tool for *you* into a feature for *your users*.
+
+Remember the Trello example from the first post of this series? I love its clean UI, but it pricks me every time for certain routine questions:
+
+- How many cards were done last week?
+- Who has the most incomplete cards?
+- Which list has the most incomplete cards?
+
+Adding a button or a report for each of them would ruin the simplicity that made people choose Trello in the first place. It's the classic SaaS dilemma: too many buttons overwhelm users, too few constrain power users.
+
+Now imagine you are building a Trello-like product on your own database, and you add a chat box to it. When a user opens it, your backend signs a token for that user:
+
+```tsx
+import crypto from 'node:crypto'
+
+// the secret key from the MCP Server page in Studio
+const secret = process.env.ZENSTACK_MCP_SECRET!
+
+export function signMcpToken(userId: string) {
+  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')
+
+  // `data` is what auth() resolves to in your access policies
+  const payload = Buffer.from(
+    JSON.stringify({ type: 'user', data: { id: userId } })
+  ).toString('base64url')
+
+  const signingInput = `${header}.${payload}`
+  const signature = crypto
+    .createHmac('sha256', Buffer.from(secret, 'hex'))
+    .update(signingInput)
+    .digest('base64url')
+
+  return `${signingInput}.${signature}`
+}
+```
+
+Then it hands that token, together with the MCP server URL, to whatever MCP client your chat backend uses. From then on, every question runs as that user. "How many cards did my team finish last week?" only counts the boards they belong to. "Move all my overdue cards to Backlog" can only touch the cards the policies allow them to update. The UI stays exactly as clean as it was, and the power users get their answers anyway.
+
+**The UI decides what's easy. The access policy decides what's allowed. The chat box covers everything in between.**
 
 <!--
-IMAGE PROMPT (two-identities.png, 1600x700):
-Flat vector diagram, same palette as the cover. On the left, two chat windows stacked vertically.
-The top window has a small badge "dana (support)" and a question "Why did ticket 4471's refund fail?".
-The bottom window has a badge "user_42 (customer)" and a question "What did I order last month?".
-Both windows connect with lines to a single box in the middle labeled "MCP server", with a small key icon on each line.
-On the right, a database cylinder. The line from "dana" to the database lights up a wide set of rows;
-the line from "user_42" lights up only two rows. Caption text at the bottom: "same server, different signed token".
+IMAGE PROMPT (in-product-chat.png, 1600x800):
+Flat vector illustration, same palette as the cover. A kanban board web app with three columns
+("To Do", "Doing", "Done") and a few cards. A chat panel slides in from the right edge of the app.
+In the chat, a user with a small badge "user_42" asks "How many cards did my team finish last week?"
+and the assistant replies "Your team finished 14 cards last week. Most came from the Mobile board."
+Below the app, a thin line runs from the chat panel through a small key icon labeled "signed token"
+to a box labeled "MCP server", then to a database cylinder. Only a subset of the database rows is highlighted.
 -->
 
-Twice now I've complained about Trello not answering "How many cards were done last week?" Twice I built a project to show how that could work. This time it's a toggle and a signed token. 😄
-
-### Wait, What Happened to OAuth?
-
-If you read the previous post, you may remember I called OAuth support one of the best features ever added to MCP, and quoted this line to explain why:
-
-> An engineer leaves your team? Revoke their OAuth token and access to the MCP server; they never had access to other keys and secrets to start with.
-
-So why does Studio use signed tokens instead?
-
-OAuth answers the question "who is sitting at this keyboard?" But the identity an MCP connection should run as isn't always that person. When a support engineer investigates one customer's ticket, or when your backend serves an assistant to thousands of end users, the identity is something *you* decide and attach, not someone who logs in through a browser. A signed claim says that directly.
-
-But every sword has two blades, and the quote above is exactly the blade we gave up. All tokens are signed with one secret per project, and regenerating that secret invalidates every token signed with it. Studio warns you about precisely that before it lets you do it. If you need to cut off one person today, you rotate the key for everyone. That's the trade-off we chose, and I'd rather you hear it from me than find out in production.
+I have used this Trello example twice now, and each time I built a whole project to show how it could work. This time it's a toggle, one function, and a few policy rules. 😄
 
 ## Try It on Your Own Database
 
@@ -209,7 +253,7 @@ The whole thing starts with the same command:
 npx @zenstackhq/cli studio
 ```
 
-Then open [studio.zenstack.dev](https://studio.zenstack.dev/). The [Studio docs](/docs/studio) cover the rest.
+Then open [studio.zenstack.dev](https://studio.zenstack.dev/). When you are ready for per-user rules, `npx skills add zenstackhq/skills` lets your agent write the policies for you. The [Studio docs](/docs/studio) cover the rest.
 
 About the price, plainly: Studio and the MCP server are free on localhost, with no credit card. Anything involving identity (signed access keys, running the proxy on a public network, impersonating users in Studio, and scoping the MCP server to a single user) is part of Pro, at $40 a month per organization rather than per seat. The first two posts in this series cost you a weekend. I'll let you decide which is cheaper. 😉
 
