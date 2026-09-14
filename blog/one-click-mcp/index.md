@@ -4,15 +4,15 @@ description: The third post of the MCP series, turning any PostgreSQL, MySQL, or
 tags: [ai, mcp, database, authorization, studio]
 authors: jiasheng
 date: 2026-09-13
-image: ./cover.png
+image: ./cover.jpg
 ---
 
 # Turning Your Database Into an MCP Server With One Click
 
-![Cover Image](cover.png)
+![Cover Image](cover.jpg)
 
 <!--
-IMAGE PROMPT (cover.png, 1200x630):
+IMAGE PROMPT (cover.jpg, 1200x630):
 Flat vector illustration, clean developer-blog style, warm orange accent on an off-white background.
 A single large toggle switch in the "on" position sits in the center. A thin cable runs from the switch
 on the left to a simple database cylinder, and on the right to three small rounded tool cards labeled
@@ -34,6 +34,8 @@ The first post, [Turning Your Database Into an MCP Server With Auth](/blog/datab
 
 The second post, [How to Save Bloated MCP with Code Mode](/blog/mcp-code-mode), was the **make it right** part. A user reported that loading a single tool bloated the context window to 400K tokens, so I collapsed the whole thing into three tools: `schema`, `check`, and `execute`. The approach held up well. I closed that post by admitting I was pretty sure you would run into issues with it, and asked you to tell me.
 
+Meanwhile, MCP itself didn't slow down. When I wrote the second post, "MCP is dead" was all over social media because of Agent Skills. About two months later, the [2026-07-28 specification release](https://blog.modelcontextprotocol.io/posts/2026-07-28/) reported that the Tier 1 SDKs are close to half a billion downloads a month, and that the TypeScript and Python SDKs have each crossed 1 billion total downloads. The same post cites Honeycomb, where nearly 20% of monthly interactive queries are now made by agents. Not bad for something that was supposed to be dead. 😁
+
 <!--
 IMAGE PROMPT (series-triptych.png, 1600x600):
 Three-panel horizontal triptych, flat vector, same palette as the cover.
@@ -42,6 +44,7 @@ Panel 2 labeled "right": the same workbench tidied, with just three neat tool ca
 Panel 3 labeled "easy": the workbench gone, replaced by a single toggle switch next to the database.
 Thin arrows connect the panels left to right. Only the three labels as text.
 -->
+![Series Triptych](series-triptych.jpg)
 
 So what is the third step? For this series, I don't think it's *fast* in the sense of milliseconds.
 
@@ -103,6 +106,7 @@ If generated, a stylized UI walkthrough in four beats, dark-mode UI, no real bra
 3) the cursor clicks a "Copy" button above a JSON config block;
 4) an AI coding assistant chat asks "Which 5 customers spent the most last month?" and replies with a small table.
 -->
+![Studio MCP Flow](studio-mcp-flow.gif)
 
 That's the click. Everything I spent two posts building sits behind it.
 
@@ -133,6 +137,8 @@ If generated: a clean dark-mode settings table titled "Exposed Models" with a se
 Columns: Model, Read, Insert, Update, Delete. Rows: Customer, Order, OrderItem, Invoice, AuditLog.
 Most toggles are on; AuditLog has every toggle off; Invoice has only Read on.
 -->
+
+![Swagger UI](model-config.png)
 
 There is a subtle part here. The strength of the query API is that one call can traverse relations, which is exactly what bloated the context in the first place. Here, the same strength could turn into a back door. So `check` and `execute` follow every `include` and `select` in the call, not just the top-level model:
 
@@ -189,21 +195,13 @@ Once the proxy is running with the updated schema, refresh the schema on the MCP
 
 Connect as `{ "id": "user_42" }`, and when the agent asks for "total spending last month," it only ever sees user_42's orders. Nothing in the prompt makes that happen. Just like in the first post, it holds no matter what arguments the LLM generates, even if it hallucinates a `where` clause that asks for everyone.
 
-## The Chat Box Your UI Never Had
+## Identity Is Just a Token
 
-Picking a user in Studio is handy for testing. But look at how that identity actually reaches the server: it's just a token in the `Authorization` header, signed with your project's secret key. Studio can generate one for you, and so can your own backend, for any user, at the moment they need it. There is no login flow to go through and nothing to register ahead of time.
+Picking a user in Studio is handy for trying things out. But look at how that identity actually reaches the MCP server: it's a token in the `Authorization` header, signed with your project's secret key. Studio can generate one for you. So can your own code, for any user, at the moment it's needed.
 
-That small detail turns the MCP server from a tool for *you* into a feature for *your users*.
+That small detail matters more than it looks. You don't create an MCP server per user, register anyone ahead of time, or send anyone through a login flow. There is one server, and the caller decides, request by request, which user the agent is acting for. The access policies you already have do the rest.
 
-Remember the Trello example from the first post of this series? I love its clean UI, but it pricks me every time for certain routine questions:
-
-- How many cards were done last week?
-- Who has the most incomplete cards?
-- Which list has the most incomplete cards?
-
-Adding a button or a report for each of them would ruin the simplicity that made people choose Trello in the first place. It's the classic SaaS dilemma: too many buttons overwhelm users, too few constrain power users.
-
-Now imagine you are building a Trello-like product on your own database, and you add a chat box to it. When a user opens it, your backend signs a token for that user:
+Signing a token takes a few lines:
 
 ```tsx
 import crypto from 'node:crypto'
@@ -211,13 +209,11 @@ import crypto from 'node:crypto'
 // the secret key from the MCP Server page in Studio
 const secret = process.env.ZENSTACK_MCP_SECRET!
 
-export function signMcpToken(userId: string) {
+export function signMcpToken(user: { id: string; role: string }) {
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')
 
   // `data` is what auth() resolves to in your access policies
-  const payload = Buffer.from(
-    JSON.stringify({ type: 'user', data: { id: userId } })
-  ).toString('base64url')
+  const payload = Buffer.from(JSON.stringify({ type: 'user', data: user })).toString('base64url')
 
   const signingInput = `${header}.${payload}`
   const signature = crypto
@@ -229,21 +225,31 @@ export function signMcpToken(userId: string) {
 }
 ```
 
-Then it hands that token, together with the MCP server URL, to whatever MCP client your chat backend uses. From then on, every question runs as that user. "How many cards did my team finish last week?" only counts the boards they belong to. "Move all my overdue cards to Backlog" can only touch the cards the policies allow them to update. The UI stays exactly as clean as it was, and the power users get their answers anyway.
+It also fits the direction MCP itself is heading. The [2026-07-28 specification](https://blog.modelcontextprotocol.io/posts/2026-07-28/) removed the `initialize` handshake and session IDs, so every request now stands on its own. As the release post puts it:
 
-**The UI decides what's easy. The access policy decides what's allowed. The chat box covers everything in between.**
+> Stateless core makes MCP a first-class HTTP workload with no session management to work around.
+
+Remember the map of session transports I had to keep in the first post? That's exactly the kind of code that goes away. Studio's MCP server is stateless as well, and because the identity rides along with every request, any server instance can serve any user without looking anything up.
+
+Once identity is something your code computes, it can go wherever your code goes. A few examples:
+
+- **Support, as the customer.** A support engineer points Claude Code at a ticket with a token for the customer who filed it, and investigates with exactly that customer's view of the data. Not more, and not a staging copy.
+- **Background agents, per tenant.** A scheduled job loops over your organizations, signs a token scoped to each one, and lets an agent write that organization's weekly summary. One tenant's run can't read another tenant's rows, even if the prompt goes wrong.
+- **An assistant inside your product.** Remember the Trello questions from the first post, like "How many cards were done last week?" A clean UI can't have a button for every one of them. An in-app assistant holding a token for the current user can answer them, from that user's boards only.
+
+**You don't configure who the agent is. Your code decides it, one request at a time.**
 
 <!--
-IMAGE PROMPT (in-product-chat.png, 1600x800):
-Flat vector illustration, same palette as the cover. A kanban board web app with three columns
-("To Do", "Doing", "Done") and a few cards. A chat panel slides in from the right edge of the app.
-In the chat, a user with a small badge "user_42" asks "How many cards did my team finish last week?"
-and the assistant replies "Your team finished 14 cards last week. Most came from the Mobile board."
-Below the app, a thin line runs from the chat panel through a small key icon labeled "signed token"
-to a box labeled "MCP server", then to a database cylinder. Only a subset of the database rows is highlighted.
+IMAGE PROMPT (one-server-many-identities.png, 1600x800):
+Flat vector diagram, same palette as the cover. On the left, three callers stacked vertically, each a small card:
+"Claude Code — support, as customer_17", "Weekly job — org: acme", "In-app assistant — user_42".
+Each card sends a line through a small key icon labeled "signed token" into a single box in the middle labeled "MCP server".
+On the right, a database cylinder drawn as a grid of rows. Each caller's line is a different color and highlights
+a different, non-overlapping small group of rows in the same color. Caption at the bottom: "one server, identity per request".
 -->
+![One Server, Many Identities](one-server-many-identities.jpg)
 
-I have used this Trello example twice now, and each time I built a whole project to show how it could work. This time it's a toggle, one function, and a few policy rules. 😄
+I have used that Trello example twice now, and each time I built a whole project to show how it could work. This time it's one function and a few policy rules. 😄
 
 ## Try It on Your Own Database
 
@@ -253,9 +259,8 @@ The whole thing starts with the same command:
 npx @zenstackhq/cli studio
 ```
 
-Then open [studio.zenstack.dev](https://studio.zenstack.dev/). When you are ready for per-user rules, `npx skills add zenstackhq/skills` lets your agent write the policies for you. The [Studio docs](/docs/studio) cover the rest.
+Then open [studio.zenstack.dev](https://studio.zenstack.dev/). When you are ready for per-user rules, `npx skills add zenstackhq/skills` lets your agent write the policies for you. If you need more guidance, check out the [ZenStack Doc](https://zenstack.dev/docs/orm/access-control/).
 
-About the price, plainly: Studio and the MCP server are free on localhost, with no credit card. Anything involving identity (signed access keys, running the proxy on a public network, impersonating users in Studio, and scoping the MCP server to a single user) is part of Pro, at $40 a month per organization rather than per seat. The first two posts in this series cost you a weekend. I'll let you decide which is cheaper. 😉
 
 If you connect it and the agent does something surprising, like writing a query `check` should have caught or getting lost in your schema, I really want to hear about it. That's exactly how the second post happened. Find me on [X](https://x.com/jiashenggo) or in [our Discord](https://discord.gg/Ykhr738dUe).
 
