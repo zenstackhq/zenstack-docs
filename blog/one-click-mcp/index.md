@@ -73,7 +73,7 @@ If this series is the first time you have heard of ZenStack, here is the part th
 [ZenStack Studio](https://studio.zenstack.dev/) started as a GUI for your data: a table editor that understands relations and a query editor that uses the same query API as the ORM. One command gets you there:
 
 ```bash
-npx @zenstackhq/cli studio
+npx @zenstackhq/cli studio --introspect
 ```
 
 It introspects your existing PostgreSQL, MySQL, or SQLite database, generates a `schema.zmodel` from it, and starts a small proxy on your machine. Studio talks to that proxy, and the proxy talks to your database, so your credentials stay on your machine and never reach ZenStack. Nothing in your application changes.
@@ -138,7 +138,7 @@ Columns: Model, Read, Insert, Update, Delete. Rows: Customer, Order, OrderItem, 
 Most toggles are on; AuditLog has every toggle off; Invoice has only Read on.
 -->
 
-![Swagger UI](model-config.png)
+![Exposed Models Configuration](model-config.png)
 
 There is a subtle part here. The strength of the query API is that one call can traverse relations, which is exactly what bloated the context in the first place. Here, the same strength could turn into a back door. So `check` and `execute` follow every `include` and `select` in the call, not just the top-level model:
 
