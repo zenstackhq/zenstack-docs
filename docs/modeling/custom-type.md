@@ -74,7 +74,7 @@ Custom types with relation fields can only be used as [mixins](./mixin.md). They
 
 You can define custom types that use [validation](../reference/zmodel/input-validation) functions and attributes to shape primitive values rather than objects. This is useful for consolidating repetitive validation rules in your schema.
 
-You must first select a *base type*, and then define a single required scalar field named `this`, whose type matches the base type you have chosen.
+You must first select a *base type*, and then define a single non-nullable scalar field named `this`, whose type matches the base type you have chosen.
 
 You may omit the `this` field if you only intend to use the type as an alias rather than perform any validation.
 
