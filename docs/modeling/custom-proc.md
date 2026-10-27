@@ -4,15 +4,12 @@ description: ZenStack custom procedures
 ---
 
 import ZModelVsPSL from '../_components/ZModelVsPSL';
-import PreviewFeature from '../_components/PreviewFeature';
 import AvailableSince from '../_components/AvailableSince';
 
 # Custom Procedure
 
 > This amazing feature is implemented by [Mike Willbanks
 ](https://github.com/mwillbanks).
-
-<PreviewFeature name="Custom procedure" />
 
 <AvailableSince version="v3.2.0" />
 

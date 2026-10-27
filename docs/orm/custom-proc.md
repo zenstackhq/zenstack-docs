@@ -3,7 +3,6 @@ sidebar_position: 13
 description: ORM custom procedures
 ---
 
-import PreviewFeature from '../_components/PreviewFeature';
 import AvailableSince from '../_components/AvailableSince';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
@@ -11,8 +10,6 @@ import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 > This amazing feature is implemented by [Mike Willbanks
 ](https://github.com/mwillbanks).
-
-<PreviewFeature name="Custom procedure" />
 
 <AvailableSince version="v3.2.0" />
 

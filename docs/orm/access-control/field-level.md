@@ -3,13 +3,11 @@ sidebar_position: 4
 ---
 
 import AvailableSince from '../../_components/AvailableSince';
-import PreviewFeature from '../../_components/PreviewFeature'
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 
 # Field-Level Policies
 
 <AvailableSince version="v3.2.0" />
-<PreviewFeature name="Field-level policy" />
 
 Field-level policies allow you to define access control rules at the individual field level within a model. This provides fine-grained control over who can read or write specific fields in your data models. To define field-level policies, use the `@allow` and `@deny` attributes directly on model fields (note the single `@`).
 
