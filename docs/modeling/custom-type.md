@@ -68,7 +68,56 @@ model Comment with AuditMixin {
 Custom types with relation fields can only be used as [mixins](./mixin.md). They cannot be used to type [JSON fields](./typed-json.md), since JSON fields cannot hold relational data.
 :::
 
-There are two ways to use custom types:
+### Primitives
+
+<AvailableSince version="v3.10.0" />
+
+You can define custom types that use [validation](../reference/zmodel/input-validation) functions and attributes to shape primitive values rather than objects. This is useful for consolidating repetitive validation rules in your schema.
+
+You must first select a *base type*, and then define a single non-nullable scalar field named `this`, whose type matches the base type you have chosen.
+
+You may omit the `this` field if you only intend to use the type as an alias rather than perform any validation.
+
+```zmodel
+type NonEmptyString with String {
+    this String @trim @length(min: 1)
+}
+
+type NonNegativeNumber with Int {
+    this Int @gte(0)
+}
+
+type Contact with String {
+    this String
+    @@validate(isPhone(this) || isEmail(this))
+}
+
+model User {
+    ...
+    name     NonEmptyString
+    age      NonNegativeNumber
+    contacts Contact[]
+}
+
+type PostTag with String {
+    this String @trim @lower @length(1, 12)
+}
+
+model Post {
+    ...
+    title NonEmptyString
+    body  NonEmptyString
+    views NonNegativeNumber
+    tags  PostTag[]
+}
+```
+
+:::info Validation Only
+You can only use validation functions and attributes in the body of a primitive custom type.
+:::
+
+There are two more ways to use custom types:
 
 - [Mixin](./mixin.md)
 - [Strongly typed JSON fields](./typed-json.md)
+
