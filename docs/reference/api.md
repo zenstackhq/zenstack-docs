@@ -287,18 +287,25 @@ onEntityMutation?: EntityMutationHooksDef<Schema>;
 /**
  * Hooks for all models under `$all`, and for individual models under their names.
  */
-type EntityMutationHooksDef<Schema> = {
-    $all?: {
-        beforeEntityMutation?: (args) => MaybePromise<void>;
-        afterEntityMutation?: (args) => MaybePromise<void>;
-        runAfterMutationWithinTransaction?: boolean;
-    };
-    [Model]?: {
-        // same as above, with loaded entities typed as `MutationHookEntity<Schema, Model>`
-        beforeEntityMutation?: (args) => MaybePromise<void>;
-        afterEntityMutation?: (args) => MaybePromise<void>;
-        runAfterMutationWithinTransaction?: boolean;
-    };
+type EntityMutationHooksDef<Schema extends SchemaDef> = {
+    [M in '$all' | GetModels<Schema>]?: M extends '$all'
+        ? AllEntityMutationHooksDef<Schema>
+        : ModelEntityMutationHooksDef<Schema, M>;
+};
+
+type AllEntityMutationHooksDef<Schema extends SchemaDef> = {
+    beforeEntityMutation?: BeforeEntityMutationCallback<Schema>;
+    afterEntityMutation?: AfterEntityMutationCallback<Schema>;
+    runAfterMutationWithinTransaction?: boolean;
+};
+
+/**
+ * Same as above, with loaded entities typed as `MutationHookEntity<Schema, Model>`.
+ */
+type ModelEntityMutationHooksDef<Schema extends SchemaDef, Model extends GetModels<Schema>> = {
+    beforeEntityMutation?: (args: PluginModelBeforeEntityMutationArgs<Schema, Model>) => MaybePromise<void>;
+    afterEntityMutation?: (args: PluginModelAfterEntityMutationArgs<Schema, Model>) => MaybePromise<void>;
+    runAfterMutationWithinTransaction?: boolean;
 };
 ```
 

@@ -89,10 +89,10 @@ For per-model hooks, the entities are typed accordingly with the `MutationHookEn
 For [polymorphic models](../polymorphism.md), a mutation fires one event for each table it writes, keyed by that table's model:
 
 - Creating a concrete model entity fires an event for the base model, followed by one for the concrete model.
-- Updating only fields inherited from the base model fires an event for the base model only.
+- Updating fields fires an event for each table that has updated fields: the base model for inherited fields, and the concrete model for its own fields.
 - Deleting a concrete model entity fires an event for the base model only (the concrete model's row is removed by the database's cascade delete).
 
-Base model entities contain the discriminator field, which you can use to tell which concrete model an entity belongs to. To observe all mutations of a concrete model, register hooks on its base model (or use `$all`).
+Base model entities contain the discriminator field, which you can use to tell which concrete model an entity belongs to. Since a concrete model's mutations are split across tables, neither the base model's hooks nor the concrete model's hooks see all of them. To observe every mutation of a concrete model, register hooks on both models (or use `$all`).
 
 :::info
 Update and delete triggered by cascading operations are not captured by the entity mutation hooks.
