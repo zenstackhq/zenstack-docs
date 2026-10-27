@@ -2,6 +2,8 @@
 sidebar_position: 9
 ---
 
+import AvailableSince from '../../_components/AvailableSince';
+
 # Expression
 
 ZModel provides an expression system that allows you to construct complex computations from primitive constructs like literals and fields. Expressions are used extensively in defining access control policies and input validation rules.
@@ -72,6 +74,27 @@ posts?[p, p.published && comments?[c, c.published]]
 ### `in` Operator
 
 The `in` keyword can be used to check if a value exists in a list. E.g., `value in [1, 2, 3]`.
+
+<AvailableSince version="v3.10.0" />
+
+An [enum](./enum.md) can also be used as the list, in which case it stands for all of its members. This is handy for checking that a `String` field holds one of an enum's values:
+
+```zmodel
+enum PostStatus {
+    DRAFT
+    ACTIVE
+    CANCELLED
+}
+
+model Post {
+    id     String @id
+    status String
+
+    @@validate(status in PostStatus)
+}
+```
+
+Enums can only be referenced this way inside access policy and validation attributes, like `@@allow`, `@@deny`, `@allow`, `@deny`, and `@@validate`.
 
 ### Function Calls
 

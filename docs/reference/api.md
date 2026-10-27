@@ -283,7 +283,26 @@ onProcedure?: OnProcedureCallback<Schema>;
  * Intercepts an entity mutation.
  */
 onEntityMutation?: EntityMutationHooksDef<Schema>;
+
+/**
+ * Hooks for all models under `$all`, and for individual models under their names.
+ */
+type EntityMutationHooksDef<Schema> = {
+    $all?: {
+        beforeEntityMutation?: (args) => MaybePromise<void>;
+        afterEntityMutation?: (args) => MaybePromise<void>;
+        runAfterMutationWithinTransaction?: boolean;
+    };
+    [Model]?: {
+        // same as above, with loaded entities typed as `MutationHookEntity<Schema, Model>`
+        beforeEntityMutation?: (args) => MaybePromise<void>;
+        afterEntityMutation?: (args) => MaybePromise<void>;
+        runAfterMutationWithinTransaction?: boolean;
+    };
+};
 ```
+
+See [Entity Mutation Hooks](../orm/plugins/entity-mutation-hooks) for details.
 
 ##### `onKyselyQuery`
 ```ts

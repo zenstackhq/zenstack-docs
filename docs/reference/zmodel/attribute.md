@@ -514,7 +514,7 @@ _Params_:
 attribute @updatedAt()
 ```
 
-Automatically stores the time when a record was last updated.
+Automatically stores the time when a record was last updated. The field is set by `update`, `updateMany`, and `upsert` operations, unless a value is explicitly provided.
 
 ### @ignore
 

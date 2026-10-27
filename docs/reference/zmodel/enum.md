@@ -30,3 +30,5 @@ enum UserRole {
     ADMIN
 }
 ```
+
+Enums can also be used in policy and validation rules to check whether a value is one of the enum's members. See [`in` operator](./expression.md#in-operator) for details.

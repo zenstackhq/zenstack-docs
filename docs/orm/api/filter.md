@@ -6,6 +6,7 @@ description: how to filter entities
 import ZenStackVsPrisma from '../../_components/ZenStackVsPrisma';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
 import PreviewFeature from '../../_components/PreviewFeature';
+import AvailableSince from '../../_components/AvailableSince';
 
 # Filter
 
@@ -133,3 +134,22 @@ ZenStack v3 is implemented on top of [Kysely](https://kysely.dev/), and it lever
 The `$expr` operator can be used together with other filter operators, so you can keep most of your filters simple and only reach down to the query builder level for complicated components.
 
 <StackBlitzGithub repoPath="zenstackhq/v3-doc-orm" openFile="filter/query-builder.ts" startScript="generate,filter:query-builder" />
+
+### Referencing the filtered model
+
+<AvailableSince version="v3.10.0" />
+
+The `$expr` callback receives a second argument with a `modelAlias` field, the alias under which the filtered model is selected. In a top-level filter, it's simply the model name. Inside a relation filter, however, the related model is selected under a generated alias, so you need `modelAlias` to qualify references to its columns:
+
+```ts
+await db.post.findMany({
+    where: {
+        author: {
+            // `User.email` would fail here since the author is selected under a different alias
+            $expr: (eb, { modelAlias }) => eb(eb.ref(`${modelAlias}.email`), 'like', '%@zenstack.dev'),
+        },
+    },
+});
+```
+
+`modelAlias` is typed as the model name, so qualified references type-check as usual.
