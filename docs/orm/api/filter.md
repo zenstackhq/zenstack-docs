@@ -5,7 +5,6 @@ description: how to filter entities
 
 import ZenStackVsPrisma from '../../_components/ZenStackVsPrisma';
 import StackBlitzGithub from '@site/src/components/StackBlitzGithub';
-import PreviewFeature from '../../_components/PreviewFeature';
 import AvailableSince from '../../_components/AvailableSince';
 
 # Filter
@@ -64,8 +63,6 @@ await db.post.findMany({
 ```
 
 ## Json filters
-
-<PreviewFeature name="Json filter" />
 
 The query API supports flexible filtering on `Json` fields and allows you to reach into nested structures in the JSON data.
 
