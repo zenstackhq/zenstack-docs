@@ -28,7 +28,7 @@ model User {
 Field-level policies are similar to model-level ones, with the following key restrictions:
 
 - Only "read" and "update" operations are supported. You can use "all" to denote both.
-- They cannot be defined on relation fields or computed fields.
+- They cannot be defined on computed fields, or on relation fields other than [implicit many-to-many](#many-to-many-relation-fields) ones.
 
 ## Read Behavior
 
@@ -55,6 +55,39 @@ The concern is that a non-readable field should still have a valid SQL value, be
 ## Update Behavior
 
 When updating data, if an update involves setting fields that violate "update" policies, the entire update operation will be rejected with an `ORMError` with `reason` set to `REJECTED_BY_POLICY`.
+
+## Many-to-many relation fields
+
+<AvailableSince version="v3.10.0" />
+
+"update" policies can be defined on [implicit many-to-many](../../modeling/relation#implicit-many-to-many) relation fields. They control who can link and unlink records (`connect` and `disconnect`) on that side of the relation. Linking or unlinking two records requires both sides to pass their checks.
+
+For each side, a field-level policy takes precedence over the model-level "update" policy. If the field has no field-level policy, the model-level "update" policy applies.
+
+```zmodel
+model Club {
+    id         String     @id @default(uuid())
+    ownerId    String
+    activities Activity[]
+
+    @@allow('all', auth().id == ownerId)
+}
+
+model Activity {
+    id    String @id @default(uuid())
+    name  String
+
+    // signed-in users can link and unlink activities to clubs,
+    // even though activities themselves are not updatable
+    clubs Club[] @allow('update', auth() != null)
+
+    @@allow('read', true)
+}
+```
+
+In the example above, a club's owner can link an activity to their club: the `Club` side passes its model-level policy, and the `Activity` side passes the field-level policy on `clubs`.
+
+Only "update" policies are allowed on many-to-many relation fields. "read" and "all" are rejected at compile time.
 
 ## Samples
 
