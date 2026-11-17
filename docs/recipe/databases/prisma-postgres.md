@@ -16,9 +16,9 @@ You can create a temporary database from the command line. The command prints a 
 npx create-db@latest
 ```
 
-Alternatively, create a database in the [Prisma Console](https://console.prisma.io) and copy its connection string from there. Then set it as the `DATABASE_URL` environment variable.
+Alternatively, create a database in the [Prisma Console](https://console.prisma.io) and copy its connection string from there. Then set it as the `DATABASE_URL` environment variable, for example in your `.env` file.
 
-```bash
+```bash title=".env"
 DATABASE_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
 ```
 
