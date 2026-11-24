@@ -7,6 +7,10 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
+- [zenlev](https://mwillbanks.github.io/zenstack-zenlev/)
+
+    Bun-native database migration toolkit for ZenStack V3 and Kysely. Made by [@mwillbanks](https://github.com/mwillbanks).
+
 - [zenstack-mcp](https://github.com/azzerty23/zenstack-mcp)
 
     Expose your ZenStack V3 database to LLMs through a [Model Context Protocol](https://modelcontextprotocol.io) interface, with built-in access-control policies and OAuth 2.0 authentication. Made by [Azzerty23](https://github.com/azzerty23).
