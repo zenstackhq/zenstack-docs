@@ -7,7 +7,7 @@ sidebar_label: Community Packages
 
 ZenStack plugins built by our awesome community members :heart:.
 
-- [zenstack-zenlev](https://mwillbanks.github.io/zenstack-zenlev/)
+- [zenlev](https://mwillbanks.github.io/zenstack-zenlev/)
 
     Bun-native database migration toolkit for ZenStack V3 and Kysely. Made by [@mwillbanks](https://github.com/mwillbanks).
 
